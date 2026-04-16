@@ -1,0 +1,10 @@
+{
+  "_comment": "Full sweep for israel_junction_partA (~1e6 points incl. filter). Intended for HF Jobs cpu-upgrade.",
+  "n_theta": 33,
+  "axes": {
+    "M":       {"lo": 1e-4,  "hi": 0.49,  "n": 32, "scale": "log"},
+    "R":       {"lo": 1.0,   "hi": 100.0, "n": 32, "scale": "log"},
+    "v_s":     {"lo": 1e-5,  "hi": 0.3,   "n": 32, "scale": "log"},
+    "sigma_w": {"lo": 0.5,   "hi": 200.0, "n": 32, "scale": "log"}
+  }
+}

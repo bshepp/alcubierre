@@ -1,0 +1,15 @@
+# Optional gravitational-wave stack used only by acceleration.ipynb cells 9-12
+# (Package 3 NR / GW-recoil estimate). Install explicitly:
+#   pip install -r requirements-gw.txt
+# Not required for Packages 0-2.
+
+-r requirements.txt
+
+# Approach A: SXS catalog waveform access.
+sxs>=2024,<2027
+
+# Approach B: post-Newtonian shell-mass analog.
+# lalsimulation is notoriously difficult to pip-install on Windows; the
+# notebook falls back to gwtools when lalsimulation is unavailable.
+gwtools>=1,<2
+# lalsuite>=7,<8  # uncomment on Linux / HF Jobs image where binary wheels exist

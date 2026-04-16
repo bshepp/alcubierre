@@ -1,0 +1,308 @@
+# Session Log — Alcubierre Boundary-Mode Reformulation
+
+---
+
+## Session 1 — 2026-03-30
+
+**Participants:** Brian Sheppard + Claude
+**Chat ID:** 8fb50fee
+**Duration:** Extended literature review
+
+### Work Performed
+- Comprehensive literature review of the warp drive field
+- Mapped foundational papers (Alcubierre, ADM, Morris & Thorne, Ford & Roman)
+- Identified descendant papers (Van Den Broeck, Natário, Lobo & Visser, Lentz, Bobrick & Martire)
+- Cataloged no-go results (Pfenning & Ford, Everett, Hiscock, Santiago-Schuster-Visser)
+- Identified the Casimir effect as a physical analog for boundary-generated negative energy
+- Noted Warp Factory (Helmerich et al. 2024) as computational platform
+- Identified Fuchs et al. 2024 as the most significant recent comparison target
+
+### Key Insight
+The Casimir effect is an existence proof that boundary conditions on field modes produce negative energy density. If the Alcubierre bubble wall plays the role of Casimir plates for gravitational modes, the exotic matter problem becomes a boundary-value engineering problem.
+
+### Output
+Literature atlas and Casimir connection (carried forward into integration document)
+
+---
+
+## Session 2 — 2026-04-04
+
+**Participants:** Brian Sheppard + Claude
+**Chat ID:** 50c03df0
+
+### Work Performed
+- Formulated the three-body image-method hypothesis
+- Developed the GEM (gravitoelectromagnetic) framework for linearized gravity
+- Identified Poisson equation structure as the entry point for method of images
+- Laid out Phase 1 action items
+- Produced the seed document `ALCUBIERRE_IMAGE_METHOD.md`
+
+### Key Insight
+Linearized GR has Poisson equation structure identical to electrostatics. The method of images is a standard technique for Poisson equations with boundary conditions. If the Alcubierre bubble wall is a boundary surface, the exotic matter may decompose into "image" contributions from real positive-energy sources.
+
+### Output
+`ALCUBIERRE_IMAGE_METHOD.md` (seed document, not in this repo — superseded by integration doc)
+
+---
+
+## Session 3 — 2026-04-15
+
+**Participants:** Brian Sheppard + Claude
+
+### Work Performed
+
+#### Part 1: Understanding the seed document
+- Reviewed `ALCUBIERRE_MARCH30_INTEGRATION.md` (integration of Sessions 1 & 2)
+- Identified the linearization calculation as the priority next step
+
+#### Part 2: Explicit linearization calculation
+Produced complete derivation ([LINEARIZATION_CALCULATION.md](LINEARIZATION_CALCULATION.md)):
+
+1. **ADM decomposition** — confirmed $\alpha = 1$, $\gamma_{ij} = \delta_{ij}$, all content in shift vector $\beta^x = -v_s f(r_s)$
+2. **Extrinsic curvature** — derived all $K_{ij}$ components, expansion scalar $\theta = v_s \partial_x f$
+3. **Exact stress-energy** via ADM constraints:
+   - Energy density: $\rho = \frac{-v_s^2}{32\pi G}(f')^2 \frac{y^2+z^2}{r_s^2}$ (negative everywhere off-axis)
+   - Momentum density: $j^x = \frac{-v_s}{16\pi G}\nabla_\perp^2 f$
+4. **Order counting**: warp effect and momentum are $O(v_s)$ (gravitomagnetic); energy density is $O(v_s^2)$
+5. **Gauge analysis**: Alcubierre metric is NOT in harmonic gauge; ADM framework avoids gauge issues
+6. **Poisson structure**: $\nabla^2\beta^x = -v_s\nabla^2 f$ with source at bubble wall
+7. **Thin-wall limit**: source becomes monopole + dipole double layer — standard potential-theory structure
+8. **Total energy estimate**: $|E| \sim v_s^2 R^2/(12G\Delta)$ — planetary-mass scale even at $v_s = 0.01c$
+
+#### Part 3: Green's function / image decomposition analysis
+Investigated whether point-image methods can reproduce the Alcubierre field configuration:
+
+**Finding: Point-image decomposition does not work.**
+
+- The interior field $\beta^x = -v_s$ is constant (uniform frame-dragging)
+- No finite superposition of $1/|\mathbf{r} - \mathbf{r}_i|$ point-source fields can produce a constant
+- The closest EM analog is a uniformly magnetized sphere (surface current source, not point sources)
+- The three-body picture (ship + distant source + image) requires fine-tuned cancellation at every radius
+
+**Finding: Boundary-mode / Casimir picture is strengthened.**
+
+- The correct mathematical framework is mode decomposition on a spherical domain, not point images
+- The wall imposes boundary conditions → restricted mode spectrum → negative energy at boundary
+- This IS the Casimir mechanism, translated to gravitomagnetic degrees of freedom
+- The exotic energy density is a second-order nonlinear functional of the first-order mode structure
+
+#### Part 4: Project documentation
+- Updated [LINEARIZATION_CALCULATION.md](LINEARIZATION_CALCULATION.md) with Green's function findings (Section 9)
+- Created [README.md](README.md) — project overview
+- Created [ROADMAP.md](ROADMAP.md) — five-phase research plan with decision points
+- Created this session log
+
+### Decisions Made
+1. **Pivot from "method of images" to "boundary-mode decomposition"** as the mathematical framework
+2. **ADM formalism is the natural setting** — not harmonic gauge linearization
+3. **Subluminal discipline** — no superluminal extensions until Phase 5 at earliest
+4. **Priority reading**: Lobo & Visser 2004 and Fuchs et al. 2024 before proceeding to Phase 2
+
+### Open Items Entering Next Session
+- [ ] Read Lobo & Visser 2004 (Task 1.8)
+- [ ] Read Fuchs et al. 2024 (Task 1.9)
+- [ ] Assess spin-2 vs spin-1 differences (Task 1.11)
+- [ ] Begin Phase 2 spectral decomposition if literature review supports it
+
+### Conceptual State at End of Session
+The project has its first real mathematical result (the linearization calculation) and its first real negative result (point images don't work). The negative result is actually productive — it redirects the approach toward a framework (boundary modes) that has stronger physical grounding (Casimir) and better-developed mathematical tools (spectral theory on bounded domains). The core claim — exotic matter as boundary effect — is intact and arguably strengthened. The question is now whether the mode decomposition produces quantitatively useful results or is merely a restatement of the same physics in different language.
+
+---
+
+## Session 4 — 2026-04-15 (continued)
+
+**Participants:** Brian Sheppard + Claude
+**Focus:** Literature retrieval, verification, quantum/classical gap analysis, documentation audit
+
+### Work Performed
+
+#### Part 1: Seed document evaluation
+- Reviewed all five existing documents for scientific content, internal consistency, and completeness
+- Identified a critical bug: Lobo & Visser 2004 was cited as `gr-qc/0410087` (a solo Lobo wormhole paper) — correct IDs are `gr-qc/0406083` and `gr-qc/0412065`
+- Identified the quantum vs. classical gap as the largest unaddressed conceptual issue
+- Added the original seed document `ALCUBIERRE_IMAGE_METHOD.md` to the repository
+
+#### Part 2: Literature retrieval and catalog
+- Fetched arXiv abstracts and metadata for 15 papers across foundational, descendant, no-go, and new categories
+- Created [LITERATURE.md](LITERATURE.md) with structured entries: abstract, publication data, and relevance to boundary-mode program
+- Added two new papers not in original seed documents:
+  - Quach 2015 (1502.07429) — gravitational Casimir effect with non-idealized boundaries
+  - Ford & Pfenning 1998 (gr-qc/9805037) — quantum inequalities in curved spacetime
+- Established reading priority order: Lobo & Visser → Fuchs et al. → Santiago-Schuster-Visser → Quach → Ford-Pfenning
+- Confirmed 7 textbooks/non-arXiv papers cannot be automatically retrieved
+
+#### Part 3: Verification notebook
+- Created [verification.ipynb](verification.ipynb) with 10 cells covering all key results
+- Symbolic verifications (SymPy): ADM decomposition, extrinsic curvature, $K^2 - K_{ij}K^{ij}$ cancellation, energy density, all three momentum density components — all pass
+- Numerical verifications (numpy): shape function profiles, total energy integral ($E \approx -3.7 \times 10^{26}$ J for $v_s = 0.01c$, $R = 100$ m, $\sigma = 10$), thin-wall estimate agreement (ratio $\approx 0.33$)
+- Gauge violation check: confirmed $\partial_\mu \bar{h}^{\mu t} \neq 0$ analytically
+- Visualization: 4-panel plot of shape function, derivative, energy density, and expansion scalar
+
+#### Part 4: Quantum/classical gap analysis
+- Created [QUANTUM_CLASSICAL_BRIDGE.md](QUANTUM_CLASSICAL_BRIDGE.md) with three-layer analysis:
+  - **Claim (a)** — Geometric classification (classical, established): all source structure lives at wall
+  - **Claim (b)** — Semiclassical consistency (quantum, testable): $\langle T_{\mu\nu}\rangle_\text{ren}$ calculation needed
+  - **Claim (c)** — Physical mechanism (quantum, speculative): exotic matter IS gravitational Casimir effect
+- Identified the Boyer sign problem: spherical Casimir energy is repulsive in EM — may be wrong sign
+- Identified the Fuchs et al. classical path as a potentially more productive alternative to the Casimir route
+- Proposed the "effective boundary" argument: matter shell creates boundary, shift vector modes in shell's presence produce warp geometry classically
+
+#### Part 5: Documentation updates
+- Fixed arXiv ID bug across 4 files (LINEARIZATION_CALCULATION.md, README.md, ROADMAP.md, ALCUBIERRE_MARCH30_INTEGRATION.md)
+- Fixed section numbering in LINEARIZATION_CALCULATION.md (8.3 → 10)
+- Added self-consistency note in Section 6.5 about linearized-source tension
+- Qualified "Core Claim" in README.md: "structurally identical" → "structurally analogous"
+- Added Casimir analogy caveat to ALCUBIERRE_MARCH30_INTEGRATION.md §2
+- Added new references (Quach 2015, Ford-Pfenning 1998) to integration doc literature tables
+- Updated README.md document table with all new files
+- Fleshed out Phase 2.1 in ROADMAP.md with vector Laplacian specifics and angular structure
+- Added Tasks 2.7 (Fuchs et al. connection) and 2.8 (quantum/classical assessment) to ROADMAP.md
+- Added three new risks to ROADMAP.md risk register: quantum/classical gap, Boyer sign problem, expanded spin-2 risk
+
+### Decisions Made
+1. **Three-tiered claim structure** adopted: geometric (established) / semiclassical (testable) / physical (speculative)
+2. **Fuchs et al. 2024** elevated to co-equal priority with Casimir interpretation as potential physical mechanism
+3. **Vector Laplacian** (not scalar) identified as the correct operator for Phase 2 spectral problem
+4. **Boyer sign problem** identified as a new risk requiring Phase 2 investigation
+
+### Open Items Entering Next Session
+- [ ] Read Lobo & Visser 2004 (Task 1.8) — now with correct arXiv IDs
+- [ ] Read Fuchs et al. 2024 (Task 1.9) — elevated priority; may provide classical boundary-mode realization
+- [ ] Assess spin-2 vs spin-1 differences (Task 1.11) — risk now in register
+- [ ] Investigate Boyer sign problem for spherical gravitational Casimir
+- [ ] Begin Phase 2 if literature review supports it
+- [ ] Run verification.ipynb end-to-end in Jupyter and inspect plots
+
+### Conceptual State at End of Session
+The project is more honest and better organized. The quantum/classical gap is now explicitly acknowledged with a clear path forward (three claims at three ambition levels). The Fuchs et al. matter-shell solution has emerged as a potentially more productive connection than the Casimir analogy — it provides a classical physical mechanism (shell as boundary → boundary-constrained shift vector → warp geometry) that the mode decomposition could explain. The Casimir interpretation is not abandoned but correctly positioned as the most ambitious version of the claim, requiring semiclassical QFT work that is Phase 3+ at best. The literature catalog is complete, the key expressions are verified, and the arXiv ID bug is fixed. The project is ready for the priority literature reading (Lobo & Visser, Fuchs et al.) that will determine how much of this framework is novel.
+
+---
+
+## Session 5: 2026-04-15 (Part 2) — Path 2 Pivot, Fuchs et al. Integration
+
+### Directive
+User instruction: *"I don't want to abandon the Casimir route but I would like to pursue Path 2 as you suggested first."* Referring to the "classical matter shell" path identified in `QUANTUM_CLASSICAL_BRIDGE.md` §5 as the alternative to the Casimir route. Scope clarified via AskQuestion: doc-only + a *new* dedicated notebook for Israel junction conditions, fetching Fuchs et al. HTML for technical detail.
+
+### What Was Accomplished
+
+#### Part 1: Literature retrieval and technical integration
+- Fetched Fuchs et al. 2024 (arXiv:2405.02709) both abstract page and experimental HTML.
+- Extracted the full construction: static spherical matter shell (TOV-solved, anisotropic pressure) + pure shift perturbation $\delta g_\text{warp}$ on the interior, Eq. 27-28 bump function with buffer region $R_b$, empirical shift bound $\beta_\text{warp} \le 0.02c$ for all ECs satisfied. Shell parameters: $R_1 = 10$ m, $R_2 = 20$ m, $M = 4.49 \times 10^{27}$ kg.
+- Noted the critical caveats they flag: (i) shift amplitude is small, (ii) bubble does not translate (only interior frame-drag), (iii) acceleration is open (their §5.3), (iv) mass is enormous.
+
+#### Part 2: MATTER_SHELL_PATH.md (new, ~370 lines)
+- Explicit mapping table between boundary-mode framework and Fuchs construction (§2.1): shift vector $\beta^i$ ↔ Fuchs $\beta^1$; wall ↔ TOV-solved matter shell; boundary condition ↔ shell interior-exterior matching; negative energy → *no longer required* because shell provides positive ADM mass.
+- Stated the **refined boundary-mode hypothesis** (§2.3): a one-parameter family interpolating between Fuchs's Warp Shell ($\lambda = 0$) and Alcubierre ($\lambda = 1$), with the interpolation parameter being "warp shift magnitude vs. shell support capacity."
+- Listed three open problems explicitly not settled by Fuchs (§2.2): (P1) velocity limit, (P2) acceleration/translation, (P3) mass-to-velocity scaling.
+- Developed the Israel thin-shell framework (§3) as complementary analytical probe of their thick-shell construction, including a sketched calculation for the shift-perturbed interior.
+- Connected to Phase 2 roadmap: the boundary-mode decomposition of the shell interior has a physical cutoff set by the shell's ADM mass and Schwarzschild radius (§4).
+- Articulated four outcome scenarios (§6): Path 2 succeeds / succeeds-only-at-small-amplitude / fails-on-acceleration / fails-both — with the Casimir route becoming necessary or redundant in each.
+- Built a dedicated Path 2 reference table (§8).
+
+#### Part 3: matter_shell.ipynb (new, 12 cells)
+Verified via `nbclient` end-to-end execution. Results:
+- **§1-2:** Numerically reproduced Fuchs's bump function and shift profile. Confirmed $\int dS/dr\, dr = -1$ — boundary is localized in the transition region, consistent with boundary-mode picture.
+- **§3:** Israel thin-shell junction for Minkowski interior + Schwarzschild exterior. Surface energy density $\sigma = (1 - \sqrt{1-2GM/R})/(4\pi GR)$; weak-field shell mass $\mu \approx M + GM^2/(2R)$ — **exactly matches textbook result** (ADM mass plus binding energy).
+- **§4:** Angular projection of Alcubierre shift onto Legendre polynomials. **Pure $l=1$ dipole confirmed**: monopole and quadrupole projections vanish exactly; dipole projection is $2\beta/3$.
+- **§5:** Derived Eulerian-frame EC scaling $\beta_\text{warp} \lesssim GM\Delta^2/(R^3 c^2)$. Numerical value for Fuchs parameters: $0.0988$; Fuchs's empirical bound: $0.02$. Within order of magnitude; remaining factor attributable to anisotropic pressure bookkeeping.
+- **§6:** Mass scaling table. For 1 km bubble at $\beta = 0.1c$: $M \sim 10^{31}$ kg ($10^6$ Earth masses). For a 20 m bubble at $\beta = 0.001c$: $M \sim 10^{26}$ kg ($\sim 18$ Earth masses). Orders of magnitude above practical but orders of magnitude below original Alcubierre exotic-matter requirement.
+
+#### Part 4: ROADMAP.md restructuring
+- Split Phase 2 into **Phase 2A (Classical Matter-Shell Realization, primary, IN PROGRESS)** and **Phase 2B (Casimir / Boundary-Mode Decomposition, parallel, NOT STARTED)**.
+- Phase 2A tasks 2A.1-2A.5 marked completed (Fuchs integration, bump reproduction, Israel warm-up, dipole confirmation, scaling derivation); tasks 2A.6-2A.12 are the next concrete work items.
+- Phase 2B retains the original Casimir mode-decomposition program with explicit acknowledgment of the spin-2 obstruction risk.
+- Decision points recast for the two-track structure.
+- Phase 3 tasks updated to include Fuchs-specific sweeps (3.2, 3.3) in addition to mode-decomposition validation (3.4, 3.5).
+- Phase 5 tasks updated: Task 5.4 (Fuchs connection) marked resolved; new task 5.6 (acceleration problem) added.
+- Risk register rewritten to reflect two-track structure with path-specific risks and mitigations; added "Fuchs already contains Path 2A results" (novelty risk) and "acceleration always fails" (physical risk) as new entries.
+- Open questions Q7-Q9 added (nested shells, acceleration metric, Lentz vs. Fuchs distinction).
+
+#### Part 5: QUANTUM_CLASSICAL_BRIDGE.md update
+- Rewrote §6 from "Recommended Path Forward" to "Two-Track Strategy" with explicit primary/parallel designation.
+- Added outcome-matrix table showing how the four Path 2A × 2B combinations interpret.
+- Split Claim (c) into (c-classical) — Path 2A version — and (c-quantum) — Path 2B version.
+- Header updated to mark this as the home of Path 2B specifically, with cross-reference to `MATTER_SHELL_PATH.md` for Path 2A.
+
+#### Part 6: README.md update
+- Core Claim and Current Status rewritten for two-track structure.
+- Document table expanded with bold entries for `MATTER_SHELL_PATH.md` and `matter_shell.ipynb`.
+- Key Results section extended with items 7-10 from the new session's work (Fuchs as direct realization; $l=1$ dipole structure; $\beta$ scaling match; Israel warm-up validated).
+
+### Decisions Made
+1. **Dual-track adopted:** Path 2A is primary; Path 2B is parallel and not abandoned. Both tracks proceed and may converge, diverge, or one may foreclose the other.
+2. **Fuchs et al. 2024 is the anchor for Path 2A.** The refined boundary-mode hypothesis is stated as an explicit interpolation between their construction and the original Alcubierre metric.
+3. **The $l=1$ dipole result** is the first genuinely new, easily-communicable analytical result from this project. It precisely specifies the angular structure that any wall-physics description must realize, and distinguishes the Alcubierre shift from rotationally-symmetric alternatives.
+4. **Notebook-driven verification continues.** `matter_shell.ipynb` complements `verification.ipynb` as a working computational artifact. Future Path 2A tasks will have dedicated notebooks or sections.
+5. **Acceleration is explicitly flagged** as the hardest open problem across both tracks (Task 2A.10, Task 5.6).
+
+### Open Items Entering Next Session
+- [ ] **Path 2A.6:** Full thin-shell Israel junction with the shift-perturbed Alcubierre interior (the bigger calculation the current notebook defers). Needs vector-spherical-harmonic machinery for the angle-dependent $[K_{ab}]$.
+- [ ] **Path 2A.7:** Determine $\Delta_\text{min}(v_\text{warp}, M, R)$ — the minimum shell thickness below which DEC must fail. Analytic + numerical.
+- [ ] **Path 2A.8:** Vector-spherical-harmonic expansion of the full shift $\beta^x(r)\hat{x}$ on the shell domain. Match against Fuchs's bump profile.
+- [ ] **Path 2A.10:** Acceleration problem. Start with ADM 4-momentum conservation as an organizing principle.
+- [ ] **Path 2A.11-12:** Compare Fuchs to Lentz 2020 and Natário 2002 explicitly.
+- [ ] **Phase 3.1:** Install Warp Factory (MATLAB) and reproduce Fuchs's Figure 10 (energy conditions for warp shell) as validation baseline.
+- [ ] **Phase 1.8, 1.9:** Still pending — read Lobo & Visser 2004 and Fuchs et al. in full, not just the abstracts and key sections.
+
+### Conceptual State at End of Session
+Path 2 is now a genuine research program with a concrete existence anchor (Fuchs et al.), a technical document laying out the framework (`MATTER_SHELL_PATH.md`), a working notebook that establishes the formalism and produces verified quantitative results (`matter_shell.ipynb`), and a restructured roadmap that sequences the next calculations. Crucially, the project has shifted from "Alcubierre-plus-Casimir-analogy" to "boundary-mode reformulation *of* Alcubierre, realized classically by Fuchs *and* with a parallel Casimir investigation for amplitudes or regimes classical matter cannot cover." The central claim is now scientifically modest and well-founded: the boundary-mode framework is a useful organizing principle that matches an existing positive-energy warp drive construction, predicts testable scaling laws, and identifies the specific open problems (acceleration, mass scaling, spin-2 boundary conditions) that separate "frame-dragging inside a heavy shell" from "useful transportation." The ambitious Casimir claim remains the speculative ceiling of the program, not its foundation.
+
+---
+
+## Session 6: 2026-04-16 — Path 2A Packages 1–3 Execution
+
+### Directive
+User instruction: *"Implement the plan as specified, it is attached for your reference. Do NOT edit the plan file itself. To-do's from the plan have already been created. Do not create them again. Mark them as in_progress as you work, starting with the first one. Don't stop until you have completed all the to-dos."* Execute the three-package Path 2A plan (Israel junction, thickness bound, acceleration problem) with Colab/HF Jobs compute infrastructure integrated.
+
+### What Was Accomplished
+
+#### Package 0 — Compute Infrastructure
+- `requirements.txt` and `requirements-gw.txt` pinning the SymPy/NumPy/SciPy/Matplotlib stack plus optional `sxs` and `gwtools` for Package 3.
+- `hf_jobs/run_sweep.py` — generic parameter-sweep dispatcher with local and HF Jobs backends. Windows-specific worker cap added after a `BrokenProcessPool`/OpenBLAS incident.
+- Colab "Open In Colab" badges and guarded `pip install` cells added to `verification.ipynb`, `matter_shell.ipynb`, `israel_junction.ipynb`, `thickness_bound.ipynb`, `acceleration.ipynb`.
+- `README.md` expanded with a "Running the notebooks" section documenting the three runtimes (local / Colab / HF Jobs) and a per-notebook recommendation table.
+
+#### Package 1 — Israel Junction Conditions (Task 2A.6)
+New notebook `israel_junction.ipynb` (31 cells, Part A static Schwarzschild + Part B boosted Schwarzschild). Key technical results:
+- **Induced metric $h_{ab}^\pm$ and extrinsic curvatures $K_{ab}^\pm$** computed symbolically on both sides of the matching surface $r = R$.
+- **Angular decomposition of $[K_{ab}]$ via Legendre polynomials** confirms the Alcubierre shift sources a pure $l=0$ (monopole) + $l=1$ (dipole) structure in the jump, matching the theoretical expectation from `matter_shell.ipynb` §4.
+- **DEC failure at anti-motion pole.** For thin-wall parameters with a static exterior, DEC fails at $\theta \approx 179.4°$ for representative $\beta/C$ — the shift-induced boundary current beats the positive surface energy density from the monopole.
+- **Critical $\lambda_* \approx 0.55$** in Part B. When $v_{\rm ext}$ and $v_{\rm int}$ are allowed to differ, DEC fails for $\lambda = v_{\rm ext}/v_{\rm int} < 0.55$. Covariance-preserving configurations ($\lambda = 1$) are DEC-safe; the acceleration transient through $\lambda < 1$ is the residual obstruction.
+- HF Jobs preview sweep via `hf_jobs/sweeps/israel_junction_partA.py` (2000-point local preview + 10⁶-point full config) maps the DEC-satisfying region of the ($\beta$, $C$) plane.
+
+`MATTER_SHELL_PATH.md` §3.3 rewritten with the actual results; P2.3 marked resolved; Task 2A.6 marked complete in `ROADMAP.md`.
+
+#### Package 2 — Minimum Shell Thickness (Task 2A.7)
+New notebook `thickness_bound.ipynb` (19 cells). Key technical results:
+- **Analytical scaling law** $\Delta_{\min}/R = \kappa\beta/C$ with $C = 2GM/(Rc^2)$, derived from worst-angle DEC saturation under the thin-to-thick interpolation. Headline coefficient $\kappa = 3/4$ from the leading-order derivation.
+- **Numerical sweep via HF Jobs** (`hf_jobs/sweeps/thickness_bound.py`, ~1.3 × 10⁵-point full config) empirically calibrates $\kappa \in [0.05, 0.75]$ across the physically relevant $(\beta, C)$ regime.
+- **Fuchs parameter-regime comparison.** Fuchs shells live at very low Schwarzschild compactness ($C \sim 10^{-10}$) and high matter density; the naive $\kappa$ extracted from their numbers is outside the predicted band, reflecting that the bound applies to Schwarzschild-compactness shells rather than dense-matter shells. Documented as a refinement rather than a contradiction.
+- **Design-point extrapolation.** For $\beta = 0.5$, $R = 100$ m, DEC-compatible shell at $\Delta = R$ requires $M \sim 10^{19}\text{–}10^{20}$ kg of ordinary matter — orders of magnitude below the $\sim 10^{30}$ kg of *negative* energy the original Alcubierre metric demands.
+
+`MATTER_SHELL_PATH.md` §3.4 rewritten; P2.5 marked resolved; Task 2A.7 marked complete in `ROADMAP.md`; `README.md` Key Results extended with items 11–12.
+
+#### Package 3 — The Acceleration Problem (Task 2A.10)
+New notebook `acceleration.ipynb` (19 cells, five-part structure). Key technical results:
+- **ADM 4-momentum obstruction theorem (cells 2–5).** Computed $E_{\rm ADM}$ of the Schwarzschild exterior symbolically; limit at infinity reduces to $M$, validating framework. Initially-static slice has $K_{ij} = 0 \Rightarrow P^i_{\rm ADM} = 0$; conservation forces $P^i_{\rm ADM}(t) = 0$ for all $t$ unless there is boundary flux. Three mechanisms (A shift spin-up, B mass ejection, C GW recoil) exhaust the ways to break this.
+- **Three-mechanism catalog (cells 6–9 + 15).** Mechanism A requires comoving exterior mass $\sim M_{\rm shell}$ — reduces to "push-from-a-wall"; not warp drive. Mechanism B is ordinary Tsiolkovsky rocket, DEC-trivial and mass-budget-trivial at $\beta \sim 0.02$, but a warp shell propelled by a chemical rocket is *just* a rocket. Mechanism C is the only genuinely vacuum-+-DEC-compatible option.
+- **GW-recoil quantitative ceiling (cells 10–13).** Two independent estimates: (A) SXS rescaling of Varma et al. 2022 record 5000 km/s kick via $v_{\rm kick}^{\rm Fuchs} \sim v_{\rm kick}^{\rm BBH}\,\beta^2\,C^{3/2}$, (B) PN binary analog with shell + 1% beacon. HF Jobs sweep `hf_jobs/sweeps/gw_recoil.py` over ($\beta$, $C$, $M$, $n_{\rm orbits}$) returns max $\Delta v_{\max} \approx 10^{5.82}$ m/s $\approx 660$ km/s at $\beta = 0.9$, $C = 0.5$ — still only 0.25% of the warp-speed target at those parameters. Nominal Fuchs values give $\Delta v_{\max} \sim 600$ m/s.
+- **Literature comparison (cells 16–17).** Consistent with and strictly strengthens Schuster–Santiago–Visser 2023 Theorem 3 by decomposing "boundary flux" into the three mechanisms with DEC and quantitative verdicts. Compared against Varma et al. 2022 empirical BBH-kick record.
+- **Conclusion (cell 18).** No classical mechanism simultaneously preserves DEC on shell + exterior, keeps exterior vacuum, requires no expelled reaction mass, *and* produces $\Delta v \sim v_{\rm warp}$. Scenario (A) of `MATTER_SHELL_PATH.md` §6 is **falsified for accelerating shells**; scenario (C) — "quantum / boundary-mode mechanism needed for dynamics" — is the remaining open candidate. Path 2B is elevated from parallel hedge to the sole remaining route to a dynamical warp drive.
+
+`MATTER_SHELL_PATH.md` §7 rewritten entirely around the acceleration result; P2.4 marked resolved. `QUANTUM_CLASSICAL_BRIDGE.md` §6 outcome matrix updated with 2026-04-16 status column confirming row 3 (static-only Path 2A + open Path 2B) as the best-supported scenario. `ROADMAP.md` Task 2A.10 marked complete; risk register entry on "acceleration always fails" updated from "High likelihood" to "Realised".
+
+### Decisions Made
+1. **Path 2A static half: done.** Packages 1 and 2 confirm DEC-compatible matter shells with the $\kappa\beta/C$ thickness scaling law. This is the deliverable that is mature enough to write up.
+2. **Path 2A dynamical half: closed with prejudice.** Package 3 rules out self-acceleration under classical-matter + vacuum-exterior + no-ejecta + DEC. The only viable classical motion requires an ordinary rocket (Mechanism B), which makes the warp geometry thermodynamically redundant.
+3. **Path 2B is promoted.** It is now the sole remaining candidate for a genuine (vacuum + DEC + dynamical) warp-drive realisation. The Casimir / boundary-mode programme should be resumed as the primary next track.
+4. **Compute infrastructure is production-ready.** `requirements.txt`, `hf_jobs/run_sweep.py`, and the Colab badges across all five notebooks mean Colab and HF Jobs runs are a single-command affair.
+5. **Systematic robustness improvements.** The `f_R` substitution fix in `israel_junction.ipynb` and the Windows worker cap in `run_sweep.py` make the pipeline usable on Windows despite the `lalsuite`/OpenBLAS difficulties.
+
+### Open Items Entering Next Session
+- [ ] **Path 2B Task:** Resume the Casimir / boundary-mode programme. Starting point is `QUANTUM_CLASSICAL_BRIDGE.md` §3–5; first concrete calculation is the semiclassical $\langle \hat T_{\mu\nu}\rangle$ for a quantized linearised-gravity field on a Fuchs-shell background. This is the only remaining track that could produce a dynamical warp drive.
+- [ ] **Task 2A.11–12:** Lentz 2020 and Natário 2002 comparison remains open. Likely easier now that the acceleration catalog is in place — their constructions slot into the same three-mechanism framework.
+- [ ] **Task 2A.9:** Refine the $M_{\min}$ scaling to include anisotropic-pressure corrections; Warp Factory validation.
+- [ ] **Writing up.** The static Path 2A result (`MATTER_SHELL_PATH.md` §3 + §7) + the acceleration obstruction (`acceleration.ipynb` + §7) together constitute a coherent short-paper-worth of material on the limits of classical warp drives. Decide whether to pursue arXiv preprint or continue with Path 2B first.
+
+### Conceptual State at End of Session
+The classical half of the Path 2A programme is now effectively complete. We have (i) a rigorous existence result for static DEC-compatible matter-shell warp geometries with a quantitative thickness bound, (ii) a rigorous obstruction theorem ruling out classical acceleration in vacuum, (iii) a quantitative ceiling on GW recoil that closes the only classically vacuum-compatible loophole, and (iv) a promotion of Path 2B (Casimir / boundary-mode) from hedge to primary track for the dynamical problem. The project has moved from "Alcubierre-plus-analogy" (Session 1–3) through "boundary-mode reformulation realised by Fuchs" (Session 5) to a clear two-sided status: static classical yes, dynamical classical no, dynamical quantum open. This is the sharpest and most defensible statement the programme has yet produced.

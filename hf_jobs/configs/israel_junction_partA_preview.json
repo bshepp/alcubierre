@@ -1,0 +1,10 @@
+{
+  "_comment": "Small local sanity-check grid for israel_junction_partA (~2000 points).",
+  "n_theta": 17,
+  "axes": {
+    "M":       {"lo": 0.001, "hi": 0.4,  "n": 10, "scale": "log"},
+    "R":       {"lo": 1.0,   "hi": 10.0, "n": 8,  "scale": "log"},
+    "v_s":     {"lo": 1e-4,  "hi": 0.1,  "n": 10, "scale": "log"},
+    "sigma_w": {"lo": 1.0,   "hi": 100.0,"n": 4,  "scale": "log"}
+  }
+}

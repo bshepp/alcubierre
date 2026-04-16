@@ -1,0 +1,10 @@
+{
+  "_comment": "Small local preview for Package 2 thickness sweep (~500 points after filter).",
+  "n_theta": 17,
+  "axes": {
+    "M":            {"lo": 0.01,  "hi": 0.4,   "n": 6,  "scale": "log"},
+    "R":            {"lo": 1.0,   "hi": 20.0,  "n": 6,  "scale": "log"},
+    "beta":         {"lo": 0.005, "hi": 0.3,   "n": 8,  "scale": "log"},
+    "Delta_over_R": {"lo": 0.01,  "hi": 1.0,   "n": 8,  "scale": "log"}
+  }
+}
