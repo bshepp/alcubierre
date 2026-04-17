@@ -251,7 +251,121 @@ This closes the dynamical problem under classical-matter assumptions: Path 2A pr
 
 ---
 
-## 8. References for Path 2
+## 8. Static-Infrastructure Prior Art and Recent Comparison Targets (added Session 7)
+
+### 8.1 Krasnikov tubes — the static-network analogue
+
+Following the analysis of `speculation/RING_NETWORK_CONCEPT.md`, the following prior art is now central to any static-infrastructure extension of Path 2A. Full details in `KRASNIKOV_TUBE_NOTES.md`.
+
+- **Krasnikov 1995** (gr-qc/9511068) introduced the static-tube spacetime in 2D. Built once by an outbound traveller; once built, any later traveller uses it for arbitrarily fast round trips as measured by terrestrial clocks.
+- **Everett & Roman 1997** (gr-qc/9702049) extended to 4D and computed $T_{\mu\nu}$ classically in the wall: $T_{\hat t \hat t}^{\rm wall} \approx -\eta/(8\pi\epsilon^2)$ with $\eta = 2 - \delta$ the light-cone-opening parameter and $\epsilon$ the wall thickness. **Negative for any non-trivial $\eta$, classically, regardless of wall EoS.** They also proved that any *network* of Krasnikov tubes generates CTCs (two non-overlapping oppositely-directed tubes form a time machine).
+- **Krasnikov 2003** (gr-qc/0207057) pushed back on Pfenning–Ford QI bounds but did not produce a positive-energy / DEC-satisfying construction.
+- **Lobo & Crawford 2002** (gr-qc/0204038) reproduced Everett–Roman pedagogically and added Olum's superluminal-implies-WEC-violation theorem. No thin-shell/Israel formalism for Krasnikov tubes anywhere in the literature we could find.
+
+**Implication for Path 2A.** Task 2A.13 (the reframed Calculation 1, completed 2026-04-16 in `krasnikov_tube.ipynb`) ports the Path 2A Israel-junction tooling to the Krasnikov 4D metric with a Fuchs-class thick wall. **Result:** the Everett–Roman classical $-\eta/(8\pi\epsilon^2)$ negative-energy spike is reproduced in our framework with a quantitative universal scaling law and a robust no-go: there is no $(\eta, \epsilon, \rho_{\max})$ region in which any classical positive-matter wall satisfies WEC, let alone DEC. Full statement in §9 below.
+
+### 8.2 Rodal 2025 — a new comparison target
+
+Rodal 2025 (arXiv:2512.18008, Gen. Rel. Grav. **58**, 1 (2026)) constructed the first explicit, continuous, analytically derived **kinematically irrotational** Natário-class warp drive. Detailed evaluation in `RODAL2025_EVALUATION.md`. Key facts for Path 2A:
+
+- **Peak proper-energy deficit** is reduced by ≈38× vs. Alcubierre and ≈2,600× vs. Natário at identical $(\rho, \sigma, v/c)$. **Globally Hawking–Ellis Type I** (no Type IV pockets).
+- **Net proper energy ≈ 0** to 0.04% of total $\int |\rho_p| dV$ after a $1/R$ tail extrapolation. This is a *proper* energy statement — the paper itself notes (§ "Physical remark on near cancellation") it does *not* establish vanishing ADM/Komar mass.
+- **NEC, WEC, DEC, SEC are still all violated.** The improvement is in algebraic structure (Type I vs Type IV) and in the *peak* deficit, not in the underlying physics. Classical matter still cannot source the stress-energy.
+- **Constant velocity only.** The acceleration problem (our Task 2A.10) is unaddressed. The author explicitly notes that letting $v(t)$ vary "can reintroduce off-diagonal fluxes in mixed components and creating Type IV pockets."
+
+**Implication for Path 2A.** No change to the Task 2A.10 conclusion. Rodal's analysis is at constant $v$; our acceleration obstruction is independent of which steady-state metric is chosen.
+
+**Implication for Path 2B.** Significant. Rodal's stress-energy profile is qualitatively different from Alcubierre's: positive on-axis density in thin polar collars + **negative anisotropic transverse pressures** in equatorial mantles, instead of isotropic negative density. Anisotropic vacuum stresses (waveguide-confined Casimir, asymmetric-plate Casimir) are closer to what real QFT setups produce than isotropic negative energy density. Path 2B's literature pull should now target this geometry. See `QUANTUM_CLASSICAL_BRIDGE.md` for the updated outcome matrix.
+
+---
+
+## 9. The Krasnikov Tube + Fuchs-Class Thick Wall (Task 2A.13, completed 2026-04-16 in `krasnikov_tube.ipynb`)
+
+This section reports the quantitative Path 2A bound on Krasnikov-style geometries, closing the speculation question raised in `RING_NETWORK_CONCEPT.md`. The full computation is in `krasnikov_tube.ipynb`; the prior-art context is in `KRASNIKOV_TUBE_NOTES.md` §§1–6.
+
+### 9.1 Setup
+
+The Krasnikov 4D metric (Everett & Roman 1997, Eq. 13) in the long-after-formation static region:
+
+$$ds^2 = -dt^2 + (1 - k(\rho))\,dx\,dt + k(\rho)\,dx^2 + d\rho^2 + \rho^2\,d\phi^2$$
+
+with $k(\rho) = 1 - \eta\,\theta_\epsilon(\rho_{\max} - \rho)$, the smooth step $\theta_\epsilon$ from their Eq. 35, and parameters
+
+- $\eta = 2 - \delta \in (0, 2)$ — **light-cone-opening parameter**. The observable round-trip-time-shortening grows linearly with $\eta$. $\eta = 0$ recovers Minkowski (no warp effect); $\eta = 2$ is the singular $k = -1$ limit.
+- $\epsilon$ — wall thickness (free, can be macroscopic).
+- $\rho_{\max}$ — tube radius.
+
+We compute the orthonormal-frame stress-energy $T^{\hat\mu\hat\nu}$ in the static observer's tetrad (their Eqs. 24–27) directly from the Einstein equations on this metric. As a regression check, the symbolic $T_{tt}$ matches their Eq. 14 exactly.
+
+### 9.2 Headline scaling law
+
+The minimum (most negative) value of the proper energy density across the wall obeys a universal scaling law:
+
+$$\boxed{\;\rho_p^{\min}(\eta, \epsilon, \rho_{\max}) \;=\; -\frac{\kappa_K(\eta)}{\epsilon^2}\;}$$
+
+with
+
+$$\kappa_K(\eta) \;\approx\; \frac{1.534\,\eta}{4\pi} \;\approx\; 0.122\,\eta \quad \text{for } \eta \ll 1,$$
+
+and $\kappa_K(\eta) \to \infty$ as $\eta \to 2$ (the $1/(1+k)^2$ amplification near the singular metric). The $\rho_{\max}$-dependence is sub-percent for $n = \rho_{\max}/\epsilon > 5$. **Verified numerically across the parameter sweep** (`krasnikov_tube.ipynb` Cells 13, 19–21) to $\epsilon$-independence at the 14-decimal level.
+
+### 9.3 No-go: WEC fails for any $\eta > 0$
+
+The negative-energy region is local to the wall and present at every $(\eta, \epsilon, \rho_{\max})$ with $\eta > 0$. Sweep statistics over 300 parameter points (`hf_jobs/sweeps/krasnikov_tube.py` preview run):
+
+- **WEC pass rate: 0.0000.** All points have $\rho_p^{\min} < 0$ somewhere in the wall.
+- **DEC pass rate: 0.0000.** Inside the wall, the off-diagonal flux $|T_{\hat t \hat x}|$ exceeds $\rho_p$ even where $\rho_p > 0$; outside the wall, $\rho_p < 0$ directly.
+- **Full sweep extrapolation.** The expected null result for the full $\sim 30{,}000$-point HF Jobs sweep matches the analytical prediction; the local sweep already establishes the no-go to high confidence.
+
+### 9.4 The unobservability tradeoff
+
+The negative-energy density and the observable warp effect are governed by the same parameter $\eta$:
+
+- $|\rho_p^{\min}| \;\propto\; \eta/\epsilon^2$ (negative energy density)
+- $\Delta v_{\rm photon}/c \;\approx\; \eta + O(\eta^2)$ (lightcone opening; the photon speed inside the tube is $1/(1-\eta)$, exceeding $c$ by $\eta + O(\eta^2)$)
+
+So **the ratio (negative energy density)/(observable warp effect) is a fixed $\eta$-independent constant of order $1/(4\pi\epsilon^2)$**. You cannot simultaneously make the warp drive useful and the energy violation small. This is the quantitative version of Everett–Roman's qualitative "completely unobservable" remark (their §6 final paragraph), and it is the strongest classical no-go we can produce for Krasnikov-style geometries.
+
+### 9.5 A Fuchs-class matter shell does not save the construction
+
+A natural follow-up is whether wrapping a Fuchs-class positive-matter shell *around* the Krasnikov tube wall could compensate the local negative-energy spike. The answer is no: the Krasnikov-wall negative density is *local* (concentrated in a band of width $\sim \epsilon$ centred at the wall edge), and DEC is a *pointwise* condition. A separate matter shell at a different cylindrical radius adds positive-energy elsewhere but does not change the local stress-energy in the Krasnikov wall band. Wrapping the shell *coincident* with the Krasnikov wall would require matching cylindrical extrinsic curvature jumps to a stress-energy distribution that is *more* negative than what either side can produce — a more-singular Israel-junction problem that does not have a classical-matter solution. See `krasnikov_tube.ipynb` Cell 17 for the order-of-magnitude argument.
+
+### 9.6 Comparison to Path 2A Packages 1–2 (Fuchs spherical shell)
+
+| Quantity | Fuchs spherical shell (Packages 1–2) | Krasnikov tube (Task 2A.13) |
+|---|---|---|
+| Wall geometry | Constant-$r$ sphere, thickness $\Delta$ | Constant-$\rho$ cylinder, thickness $\epsilon$ |
+| Matter parameter | Compactness $C = 2GM/(Rc^2)$ | (none — vacuum metric) |
+| "Useful" parameter | Warp velocity $\beta = v_s/c$ | Lightcone opening $\eta = 2 - \delta$ |
+| DEC scaling law | $\Delta_{\min}/R = \kappa\,\beta/C$, $\kappa \in [0.05, 0.75]$ | $\rho_p^{\min} = -0.122\,\eta/\epsilon^2$ for ALL $\eta > 0$ |
+| Knob to satisfy DEC | Increase shell mass $M$ (raise $C$) or thicken the wall ($\Delta$) | **NONE** — no parameter eliminates the spike |
+| Useful regime | DEC-compatible thick shell at $\beta \lesssim C$ (e.g. $C = 0.5$, $\beta = 0.5$, $\Delta/R = 0.75$) | **Empty** under classical positive matter |
+
+**Why the difference?** The Fuchs-class spherical shell gets DEC by hiding the warp's kinematic cost in the shell's *gravitational binding energy* (the $C$ term). The Krasnikov tube has no such matter source — it asks the *vacuum metric itself* to do the work, which the Einstein equations require to come from negative classical $T_{\hat t \hat t}$.
+
+### 9.7 What this means for the speculation document
+
+`speculation/RING_NETWORK_CONCEPT.md` proposed building a *static infrastructure* of Krasnikov-style tubes as a way to dodge the acceleration obstruction (Task 2A.10): assemble a closed network adiabatically while no shell is moving, then use the network for transport that requires no acceleration of the shell. Two structural problems with this proposal are now confirmed:
+
+1. **The wall stress-energy is classically forbidden** — Task 2A.13 (this section) shows no classical positive matter sources a Krasnikov-tube wall for any $\eta > 0$.
+2. **The network creates CTCs** — Everett–Roman 1997 §4 (independent of this calculation) shows two non-overlapping oppositely-oriented Krasnikov tubes form a time machine.
+
+A Fuchs-class spherical shell *ring* is constructible (Packages 1–2 cover that), but a Fuchs-class ring does *not* shorten light-travel time the way a Krasnikov-tube ring would, because Fuchs shells have flat-but-shifted interiors, not opened-out lightcones. **The speculation merges incompatible features**: it wants the constructibility of a Fuchs ring with the transport benefit of a Krasnikov network, and no construction provides both.
+
+### 9.8 Implication for the project
+
+Task 2A.13 closes the static-infrastructure branch of speculation. Combined with Packages 1–3, the complete Path 2A picture is now:
+
+- **Static spherical Fuchs shells** (Packages 1–2): DEC-compatible classical realisation. ✓
+- **Acceleration of those shells** (Package 3): no classical mechanism. ✗
+- **Static-infrastructure Krasnikov tubes** (Task 2A.13, this section): no classical wall. ✗
+- **Acceleration via static-infrastructure transport** (the speculation): structurally incompatible (item 1 of §9.7) and CTC-generating (item 2). ✗
+
+The remaining open candidate for any *useful* dynamical or transport-relevant warp geometry is **Path 2B** (anisotropic Casimir / boundary-mode mechanism), with the Rodal 2025 evaluation (`RODAL2025_EVALUATION.md`) sharpening the QFT-search target to anisotropic transverse vacuum stresses with positive normal energy density.
+
+---
+
+## 10. References for Path 2
 
 | Paper | arXiv | Role in Path 2 |
 |-------|-------|----------------|
@@ -268,6 +382,11 @@ This closes the dynamical problem under classical-matter assumptions: Path 2A pr
 | Varma et al. 2022 | [2208.02805](https://arxiv.org/abs/2208.02805) | NR record GW-recoil kick (5000 km/s); rescaled in §7.3 |
 | Israel 1966 | (textbook / Poisson 2004) | Thin-shell junction conditions formalism |
 | Poisson 2004 *A Relativist's Toolkit* | Cambridge UP | Standard reference for Israel formalism |
+| **Krasnikov 1995** | [gr-qc/9511068](https://arxiv.org/abs/gr-qc/9511068) | Static-tube spacetime; prior art for "static infrastructure" speculation. See §8.1 and `KRASNIKOV_TUBE_NOTES.md`. |
+| **Everett & Roman 1997** | [gr-qc/9702049](https://arxiv.org/abs/gr-qc/9702049) | 4D Krasnikov tube + classical $T_{\hat t \hat t}$ + network/CTC theorem. Direct comparison target for Task 2A.13. |
+| **Krasnikov 2003** | [gr-qc/0207057](https://arxiv.org/abs/gr-qc/0207057) | QI counter-arguments; does not produce a positive-energy construction. |
+| **Lobo & Crawford 2002** | [gr-qc/0204038](https://arxiv.org/abs/gr-qc/0204038) | Pedagogical Everett–Roman reproduction + Olum's WEC theorem. |
+| **Rodal 2025** | [2512.18008](https://arxiv.org/abs/2512.18008) | New Natário-class irrotational warp drive; 38× peak-deficit reduction vs. Alcubierre. Detailed evaluation in `RODAL2025_EVALUATION.md`. |
 
 ---
 

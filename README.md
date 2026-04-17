@@ -11,15 +11,15 @@ The negative energy density in the Alcubierre bubble wall is not a substance to 
 ## Current Status
 
 **Phase 1 — Linearization and feasibility analysis: IN PROGRESS**
-**Phase 2A — Classical matter-shell realization (primary track): IN PROGRESS**
-**Phase 2B — Casimir / boundary-mode decomposition (parallel track): NOT STARTED**
+**Phase 2A — Classical matter-shell realization (primary track): CLASSICAL HALF COMPLETE (Sessions 5–8)**
+**Phase 2B — Casimir / boundary-mode decomposition (parallel track): NEXT, with sharpened search target**
 
-The explicit linearization calculation is complete; all key expressions are verified symbolically and numerically in `verification.ipynb`. Phase 2 has been split into two parallel tracks following the April 15 (v2) analysis:
+The explicit linearization calculation is complete; all key expressions are verified symbolically and numerically in `verification.ipynb`. Path 2A's classical research programme closed in Session 8 with four results: (i) DEC-compatible static spherical Fuchs shells exist with $\Delta_{\min}/R = \kappa\beta/C$; (ii) no classical mechanism accelerates such shells in vacuum; (iii) static-infrastructure Krasnikov tubes have no classical-matter wall for any $\eta > 0$; (iv) Krasnikov-tube networks generate CTCs (Everett–Roman 1997). Composite: no classical positive-matter warp drive is simultaneously useful, accelerable, and DEC-compatible.
 
-- **Path 2A (primary):** Anchor the boundary-mode framework to Fuchs et al. 2024's *Constant Velocity Physical Warp Drive Solution* (arXiv:2405.02709) — a matter-shell construction satisfying all energy conditions. See [`MATTER_SHELL_PATH.md`](MATTER_SHELL_PATH.md) and [`matter_shell.ipynb`](matter_shell.ipynb).
-- **Path 2B (parallel):** Continue the Casimir / semiclassical program. Remains viable and potentially necessary if Path 2A cannot reach useful velocities. See [`QUANTUM_CLASSICAL_BRIDGE.md`](QUANTUM_CLASSICAL_BRIDGE.md) §6.
+- **Path 2A (primary, classical half done):** Anchored on Fuchs et al. 2024's *Constant Velocity Physical Warp Drive Solution* (arXiv:2405.02709). See [`MATTER_SHELL_PATH.md`](MATTER_SHELL_PATH.md), [`matter_shell.ipynb`](matter_shell.ipynb), and the Packages 1–3 + Task 2A.13 notebooks. The classical static and dynamical halves are both fully closed; the only remaining open question is whether a quantum-field source can supply the warp metric — that's Path 2B.
+- **Path 2B (next, sharpened):** The Casimir / semiclassical programme is now the sole remaining candidate for any *useful* dynamical or transport-relevant warp geometry. The Rodal 2025 evaluation ([`RODAL2025_EVALUATION.md`](RODAL2025_EVALUATION.md)) sharpens the QFT-search target from generic isotropic vacuum energy to **anisotropic transverse vacuum stresses with positive normal energy density** (waveguide-confined Casimir, asymmetric-plate Casimir, repulsive-Casimir geometries). See [`QUANTUM_CLASSICAL_BRIDGE.md`](QUANTUM_CLASSICAL_BRIDGE.md) §6 and the new Session-7 update there.
 
-The two paths are complementary. See `MATTER_SHELL_PATH.md` §6 for the four outcome scenarios.
+See `MATTER_SHELL_PATH.md` §6 for the four outcome scenarios and §9 for the complete Path 2A closure.
 
 ## Documents
 
@@ -38,6 +38,9 @@ The two paths are complementary. See `MATTER_SHELL_PATH.md` §6 for the four out
 | **[israel_junction.ipynb](israel_junction.ipynb)** | **Path 2A Package 1 (Task 2A.6) — full Israel junction Part A (static) + Part B (boosted), angular decomposition of $[K_{ab}]$, DEC boundary, critical $\lambda_*$** |
 | **[thickness_bound.ipynb](thickness_bound.ipynb)** | **Path 2A Package 2 (Task 2A.7) — minimum shell thickness scaling law $\Delta_{\min}/R = \kappa\beta/C$, numerical sweep, Fuchs comparison** |
 | **[acceleration.ipynb](acceleration.ipynb)** | **Path 2A Package 3 (Task 2A.10) — ADM 4-momentum obstruction, three-mechanism catalog, GW-recoil quantitative ceiling via HF Jobs + Varma 2022 rescaling** |
+| **[krasnikov_tube.ipynb](krasnikov_tube.ipynb)** | **Path 2A Task 2A.13 — Krasnikov 4D metric + Fuchs-class thick wall; reproduces Everett–Roman Eq. 14 symbolically; universal scaling law $\rho_p^{\min} \propto -\eta/\epsilon^2$; HF Jobs sweep returns WEC pass rate 0.0000. Closes the speculation document.** |
+| [RODAL2025_EVALUATION.md](RODAL2025_EVALUATION.md) | Critical evaluation of arXiv:2512.18008 (Rodal, Gen. Rel. Grav. 58:1, 2026): irrotational warp drive with 38× peak-deficit reduction; updated Path 2B search target |
+| [KRASNIKOV_TUBE_NOTES.md](KRASNIKOV_TUBE_NOTES.md) | Quantitative synthesis of Krasnikov 1995 / Everett–Roman 1997 / Krasnikov 2003 prior art; comparison to Path 2A; Task 2A.13 update note |
 
 ## Key Results So Far
 
@@ -54,6 +57,7 @@ The two paths are complementary. See `MATTER_SHELL_PATH.md` §6 for the four out
 11. **Path 2A minimum shell thickness scaling law** (Task 2A.7, `thickness_bound.ipynb`): $\Delta_{\min}/R = \kappa\,\beta/C$ with $C = 2GM/(Rc^2)$ and $\kappa \in [0.05, 0.75]$. Trades the Alcubierre exotic-energy requirement ($\sim 10^{30}$ kg of negative energy) for a positive-energy compactness requirement ($\sim 10^{19}$–$10^{20}$ kg of ordinary matter at $R = 100$ m, $\beta = 0.5$)
 12. **Part B critical $\lambda_*$ acceleration obstruction** (Task 2A.6, `israel_junction.ipynb` Part B): for thin-wall parameters, DEC fails during accelerating transients at $\lambda = v_{\rm ext}/v_{\rm int} < \lambda_* \approx 0.55$. Isolates acceleration as the remaining open problem (Task 2A.10)
 13. **Path 2A dynamical closure** (Task 2A.10, `acceleration.ipynb`): ADM 4-momentum conservation rules out self-acceleration in vacuum; three-mechanism catalog leaves only ordinary mass ejection as viable. GW-recoil ceiling $\lesssim 0.25\%$ of $v_{\rm warp}$ under most favourable Fuchs-compatible parameters (HF Jobs sweep + SXS rescaling of Varma et al. 2022). Strictly strengthens Schuster–Santiago–Visser 2023 Theorem 3; elevates Path 2B to the sole remaining route to a dynamical drive
+14. **Path 2A static-infrastructure closure** (Task 2A.13, `krasnikov_tube.ipynb`): symbolic Einstein-tensor pipeline reproduces Everett–Roman 1997 Eq. 14 exactly; universal scaling law $\rho_p^{\min}(\eta, \epsilon) = -\kappa_K(\eta)/\epsilon^2$ with $\kappa_K(\eta) \approx 0.122\,\eta$ at small $\eta$, verified to 14-decimal $\epsilon$-independence; HF Jobs preview sweep returns **WEC pass rate 0.0000** across 300 $(\eta, \epsilon, n)$ points. Establishes the unobservability tradeoff: $|\rho_p^{\min}|$ and the observable lightcone opening both scale as $\eta$, so their ratio is fixed and a Krasnikov tube cannot be made simultaneously useful and energy-condition-friendly. Closes the `speculation/RING_NETWORK_CONCEPT.md` static-infrastructure-network branch
 
 ## Running the notebooks
 
@@ -66,6 +70,7 @@ All notebooks run locally on any Python 3.12+ environment with the pinned scient
 | [israel_junction.ipynb](israel_junction.ipynb) | Yes for cells 1–7, 10–15 | Cell 8 sweep: HF Jobs `cpu-upgrade` or Colab CPU |
 | [thickness_bound.ipynb](thickness_bound.ipynb) | Yes for analytical cells | Cell 6 sweep: HF Jobs `cpu-upgrade` |
 | [acceleration.ipynb](acceleration.ipynb) | Yes for cells 1–8 | Cells 9–12 (NR / GW recoil): HF Jobs `cpu-upgrade` with `requirements-gw.txt` |
+| [krasnikov_tube.ipynb](krasnikov_tube.ipynb) | Yes for all cells | Cell 19 sweep: HF Jobs `cpu-upgrade` recommended for full $\sim 30{,}000$-point grid; preview ($\sim 300$ points) runs in ~3 s locally |
 
 ### Google Colab
 

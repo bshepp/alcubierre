@@ -225,12 +225,31 @@ The refined Claim (c) from §2 of this document can therefore take two forms:
 
 Path 2A (c-classical) is the more conservative; its static half is done and its dynamical half is closed with prejudice. Path 2B (c-quantum) is therefore the only remaining route to a genuine warp drive and is no longer a "parallel hedge" — it is the next substantive open question in the programme.
 
+### Session-7 update (2026-04-16): Rodal 2025 sharpens the Path 2B target
+
+The literature sweep that followed `speculation/RING_NETWORK_CONCEPT.md` surfaced **Rodal 2025** (arXiv:2512.18008, Gen. Rel. Grav. **58**, 1 (2026)), the first explicit kinematically irrotational Natário-class warp drive. Detailed evaluation in `RODAL2025_EVALUATION.md`. The findings change Path 2B's search direction in a useful way:
+
+- Rodal's irrotational drive has stress-energy that is **globally Hawking–Ellis Type I** with a well-defined timelike eigenvalue everywhere — no Type IV pockets like Alcubierre or Natário.
+- Peak proper-energy *deficit* is reduced by **≈38× vs. Alcubierre and ≈2,600× vs. Natário** at identical $(\rho, \sigma, v/c)$.
+- **However, NEC, WEC, DEC, SEC are still all violated.** The deficit is now driven by **anisotropic transverse principal pressures** $p_2 = \lambda_{G(2)}/\kappa$ and $p_3 = \lambda_{G(3)}/\kappa$ becoming negative on the wall, while the proper energy density $\rho_p$ is positive on-axis. Quoting Rodal (Sec. 6.2.1): *"these large transverse negative pressures are responsible for $\rho_p + p_k < 0$, thus violating the NEC, even though $\rho_p$ is positive at $\theta = 0$."*
+
+This is a *qualitatively different* stress-energy profile from Alcubierre's isotropic negative density, and it is **much closer to what real anisotropic-Casimir setups produce**:
+
+- **Asymmetric-plate Casimir** (one perfect conductor, one dielectric or magnetic) produces anisotropic stress with a different sign for transverse vs. normal directions.
+- **Waveguide-confined modes** (e.g., between coaxial cylinders or in a torus) produce direction-dependent vacuum stresses with both signs accessible.
+- **Repulsive Casimir geometries** (Boyer 1968 spherical conductor; recent metamaterial proposals) demonstrate that sign-engineering of $\langle T_{\mu\nu}\rangle$ is possible in vacuum.
+
+**Updated Path 2B priority targets:** The Path 2B literature pull (Tasks 2B.1–2B.5) should now be re-targeted away from generic "isotropic vacuum energy" proposals (which match Alcubierre but not Rodal) and toward **anisotropic vacuum stresses with positive normal energy density and negative transverse pressure**, which match Rodal. This is a meaningful narrowing of the search.
+
+The matrix above is unchanged in row assignments, but the *content* of row 3 (now-confirmed best-supported scenario) is refined: "Casimir mechanism required for acceleration" should be read as "an *anisotropic* Casimir mechanism, matching the Rodal stress-energy profile, is the most plausible quantum supplement," not as "isotropic negative-energy Casimir."
+
 ### Cross-cutting tasks
 
 - Read Quach 2015 for gravitational Casimir magnitudes (relevant to 2B)
 - Read Costa & Natário 2014 for spin-2 differences (relevant to 2B)
 - Read Lentz 2020 and Natário 2002 as alternative classical constructions (relevant to 2A)
 - Use Warp Factory (arXiv:2404.03095) to validate both paths numerically (relevant to both)
+- **(Session 7, new)** Pull literature on **anisotropic Casimir stresses**: asymmetric plates, waveguide-confined modes, repulsive geometries. Target: identify a QFT setup whose $\langle T_{\mu\nu}\rangle$ has the same algebraic structure as Rodal's wall stress-energy (positive proper energy density on-axis, negative transverse pressures on the wall, globally Type I).
 
 ---
 

@@ -1,0 +1,10 @@
+{
+  "_comment": "Local preview for Task 2A.13 Krasnikov-tube DEC sweep (~600 points after filter).",
+  "n_rho": 401,
+  "margin": 3.0,
+  "axes": {
+    "eta": {"lo": 1e-4, "hi": 1.99, "n": 12, "scale": "log"},
+    "eps": {"lo": 0.1,  "hi": 10.0, "n": 5,  "scale": "log"},
+    "n":   {"lo": 5.0,  "hi": 200.0, "n": 5, "scale": "log"}
+  }
+}

@@ -306,3 +306,127 @@ New notebook `acceleration.ipynb` (19 cells, five-part structure). Key technical
 
 ### Conceptual State at End of Session
 The classical half of the Path 2A programme is now effectively complete. We have (i) a rigorous existence result for static DEC-compatible matter-shell warp geometries with a quantitative thickness bound, (ii) a rigorous obstruction theorem ruling out classical acceleration in vacuum, (iii) a quantitative ceiling on GW recoil that closes the only classically vacuum-compatible loophole, and (iv) a promotion of Path 2B (Casimir / boundary-mode) from hedge to primary track for the dynamical problem. The project has moved from "Alcubierre-plus-analogy" (Session 1–3) through "boundary-mode reformulation realised by Fuchs" (Session 5) to a clear two-sided status: static classical yes, dynamical classical no, dynamical quantum open. This is the sharpest and most defensible statement the programme has yet produced.
+
+---
+
+## Session 7: 2026-04-16 — Speculation Analysis, Literature Sweep, Rodal 2025 Evaluation
+
+### Directive
+User added `speculation/RING_NETWORK_CONCEPT.md` (a third-party "Opus 4.7" speculation document proposing a static-infrastructure ring-network warp drive) and asked the assistant to evaluate it. The assistant's evaluation flagged Krasnikov tubes / Everett–Roman networks as likely prior art. The user then directed: **"go with A. Please do a search and tell me everything that is blocked and I'll get it somehow."** The user supplied all blocked papers in a new `papers/` directory. Final instruction: *"Please begin analysis as you see fit."*
+
+### What Was Accomplished
+
+#### Speculation analysis (`speculation/RING_NETWORK_CONCEPT.md`)
+- Identified the document as a re-derivation of Krasnikov tubes (1995) plus the Everett–Roman 1997 network construction.
+- Provided a calibrated evaluation: strengths (intellectual honesty, sound Mode-A launcher idea), weaknesses (claim of novelty for static-infrastructure approach is incorrect; underspecified link between "tunnel" and Mechanism A; GW-recoil channel already excluded by our Package 3 ceiling).
+
+#### Literature sweep
+Targeted lit-check on Krasnikov tubes, ring-wormholes, network constructions, and recent positive-energy warp papers. Findings:
+1. **Krasnikov 1995** (gr-qc/9511068, 2D originator) — `papers/9511068v6.pdf`.
+2. **Everett & Roman 1997** (gr-qc/9702049, 4D + network + classical $T_{\mu\nu}$ + CTC theorem) — `papers/9702049v1.pdf`.
+3. **Krasnikov 2003** (gr-qc/0207057, QI counter-arguments) — `papers/0207057v3.pdf`.
+4. **Lobo & Crawford 2002** (gr-qc/0204038, pedagogical reproduction + Olum's WEC theorem) — `papers/arXiv-gr-qc0204038v2.tar.gz`.
+5. **Bobrick & Martire 2021** (2102.06824, "any warp drive requires propulsion") — already cited; PDF added.
+6. **Rodal 2025** (2512.18008, kinematically irrotational positive-invariant-energy Natário-class drive) — `papers/2512.18008v1.pdf`. The most consequential new paper since our last sweep.
+
+The Visser–Hochberg 2004 "double-walled Krasnikov tubes" paper is the only item we could not retrieve (paywalled, no arXiv preprint). Conceptual ground covered by Everett–Roman.
+
+#### `RODAL2025_EVALUATION.md` (new document)
+Detailed technical evaluation of the Rodal paper:
+- Reproduced the construction analytically: $\Phi(r,\theta,t) = v(t)\,r\,g(r)\,\cos\theta$ with $g(r)$ derived from irrotationality + $f(r) = 1 - f_{\rm Alc}(r)$.
+- Verified the algebraic engine: $G_{\hat 0 \hat i} = 0$ from the momentum constraint on a flat slice with $\beta_i = -\partial_i \Phi$ → globally Type I.
+- Confirmed the comparison numbers (38× peak-deficit reduction vs Alcubierre, 2,600× vs Natário, 60× smaller NEC violation) are accurate as stated.
+- **Identified three caveats the abstract obscures:** (1) NEC/WEC/DEC/SEC all still violated; (2) "net proper energy ≈ 0" is *not* vanishing ADM mass (the paper itself says so in §C); (3) constant-velocity analysis only — the acceleration problem is unaddressed.
+- Concluded: the paper does *not* unblock anything we are currently blocked on, but **does suggest a meaningful update to the Path 2B search direction** — anisotropic transverse vacuum stresses (waveguide-confined Casimir, asymmetric-plate Casimir) are the natural QFT analogue to Rodal's stress-energy profile.
+
+#### `KRASNIKOV_TUBE_NOTES.md` (new document)
+Quantitative synthesis of the Krasnikov-Everett-Roman framework, with direct comparison to our Path 2A machinery:
+- Extracted the classical wall stress-energy $T_{\hat t \hat t}^{\rm wall} \approx -\eta/(8\pi\epsilon^2)$ (Eq. 39 of Everett–Roman) — a wall-EoS-independent statement, like our Path 2A worst-angle DEC bound.
+- Documented the QI bound $\epsilon \lesssim l_P/\sigma^2$ on wall thickness, the total negative-energy estimates ($10^{63}$ g for a 1 m × 1 m tube; $10^{32} M_{\rm galaxy}$ for an interstellar tube), and the network-implies-CTCs theorem.
+- Side-by-side comparison with our Path 2A Fuchs-class shell results. Key finding: **the speculation document's "ring" is structurally inconsistent.** A Fuchs-class ring is constructible but doesn't shorten light-travel time; a Krasnikov-tube ring shortens light-travel time but generically contains CTCs. The speculation merges incompatible features.
+
+#### `LITERATURE.md` updates
+Added §9 ("Static-Infrastructure Prior Art") and §10 ("New Warp-Drive Construction Since Session 4") with full entries for Krasnikov 1995 / Everett–Roman 1997 / Krasnikov 2003 / Lobo–Crawford 2002 / Bobrick–Martire 2021 (re-evaluated) / Rodal 2025. Each entry tagged with relevance to our project and to the speculation document.
+
+### Decisions Made
+1. **The speculation document does not reorient the project.** Its proposed novelty (static-infrastructure ring) is established prior art; its proposed mechanism (Mode A launcher) inherits Bobrick-Martire's "any warp drive requires propulsion" theorem; its proposed dodge (GW recoil internal to the ring) was already excluded by our Package 3 GW-recoil ceiling.
+2. **Rodal 2025 does not solve the acceleration obstruction.** Its analysis is at constant velocity. Our Path 2A Package 3 result is independent of which steady-state warp metric one chooses.
+3. **Path 2B's search target is updated.** The Rodal stress-energy profile (anisotropic negative transverse pressures on a thin wall, positive density on-axis) is closer to what real anisotropic-Casimir setups produce than Alcubierre's isotropic-negative profile. Path 2B literature pulls should now target waveguide-confined and asymmetric-plate Casimir vacuum stresses, not generic isotropic vacuum-energy proposals.
+4. **Reframed Calculation 1 is the right next computation.** Apply our Path 2A Israel-junction tooling to the Krasnikov 4D metric with a thick wall. Expected outcome: confirms Everett–Roman's classical result in our framework + produces a quantitative bound on how much one can soften the negative-energy requirement by going to thick walls and barely-opened light cones. Settles the speculation document rigorously.
+
+### Open Items Entering Next Session
+- [ ] **Reframed Calculation 1 (recommended next step):** Krasnikov-tube + Fuchs-class classical thick-wall analysis using our existing Israel-junction notebook tooling. Approximately one session of work; produces a publication-quality quantitative result; closes the speculation question.
+- [ ] **Path 2B updated literature pull:** anisotropic Casimir stresses, waveguide-confined modes, asymmetric-plate configurations. Inform whether the Rodal stress-energy profile has a plausible QFT realisation.
+- [ ] **Optional:** propagate the Krasnikov-tube comparison into `MATTER_SHELL_PATH.md` and into the `QUANTUM_CLASSICAL_BRIDGE.md` outcome matrix.
+- [ ] **Optional:** read Lentz 2020 and Natário 2002 in light of the Type I / Type IV classification in Rodal 2025; their constructions almost certainly fit the same Hawking–Ellis-class taxonomy.
+
+### Conceptual State at End of Session
+The Session 6 boundary — "static classical yes, dynamical classical no, dynamical quantum open" — survives intact. Two pieces of new context attach:
+
+(a) **The static-infrastructure-network branch of speculation is closed.** Krasnikov tubes have all the topological features the speculation document wanted, but with negative classical wall energy and a network-implies-CTC theorem. Fuchs-class shells have the energy properties one wants, but lack the light-cone-opening mechanism that would make a network superluminal. The two cannot be merged without confronting one or both of those obstructions. Our reframed Calculation 1 will quantify exactly how much room exists in between.
+
+(b) **Path 2B's search direction is sharper.** Rodal 2025's irrotational warp shows that the negative-energy problem can be redistributed into anisotropic transverse pressures on a thin wall, with a globally Type I stress-energy and 38× lower peak deficit than Alcubierre. This is much closer to what laboratory anisotropic-Casimir setups produce. Path 2B should now target *that* profile, not generic isotropic vacuum energy.
+
+The project's central two-sided result is unchanged. The new material reinforces it from both sides: one further classical extension (Krasnikov-style infrastructure) is structurally blocked; one further classical optimization (Rodal-style irrotational drive) reduces but does not eliminate the energy-condition deficit. Both findings are now documented at the same technical level as Sessions 4–6.
+
+---
+
+## Session 8: 2026-04-16 — Task 2A.13 (Reframed Calculation 1) Execution
+
+### Directive
+User: *"I guess at this point we are mapping the boundary condition? Please plan and implement Task 2A.13"* — execute the Krasnikov-tube + Fuchs-class thick-wall analysis recommended at the end of Session 7.
+
+### What Was Accomplished
+
+#### Validation pipeline (`agent-tools/krasnikov_scratch{,2,3,4,5}.py`)
+Five staged validation scripts before notebook construction:
+1. **scratch.py** — symbolic Einstein-tensor calculation reproduces Everett–Roman Eq. 14 exactly (zero-difference identity).
+2. **scratch2.py** — initial numerical scan; identified that the "minimum of $T_{tt}$" differs from Eq. 39's "value at $\rho_{\max} - \epsilon$" by the $1/(1+k)^2$ amplification factor.
+3. **scratch3.py** — clean reproduction of Eq. 39 at the right evaluation point ($T_{\hat t \hat t}(\rho_{\max} - \epsilon) \approx -0.042$ at the canonical $\eta = 1.99$, $\epsilon = 1$, $\rho_{\max} = 100$).
+4. **scratch4.py** — full orthonormal-frame $T_{\hat\mu\hat\nu}$ via the Everett–Roman tetrad. Confirmed both WEC failure (outer wall) and DEC failure (inner wall, off-diagonal flux).
+5. **scratch5.py** — fine $\eta$-sweep showing WEC failure scales linearly to $\eta = 10^{-12}$, no threshold.
+
+#### `krasnikov_tube.ipynb` (new notebook, 22 cells, four-part structure)
+Part A: Krasnikov 4D metric and classical stress-energy. Part B: full DEC analysis in the orthonormal frame. Part C: $(\eta, \epsilon, \rho_{\max})$ parameter sweep via HF Jobs. Part D: comparison to Path 2A Packages 1–2 and synthesis. Headline results:
+
+- **Symbolic regression: $T_{tt}$ matches Everett–Roman Eq. 14 exactly** (Cell 5, zero-difference identity).
+- **Universal scaling law:** $\rho_p^{\min}(\eta, \epsilon, \rho_{\max}) = -\kappa_K(\eta)/\epsilon^2$ with $\kappa_K(\eta) \approx 1.534\,\eta/(4\pi) \approx 0.122\,\eta$ at small $\eta$, verified to 14-decimal $\epsilon$-independence (Cell 13). Slope-1 power-law fit: $\kappa_K \approx 0.123\,\eta^{1.001}$.
+- **WEC fails for any $\eta > 0$, with no thickness threshold.** Fine sweep down to $\eta = 10^{-12}$ shows linear scaling persists (Cell 17).
+- **HF Jobs preview sweep:** 300 points across $(\eta, \epsilon, n)$. WEC pass rate **0.0000**, DEC pass rate **0.0000** (Cell 19).
+- **Universal collapse figure** (Cell 21): $|\rho_p^{\min}| \cdot \epsilon^2$ vs. $\eta$ collapses all five $\epsilon$ curves onto a single line — the headline figure of Task 2A.13.
+- **Unobservability tradeoff** (Cell 23 markdown): both negative-energy density and observable lightcone opening scale linearly with $\eta$; their ratio is $\eta$-independent, so the warp drive cannot be made simultaneously useful and energy-condition-friendly.
+
+#### `hf_jobs/sweeps/krasnikov_tube.py` and configs
+Sweep module that builds the orthonormal-frame $T_{\hat\mu\hat\nu}$ symbolically once at module import, lambdifies to NumPy, and evaluates DEC slack and WEC residual on a $(\eta, \epsilon, n)$ grid. Validated against an independent SymPy reference pipeline (`agent-tools/krasnikov_sweep_test.py`) to **byte-identical agreement** across all five tensor components and all test points. Preview config (~600 candidates → 300 valid points after filter, runs in 3 seconds locally on Windows). Full config (~30,000 points) pre-staged for HF Jobs.
+
+#### Documentation updates
+- `MATTER_SHELL_PATH.md` §9 (new) — full quantitative statement of the Task 2A.13 result with subsections 9.1–9.8: setup, scaling law, no-go, unobservability, no-rescue argument, comparison table, speculation-document closure, project implication.
+- `KRASNIKOV_TUBE_NOTES.md` §9 (new) — update note pointing to the executed notebook and recapping how each pre-execution prediction was confirmed.
+- `ROADMAP.md` Task 2A.13 marked complete with full result summary; risk register entry on Krasnikov-tube prior art updated to "mitigation completed."
+- `SESSION_LOG.md` — this entry.
+
+### Decisions Made
+1. **The static-infrastructure-network branch of speculation is closed** quantitatively: Task 2A.13 produces a robust no-go (WEC pass rate exactly 0/300) for classical Krasnikov tubes, complementary to the Everett–Roman 1997 §4 network-CTC theorem. Combined: classical paths blocked locally + global structure blocked causally.
+2. **The Krasnikov $\kappa_K \approx 0.122$ coefficient is now a project-owned result.** It is implicit in Everett–Roman Eq. 38 but they reported it only as "$\approx 1$" in their Eq. 39 because of an incidental simplification at one evaluation point. Our universal-scaling analysis extracts the empirical coefficient to high precision.
+3. **The unobservability tradeoff is the strongest classical no-go statement we can make.** The ratio (negative energy density)/(observable warp effect) is a fixed constant $\sim 1/(4\pi\epsilon^2)$ — a parametric statement, not just a numerical one.
+4. **Toroidal-Fuchs analysis (Task 2A.14) remains optional** because the speculation question is fully closed by Task 2A.13. A toroidal Fuchs shell is constructible (it's just a topology change of Packages 1–2) but does not provide the lightcone-opening that would make it useful for transport, so the calculation has small marginal value relative to Path 2B.
+5. **Path 2B is the next priority.** With Path 2A's classical static and dynamical halves both fully closed (Packages 1–3 + Task 2A.13), the only remaining open route to a useful warp drive is the Casimir / boundary-mode track, with the Rodal 2025 sharpening of the QFT-search target to anisotropic transverse vacuum stresses.
+
+### Open Items Entering Next Session
+- [ ] **Path 2B Task 2B.1–2B.5 restart:** anisotropic Casimir geometries (waveguide, asymmetric-plate, repulsive-Casimir), targeting the Rodal stress-energy profile (positive on-axis $\rho_p$, negative transverse pressures on the wall, globally Type I).
+- [ ] **Optional Task 2A.14:** toroidal-Fuchs static junction. Lower priority than 2B given the speculation-document closure.
+- [ ] **Optional Task 2A.11–12:** Lentz 2020 and Natário 2002 in the Hawking–Ellis-class taxonomy of Rodal 2025.
+- [ ] **Writing up.** The complete Path 2A result (Packages 1–3 + Task 2A.13) is now a coherent short-paper-worth of material on the limits of classical warp drives, including: existence of static DEC-compatible matter shells with a $\Delta_{\min}/R = \kappa\beta/C$ scaling law; obstruction theorem for in-vacuum self-acceleration; quantitative GW-recoil ceiling; and now a parametric no-go for static-infrastructure Krasnikov-style geometries with a universal $\rho_p^{\min} \propto -\eta/\epsilon^2$ scaling and the unobservability tradeoff. Decide whether to pursue arXiv preprint or continue with Path 2B first.
+
+### Conceptual State at End of Session
+The Path 2A classical research programme is **complete**:
+
+| Sub-question | Status | Source |
+|---|---|---|
+| Static spherical Fuchs shells satisfy DEC? | Yes, with $\Delta/R \ge \kappa\beta/C$ | Packages 1–2 |
+| Acceleration of those shells in vacuum? | No classical mechanism | Package 3 |
+| Static-infrastructure Krasnikov tubes with classical matter? | No for any $\eta > 0$, by universal $\rho_p^{\min} \propto -\eta/\epsilon^2$ scaling | Task 2A.13 |
+| Network of Krasnikov tubes (causal)? | No, two opposite tubes form CTCs (Everett–Roman §4) | Literature |
+| Useful classical warp drive? | **No** under DEC + classical positive matter + vacuum exterior + no expelled reaction mass | Composite of above |
+
+The remaining open question — the only candidate for a useful warp drive consistent with all known classical physics — is whether **a quantum-field source for the warp metric exists**, with the strongest extant target being a Rodal-style anisotropic-Casimir profile. That is Path 2B, and it is the next phase of the project.

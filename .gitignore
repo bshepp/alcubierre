@@ -47,3 +47,15 @@ desktop.ini
 .mypy_cache/
 .ruff_cache/
 htmlcov/
+
+# Extracted paper sources (regenerable from papers/*.tar.gz)
+papers/extracted/
+
+# Original (pre-slim) heavy paper PDFs and tarballs.  See papers/_originals/README.md.
+# These are kept locally for safe rollback after running agent-tools/slim_papers.py
+# but are too large for git history.  The slimmed versions in papers/ root are the
+# canonical committed copies.
+papers/_originals/
+
+# Agent tool scratch
+agent-tools/

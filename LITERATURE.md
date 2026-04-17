@@ -4,7 +4,7 @@
 
 This catalog covers all papers referenced in the project seed documents, organized by role. Each entry includes the abstract, publication data, and relevance to the boundary-mode program.
 
-**Last updated:** 2026-04-15 (Session 4)
+**Last updated:** 2026-04-16 (Session 8 — Task 2A.13 executed, Krasnikov-tube no-go quantified)
 
 ---
 
@@ -256,3 +256,109 @@ For advancing Phase 1 completion:
 4. **Santiago, Schuster & Visser 2021** (2105.03079) — No-go theorem to confront
 5. **Quach 2015** (1502.07429) — Gravitational Casimir effect for quantum/classical bridge
 6. **Ford & Pfenning 1998** (gr-qc/9805037) — QI constraints in curved spacetime
+
+---
+
+## 9. Static-Infrastructure Prior Art (added Session 7)
+
+This section is added in response to the `speculation/RING_NETWORK_CONCEPT.md` analysis. Krasnikov's 1995 construction and the Everett–Roman 1997 generalization establish that the speculation document's "static infrastructure" thesis is not novel; it is a re-derivation of the Krasnikov tube, including the network construction and its CTC consequence.
+
+### Krasnikov 1995 — "Hyperfast Interstellar Travel in General Relativity"
+
+- **arXiv:** [gr-qc/9511068](https://arxiv.org/abs/gr-qc/9511068)
+- **Journal:** Phys. Rev. D 57, 4760 (1998)
+- **Author:** S. V. Krasnikov
+- **Local copy:** `papers/9511068v6.pdf`
+
+**Relevance:** Original 2D construction of the *static* spacetime tunnel ("Krasnikov tube") connecting two endpoints. Built once by an outbound traveller; once built, any later traveller can use it for arbitrarily fast round trips as measured by Earth clocks. **This is the Mode-B "passenger transport along static infrastructure" idea from `RING_NETWORK_CONCEPT.md` §2.2, predating it by 31 years.** The 2D construction does not yet expose the negative-energy issue — that comes in the 4D extension below.
+
+### Everett & Roman 1997 — "A Superluminal Subway: The Krasnikov Tube"
+
+- **arXiv:** [gr-qc/9702049](https://arxiv.org/abs/gr-qc/9702049)
+- **Journal:** Phys. Rev. D 56, 2100 (1997)
+- **Authors:** Allen E. Everett, Thomas A. Roman
+- **Local copy:** `papers/9702049v1.pdf`
+
+**Relevance:** **CRITICAL prior art for the speculation document.** Three results matter for our project:
+
+1. **4D extension of Krasnikov's 2D construction.** Sec. 3 builds a tube of finite radius $\rho_{\max}$ connecting Earth and Deneb with flat interior and a curved wall of thickness $\epsilon$.
+2. **Stress-energy calculation (Sec. 5).** Computes $T_{\mu\nu}$ classically from the metric. Finds: "$T_{tt}$ is negative on the inner side of the wall … changes sign and develops appreciable positive values on the outer side." Concludes: "Krasnikov tubes, like warp bubbles and traversable wormholes, also involve unphysically thin layers of negative energy density, as well as large total negative energies, and therefore probably cannot be realized in practice." **This is a classical (non-QI) result — the same kind we did for the Alcubierre case.**
+3. **Network construction and CTC theorem (Sec. 4).** "If Krasnikov tubes could be constructed, one could, at least in principle, establish a network of such tubes forming an interstellar transportation system… A necessary corollary of the existence of such a network is the possibility of backward time travel and the consequent existence of CTCs." Two non-overlapping oppositely-directed tubes form a time machine. **This is the speculation document's Mode-B network idea, with a no-go theorem attached.**
+
+The speculation doc's claim that "static infrastructure approach is novel" is incorrect. Any extension of the speculation requires either (a) confronting Everett–Roman's classical negative-energy result with a Fuchs-style classical thick wall, or (b) constraining all tubes in the network to a single global orientation to avoid CTCs.
+
+### Krasnikov 2003 — "The quantum inequalities do not forbid spacetime shortcuts"
+
+- **arXiv:** [gr-qc/0207057](https://arxiv.org/abs/gr-qc/0207057)
+- **Journal:** Phys. Rev. D 67, 104013 (2003)
+- **Author:** S. V. Krasnikov
+- **Local copy:** `papers/0207057v3.pdf`
+
+**Relevance:** Pushes back on Pfenning–Ford-style quantum-inequality arguments that ostensibly rule out warp bubbles, Krasnikov tubes, and traversable wormholes. Three lines of attack: (i) the relevant QI does not always imply Planck-scale energy densities; (ii) large densities need not imply large total negative energy $|E_{\rm tot}^-|$; (iii) large $|E_{\rm tot}^-|$ being "physically meaningless" does not necessarily exclude shortcuts. **Important caveat for our project: this is a QI counter-argument, not a positive-energy / DEC-satisfying construction.** The classical Everett–Roman 1997 result (negative energy in the wall from the Einstein equations) is unaffected.
+
+### Visser & Hochberg ~2004 — "Simple and double walled Krasnikov tubes"
+
+- **OSTI:** [biblio/20431521](https://www.osti.gov/etdeweb/biblio/20431521)
+- **Status:** Paywalled; no public arXiv preprint located.
+
+**Relevance:** Mass-reduction analysis for Krasnikov tubes. Negative-energy walls remain. Not blocking — Everett–Roman covers the conceptual ground.
+
+### Lobo & Crawford 2002 — "Weak energy condition violation and superluminal travel"
+
+- **arXiv:** [gr-qc/0204038](https://arxiv.org/abs/gr-qc/0204038)
+- **Authors:** Francisco S. N. Lobo, Paulo Crawford
+- **Local copy:** `papers/arXiv-gr-qc0204038v2.tar.gz` (LaTeX source only)
+
+**Relevance:** Comparative study of WEC violation across Alcubierre warps, Krasnikov tubes, and traversable wormholes. **Verdict (Session 7):** read; the paper reproduces Everett–Roman's stress-energy calculation pedagogically and adds Olum's superluminal-implies-WEC-violation theorem. **It does NOT use a thin-shell (Israel-junction) formalism for the Krasnikov tube, and does NOT address thick-wall regimes.** No prior art for our reframed Calculation 1 here. Olum's theorem is worth knowing about but is a global causal-structure result that doesn't directly bear on our finite-thickness shell question.
+
+### Bobrick & Martire 2021 — "Introducing Physical Warp Drives"
+
+- **arXiv:** [2102.06824](https://arxiv.org/abs/2102.06824)
+- **Journal:** Class. Quant. Grav. 38, 105009 (2021)
+- **Authors:** Alexey Bobrick, Gianni Martire
+- **Local copy:** `papers/2102.06824v2.pdf`
+
+**Relevance:** General framework for warp-drive shells. Two results matter for the speculation analysis: (1) "any warp drive… is a shell of regular or exotic material moving inertially" — i.e., identifies the warp-drive problem with the matter-shell problem (this is the antecedent to the Fuchs construction); (2) **"any warp drive requires propulsion"** — a no-free-lunch theorem that applies to any closed shell topology including toroidal, and which the speculation doc's "Mode A launcher" runs straight into.
+
+### Krasnikov-Everett network ↔ ring-wormhole literature
+
+- **Garattini, Cardoso et al.** (e.g., [arXiv:2305.03887](https://arxiv.org/abs/2305.03887)) develop ring wormholes with toroidal topology. Distinct from warp shells but worth noting as the closest published work on toroidal exotic-matter geometries. Local copy: `papers/arXiv-2305.03887v1.tar.gz`.
+
+---
+
+## 10. New Warp-Drive Construction Since Session 4 (added Session 7)
+
+### Rodal 2025 — "A warp drive with predominantly positive invariant energy density and global Hawking–Ellis Type I"
+
+- **arXiv:** [2512.18008](https://arxiv.org/abs/2512.18008)
+- **Journal:** Gen. Rel. Grav. 58, Article 1 (2026), published Dec 17 2025
+- **Author:** José Rodal (Rodal Consulting, single author)
+- **Local copy:** `papers/2512.18008v1.pdf` and source `papers/arXiv-2512.18008v1.tar.gz`
+
+**Headline claim.** First *fully explicit, continuous, analytically derived* warp-drive spacetime whose shift is kinematically irrotational. Built on the Santiago–Schuster–Visser observation that $\boldsymbol{\omega} = 0$ gives Hawking–Ellis Type I. Compared to Alcubierre and Natário at identical $(\rho, \sigma, v/c)$:
+
+- Peak proper-energy *deficit* reduced by ≈38× vs. Alcubierre, ≈2.6×10³ vs. Natário.
+- Peak NEC violation ≈60× smaller than Natário.
+- Globally Type I (well-defined timelike eigenvalue everywhere); other drives have Type IV pockets.
+- Net proper energy "consistent with zero to four decimals" after $1/R$ tail extrapolation: $|E_{\rm net}|/E_{\rm abs}(\infty) = 0.04\%$ vs 3.34% in the finite window.
+
+**Construction.** Shift potential $\Phi(r,\theta,t) = v(t) r g(r) \cos\theta$ with $f(r) = 1 - f_{\rm Alc}(r)$, and $g(r)$ given by an explicit hyperbolic-function formula (their Eq. (g(r))). This is a Natário-class drive (zero asymptotic motion of distant stars) with kinematic irrotationality replacing zero divergence.
+
+**What it does *not* do** (own admission, §"Limitations"):
+- Energy conditions are still violated. NEC, WEC, DEC, SEC all fail (their Eq. (hierarchy)). Peak NEC violation $\lambda_{G(2)} - \lambda_{G(0)} \approx -4 \, \mathrm{m}^{-2}$ on-axis, driven by large *transverse negative pressures*.
+- The "net proper energy ≈ 0" is an *integrated proper energy* statement, not an ADM/Komar mass. Quoting the paper directly (§ "Physical remark on near cancellation"): "*This statement concerns the proper energy density defined by the timelike eigenvalue of $T^\mu{}_\nu$; it does not, by itself, establish a vanishing ADM or Komar mass, which require global geometric fluxes/constraints beyond the local energy density.*"
+- All quantitative results assume **constant velocity** ($v(t) \to v$), unit lapse, flat static spatial slices. The acceleration problem we analyzed in Path 2A Package 3 is *not* addressed; the paper notes that "letting $\alpha$ or $v$ vary in time… can reintroduce off-diagonal fluxes in mixed components and creating Type IV pockets."
+- The tail extrapolation is a two-point $1/R$ fit using $R_1 = 8\rho$, $R_2 = 12\rho$. The baseline $E_-(12\rho) = 1.21\times10^{44}$ J extrapolates to $E_-(\infty) = 1.33\times10^{44}$ J — a ~10% extrapolation. Reasonable but not negligible.
+- Single-author, no institutional affiliation listed beyond consulting practice. Peer-reviewed at Springer/GRG.
+
+**Relevance to our project.** See `RODAL2025_EVALUATION.md` for the full assessment. Summary:
+
+1. **Does NOT solve the Path 2A "translation impossibility" finding.** Rodal's analysis is at constant velocity. The acceleration obstruction we proved in `acceleration.ipynb` (no in-vacuum self-acceleration mechanism for a closed shell of classical DEC matter) is independent of the energy budget of the *moving* steady-state metric.
+2. **Does NOT establish a positive-energy warp drive.** The headline "net proper energy ≈ 0" does not say negative-energy regions are absent — they're 70% of the volume, and NEC is still violated everywhere on the wall by anisotropic transverse pressures. A classical-matter source would still be incompatible.
+3. **Does extend the moving-bubble design space.** If quantum-field sources can be found that mimic the irrotational stress-energy distribution (positive proper energy density on-axis, negative transverse pressures concentrated on the wall), the *integrated* energy budget collapses by ~38× compared to Alcubierre. This could lower the threshold for our Path 2B (Casimir/boundary mode) program if such modes can produce anisotropic-pressure stress-energies.
+4. **The Hawking–Ellis Type I block-diagonal structure is the most useful theoretical takeaway for us.** It means the moving Natário-class warp can be analyzed with standard energy-condition tools (positive $\rho_p$, three real principal pressures) rather than the more pathological Type IV sectors. This simplifies any future thin-shell analysis of irrotational warps.
+
+**Action items for our project:**
+- Adopt Rodal 2025 as a new comparison target alongside Fuchs 2024 in `MATTER_SHELL_PATH.md` § Comparison.
+- Re-evaluate whether our Path 2B (Casimir) program should target *anisotropic transverse pressures* on a thin wall (matching Rodal's profile) rather than isotropic negative energy density (matching Alcubierre's profile). This is a meaningful change of search direction.
+- Note in `QUANTUM_CLASSICAL_BRIDGE.md` outcome matrix: the irrotational construction strengthens scenario "C — fails at translation; only static frame-drag" (because translation still costs propulsion per Bobrick–Martire even if the steady-state drive is cheap), but weakens scenario "D — energy conditions impassable" since the *peak* deficit just dropped by orders of magnitude.

@@ -1,0 +1,10 @@
+{
+  "_comment": "Full Task 2A.13 sweep for HF Jobs (~30000 points after filter).",
+  "n_rho": 1601,
+  "margin": 4.0,
+  "axes": {
+    "eta": {"lo": 1e-8, "hi": 1.999, "n": 50, "scale": "log"},
+    "eps": {"lo": 0.01, "hi": 100.0, "n": 25, "scale": "log"},
+    "n":   {"lo": 3.0,  "hi": 1000.0, "n": 25, "scale": "log"}
+  }
+}
