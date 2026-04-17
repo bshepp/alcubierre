@@ -1,0 +1,29 @@
+{
+  "_comment": "Local preview for Slice 1 shift-families sweep (~120 points after filter, runs in <30s on 4 workers).",
+  "n_r": 60,
+  "n_theta": 50,
+  "r_hi_factor": 3.0,
+  "R0_for_grid": 5.0,
+  "families": {
+    "alcubierre": {
+      "v":     {"lo": 1e-3, "hi": 0.3, "n": 5, "scale": "log"},
+      "R0":    {"lo": 5.0,  "hi": 5.0, "n": 1, "scale": "linear"},
+      "sigma": {"lo": 2.0,  "hi": 8.0, "n": 4, "scale": "log"}
+    },
+    "natario": {
+      "v":     {"lo": 1e-3, "hi": 0.3, "n": 5, "scale": "log"},
+      "R0":    {"lo": 5.0,  "hi": 5.0, "n": 1, "scale": "linear"},
+      "sigma": {"lo": 2.0,  "hi": 8.0, "n": 4, "scale": "log"}
+    },
+    "irrotational": {
+      "v":     {"lo": 1e-3, "hi": 0.3, "n": 5, "scale": "log"},
+      "R0":    {"lo": 5.0,  "hi": 5.0, "n": 1, "scale": "linear"},
+      "sigma": {"lo": 2.0,  "hi": 8.0, "n": 4, "scale": "log"}
+    },
+    "freeform_j1": {
+      "v":  {"lo": 1e-3, "hi": 0.3, "n": 5, "scale": "log"},
+      "A1": {"lo": 0.3,  "hi": 3.0, "n": 4, "scale": "log"},
+      "k":  {"lo": 0.1,  "hi": 1.5, "n": 4, "scale": "log"}
+    }
+  }
+}

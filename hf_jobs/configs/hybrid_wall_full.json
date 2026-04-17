@@ -1,0 +1,12 @@
+{
+  "_comment": "Full Slice 2 sweep for HF Jobs cpu-upgrade (~25000 points; ~20 min).",
+  "n_rho": 2001,
+  "margin": 4.0,
+  "axes": {
+    "eta":     {"lo": 1e-3, "hi": 1.99, "n": 12, "scale": "log"},
+    "eps":     {"lo": 0.3,  "hi": 5.0,  "n": 6,  "scale": "log"},
+    "n":       {"lo": 10.0, "hi": 200.0, "n": 6, "scale": "log"},
+    "delta_M": {"lo": -1.5, "hi": 3.0,  "n": 16, "scale": "linear"},
+    "w_M":     {"lo": 0.1,  "hi": 5.0,  "n": 12, "scale": "log"}
+  }
+}

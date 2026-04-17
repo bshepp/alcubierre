@@ -430,3 +430,117 @@ The Path 2A classical research programme is **complete**:
 | Useful classical warp drive? | **No** under DEC + classical positive matter + vacuum exterior + no expelled reaction mass | Composite of above |
 
 The remaining open question — the only candidate for a useful warp drive consistent with all known classical physics — is whether **a quantum-field source for the warp metric exists**, with the strongest extant target being a Rodal-style anisotropic-Casimir profile. That is Path 2B, and it is the next phase of the project.
+
+---
+
+## Session 9: 2026-04-17 — Reframing and Phase 2C launch (Surfing Mode)
+
+### Directive
+
+User: *"As a point of interest... we aren't writing a paper we are exploring a mathematical landscape. There are no deliverables. Though I am a star trek nerd and I am biased towards wanting a warp drive."*
+
+After the TRUST_AUDIT.md sanity check, the user explicitly reframed the project: this is a personal landscape exploration, not a publication-driven research programme. The framing in `MATTER_SHELL_PATH.md` and `ROADMAP.md` had drifted toward "Path 2A is closed with prejudice / Path 2B is the only remaining route," which oversold the actual coverage of the warp-drive landscape.
+
+User instruction: *"Yes please revise MATTER_SHELL_PATH.md and ROADMAP.md, I defer to you the order we explore them in but lets explore all of them, TRUST_AUDIT.md is being kept and implemented for my own understanding... We are surfing."* and follow-up: *"Implement the plan as specified..."* on the [surfing-the-warp-landscape plan](surfing-the-warp-landscape_37d1bdf0.plan.md).
+
+### What Was Accomplished (Phase 0: Reframe)
+
+#### Documentation rewrites
+
+- [`MATTER_SHELL_PATH.md`](MATTER_SHELL_PATH.md): **§0.5 Caveats and Adjacent Slices** added near the top, with explicit slice-scope statement: "Within (Alcubierre $\beta^x \hat x$ shift) × (spherical Fuchs-class shell or static cylindrical Krasnikov tube) × (asymptotically flat vacuum exterior) × (steady-state metric or its Lorentz boost) × (4D General Relativity), no useful warp drive is simultaneously DEC-compatible, accelerable, and transport-relevant." Six adjacent slices listed with notebook + notes targets. §9.7 and §9.8 softened from "closed" / "no classical mechanism" to "this slice of parameter space rules out X; six adjacent slices remain unexplored."
+- [`ROADMAP.md`](ROADMAP.md): Phase 2A status changed from "Primary research track" to "Static slice mapped (Sessions 5–8); adjacent slices open (Phase 2C)." Decision-point language softened from "Path 2B is the only remaining positive path" to "Path 2B is one remaining positive path; Phase 2C adjacent slices are also open candidates." **New Phase 2C added** with six tasks (2C.1 through 2C.6), each citing its target notebook and audit interleave. Risk register entries marked "Realised" softened to "Within static slice: realised; outside static slice: open (Phase 2C)" or to acknowledge specific subsequent work that tests them.
+- [`README.md`](README.md): Phase 2A status changed from "CLASSICAL HALF COMPLETE" to "STATIC SLICE MAPPED." Added Phase 2C status line. Project description rewritten with explicit slice-of-parameter-space framing for the four results. Added closing paragraph stating "this is a personal landscape exploration, not a paper-driven programme."
+
+#### What was NOT changed
+
+- The actual results, data, and computations from Sessions 5–8 are unaffected. Only the framing language around them was softened.
+- TRUST_AUDIT.md is kept as-is per user preference; it is the "where might we be wrong" map and is actively used as a reference during slice exploration.
+- The Krasnikov no-go (Task 2A.13) result-quality rating in TRUST_AUDIT.md remains "rock-solid (A)" because the calculation itself is symbolically verified; only the broader interpretive language ("closes the static-infrastructure branch") is softened.
+
+### Decisions Made
+
+1. **Project mode is "surfing," not "paper-writing."** All subsequent slice notebooks should report results with explicit slice-of-parameter-space scope. No claim should overgeneralise from "this slice" to "the landscape."
+2. **All six adjacent slices will be deep-dived** (per the plan), in the order: shift families → hybrid wall → time-dependent → QI loosening → cosmological exterior → modified gravity. Order chosen by "most-likely-to-find-something-interesting first" with audit interleaves natural to each slice.
+3. **TRUST_AUDIT.md interleaves continue.** Each slice that touches the relevant notebooks drops in the corresponding verification upgrade (e.g. Slice 1 touches `israel_junction.ipynb` so adds the Schwarzschild $K_{ab}$ regression cell).
+4. **Compute infrastructure (local / Colab / HF Jobs) is reused without modification** for all six slices. Cost discipline: always preview locally → Colab if interesting → HF Jobs only for full grids.
+
+### Open Items Entering Slice 1
+
+- [x] Slice 1 (alternate shift families) — completed during the same Session 9; see slice-by-slice summary below.
+
+### Slice-by-slice summary (added at end of Session 9, after all six slices completed)
+
+**Slice 1 — Alternate shift families** ([`shift_families.ipynb`](shift_families.ipynb), [`SHIFT_FAMILIES_NOTES.md`](SHIFT_FAMILIES_NOTES.md), [`hf_jobs/sweeps/shift_families.py`](hf_jobs/sweeps/shift_families.py))
+
+- Built single ADM pipeline with closed-form metric inverse (1100× faster than SymPy on tanh shifts), parameterised by orthonormal-frame shift components.
+- Tested four families: Alcubierre, Natário zero-expansion, irrotational (Rodal), free-form $j_1$ Bessel mode.
+- 0/140 sweep points achieve WEC ≥ 0.999. Best is 0.94 (free-form, very specific tuning).
+- Quadrupole moments within an order of magnitude across families → Package 3 GW-recoil ceiling transfers.
+- Audit interleave: TRUST_AUDIT #4 closed (Schwarzschild $K_{ab}$ regression cell added to `israel_junction.ipynb`, all three components match Poisson §3.8 to literal 0).
+
+**Slice 2 — Fuchs+Krasnikov hybrid wall** ([`hybrid_wall.ipynb`](hybrid_wall.ipynb), [`hf_jobs/sweeps/hybrid_wall.py`](hf_jobs/sweeps/hybrid_wall.py))
+
+- Modified Krasnikov $k(\rho)$ profile by adding localised matter-shell perturbation $\delta_M B_{w_M}$.
+- Pipeline regression at $\delta_M = 0$ exactly reproduces Task 2A.13's $\rho_p^{\min} = -0.175$.
+- 0/480 sweep points achieve WEC ≥ 0.999. Best is 0.91 with $\rho_p^{\min} = -0.074$.
+- Matter perturbation introduces own gradient-induced curvature, shifting WEC-violating region without removing it.
+- Audit interleave: TRUST_AUDIT #6 closed (three-mechanism exhaustiveness proof added as Appendix A to [`MATTER_SHELL_PATH.md`](MATTER_SHELL_PATH.md)).
+
+**Slice 3 — Time-dependent acceleration** ([`time_dependent.ipynb`](time_dependent.ipynb), [`TIME_DEPENDENT_NOTES.md`](TIME_DEPENDENT_NOTES.md))
+
+- Built time-dependent Alcubierre Einstein tensor symbolically with $v$ as abstract function of $t$.
+- Found that 9 of 10 components have $\dot v$ corrections; specifically $\Delta G_{tt}$ is **antisymmetric in the axis-of-motion coordinate $x$**, scales as $1/\tau$ (linear in $\dot v$), with peak ratio to static $\rho_p$ peak of 0.003 at $\tau = R/c$.
+- Antisymmetry → no net momentum injection at quadrupole order → Package 3 conclusions transfer.
+- Subtle bug-and-fix in Cell 11: initial diagnostic compared $v(0) \neq v(\infty)$ rather than $v$-equal, $\dot v \neq 0$. After correction, the result is much cleaner and physically sensible.
+- Audit interleave: TRUST_AUDIT #5 implemented as Colab-runnable cell. Falls back to Package 3 heuristic locally; ready for Colab upgrade.
+
+**Slice 4 — Krasnikov 2003 QI loosening** ([`KRASNIKOV2003_EVALUATION.md`](KRASNIKOV2003_EVALUATION.md))
+
+- Critical read of Krasnikov 2003 (gr-qc/0207057). Three substantive loopholes in the standard "QI rules out useful tubes" argument:
+  1. Weyl-vs-Ricci ratio breaks the QI's curvature-density chain.
+  2. Sub-Planckian support makes $E_{\rm tot}^-$ a meaningless extrapolation.
+  3. Explicit "dihedral portal + Van Den Broeck pocket" gives a useful traversable wormhole with $\sim 10^{-3}$ g of exotic matter.
+- **Our Task 2A.13 classical no-go is unaffected** because it is a local Einstein-equation result independent of any QI argument.
+- Citations of "QI rules out useful Krasnikov tubes" should soften to "QI bounds are subject to substantive loopholes."
+- Audit interleaves: TRUST_AUDIT #7 (Bobrick-Martire 2021 §III–IV propulsion theorem, verified verbatim) and #8 (Everett-Roman 1997 §4 CTC theorem, verified geometrically). Both A-grade.
+
+**Slice 5 — Cosmological exterior** ([`cosmological_exterior.ipynb`](cosmological_exterior.ipynb), [`COSMOLOGICAL_EXTERIOR_NOTES.md`](COSMOLOGICAL_EXTERIOR_NOTES.md))
+
+- McVittie metric symbolic Einstein tensor reproduces FRW asymptotic value $G_{tt} \to 3H^2$ at large $r$.
+- Cosmological-exterior momentum-exchange ceiling: $\Delta v \le 5.7 \times 10^{-36}$ m/s at $R_{\rm BY} = 100\,R_{\rm shell}$, scaling as $R_{\rm BY}^3$. **42+ orders of magnitude below GW-recoil channel.**
+- Hubble drag timescale $1/H_0 \sim 10^{10}$ yr; irrelevant operationally.
+- **However**, Garattini-Zatrimaylov 2025 (arXiv:2502.13153, surfaced in Slice 6 lit-pull) shows that for a bubble at exactly Hubble velocity, *averaged* WEC/NEC are recoverable in de Sitter — a different cosmological loophole than the momentum-exchange channel. Slice 5 conclusion is therefore qualified: momentum-exchange channel is not load-bearing, but energy-condition obligations under specific velocity-matching are non-trivially modified.
+
+**Slice 6 — Modified gravity** ([`MODIFIED_GRAVITY_LIT.md`](MODIFIED_GRAVITY_LIT.md))
+
+- Literature pull. Three credible constructions:
+  1. **Lobo & Oliveira 2009** (f(R) wormholes): matter satisfies WEC, curvature absorbs the violation in Jordan frame. Frame-dependent loophole.
+  2. **Fell & Heisenberg 2021**: positive-energy soliton in *standard* GR via multi-mode shift. Relevant to Slice 1's "single-mode" caveat, not modified gravity per se.
+  3. **Garattini-Zatrimaylov 2025**: bubble at Hubble velocity in de Sitter satisfies averaged WEC/NEC. Standard GR with $\Lambda$, modifies Slice 5.
+- Phase 6b (computational) deferred — would need a 4th-order PDE solver, significant infrastructure.
+- **Modified gravity is a real loophole** (in Jordan frame), but interpretation-dependent: Einstein-frame transformation moves the violation to a scalar-field side. Whether this counts as "DEC-respecting matter" is contested.
+
+### Decisions Made (Session 9 wrap)
+
+1. **Phase 2C is complete.** All six slices have been deep-dived (Slices 1, 2, 3, 5 with full notebooks; Slices 4, 6 lit-only). Each produces a notebook + notes document.
+2. **No slice broke the Path 2A negative result outright.** Within the slice we tested, the obstruction is robust; outside the slice, several published constructions claim positive-energy warps but are subject to interpretation-dependent caveats (modified-gravity frame choice, Garattini-Zatrimaylov velocity matching, Fell-Heisenberg multi-mode optimisation).
+3. **TRUST_AUDIT.md is now nearly fully closed.** TRUST_AUDIT #4, #6, #7, #8 closed during Session 9 via slice interleaves. #5 is wired but Colab-only. #3 (Warp Factory MATLAB) remains deferred.
+4. **The cleanest follow-up candidate is Fell-Heisenberg 2021** — their positive-energy claim is in *standard* GR with multi-mode shift, falls within our existing tooling, and is a genuine candidate to extend Slice 1 if you want to dig further.
+
+### Conceptual State at End of Session 9 Wrap
+
+After all six slices, the load-bearing assumptions for the Path 2A negative result are:
+- **Standard 4D Einstein gravity** (Slice 6 modifies this via $f(R)$);
+- **Local DEC required in the matter frame** (modified gravity in Jordan frame moves the violation to the curvature side);
+- **Single-mode shift profiles** (Fell-Heisenberg 2021 may break this with multi-mode);
+- **Specific-velocity condition not met** (Garattini-Zatrimaylov 2025 needs $v = v_{\rm Hubble}$).
+
+These are interpretation-dependent and somewhat contrived loopholes, but they are also real. None are "easy" engineering paths to a working warp drive — they require either (a) accepting modified-gravity-as-physical, (b) finding a multi-mode shift profile with the Fell-Heisenberg property, or (c) co-moving the warp drive with cosmological expansion at exactly the right rate.
+
+The honest project summary is now: *"No useful classical positive-matter warp drive within the slice we tested; positive-energy claims exist outside the slice but face interpretive challenges. The Path 2A negative result is robust within its assumptions; its assumptions are now mapped explicitly."*
+
+This is the Phase 2C deliverable: a clear and honest map of where the Path 2A no-go applies, where it doesn't, and what the interpretive cost of each loophole is. We are no longer overselling the negative result.
+
+### Conceptual State at End of Session
+
+The project is unchanged in substance and reframed in posture. We have one carefully-mapped slice of the warp-drive landscape (Sessions 5–8), and we are now systematically exploring six adjacent slices to find out whether the negative result we obtained is an artefact of the slice or a genuine landscape feature. Each adjacent-slice exploration is a self-contained notebook + notes document; progress is incremental and we can stop or reorder at any point. There are no deliverables; the goal is to understand the structure of the obstructions.

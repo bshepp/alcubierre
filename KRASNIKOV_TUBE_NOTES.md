@@ -111,7 +111,13 @@ For thick tubes with $\rho_{\max} \approx \epsilon$, the bound becomes (their Eq
 
 For "barely opened" tubes with $\eta \ll 1$, the QI can be satisfied with macroscopic $\epsilon$ — but only at $\eta \sim l_P^2 / \tau_0^4$, e.g. $\eta \sim 10^{-66}$ for $\tau_0 \sim 1$ cm. The superluminal effect "would thus appear to be completely unobservable."
 
-Krasnikov 2003 (gr-qc/0207057) pushed back on this by arguing that the QI does not always imply Planck-scale densities, that large local densities don't always integrate to large total negative energy, and that large $|E_{\rm tot}^-|$ is "physically meaningless" in some setups. **However, Krasnikov 2003 does not produce a positive-energy / DEC-satisfying construction.** The classical Eq. 39 result above is unaffected.
+Krasnikov 2003 (gr-qc/0207057) pushed back on this with three substantive loopholes (see [`KRASNIKOV2003_EVALUATION.md`](KRASNIKOV2003_EVALUATION.md) for full details):
+
+1. **Way out 1 (large Weyl)**: the QI's $\Delta^{-4}$ bound on negative-energy density does not propagate to a $1/\Delta^2$ bound on the curvature scale unless $|C_{\alpha\beta\gamma\delta}| \lesssim |R_{\mu\nu}|$, which is non-generic.
+2. **Way out 2 ($E_{\rm tot}^-$ meaningless)**: when the negative-energy support is sub-Planckian, semiclassical gravity itself is unreliable, and the formal $E_{\rm tot}^-$ value is meaningless (analogous to the divergent classical Coulomb field energy of a point charge).
+3. **Way out 3 (explicit construction)**: a "dihedral portal + Van Den Broeck pocket" produces a useful traversable wormhole with $|E_{\rm tot}^-| \sim 10^{-3}$ g, many orders of magnitude smaller than the canonical Pfenning-Ford bound.
+
+**However**, Krasnikov 2003 does *not* produce a positive-energy / DEC-satisfying classical construction. **Our Task 2A.13 classical no-go (the universal scaling $\rho_p^{\min} \approx -0.122 \eta/\epsilon^2$ from local Einstein equations) is independent of any QI argument and stands regardless of whether the QI bound is tight or loose.** What Krasnikov 2003 affects is the *additional* QI-based "you need cosmological-scale exotic matter" objection, which we should now treat as substantively weakened rather than airtight.
 
 ---
 

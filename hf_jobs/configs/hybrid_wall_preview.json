@@ -1,0 +1,12 @@
+{
+  "_comment": "Local preview for Slice 2 hybrid-wall sweep (~480 points, runs in ~30s).",
+  "n_rho": 1601,
+  "margin": 4.0,
+  "axes": {
+    "eta":     {"lo": 0.1,  "hi": 1.5,  "n": 4, "scale": "log"},
+    "eps":     {"lo": 1.0,  "hi": 1.0,  "n": 1, "scale": "linear"},
+    "n":       {"lo": 100.0, "hi": 100.0, "n": 1, "scale": "linear"},
+    "delta_M": {"lo": -1.0, "hi": 2.0,  "n": 12, "scale": "linear"},
+    "w_M":     {"lo": 0.3,  "hi": 3.0,  "n": 10, "scale": "log"}
+  }
+}

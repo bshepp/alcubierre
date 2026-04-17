@@ -4,7 +4,7 @@
 
 This catalog covers all papers referenced in the project seed documents, organized by role. Each entry includes the abstract, publication data, and relevance to the boundary-mode program.
 
-**Last updated:** 2026-04-16 (Session 8 — Task 2A.13 executed, Krasnikov-tube no-go quantified)
+**Last updated:** 2026-04-17 (Session 9 — Phase 2C reframing, Slices 1-4 + audit interleaves #4-8)
 
 ---
 
@@ -287,6 +287,8 @@ This section is added in response to the `speculation/RING_NETWORK_CONCEPT.md` a
 
 The speculation doc's claim that "static infrastructure approach is novel" is incorrect. Any extension of the speculation requires either (a) confronting Everett–Roman's classical negative-energy result with a Fuchs-style classical thick wall, or (b) constraining all tubes in the network to a single global orientation to avoid CTCs.
 
+**Audit status (TRUST_AUDIT #8, closed Session 9):** §4 (network → CTC theorem) re-read independently. The argument is essentially geometric and convincing: in 3D, two non-overlapping oppositely-oriented tubes constructed at separated cylindrical radii allow a round-trip Earth → Deneb → Earth that arrives backward in time by an arbitrary amount. CTCs are avoided only if all tubes share a single global orientation axis, which defeats the network's purpose. **Audit summary in `KRASNIKOV2003_EVALUATION.md` §"TRUST_AUDIT #8".**
+
 ### Krasnikov 2003 — "The quantum inequalities do not forbid spacetime shortcuts"
 
 - **arXiv:** [gr-qc/0207057](https://arxiv.org/abs/gr-qc/0207057)
@@ -294,7 +296,11 @@ The speculation doc's claim that "static infrastructure approach is novel" is in
 - **Author:** S. V. Krasnikov
 - **Local copy:** `papers/0207057v3.pdf`
 
-**Relevance:** Pushes back on Pfenning–Ford-style quantum-inequality arguments that ostensibly rule out warp bubbles, Krasnikov tubes, and traversable wormholes. Three lines of attack: (i) the relevant QI does not always imply Planck-scale energy densities; (ii) large densities need not imply large total negative energy $|E_{\rm tot}^-|$; (iii) large $|E_{\rm tot}^-|$ being "physically meaningless" does not necessarily exclude shortcuts. **Important caveat for our project: this is a QI counter-argument, not a positive-energy / DEC-satisfying construction.** The classical Everett–Roman 1997 result (negative energy in the wall from the Einstein equations) is unaffected.
+**Relevance:** Pushes back on Pfenning–Ford-style quantum-inequality arguments that ostensibly rule out warp bubbles, Krasnikov tubes, and traversable wormholes. Three lines of attack: (i) the relevant QI does not always imply Planck-scale energy densities (the Weyl/Ricci ratio argument); (ii) large local densities need not imply large total negative energy $|E_{\rm tot}^-|$; (iii) explicit "dihedral portal + Van Den Broeck pocket" construction with $|E_{\rm tot}^-| \sim 10^{-3}$ g, many orders of magnitude smaller than the canonical bound.
+
+**Important caveat for our project: this is a QI counter-argument, not a positive-energy / DEC-satisfying classical construction.** The classical Task 2A.13 result (negative energy in the wall from the local Einstein equations, $\rho_p^{\min} = -0.122 \eta/\epsilon^2$) is unaffected by Krasnikov 2003.
+
+**Slice 4 detailed evaluation: [`KRASNIKOV2003_EVALUATION.md`](KRASNIKOV2003_EVALUATION.md).** Headline conclusion: the QI bound on $E_{\rm tot}^-$ is substantively weaker than canonical citations suggest, but our classical no-go is independent of QI and stands.
 
 ### Visser & Hochberg ~2004 — "Simple and double walled Krasnikov tubes"
 
@@ -319,6 +325,8 @@ The speculation doc's claim that "static infrastructure approach is novel" is in
 - **Local copy:** `papers/2102.06824v2.pdf`
 
 **Relevance:** General framework for warp-drive shells. Two results matter for the speculation analysis: (1) "any warp drive… is a shell of regular or exotic material moving inertially" — i.e., identifies the warp-drive problem with the matter-shell problem (this is the antecedent to the Fuchs construction); (2) **"any warp drive requires propulsion"** — a no-free-lunch theorem that applies to any closed shell topology including toroidal, and which the speculation doc's "Mode A launcher" runs straight into.
+
+**Audit status (TRUST_AUDIT #7, closed Session 9):** §III–IV read independently. Two key statements verified from their text: §III.A shows that for spherically symmetric subluminal positive-matter warp drives, the inner-region time can only pass *more slowly* than at infinity (never faster) — this is the rigorous reason the Alcubierre-class drives need negative energy. §V.B states verbatim *"Whatever is the acceleration mechanism, it must obey the conservation of 4-momentum. This is because all warp drive spacetimes are asymptotically-flat. ... no metric which describes an accelerating warp drive solution has so far been presented in the literature."* This is the rigorous "any warp drive requires propulsion" theorem. Audit summary in `KRASNIKOV2003_EVALUATION.md` §"TRUST_AUDIT #7" and `MATTER_SHELL_PATH.md` Appendix A.
 
 ### Krasnikov-Everett network ↔ ring-wormhole literature
 

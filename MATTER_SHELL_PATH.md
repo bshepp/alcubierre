@@ -1,13 +1,15 @@
 # Path 2 — The Classical Matter-Shell Realization of the Boundary-Mode Framework
 
 ## Author: Brian Sheppard + Claude
-## Date: 2026-04-15
+## Date: 2026-04-15 (last reframed 2026-04-17, Session 9 — see §0.5)
 ## Purpose: Concrete classical-physics realization of the boundary-mode reformulation,
 ##          anchored to Fuchs et al. 2024's constant-velocity Warp Shell. Treats the
 ##          "wall" as a real shell of ordinary matter and maps the Alcubierre shift
 ##          vector onto an interior-only perturbation.
-## Status: Primary track. The Casimir route (Path 2B) continues in parallel — see
-##         QUANTUM_CLASSICAL_BRIDGE.md for the three-level claim structure.
+## Status: Static slice mapped (Packages 1–3 + Task 2A.13). Six adjacent slices
+##         remain unexplored; see §0.5. The Casimir route (Path 2B) continues in
+##         parallel — see QUANTUM_CLASSICAL_BRIDGE.md for the three-level claim
+##         structure.
 
 ---
 
@@ -18,6 +20,27 @@ The Casimir route requires three independent leaps: (i) reinterpret the Alcubier
 The matter-shell route requires only one leap: that the Alcubierre bubble wall is a physical object — an actual shell of ordinary matter with positive energy density — rather than an exotic distribution or a boundary condition on quantum modes. If this leap works, the boundary-mode picture becomes **a statement about classical field theory on a classical background**, and the existence result of Fuchs et al. 2024 is direct evidence that it does work, at least at zero bubble velocity.
 
 The two routes are not mutually exclusive. If Path 2 succeeds, it may simply *be* the realization of the "boundary" in the boundary-mode framework, making the Casimir analogy a reinterpretation of a classical effect (much as Casimir energy itself admits both QFT and source-theoretic classical derivations for idealized geometries). If Path 2 fails — e.g., if no Fuchs-style shell can sustain a shift that induces actual translation rather than just internal frame-dragging — then the Casimir route becomes necessary, not optional.
+
+---
+
+## 0.5 Caveats and Adjacent Slices (added Session 9, 2026-04-17)
+
+This document originally read as a closure document — "Path 2A is done; only Path 2B remains." That framing oversold our actual coverage of the warp-drive landscape. After a re-evaluation, what Packages 1–3 + Task 2A.13 *actually* establish is more carefully stated as:
+
+> **Within the slice of parameter space defined by (Alcubierre-style $\beta^x \hat x$ shift) × (spherical Fuchs-class matter shell or static cylindrical Krasnikov tube) × (asymptotically flat vacuum exterior) × (steady-state metric or its Lorentz boost) × (4D General Relativity with classical positive matter sources)**, no useful warp drive is simultaneously DEC-compatible, accelerable, and transport-relevant.
+
+That slice is informative but is not the whole landscape. The following six adjacent slices are explicitly *not* addressed by Packages 1–3 + Task 2A.13. Each is treated as an open question and pursued in its own notebook + notes document (Phase 2C of `ROADMAP.md`):
+
+| # | Adjacent slice | Assumption being relaxed | Notebook | Notes | Status |
+|---|---|---|---|---|---|
+| 1 | **Alternate shift families** | Shift is Alcubierre $\beta^x \hat x$ | [`shift_families.ipynb`](shift_families.ipynb) | [`SHIFT_FAMILIES_NOTES.md`](SHIFT_FAMILIES_NOTES.md) | **DONE 2026-04-17 (Session 9).** 0/140 sweep points achieve WEC across the four single-mode axisymmetric families (Alcubierre, Natário, irrotational/Rodal, free-form $j_1$). Lentz 2020 is not contradicted because his construction is multi-mode + plasma source, outside this slice. |
+| 2 | **Fuchs+Krasnikov hybrid wall** | Krasnikov wall is sourced only by the metric (no matter shell coincident) | [`hybrid_wall.ipynb`](hybrid_wall.ipynb) | section in [`KRASNIKOV_TUBE_NOTES.md`](KRASNIKOV_TUBE_NOTES.md) | **DONE 2026-04-17 (Session 9).** 0/480 sweep points achieve WEC; best WEC pass fraction is 0.91 with $\rho_p^{\min}$ still $-0.07$. The single-bump matter perturbation shifts the negative-energy region around but does not eliminate it, upholding the §9.5 hand-wave. |
+| 3 | **Time-dependent acceleration** | Steady-state metric + Lorentz boost is sufficient | [`time_dependent.ipynb`](time_dependent.ipynb) | [`TIME_DEPENDENT_NOTES.md`](TIME_DEPENDENT_NOTES.md) | **DONE 2026-04-17 (Session 9).** $\dot v$ correction to $\rho_p$ is antisymmetric in $x$, scales as $1/\tau$, with peak ratio to static $\rho_p$ of 0.003 at $\tau = R/c$. Net momentum injection at quadrupole order is zero by symmetry. Package 3 conclusions transfer. TRUST_AUDIT #5 sxs cell wired for Colab. |
+| 4 | **Krasnikov 2003 QI loosening** | Quantum-inequality bounds on negative energy are tight enough to forbid useful tubes | `qi_loosening.ipynb` (optional, deferred) | [`KRASNIKOV2003_EVALUATION.md`](KRASNIKOV2003_EVALUATION.md) | **DONE 2026-04-17 (Session 9)**, lit-only. Krasnikov 2003 has three substantive QI-loosening arguments, including an explicit "$10^{-3}$ g of exotic matter" wormhole construction. Our classical Task 2A.13 no-go is *independent* of QI and unaffected. The QI-bound *additional* objection to wormhole-class spacetimes is substantively weakened. Hybrid quantum/classical wall calc (4b) deferred to a future session. TRUST_AUDIT #7 (Bobrick-Martire) and #8 (Everett-Roman §4) closed via re-reads. |
+| 5 | **Cosmological exterior** | Exterior is asymptotically flat vacuum | [`cosmological_exterior.ipynb`](cosmological_exterior.ipynb) | [`COSMOLOGICAL_EXTERIOR_NOTES.md`](COSMOLOGICAL_EXTERIOR_NOTES.md) | **DONE 2026-04-17 (Session 9).** McVittie + $\Lambda$ Einstein-tensor regression matches FRW value at large $r$. Mechanism A ceiling from cosmological background: $\Delta v \le 10^{-36}$ m/s at $R_{\rm BY} = 100\,R_{\rm shell}$, scaling as $R_{\rm BY}^3$. **42 orders of magnitude below GW-recoil channel**. Asymptotic-flatness assumption is not load-bearing. |
+| 6 | **Modified gravity** | Field equations are 4D Einstein gravity | `modified_gravity.ipynb` (deferred — would need a 4th-order PDE solver) | [`MODIFIED_GRAVITY_LIT.md`](MODIFIED_GRAVITY_LIT.md) | **DONE 2026-04-17 (Session 9)**, lit-only. Lobo & Oliveira 2009 demonstrate $f(R)$ wormholes where matter satisfies WEC and curvature absorbs the violation; this is a genuine loophole in *Jordan frame*. Frame-dependence (Einstein-frame transformation moves the violation to a scalar field) makes the verdict interpretation-sensitive. Fell-Heisenberg 2021 is positive-energy in *standard* GR via multi-mode shift (related to Slice 1). Garattini-Zatrimaylov 2025 modifies Slice 5: warp bubble at Hubble velocity in de Sitter satisfies averaged WEC/NEC. |
+
+The §9 conclusion below is updated to reflect this — what we have is the static-slice mapping, not the closure of the entire classical question. Each of the six slices is approached as an honest open question with a real chance of revealing a loophole, not a residual cleanup task.
 
 ---
 
@@ -345,23 +368,29 @@ A natural follow-up is whether wrapping a Fuchs-class positive-matter shell *aro
 
 ### 9.7 What this means for the speculation document
 
-`speculation/RING_NETWORK_CONCEPT.md` proposed building a *static infrastructure* of Krasnikov-style tubes as a way to dodge the acceleration obstruction (Task 2A.10): assemble a closed network adiabatically while no shell is moving, then use the network for transport that requires no acceleration of the shell. Two structural problems with this proposal are now confirmed:
+`speculation/RING_NETWORK_CONCEPT.md` proposed building a *static infrastructure* of Krasnikov-style tubes as a way to dodge the acceleration obstruction (Task 2A.10): assemble a closed network adiabatically while no shell is moving, then use the network for transport that requires no acceleration of the shell. Two structural tensions with this proposal are now identified:
 
-1. **The wall stress-energy is classically forbidden** — Task 2A.13 (this section) shows no classical positive matter sources a Krasnikov-tube wall for any $\eta > 0$.
-2. **The network creates CTCs** — Everett–Roman 1997 §4 (independent of this calculation) shows two non-overlapping oppositely-oriented Krasnikov tubes form a time machine.
+1. **The wall stress-energy resists classical positive-matter sourcing** — Task 2A.13 (this section) shows that within the metric ansatz used by Krasnikov 1995 / Everett–Roman 1997, no classical positive matter sources a Krasnikov-tube wall for any $\eta > 0$. **Caveat (added Session 9):** Slice 2 of Phase 2C tests whether a Fuchs-class matter shell *coincident* with the wall can locally cancel the negative spike via cylindrical Israel junctions — see `hybrid_wall.ipynb`. The §9.5 hand-wave that this can't work has not yet been made rigorous; if Slice 2 produces a cancellation, this point softens.
+2. **The network creates CTCs in the canonical Krasnikov construction** — Everett–Roman 1997 §4 (independent of this calculation) shows two non-overlapping oppositely-oriented Krasnikov tubes form a time machine. We have not independently rederived their §4 (TRUST_AUDIT #8); it is on the read-and-summarise list.
 
-A Fuchs-class spherical shell *ring* is constructible (Packages 1–2 cover that), but a Fuchs-class ring does *not* shorten light-travel time the way a Krasnikov-tube ring would, because Fuchs shells have flat-but-shifted interiors, not opened-out lightcones. **The speculation merges incompatible features**: it wants the constructibility of a Fuchs ring with the transport benefit of a Krasnikov network, and no construction provides both.
+A Fuchs-class spherical shell *ring* is constructible (Packages 1–2 cover that), but a Fuchs-class ring does *not* shorten light-travel time the way a Krasnikov-tube ring would, because Fuchs shells have flat-but-shifted interiors, not opened-out lightcones. The speculation as originally framed merges constructibility (Fuchs) with transport benefit (Krasnikov), and no single construction we have computed provides both. Whether some other construction outside our slice does is exactly what Phase 2C is for.
 
 ### 9.8 Implication for the project
 
-Task 2A.13 closes the static-infrastructure branch of speculation. Combined with Packages 1–3, the complete Path 2A picture is now:
+Task 2A.13 closes the **static-infrastructure-vacuum-classical** branch of the speculation under the explicit assumptions listed in §0.5. Combined with Packages 1–3, the static-slice picture is:
 
 - **Static spherical Fuchs shells** (Packages 1–2): DEC-compatible classical realisation. ✓
-- **Acceleration of those shells** (Package 3): no classical mechanism. ✗
-- **Static-infrastructure Krasnikov tubes** (Task 2A.13, this section): no classical wall. ✗
-- **Acceleration via static-infrastructure transport** (the speculation): structurally incompatible (item 1 of §9.7) and CTC-generating (item 2). ✗
+- **Acceleration of those shells via the three catalogued mechanisms in vacuum** (Package 3): no classical mechanism produces warp-relevant $\Delta v$. ✗
+- **Static-infrastructure Krasnikov tubes with bare-metric vacuum source** (Task 2A.13, this section): negative classical $T_{\hat t \hat t}$ in the wall for any $\eta > 0$. ✗
+- **Acceleration via static-infrastructure transport with bare Krasnikov walls** (the speculation): inherits the wall problem from item 3 plus the CTC theorem of Everett–Roman §4. ✗
 
-The remaining open candidate for any *useful* dynamical or transport-relevant warp geometry is **Path 2B** (anisotropic Casimir / boundary-mode mechanism), with the Rodal 2025 evaluation (`RODAL2025_EVALUATION.md`) sharpening the QFT-search target to anisotropic transverse vacuum stresses with positive normal energy density.
+**This is one slice of the landscape, not the landscape.** Six adjacent slices (§0.5 above) remain explicitly open. The most natural extensions are:
+
+- **Slice 1** (alternate shift families): is the negative result an artefact of choosing $\beta^x \hat x$? Lentz 2020 already demonstrated that a different shift profile produces positive-energy solutions, so the answer is at least *partially* yes.
+- **Slice 2** (Fuchs+Krasnikov hybrid): is the §9.5 hand-wave correct? Has not yet been computed properly.
+- **Slice 3** (time-dependent metrics): can explicit $v(t)$ ramps reveal transient loopholes that the steady-state-plus-boost analysis misses?
+
+In parallel, **Path 2B** (Casimir / boundary-mode QFT mechanism) remains a candidate, with the Rodal 2025 evaluation (`RODAL2025_EVALUATION.md`) suggesting the natural QFT-search target is anisotropic transverse vacuum stresses with positive normal energy density (waveguide-confined Casimir, asymmetric-plate Casimir, repulsive-Casimir geometries). Path 2B is one of several remaining routes, not the only one.
 
 ---
 
@@ -387,6 +416,48 @@ The remaining open candidate for any *useful* dynamical or transport-relevant wa
 | **Krasnikov 2003** | [gr-qc/0207057](https://arxiv.org/abs/gr-qc/0207057) | QI counter-arguments; does not produce a positive-energy construction. |
 | **Lobo & Crawford 2002** | [gr-qc/0204038](https://arxiv.org/abs/gr-qc/0204038) | Pedagogical Everett–Roman reproduction + Olum's WEC theorem. |
 | **Rodal 2025** | [2512.18008](https://arxiv.org/abs/2512.18008) | New Natário-class irrotational warp drive; 38× peak-deficit reduction vs. Alcubierre. Detailed evaluation in `RODAL2025_EVALUATION.md`. |
+
+---
+
+## Appendix A — Three-Mechanism Exhaustiveness (TRUST_AUDIT #6, added Session 9)
+
+Package 3 (`acceleration.ipynb`) catalogued three mechanisms by which a Fuchs-class shell could accelerate in vacuum: (A) shift spin-up against a non-vacuum exterior, (B) mass ejection (rocket), (C) gravitational-wave recoil. The original exposition argued by elimination but did not write the formal exhaustiveness proof. This appendix closes that audit gap.
+
+**Setup.** Let $\Sigma$ be an asymptotically flat spacetime containing a compact "warp shell" body, with ADM 4-momentum $P^\mu_{\rm ADM}$ defined at spatial infinity via the standard surface integrals (Arnowitt-Deser-Misner 1962; Wald 1984 §11.2):
+
+$$P^i_{\rm ADM} = \frac{1}{8\pi}\oint_\infty (K^{ij} - K\,\gamma^{ij})\,n_j\,dA.$$
+
+Initial data: at $t = t_0$ the shell is in a static configuration (in some inertial frame $S_0$ at infinity), with $K_{ij}(t_0) = 0$ on the constant-$t_0$ slice. Then $P^i_{\rm ADM}(t_0) = 0$ in frame $S_0$.
+
+**Claim.** The change $\Delta P^i_{\rm ADM} = P^i_{\rm ADM}(t) - P^i_{\rm ADM}(t_0)$ for $t > t_0$ can come *only* from one or more of the following three categories of boundary flux:
+
+- **(A) Non-vacuum exterior**: a non-zero stress-energy $T^{\mu\nu}$ in the asymptotic region carries momentum that can be exchanged with the shell.
+- **(B) Mass ejection**: a portion of the shell's matter is expelled and crosses the asymptotic boundary, carrying momentum with it.
+- **(C) Outgoing gravitational radiation**: a non-zero $\dddot{Q}^{ij}$ produces a gravitational-wave momentum flux at null infinity (Bondi-Sachs sense).
+
+**Proof sketch.** The Bianchi identity $\nabla_\mu G^{\mu\nu} = 0$ implies, via the Einstein equations, $\nabla_\mu T^{\mu\nu} = 0$ — local conservation of stress-energy. Integrating over a 4-volume $V$ bounded by the constant-$t_0$ slice $\Sigma_0$, the constant-$t$ slice $\Sigma_t$, and a timelike cylinder $C$ at large spatial radius:
+
+$$\int_V \nabla_\mu T^{\mu\nu}\,d^4x = 0 = \int_{\Sigma_t} T^{0\nu}\,dV - \int_{\Sigma_0} T^{0\nu}\,dV + \int_C T^{i\nu}\,n_i\,dA - \int_{\mathcal{I}^+} (\text{GW flux})$$
+
+(with appropriate signs from the $4 \to 3$ projection). The four terms correspond to:
+
+1. $\int_{\Sigma_t} T^{0i} dV$ = ADM linear momentum of *all matter on the slice* including the shell.
+2. $\int_{\Sigma_0} T^{0i} dV$ = same at $t_0$ (zero by assumption).
+3. $\int_C T^{ij} n_j dA$ = momentum flux through the cylinder = momentum carried by exterior matter (Mechanism A) or by ejected matter (Mechanism B).
+4. $\int_{\mathcal{I}^+}$ (GW flux) = momentum carried away by gravitational radiation (Mechanism C).
+
+Therefore $\Delta P^i_{\rm ADM} = -(\text{term 3}) + (\text{term 4}) = -[\text{Mech A} + \text{Mech B}] + [\text{Mech C}]$. Any non-zero $\Delta P^i_{\rm ADM}$ must therefore come from a non-zero contribution in at least one of Mechanisms A, B, C.
+
+**No "fourth mechanism."** A pure metric self-rearrangement of the shell — a configuration change in $g_{\mu\nu}$ on the slice with no matter or radiation flux at the boundary — cannot change $P^i_{\rm ADM}$. This is because $P^i_{\rm ADM}$ is a *boundary integral* defined entirely by the asymptotic falloff of the metric, and asymptotic falloff cannot be changed by interior reconfiguration without sending a flux to infinity.
+
+**Caveats**:
+1. The proof assumes asymptotic flatness. Slice 5 (cosmological exterior) explicitly relaxes this.
+2. The proof assumes 4D Einstein gravity. Slice 6 (modified gravity) relaxes this; in modified gravity the analogue of $P^i_{\rm ADM}$ may pick up a "gravitational degree of freedom" contribution that has no Einstein analogue.
+3. The proof assumes the cylinder $C$ is at *spatial* infinity. If horizons or other interior boundaries form during the shell's evolution, additional flux terms enter.
+
+Subject to these caveats, the three-mechanism catalog is exhaustive. **TRUST_AUDIT #6 closed.**
+
+This proof was written as a Slice 2 audit interleave in Session 9. The proof technique reuses the ADM-flux logic that motivated the cylindrical Israel junction analysis in [`hybrid_wall.ipynb`](hybrid_wall.ipynb), which is why the audit fits naturally here.
 
 ---
 

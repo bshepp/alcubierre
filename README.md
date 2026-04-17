@@ -11,15 +11,26 @@ The negative energy density in the Alcubierre bubble wall is not a substance to 
 ## Current Status
 
 **Phase 1 — Linearization and feasibility analysis: IN PROGRESS**
-**Phase 2A — Classical matter-shell realization (primary track): CLASSICAL HALF COMPLETE (Sessions 5–8)**
+**Phase 2A — Classical matter-shell realization (primary track): STATIC SLICE MAPPED (Sessions 5–8)**
 **Phase 2B — Casimir / boundary-mode decomposition (parallel track): NEXT, with sharpened search target**
+**Phase 2C — Adjacent slices exploration: ALL SIX SLICES MAPPED (Session 9)**
 
-The explicit linearization calculation is complete; all key expressions are verified symbolically and numerically in `verification.ipynb`. Path 2A's classical research programme closed in Session 8 with four results: (i) DEC-compatible static spherical Fuchs shells exist with $\Delta_{\min}/R = \kappa\beta/C$; (ii) no classical mechanism accelerates such shells in vacuum; (iii) static-infrastructure Krasnikov tubes have no classical-matter wall for any $\eta > 0$; (iv) Krasnikov-tube networks generate CTCs (Everett–Roman 1997). Composite: no classical positive-matter warp drive is simultaneously useful, accelerable, and DEC-compatible.
+The explicit linearization calculation is complete; all key expressions are verified symbolically and numerically in `verification.ipynb`. Path 2A's static-slice analysis (Sessions 5–8) produced four results within the slice **Alcubierre $\beta^x \hat x$ shift × spherical Fuchs-class shell or static cylindrical Krasnikov tube × asymptotically flat vacuum exterior × steady-state metric or its Lorentz boost × 4D General Relativity**:
 
-- **Path 2A (primary, classical half done):** Anchored on Fuchs et al. 2024's *Constant Velocity Physical Warp Drive Solution* (arXiv:2405.02709). See [`MATTER_SHELL_PATH.md`](MATTER_SHELL_PATH.md), [`matter_shell.ipynb`](matter_shell.ipynb), and the Packages 1–3 + Task 2A.13 notebooks. The classical static and dynamical halves are both fully closed; the only remaining open question is whether a quantum-field source can supply the warp metric — that's Path 2B.
-- **Path 2B (next, sharpened):** The Casimir / semiclassical programme is now the sole remaining candidate for any *useful* dynamical or transport-relevant warp geometry. The Rodal 2025 evaluation ([`RODAL2025_EVALUATION.md`](RODAL2025_EVALUATION.md)) sharpens the QFT-search target from generic isotropic vacuum energy to **anisotropic transverse vacuum stresses with positive normal energy density** (waveguide-confined Casimir, asymmetric-plate Casimir, repulsive-Casimir geometries). See [`QUANTUM_CLASSICAL_BRIDGE.md`](QUANTUM_CLASSICAL_BRIDGE.md) §6 and the new Session-7 update there.
+(i) DEC-compatible static spherical Fuchs shells exist with $\Delta_{\min}/R = \kappa\beta/C$;
+(ii) within the catalogued mechanisms, no classical mechanism accelerates such shells in vacuum to warp-relevant $\Delta v$;
+(iii) static-infrastructure Krasnikov tubes have no classical-matter wall for any $\eta > 0$ in the bare-vacuum case;
+(iv) Krasnikov-tube networks generate CTCs (Everett–Roman 1997).
 
-See `MATTER_SHELL_PATH.md` §6 for the four outcome scenarios and §9 for the complete Path 2A closure.
+The **slice composite** is "no useful classical warp drive within these assumptions." This is informative but is not the closure of the classical question — six adjacent slices are the focus of Phase 2C and remain open.
+
+- **Path 2A (primary, static slice mapped):** Anchored on Fuchs et al. 2024's *Constant Velocity Physical Warp Drive Solution* (arXiv:2405.02709). See [`MATTER_SHELL_PATH.md`](MATTER_SHELL_PATH.md) §0.5 for the explicit slice scope and which assumptions Phase 2C is relaxing.
+- **Path 2B (parallel candidate):** Casimir / semiclassical programme remains a candidate for the dynamical / transport-relevant case. The Rodal 2025 evaluation ([`RODAL2025_EVALUATION.md`](RODAL2025_EVALUATION.md)) suggests the natural QFT-search target is **anisotropic transverse vacuum stresses with positive normal energy density** (waveguide-confined Casimir, asymmetric-plate Casimir, repulsive-Casimir geometries). See [`QUANTUM_CLASSICAL_BRIDGE.md`](QUANTUM_CLASSICAL_BRIDGE.md) §6.
+- **Phase 2C (active, six adjacent slices):** Each slice relaxes one assumption from the static-slice scope: (1) alternate shift families, (2) Fuchs+Krasnikov hybrid wall, (3) time-dependent acceleration, (4) Krasnikov-2003 QI loosening, (5) cosmological exterior, (6) modified gravity. See `ROADMAP.md` Phase 2C, [`MATTER_SHELL_PATH.md`](MATTER_SHELL_PATH.md) §0.5, and [`TRUST_AUDIT.md`](TRUST_AUDIT.md) for verification interleaves.
+
+See `MATTER_SHELL_PATH.md` §6 for outcome scenarios and §9 for the static-slice analysis.
+
+**Project mode:** This is a personal landscape exploration, not a paper-driven programme. There are no concrete deliverables. Conclusions are reported with explicit slice-of-parameter-space scope so the limits of each result are visible. See [`TRUST_AUDIT.md`](TRUST_AUDIT.md) for the honest accounting of what we derived vs. what we accepted on the literature's authority.
 
 ## Documents
 
@@ -41,6 +52,13 @@ See `MATTER_SHELL_PATH.md` §6 for the four outcome scenarios and §9 for the co
 | **[krasnikov_tube.ipynb](krasnikov_tube.ipynb)** | **Path 2A Task 2A.13 — Krasnikov 4D metric + Fuchs-class thick wall; reproduces Everett–Roman Eq. 14 symbolically; universal scaling law $\rho_p^{\min} \propto -\eta/\epsilon^2$; HF Jobs sweep returns WEC pass rate 0.0000. Closes the speculation document.** |
 | [RODAL2025_EVALUATION.md](RODAL2025_EVALUATION.md) | Critical evaluation of arXiv:2512.18008 (Rodal, Gen. Rel. Grav. 58:1, 2026): irrotational warp drive with 38× peak-deficit reduction; updated Path 2B search target |
 | [KRASNIKOV_TUBE_NOTES.md](KRASNIKOV_TUBE_NOTES.md) | Quantitative synthesis of Krasnikov 1995 / Everett–Roman 1997 / Krasnikov 2003 prior art; comparison to Path 2A; Task 2A.13 update note |
+| [TRUST_AUDIT.md](TRUST_AUDIT.md) | Honest accounting: which results are derived ourselves vs. accepted on the literature's authority. A-graded: Tasks 2A.13, 2A.6/4b. Closed by Session 9 audit interleaves: #4, #6, #7, #8. |
+| **[shift_families.ipynb](shift_families.ipynb)** + [SHIFT_FAMILIES_NOTES.md](SHIFT_FAMILIES_NOTES.md) | **Phase 2C Slice 1 — alternate axisymmetric shift families (Alcubierre, Natário, irrotational, free-form Bessel). 0/140 sweep points achieve WEC. Path 2A negative result is robust within tested family.** |
+| **[hybrid_wall.ipynb](hybrid_wall.ipynb)** | **Phase 2C Slice 2 — Krasnikov wall + Fuchs-style matter-shell perturbation. 0/480 sweep points achieve WEC. Single-bump matter cancellation hand-wave is upheld.** |
+| **[time_dependent.ipynb](time_dependent.ipynb)** + [TIME_DEPENDENT_NOTES.md](TIME_DEPENDENT_NOTES.md) | **Phase 2C Slice 3 — explicit $v(t)$ ramp. $\dot v$ correction is antisymmetric in $x$; net momentum injection is zero at quadrupole order. Package 3 conclusions transfer.** |
+| [KRASNIKOV2003_EVALUATION.md](KRASNIKOV2003_EVALUATION.md) | Phase 2C Slice 4 — critical evaluation of Krasnikov 2003's three QI-loosening loopholes. Our classical no-go is QI-independent and unaffected. |
+| **[cosmological_exterior.ipynb](cosmological_exterior.ipynb)** + [COSMOLOGICAL_EXTERIOR_NOTES.md](COSMOLOGICAL_EXTERIOR_NOTES.md) | **Phase 2C Slice 5 — McVittie exterior. Cosmological-exterior momentum-exchange ceiling: $\Delta v \le 10^{-36}$ m/s. Asymptotic-flatness assumption not load-bearing for momentum exchange (but Garattini-Zatrimaylov 2025 modifies energy-condition obligations under a velocity-matching condition).** |
+| [MODIFIED_GRAVITY_LIT.md](MODIFIED_GRAVITY_LIT.md) | Phase 2C Slice 6 — literature pull on $f(R)$ wormholes, hidden-geometric positive-energy solitons, and de Sitter warps. Modified gravity is a real loophole in Jordan frame; interpretation-dependent. |
 
 ## Key Results So Far
 
