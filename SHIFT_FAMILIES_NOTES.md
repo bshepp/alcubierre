@@ -93,6 +93,23 @@ To find a positive-energy classical warp drive, one of those four sub-assumption
 
 Lentz 2020's construction *did* break the third sub-assumption (using plasma source instead of fluid) and may have broken the first (multi-mode). His result is therefore consistent with our Slice 1 finding rather than contradicting it.
 
+**Canonical post-Phase-2C load-bearing-assumptions table**: see [`NAVIGATOR.md`](NAVIGATOR.md) for the integrated view across all six slices.
+
+---
+
+## Multi-mode follow-up: Fell-Heisenberg 2021 (Session 10)
+
+The natural next test was: does *multi-mode* (irrotational, non-axisymmetric) shift achieve full WEC where single-mode axisymmetric does not? Fell-Heisenberg 2021 ([arXiv:2104.06488](https://arxiv.org/abs/2104.06488)) is the most credible standing positive-energy claim in this regime.
+
+**Result of independent reproduction in [`fell_heisenberg.ipynb`](fell_heisenberg.ipynb)** (full evaluation in [`FELL_HEISENBERG2021_EVALUATION.md`](FELL_HEISENBERG2021_EVALUATION.md)):
+
+- Their Eulerian-energy decomposition formula (Eq. WECinansatz) regression-checks against our symbolic Einstein-tensor pipeline to literal symbolic zero (A-grade pipeline confirmation).
+- Their qualitative claim is verified: a multi-mode irrotational shift gives positive Eulerian $\rho_E$ on 99.8% of interior cells with superluminal central $|\vec{N}|$.
+- **Full WEC violations are smaller than they suggest**: only 1.3% of interior cells violate full WEC (with their text saying "no amount of modification could get rid of these regions"), and 5.3% violate full DEC.
+- **Slice 1's negative result is therefore unchanged for the full-WEC test**, but the residual full-WEC-violation regions are far smaller than the Slice 1 0/140 sweep would suggest. The Fell-Heisenberg construction is a real partial success, narrowing the obstruction without eliminating it.
+
+**Updated load-bearing assumption**: "no axisymmetric single-mode shift achieves full WEC" → **"single-mode axisymmetric shifts cannot achieve even Eulerian-WEC; multi-mode irrotational shifts achieve Eulerian-WEC and 99% full-WEC, with residual ~1% violation regions whose minimisability is the most interesting open question Slice 1+Session 10 has surfaced."**
+
 ---
 
 ## Citations

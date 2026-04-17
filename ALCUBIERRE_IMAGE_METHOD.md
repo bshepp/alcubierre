@@ -2,7 +2,7 @@
 
 **Authors:** Brian Sheppard & Claude (Anthropic)
 **Date:** April 2026
-**Status:** Exploratory — pre-calculation stage
+**Status:** **Historical (pre-pivot).** This is a Phase 0 seed document from April 2026 proposing a "method of images" reformulation of the Alcubierre exotic-matter requirement. The image-method approach was tested in [`LINEARIZATION_CALCULATION.md`](LINEARIZATION_CALCULATION.md) and **did not work** (constant interior field is incompatible with point-source decompositions). The project pivoted in Sessions 2–4 to the boundary-mode reformulation (still active in Path 2A and Path 2B) and is now (Session 9 onward) in surfing-mode landscape exploration. This document is preserved as a historical record of the project's starting hypothesis. For current state, see [`NAVIGATOR.md`](NAVIGATOR.md) and [`LANDSCAPE_SYNTHESIS.md`](LANDSCAPE_SYNTHESIS.md).
 
 ---
 

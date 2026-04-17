@@ -1,5 +1,16 @@
 # Alcubierre Metric — Complete Linearization Calculation
 
+## Status: **Historical / foundational.** Phase 1 derivation that established
+## the gravitomagnetic structure of the linearized Alcubierre metric and tested
+## the image-method hypothesis (which failed — constant interior field is
+## incompatible with point-source decompositions, see §6 herein). The
+## *symbolic* results (ADM stress-energy, Poisson structure, $l = 1$ dipole
+## angular structure) remain valid and are reused throughout Path 2A and Phase 2C.
+## The *strategic recommendation* in this document (pursue image-method) was
+## superseded by the Sessions 2–4 boundary-mode pivot. Reproduced and verified
+## numerically in [`verification.ipynb`](verification.ipynb). For current state,
+## see [`NAVIGATOR.md`](NAVIGATOR.md).
+##
 ## Author: Brian Sheppard + Claude
 ## Date: 2026-04-15
 ## Purpose: Explicit derivation of the linearized field equations, stress-energy,

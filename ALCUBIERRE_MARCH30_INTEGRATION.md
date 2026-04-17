@@ -1,6 +1,12 @@
 # Alcubierre Image Method — Integration from March 30 Literature Review
 
-## Status: ADDENDUM TO ALCUBIERRE_IMAGE_METHOD.md
+## Status: **Historical (pre-pivot).** Addendum to the Phase 0 seed document
+## [`ALCUBIERRE_IMAGE_METHOD.md`](ALCUBIERRE_IMAGE_METHOD.md). The image-method
+## hypothesis it elaborates was tested in [`LINEARIZATION_CALCULATION.md`](LINEARIZATION_CALCULATION.md)
+## and abandoned in favour of the boundary-mode reformulation (Sessions 2–4),
+## which itself was reframed as one slice of a broader landscape (Session 9
+## onward). Preserved as a historical record. For current state, see
+## [`NAVIGATOR.md`](NAVIGATOR.md).
 ## Author: Brian Sheppard + Claude
 ## Date: 2026-04-15
 ## Purpose: Integrate insights from the 2026-03-30 literature review conversation

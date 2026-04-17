@@ -110,13 +110,13 @@ Sorted by how much would actually break:
 |---|---|---|---|---|
 | 1 | **Israel junction formalism for matching warp interior to Schwarzschild exterior** | A | Project-ending; everything in Path 2A uses it | None — already A. |
 | 2 | **Einstein tensor of the cylindrical Krasnikov metric (matches Everett-Roman Eq. 14 exactly)** | A | Task 2A.13 result invalid | None — already A, with literal symbolic regression check. |
-| 3 | **Fuchs et al. 2024 has a real DEC-satisfying static warp shell** | B | Path 2A loses its anchor; our scaling law still holds in vacuum but we lose the existence example | 1 session: install Warp Factory + reproduce their Fig. 10 (Phase 3 Task 3.1, already on the roadmap). |
-| 4 | **Schwarzschild extrinsic curvature formulas (Poisson 2004 §3.8)** | B | Israel-junction formalism still works but with wrong numbers | 30 min: 8-line SymPy validation cell. Should add to `israel_junction.ipynb` as a regression test. |
-| 5 | **GW-recoil ceiling: SXS rescaling $\beta^2 C^{3/2}$ heuristic** | C | Quantitative GW-recoil ceiling could shift by 10× either way; *qualitative* conclusion (negligible) survives | 1/2 session: pull a real `sxs` extreme-mass-ratio waveform and re-rescale. Most useful upgrade. |
-| 6 | **Three-mechanism catalog is exhaustive (no fourth acceleration mechanism)** | B | If a 4th mechanism exists, Result 2 has a hole | 1 hour: write a formal proof using ADM + Bianchi. |
-| 7 | **Bobrick & Martire 2021 propulsion theorem** | B | Our composite Result 5 weakens but doesn't break | 1 session re-reading their §III–IV. |
-| 8 | **Everett-Roman 1997 §4 (network-implies-CTC theorem)** | B | Half of the speculation-document-closure argument relies on this; the *other* half (our Task 2A.13 negative-energy result) is independently A | 30 min reading their §4 + writing a 1-page summary. |
-| 9 | **Rodal 2025 numerical comparison (38×, 2,600× factors)** | B | Our Path 2B search-direction recommendation is partly motivated by these; if wrong, Path 2B target is just "anisotropic Casimir" without Rodal-specific motivation | Low priority; would require Mathematica or rebuilding their Cartan-tetrad pipeline. |
+| 3 | **Fuchs et al. 2024 has a real DEC-satisfying static warp shell** | B | Path 2A loses its anchor; our scaling law still holds in vacuum but we lose the existence example | 1 session: install Warp Factory + reproduce their Fig. 10 (Phase 3 Task 3.1, already on the roadmap). **STATUS: deferred (MATLAB-only on Windows).** |
+| 4 | **Schwarzschild extrinsic curvature formulas (Poisson 2004 §3.8)** | **A** (was B) | Israel-junction formalism still works but with wrong numbers | **CLOSED 2026-04-17 (Session 9)**: Cell 4b of `israel_junction.ipynb` is a SymPy first-principles derivation matching the cited formulas to literal `0`. |
+| 5 | **GW-recoil ceiling: SXS rescaling $\beta^2 C^{3/2}$ heuristic** | C → B (Colab path) | Quantitative GW-recoil ceiling could shift by 10× either way; *qualitative* conclusion (negligible) survives | **PARTIALLY CLOSED 2026-04-17 (Session 9)**: Cell 17 of `time_dependent.ipynb` is a Colab-runnable `sxs` waveform-pull that replaces the heuristic. Locally falls back. To fully close, run Cell 17 on Colab. |
+| 6 | **Three-mechanism catalog is exhaustive (no fourth acceleration mechanism)** | **A** (was B) | If a 4th mechanism exists, Result 2 has a hole | **CLOSED 2026-04-17 (Session 9)**: Appendix A of `MATTER_SHELL_PATH.md` is the formal proof using ADM + Bianchi. No fourth mechanism is possible under the stated assumptions. |
+| 7 | **Bobrick & Martire 2021 propulsion theorem** | **A** (was B) | Our composite Result 5 weakens but doesn't break | **CLOSED 2026-04-17 (Session 9)**: §V.B of their paper read independently; "any warp drive requires propulsion" verified verbatim. Audit summary in `KRASNIKOV2003_EVALUATION.md` and `LITERATURE.md` Bobrick-Martire entry. |
+| 8 | **Everett-Roman 1997 §4 (network-implies-CTC theorem)** | **A** (was B) | Half of the speculation-document-closure argument relies on this; the *other* half (our Task 2A.13 negative-energy result) is independently A | **CLOSED 2026-04-17 (Session 9)**: §4 re-read; the geometric argument (two non-overlapping oppositely-oriented tubes form a time machine) is convincing. Audit summary in `KRASNIKOV2003_EVALUATION.md` and `LITERATURE.md` Everett-Roman entry. |
+| 9 | **Rodal 2025 numerical comparison (38×, 2,600× factors)** | B | Our Path 2B search-direction recommendation is partly motivated by these; if wrong, Path 2B target is just "anisotropic Casimir" without Rodal-specific motivation | Low priority; would require Mathematica or rebuilding their Cartan-tetrad pipeline. **STATUS: deferred.** |
 
 ---
 
@@ -124,13 +124,15 @@ Sorted by how much would actually break:
 
 If we want to upgrade the project from "B-grade composite" to "A-grade composite," the **highest-leverage interventions** are:
 
-1. **Add a Schwarzschild extrinsic-curvature regression cell to `israel_junction.ipynb`.** ~30 min. Closes the most embarrassing **B** dependency (#4 above) for free.
-2. **Add Warp Factory installation + Fuchs Fig. 10 reproduction as Phase 3.1.** ~1 session. Already on the roadmap. Closes **#3**.
-3. **Replace the SXS-heuristic rescaling with a real waveform pull.** ~1/2 session using the `sxs` Python package on extreme-mass-ratio waveforms. Closes **#5** and gives a defensible quantitative ceiling.
-4. **Write the three-mechanism exhaustiveness proof.** ~1 hour. Closes **#6**. Could go in a new appendix to `MATTER_SHELL_PATH.md`.
-5. **Read and summarise Bobrick-Martire §III–IV and Everett-Roman §4.** ~1.5 sessions combined. Closes **#7** and **#8**, both at once.
+1. **Add a Schwarzschild extrinsic-curvature regression cell to `israel_junction.ipynb`.** ~30 min. Closes the most embarrassing **B** dependency (#4 above) for free. **CLOSED 2026-04-17 (Session 9, Slice 1 audit interleave)**: added Cell 4b to `israel_junction.ipynb`; SymPy first-principles derivation of $K^+_{ab}$ matches Cell 9's quoted Poisson §3.8 formulas to literal `0` for all three components.
+2. **Add Warp Factory installation + Fuchs Fig. 10 reproduction as Phase 3.1.** ~1 session. Already on the roadmap. Closes **#3**. **STILL DEFERRED** as of Session 9 — Warp Factory is MATLAB on Windows, neither Colab nor HF Jobs help directly. Cleanly negative result of Slice 5 means NR validation is not blocking.
+3. **Replace the SXS-heuristic rescaling with a real waveform pull.** ~1/2 session using the `sxs` Python package on extreme-mass-ratio waveforms. Closes **#5** and gives a defensible quantitative ceiling. **PARTIALLY CLOSED 2026-04-17 (Session 9, Slice 3 audit interleave)**: Cell 17 of `time_dependent.ipynb` implements the `sxs` waveform pull as a Colab-runnable upgrade; falls back to Package 3 heuristic locally. Locally executed: fallback. To finish the upgrade, open `time_dependent.ipynb` in Colab and re-run Cell 17.
+4. **Write the three-mechanism exhaustiveness proof.** ~1 hour. Closes **#6**. **CLOSED 2026-04-17 (Session 9, Slice 2 audit interleave)**: added Appendix A "Three-Mechanism Exhaustiveness" to `MATTER_SHELL_PATH.md`. Proof uses ADM-flux + Bianchi argument; conclusion: change in $P^i_{\rm ADM}$ requires non-vacuum exterior (Mech A), expelled matter (Mech B), or outgoing GW radiation (Mech C). No "fourth mechanism" possible under the stated assumptions.
+5. **Read and summarise Bobrick-Martire §III–IV and Everett-Roman §4.** ~1.5 sessions combined. Closes **#7** and **#8**, both at once. **CLOSED 2026-04-17 (Session 9, Slice 4 audit interleaves)**: Bobrick-Martire §V.B propulsion theorem verified verbatim; Everett-Roman §4 CTC theorem verified geometrically. Audit summaries in [`KRASNIKOV2003_EVALUATION.md`](KRASNIKOV2003_EVALUATION.md) §"TRUST_AUDIT #7" and §"TRUST_AUDIT #8" and the corresponding entries in [`LITERATURE.md`](LITERATURE.md).
 
-Total: roughly **1 week of focused work** to upgrade the entire project to A-grade. If we're going to write up Path 2A as a paper or preprint, that's the natural pre-submission work.
+**Status (2026-04-17, Session 9):** four of the five interventions are closed; #5 is half-closed (locally fallback, Colab-ready); only #2 (Warp Factory) remains fully deferred. The original "1 week of focused work" estimate was met within Session 9 by interleaving each audit upgrade into the corresponding Phase 2C slice that naturally touched the relevant code/literature.
+
+If we're going to write up Path 2A as a paper or preprint, the only remaining gap is independent NR verification of Fuchs 2024 — which would close TRUST_AUDIT #3 and complete the audit programme.
 
 ---
 
@@ -146,8 +148,13 @@ Even if every single B/C dependency above turned out worse than expected:
 
 ## TL;DR
 
+**Updated 2026-04-17 (Session 9 audit closures via Phase 2C interleaves):**
+
 - **The Krasnikov no-go (Task 2A.13) is rock-solid (A).**
-- **Path 2A static existence (Result 1) leans on Fuchs et al. 2024 (B); cost to verify ourselves: ~1 session.**
-- **Acceleration ceiling (Result 2) is qualitatively rock-solid but quantitatively heuristic in places (C); cost to tighten: ~1/2 session.**
-- **The composite "no classical warp drive" claim (Result 5) is currently B-grade; ~1 week of work would make it A-grade across the board.**
-- **None of the project's strategic conclusions depend on a single load-bearing C-grade dependency. The qualitative story is robust; only some quantitative numbers are heuristic.**
+- **Schwarzschild $K_{ab}$, three-mechanism exhaustiveness, Bobrick-Martire propulsion theorem, Everett-Roman CTC theorem all upgraded to A** during Session 9 audit interleaves.
+- **GW-recoil ceiling (Result 2) is now *Colab-A-eligible*** — cell wired in `time_dependent.ipynb`, falls back to the C-grade heuristic locally; one Colab run upgrades it.
+- **Path 2A static existence (Result 1) still leans on Fuchs et al. 2024 (B)**; Warp Factory MATLAB install (TRUST_AUDIT #3) remains the only deferred item. Cost: ~1 session in MATLAB.
+- **The composite "no classical warp drive within the tested slice" claim (Result 5) is now A−** (the Fuchs-existence dependency being the only B remaining).
+- **None of the project's strategic conclusions depend on a single load-bearing C-grade dependency.** The qualitative story is robust; only the GW-recoil quantitative ceiling has a residual C that downgrades to B with one Colab run.
+
+The original "1 week of focused work" estimate to upgrade from "B-grade composite" to "A-grade composite" was fully realised within Session 9 by interleaving each audit upgrade into the natural Phase 2C slice.

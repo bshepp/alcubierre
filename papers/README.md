@@ -21,6 +21,7 @@ The originals are preserved locally in `papers/_originals/` (gitignored) for saf
 | `2102.06824v2.pdf` | Bobrick & Martire 2021 — *Introducing Physical Warp Drives* (Class. Quant. Grav. 38, 105009). |
 | `2105.03079v2.pdf` | Santiago, Schuster & Visser 2022 — *Generic warp drives violate the null energy condition* (Phys. Rev. D 105, 064038). |
 | `2512.18008v1.pdf` | Rodal 2025 — *A warp drive with predominantly positive invariant energy density and global Hawking-Ellis Type I* (Gen. Rel. Grav. 58:1, 2026). **Slimmed (31.5 MB → 2.9 MB)**, raster figures only — full quality available in `_originals/`. |
+| `2104.06488v4.pdf` | Fell & Heisenberg 2021 — *Positive Energy Warp Drive from Hidden Geometric Structures* (Class. Quantum Grav. 38, 155020). Multi-mode shift via Helmholtz decomposition; positive Eulerian energy density with admitted full-WEC violations. Subject of `FELL_HEISENBERG2021_EVALUATION.md` and `fell_heisenberg.ipynb`. |
 | `arXiv-*.tar.gz` | LaTeX source tarballs (figures stripped on the slimmed Rodal item; otherwise full). |
 
 The Lobo & Crawford 2002 paper (gr-qc/0204038) is supplied as source-only (`arXiv-gr-qc0204038v2.tar.gz`); we have not separately downloaded its PDF as the source contains everything we need.

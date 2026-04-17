@@ -70,16 +70,18 @@ except ImportError:
 
 Slice 3 confirms that the *steady-state* assumption was not load-bearing in Package 3's negative result. The narrowing continues:
 
-| Sub-assumption | Status (after Slices 1, 2, 3) |
+**Snapshot at end of Slice 3** (canonical post-Slice-6 version is in [`NAVIGATOR.md`](NAVIGATOR.md)):
+
+| Sub-assumption | Status as of end of Slice 3 |
 |---|---|
 | Single-mode axisymmetric shift | Slice 1: not load-bearing within tested family. |
 | Krasnikov wall is bare-vacuum (no matter) | Slice 2: not load-bearing for single-bump matter perturbations. |
 | Steady-state metric + Lorentz boost | **Slice 3: not load-bearing.** Time-dependent corrections at physical timescales are sub-1%. |
-| Asymptotically flat vacuum exterior | **Open** (Slice 5). |
-| 4D Einstein gravity | **Open** (Slice 6). |
-| Quantum-inequality bounds tight | **Open** (Slice 4). |
+| Asymptotically flat vacuum exterior | Open at time of writing; tested in Slice 5 (mixed verdict — see Garattini-Zatrimaylov 2025 caveat). |
+| 4D Einstein gravity | Open at time of writing; tested in Slice 6 (real loophole in Jordan frame; interpretation-dependent). |
+| Quantum-inequality bounds tight | Open at time of writing; tested in Slice 4 (substantively weakened by Krasnikov 2003). |
 
-**The remaining load-bearing assumptions are the *background* (vacuum + asymptotic flatness + Einstein gravity) and the *quantum/classical interpretation* (whether QI bounds are as tight as Pfenning-Ford suggested).** Slices 4-6 test these.
+**As of end of Slice 3, the remaining load-bearing assumptions were the *background* (vacuum + asymptotic flatness + Einstein gravity) and the *quantum/classical interpretation*.** Slices 4–6 tested these; outcomes are documented in [`KRASNIKOV2003_EVALUATION.md`](KRASNIKOV2003_EVALUATION.md), [`COSMOLOGICAL_EXTERIOR_NOTES.md`](COSMOLOGICAL_EXTERIOR_NOTES.md), [`MODIFIED_GRAVITY_LIT.md`](MODIFIED_GRAVITY_LIT.md), and the canonical synthesis in [`NAVIGATOR.md`](NAVIGATOR.md) and [`LANDSCAPE_SYNTHESIS.md`](LANDSCAPE_SYNTHESIS.md).
 
 ---
 

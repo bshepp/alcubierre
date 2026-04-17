@@ -158,6 +158,24 @@ The two paths are not mutually exclusive — see `MATTER_SHELL_PATH.md` §6 for 
 > - If NO for all six → the static-slice no-go strengthens to a "robust across these six perturbations" claim
 > - Most likely: mixed — some slices produce real loopholes, others reproduce the Path 2A pattern. Each slice's outcome stands alone
 
+**Outcome (post-Session 10):** mixed, with **Slice 1 producing the most interesting partial loophole**:
+- Slices 2 (hybrid wall), 3 (time-dependent), 5 (cosmological-momentum), and 6 (modified gravity, lit-only) reproduce the Path 2A pattern in their respective tested ranges.
+- Slice 4 (QI loosening) confirms the additional QI argument is substantively weakened by Krasnikov 2003 but does not affect Path 2A's classical no-go.
+- **Slice 1 (alternate shifts)**: single-mode axisymmetric reproduces the Path 2A pattern (0/140 sweep points pass full WEC). **Multi-mode irrotational follow-up via Fell-Heisenberg 2021 (Session 10)** achieves positive Eulerian $\rho_E$ on 99.8% of cells and full-WEC pass on 98.7%. **Residual ~1.3% of cells violating full WEC is the most interesting open question** of the entire project; targeted parameter sweep is the natural next step.
+
+---
+
+## Phase 2D — Fell-Heisenberg follow-up (Session 10) ●
+
+**Status:** Done 2026-04-17 (Session 10). Triggered by the Slice 1 negative result for single-mode axisymmetric shifts; tested whether multi-mode irrotational shifts (the closest published candidate is Fell & Heisenberg 2021) survive a full-WEC test in our framework.
+
+### Tasks
+
+- [x] **2D.1 Pull paper** — `papers/2104.06488v4.pdf` and source tarball.
+- [x] **2D.2 Critical evaluation** ([`FELL_HEISENBERG2021_EVALUATION.md`](FELL_HEISENBERG2021_EVALUATION.md)) — paper claims positive Eulerian energy density via multi-mode irrotational shift; explicit §3.3 admission that full WEC and DEC are violated in compact regions.
+- [x] **2D.3 Independent reproduction** ([`fell_heisenberg.ipynb`](fell_heisenberg.ipynb)) — symbolic Einstein-tensor pipeline regression-passes their Eq. (WECinansatz) to literal symbolic zero. Numerical reproduction at $(V, \sigma, m_0, a, \ell, r) = (0.5, 4, 2, 0.3, 4, 6)$: 99.8% Eulerian-positive, 98.7% full-WEC-pass, 94.7% DEC-pass, central $|\vec{N}| = 1.92$, $E_{\rm net} \approx +1.06 \times 10^{-3} M_\odot c^2$. Order-of-magnitude match to their reported $\sim 5 \times 10^{-4} M_\odot c^2$.
+- [ ] **2D.4 Targeted $(m, n)$-family WEC-pass search** — *new lead surfaced by Session 10*. Sweep over the Fell-Heisenberg $(V, \sigma, m_0, a, \ell, r)$ family looking for a configuration with 0% full-WEC violation. **If found, would be the first standing fully-WEC-respecting classical warp drive in standard GR**, more than the authors themselves claim. Effort: 1-2 sessions on top of the existing pipeline.
+
 ---
 
 ## Phase 3 — Numerical Verification ○

@@ -25,13 +25,16 @@
 
 ## Implication
 
-The narrowing of load-bearing assumptions continues. After Slice 5, only **modified gravity** (Slice 6) remains as a substantive sub-assumption that could open a real loophole.
+The narrowing of load-bearing assumptions continues. After all six slices the picture is **(updated post-Slice-6 lit pull)**:
 
-| Sub-assumption | Status (after Slices 1-5) |
+| Sub-assumption | Status (after Slices 1–6, canonical) |
 |---|---|
-| Single-mode axisymmetric shift (Slice 1) | Not load-bearing within tested family |
+| Single-mode axisymmetric shift (Slice 1) | Not load-bearing within tested family. Fell-Heisenberg 2021 may break this with multi-mode (untested in our framework as of Session 9; queued for Session 10). |
 | Single-bump matter perturbation cancellation (Slice 2) | Not load-bearing |
 | Steady-state metric + Lorentz boost (Slice 3) | Not load-bearing |
 | Pfenning-Ford-style tight QI bound (Slice 4) | Substantively weakened by Krasnikov 2003, but our classical no-go is QI-independent |
-| Asymptotic flatness vs. FRW + $\Lambda$ (Slice 5) | Not load-bearing (42+ orders of magnitude headroom) |
-| 4D Einstein gravity (Slice 6) | **Open** |
+| Asymptotic flatness vs. FRW + $\Lambda$ — momentum exchange (Slice 5, this notebook) | Not load-bearing (42+ orders of magnitude headroom) |
+| Asymptotic flatness vs. FRW + $\Lambda$ — energy-condition obligations (Slice 5 + Garattini-Zatrimaylov 2025) | **Modified for special case $v = v_{\rm Hubble}$**: bubble at Hubble velocity in de Sitter satisfies *averaged* WEC/NEC. Real qualifier on this notebook's conclusion. |
+| 4D Einstein gravity (Slice 6) | Real loophole in Jordan-frame f(R) (Lobo-Oliveira 2009); interpretation-dependent (Einstein-frame transformation moves violation to scalar field). |
+
+The canonical version of this table now lives in [`NAVIGATOR.md`](NAVIGATOR.md); see [`MODIFIED_GRAVITY_LIT.md`](MODIFIED_GRAVITY_LIT.md) for the Slice 6 lit pull and the Garattini-Zatrimaylov caveat.

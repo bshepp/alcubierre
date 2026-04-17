@@ -544,3 +544,51 @@ This is the Phase 2C deliverable: a clear and honest map of where the Path 2A no
 ### Conceptual State at End of Session
 
 The project is unchanged in substance and reframed in posture. We have one carefully-mapped slice of the warp-drive landscape (Sessions 5–8), and we are now systematically exploring six adjacent slices to find out whether the negative result we obtained is an artefact of the slice or a genuine landscape feature. Each adjacent-slice exploration is a self-contained notebook + notes document; progress is incremental and we can stop or reorder at any point. There are no deliverables; the goal is to understand the structure of the obstructions.
+
+---
+
+## Session 10: 2026-04-17 — Audit, Synthesis, and Fell-Heisenberg Evaluation
+
+### Directive
+
+User: *"Please audit all documents and make necessary edit/creations. Make sure everything we have done is thoroughly documented. Make a central place for the story you mention in Option F. Then lets implement Option A as you suggest."*
+
+Three-phase plan: (1) audit all 17 markdown docs for stale claims and inconsistencies; (2) create a synthesis layer ([`NAVIGATOR.md`](NAVIGATOR.md) front-door + [`LANDSCAPE_SYNTHESIS.md`](LANDSCAPE_SYNTHESIS.md) narrative); (3) full-reproduction critical evaluation of Fell & Heisenberg 2021.
+
+### What Was Accomplished
+
+**Phase 1 (audit):**
+- Patched stale "Path 2B is the only remaining route" claims in [`README.md`](README.md) (Key Result 13), [`QUANTUM_CLASSICAL_BRIDGE.md`](QUANTUM_CLASSICAL_BRIDGE.md), and [`COSMOLOGICAL_EXTERIOR_NOTES.md`](COSMOLOGICAL_EXTERIOR_NOTES.md) to reflect the post-Phase-2C reality.
+- Cross-checked load-bearing-assumptions tables across [`SHIFT_FAMILIES_NOTES.md`](SHIFT_FAMILIES_NOTES.md), [`TIME_DEPENDENT_NOTES.md`](TIME_DEPENDENT_NOTES.md), [`COSMOLOGICAL_EXTERIOR_NOTES.md`](COSMOLOGICAL_EXTERIOR_NOTES.md), and [`MODIFIED_GRAVITY_LIT.md`](MODIFIED_GRAVITY_LIT.md). Each older table marked as historical snapshot with pointer to canonical version in [`NAVIGATOR.md`](NAVIGATOR.md).
+- Added "Status: historical (pre-pivot)" headers to [`ALCUBIERRE_IMAGE_METHOD.md`](ALCUBIERRE_IMAGE_METHOD.md), [`ALCUBIERRE_MARCH30_INTEGRATION.md`](ALCUBIERRE_MARCH30_INTEGRATION.md), and [`LINEARIZATION_CALCULATION.md`](LINEARIZATION_CALCULATION.md).
+- Updated [`TRUST_AUDIT.md`](TRUST_AUDIT.md): five of the six Concrete Verification Roadmap items now closed (#3 Warp Factory remains deferred); load-bearing-dependencies table updated with Session 9 closures (#4, #6, #7, #8 upgraded from B to A; #5 partially closed); composite project grade now A− with only Fuchs-existence anchor still B.
+- Updated [`LITERATURE.md`](LITERATURE.md) last-updated tag.
+
+**Phase 2 (synthesis layer):**
+- Created [`NAVIGATOR.md`](NAVIGATOR.md): compact front-door map (~5 pages), with where-to-start triage table, canonical post-Phase-2C load-bearing-assumptions table, full document index by role (entry-point / synthesis / Path 2A / Phase 2C / Path 2B / verification / historical / speculation / compute), and ranked open leads.
+- Created [`LANDSCAPE_SYNTHESIS.md`](LANDSCAPE_SYNTHESIS.md): long-form narrative synthesis (~14 pages), structured by physics question rather than chronology. Sections: original problem → static-slice classical realisation → acceleration question → energy-condition obligations across slices → remaining open questions → meta-observation about slicing-vs-asserting → personal Star Trek register.
+- Both synthesis docs added to [`README.md`](README.md) document table.
+
+**Phase 3 (Fell-Heisenberg 2021 reproduction):**
+- Pulled `papers/2104.06488v4.pdf` (4.3 MB) and `papers/arXiv-2104.06488v4.tar.gz` (3.8 MB).
+- Read paper carefully. Critical observation: §3.3 of the body explicitly admits *full* WEC and DEC are violated in compact regions ("no amount of modification could get rid of these"). The paper's title and abstract significantly oversell what is delivered — only the *Eulerian* energy density positivity is the actual claim, not a fully WEC-respecting matter source.
+- Wrote [`FELL_HEISENBERG2021_EVALUATION.md`](FELL_HEISENBERG2021_EVALUATION.md): full evaluation with TL;DR, what they prove, what they don't, methodology assessment, project implications.
+- Built [`fell_heisenberg.ipynb`](fell_heisenberg.ipynb): symbolic 4D Einstein-tensor pipeline for arbitrary Cartesian shift, Eulerian-energy formula derived independently, A-grade pipeline regression against their Eq. (WECinansatz) (literal symbolic zero), 4th-order finite-difference 3D grid evaluation of Hessian + Jacobian, full ADM stress-energy with $K_{ij}$ and $\mathcal{L}_N K_{ij}$, principal-pressure diagonalisation, full WEC + DEC tests.
+- Numerical results at $(V, \sigma, m_0, a, \ell, r) = (0.5, 4, 2, 0.3, 4, 6)$:
+  - Eulerian $\rho_E > 0$ in **99.8% of interior cells**.
+  - Full WEC pass in **98.7% of interior cells** (1.3% violate).
+  - Full DEC pass in **94.7% of interior cells** (5.3% violate).
+  - Central $|\vec{N}| = 1.92$ (superluminal).
+  - $E_{\rm net} \approx +1.06 \times 10^{-3} M_\odot c^2$ (within order-of-magnitude of their reported $5.2 \times 10^{-4}$).
+- **Most surprising finding**: full-WEC violations are *much smaller* than the paper's emphatic "no amount of modification could get rid of these regions" suggests. Only 1.3% of cells fail full WEC at our parameter choice. This raises a clean open question: can a careful $(m, n)$ search eliminate the residual entirely?
+- Updated [`SHIFT_FAMILIES_NOTES.md`](SHIFT_FAMILIES_NOTES.md), [`LANDSCAPE_SYNTHESIS.md`](LANDSCAPE_SYNTHESIS.md), [`NAVIGATOR.md`](NAVIGATOR.md), [`LITERATURE.md`](LITERATURE.md), [`ROADMAP.md`](ROADMAP.md) with the FH outcome (Phase 2D added to ROADMAP, Task 2D.4 = the new $(m, n)$ residual-search lead).
+
+### Decisions Made
+
+1. **Project's most interesting open question is now the Fell-Heisenberg $(m, n)$ residual-WEC search** (Task 2D.4 in [`ROADMAP.md`](ROADMAP.md), lead #1 in [`NAVIGATOR.md`](NAVIGATOR.md)). If a parameter choice can eliminate the residual ~1% full-WEC violation, it would be the *first standing fully-WEC-respecting classical warp drive in standard GR* — substantially more than Fell-Heisenberg themselves claim.
+2. **Fell-Heisenberg paper should be cited carefully**: as "demonstrates positive Eulerian energy density via multi-mode irrotational shift, with full WEC/DEC violations in compact regions admitted by the authors", *not* as "solved the negative-energy problem in standard GR".
+3. **The synthesis-layer documents ([`NAVIGATOR.md`](NAVIGATOR.md) and [`LANDSCAPE_SYNTHESIS.md`](LANDSCAPE_SYNTHESIS.md)) are now the canonical entry points** to the project. Older "Path 2B is the only remaining route" framing has been patched; the project's posture is "structured slice map" not "no-go theorem."
+
+### Conceptual State at End of Session
+
+After 10 sessions of mapping, the prospect of a working warp drive is *slightly more open* than at the end of Session 9 — not by a lot, but by enough to be worth noting. Slice 1's negative result for full WEC under single-mode axisymmetric shifts is unchanged; the Fell-Heisenberg multi-mode follow-up achieves 99% full-WEC pass with a clean residual ~1% region whose minimisability is now the project's most interesting open question. The honest summary in [`LANDSCAPE_SYNTHESIS.md`](LANDSCAPE_SYNTHESIS.md) §7 is *"the no-go is robust within its assumptions; positive-energy claims outside the slice exist but are subject to interpretive challenges; one specific multi-mode construction has come closer than expected to the no-go's edge."*

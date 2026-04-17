@@ -85,9 +85,11 @@ This requires building a 4th-order field-equation solver and is significantly mo
 
 **Updated narrowing of load-bearing assumptions** (after all six slices):
 
+**Canonical post-Phase-2C table** (this is the authoritative version; mirrored in [`NAVIGATOR.md`](NAVIGATOR.md)):
+
 | Sub-assumption | Status (Slices 1-6) |
 |---|---|
-| Single-mode axisymmetric shift | Slice 1: not load-bearing within tested family. Fell-Heisenberg 2021 may break this with multi-mode. |
+| Single-mode axisymmetric shift | Slice 1: not load-bearing within tested family. Fell-Heisenberg 2021 may break this with multi-mode (Session 10 follow-up — see [`FELL_HEISENBERG2021_EVALUATION.md`](FELL_HEISENBERG2021_EVALUATION.md) when present). |
 | Single-bump matter perturbation cancellation | Slice 2: not load-bearing |
 | Steady-state metric + Lorentz boost | Slice 3: not load-bearing |
 | Pfenning-Ford-style tight QI bound | Slice 4: substantively weakened by Krasnikov 2003 |
