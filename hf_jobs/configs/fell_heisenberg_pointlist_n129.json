@@ -1,0 +1,9 @@
+{
+  "_comment": "Scalar config for --points dispatch at Npts=129 (Task 2D.5d convergence test). Per-point parameters come from a points file (CSV/parquet/JSON); this config provides Npts, L, Pi, V (single-value axis) which are merged into each point. Used with: hf jobs run ... --points pointlist_5d.csv.",
+  "L": 12.0,
+  "Npts": 129,
+  "Pi": 0.25,
+  "axes": {
+    "V": {"lo": 1.0, "hi": 1.0, "n": 1, "scale": "linear"}
+  }
+}
