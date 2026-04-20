@@ -198,24 +198,28 @@ This **strictly subsumes the Slice-1 negative result** ([`SHIFT_FAMILIES_NOTES.m
 
 ## §5 Recommended next steps
 
-In rough priority order, with effort estimates per session.
+In rough priority order, with effort estimates per session. The first two are **cheap, high-signal, and should be done immediately** — both are zero-additional-compute and re-use existing data.
 
-1. **Higher-order energy condition tests** (1 session, no new compute). Does the strict full DEC pass survive replacing the principal-pressure eigvalsh test with a more conservative sum-of-pressures formulation? Does the SEC pass anywhere in the WEC+DEC region?
+1. **Connectivity and topology of the WEC+DEC-passing region** (1 session, no new compute — re-analyses the existing parquet). Are the 1404 strict-pass points a single connected manifold in $(\sigma, m_0, a, \ell, r)$-space, or several disconnected islands? If connected, characterise the boundary surface — does the slack vanish smoothly, suggesting a closed-form sub-family lurks at the boundary? Does the region respect any obvious group action on the parameters? **An analytic sub-family — derived in closed form rather than discovered by sweep — is substantially more defensible in peer review than "we swept and found 1404 hits."** Connectivity analysis is the prerequisite for finding such a sub-family. Method: 2D pairwise projections of the strict-pass subset, connected-component analysis on the discrete sweep grid (treating grid neighbours as edges), boundary-cell extraction. If the existing grid is too coarse to resolve the region's shape, dispatch a denser refinement sweep at the band centre $(\sigma, m_0, a, \ell, r) \in [4, 10] \times [2.5, 3.5] \times [0.05, 0.5] \times [2, 8] \times [4, 9]$ at Npts=65 (~5K points, ~$0.50 of HF Jobs). **ROADMAP Task 2D.5.**
 
-2. **Horizon and CTC analysis** (1-2 sessions, mostly analytic). For the canonical $(V, \sigma, m_0, a, \ell, r)$ at the WEC+DEC band centre, compute:
-   - The norm of $\partial_t$ — does it stay timelike everywhere? If not, the foliation breaks down where the shift is "too superluminal."
-   - The expansion scalar of outward null geodesics — does the foliation contain trapped surfaces?
-   - Closed timelike curves — apply the Everett-Roman 1997 §4 test (CTCs in any single-bubble warp metric require stationarity + a closed orbit; the FH bubble is single, static, simply-connected).
+2. **Pointwise lapse-shift ratio as cheap horizon test** (<0.1 session, zero compute). Compute $|\vec{N}(x, y, z)| / \alpha(x, y, z)$ on the 3D grid for a representative WEC+DEC-passing winner. With unit lapse $\alpha = 1$, this reduces to $|\vec{N}|$ pointwise. Threshold: if $|\vec{N}| < 1$ everywhere, the $t = \text{const}$ foliation is spacelike and **no horizon exists, full stop**. If $|\vec{N}| \ge 1$ somewhere, that's exactly the locus to investigate further for trapped-surface formation. Do this **as the very first sub-step of step 3 below** — cheap filter that may eliminate the need for full horizon analysis. Note that at the top WEC+DEC point we already know $|\vec{N}|_{\max} = 18.6$ in the 7³ central cube, so the test at that point will return "horizon exists" immediately; the question is *where* the $|\vec{N}| = 1$ surface lies and whether the $|\vec{N}| \le 1$ subregion is by itself the genuinely-warp-respecting subset, with the central superluminal core being separately a horizon-bounded region. **ROADMAP Task 2D.6.**
 
-3. **Identify the source matter sector** (1 session, lit-hard). Given $T_{\mu\nu}^{\rm FH}$, ask: what classical matter satisfies the same anisotropic stress profile? The eigenvalues of $S_{ij}$ tell us $\rho, p_1, p_2, p_3$ as a field on the box. Is this realisable as a perfect fluid? Anisotropic fluid? Plasma? Reverse-engineer in the Bobrick-Martire 2021 §III taxonomy.
+3. **Horizon and CTC analysis** (1-2 sessions, mostly analytic; gated by step 2). For the canonical $(V, \sigma, m_0, a, \ell, r)$ at the WEC+DEC band centre, compute:
+   - The norm of $\partial_t$ pointwise — does it stay timelike everywhere? (Step 2 sharpens this: $|\vec{N}| < 1$ ⇒ yes; $|\vec{N}| \ge 1$ ⇒ horizon present, find its surface.)
+   - The expansion scalar of outward null geodesics — does the foliation contain trapped surfaces, and where?
+   - Closed timelike curves — apply the Everett-Roman 1997 §4 test (CTCs in any single-bubble warp metric require stationarity + a closed orbit; the FH bubble is single, static, simply-connected, so the CTC test is expected to be clean — but should be confirmed). **ROADMAP Task 2D.7.**
 
-4. **Multi-bubble Everett-Roman CTC test** (1 session). Two FH bubbles in opposite directions: do they form CTCs the way Krasnikov tubes do? If yes, we have the same restriction as Slice 4: the *infrastructure* for transport is causally pathological even though each bubble is locally fine.
+4. **Higher-order energy condition tests** (1 session, no new compute). Does the strict full DEC pass survive replacing the principal-pressure eigvalsh test with a more conservative sum-of-pressures formulation? Does the SEC pass anywhere in the WEC+DEC region?
 
-5. **Asymptotic-matching analysis** (1 session). Match the FH bubble interior to a Schwarzschild or Minkowski exterior at the box edge. Does the matching require a negative-energy Israel junction? If yes, the WEC+DEC pass is incomplete — it's the bubble interior that respects the conditions, but the boundary still needs exotic matter. (This is the "smuggling" objection that several Path 2A tests had to defend against.)
+5. **Identify the source matter sector** (1 session, lit-hard). Given $T_{\mu\nu}^{\rm FH}$, ask: what classical matter satisfies the same anisotropic stress profile? The eigenvalues of $S_{ij}$ tell us $\rho, p_1, p_2, p_3$ as a field on the box. Is this realisable as a perfect fluid? Anisotropic fluid? Plasma? Reverse-engineer in the Bobrick-Martire 2021 §III taxonomy. **ROADMAP Task 2D.9.**
 
-6. **Re-run the sweep at $L = 24$** (~$2 of HF Jobs). Doubles the box and tests whether the FH "tail" (which the sweep cuts off at $r = 9$ in $L = 12$) actually decays asymptotically or contains negative-energy contributions outside the current box.
+6. **Multi-bubble Everett-Roman CTC test** (1 session). Two FH bubbles in opposite directions: do they form CTCs the way Krasnikov tubes do? If yes, we have the same restriction as Slice 4: the *infrastructure* for transport is causally pathological even though each bubble is locally fine. **ROADMAP Task 2D.10.**
 
-7. **Independent re-implementation** (1-2 sessions). Replicate the result in a second pipeline (e.g. SymPy + LAPACK in a different language, or a Mathematica xAct verification) to rule out a systematic finite-difference bug in our specific stencil-of-stencils Hessian-of-Hessian computation. This is the highest-value cheap check before any external claim is made.
+7. **Asymptotic-matching analysis** (1 session). Match the FH bubble interior to a Schwarzschild or Minkowski exterior at the box edge. Does the matching require a negative-energy Israel junction? If yes, the WEC+DEC pass is incomplete — it's the bubble interior that respects the conditions, but the boundary still needs exotic matter. (This is the "smuggling" objection that several Path 2A tests had to defend against.) **ROADMAP Task 2D.10.**
+
+8. **Re-run the sweep at $L = 24$** (~$2 of HF Jobs). Doubles the box and tests whether the FH "tail" (which the sweep cuts off at $r = 9$ in $L = 12$) actually decays asymptotically or contains negative-energy contributions outside the current box.
+
+9. **Independent re-implementation** (1-2 sessions). Replicate the result in a second pipeline (e.g. SymPy + LAPACK in a different language, or a Mathematica xAct verification) to rule out a systematic finite-difference bug in our specific stencil-of-stencils Hessian-of-Hessian computation. **ROADMAP Task 2D.8.**
 
 ---
 
