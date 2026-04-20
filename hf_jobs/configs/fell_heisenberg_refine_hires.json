@@ -1,0 +1,14 @@
+{
+  "_comment": "Stage-2 refine grid re-run at higher resolution Npts=97 (vs original Npts=65). Same axes as fell_heisenberg_refine.json. Pushes the discretization noise floor on dec_slack_min from ~5e-4 to ~5e-5 absolute, letting the boundary classifier reach near-100% CV accuracy IF the boundary surface is genuinely a degree-3 polynomial. Tests Task 2D.5c hypothesis. ~10080 points * ~6 sec/pt at Npts=97 / 16 cores ~ 63 min on cpu-xl, ~$1.05.",
+  "L": 12.0,
+  "Npts": 97,
+  "Pi": 0.25,
+  "axes": {
+    "V":     {"lo": 1.0,  "hi": 1.0,  "n": 1, "scale": "linear"},
+    "sigma": {"lo": 4.0,  "hi": 10.0, "n": 7, "scale": "linear"},
+    "m0":    {"lo": 2.3,  "hi": 3.7,  "n": 8, "scale": "linear"},
+    "a":     {"lo": 0.05, "hi": 0.5,  "n": 6, "scale": "log"},
+    "ell":   {"lo": 2.0,  "hi": 8.0,  "n": 5, "scale": "linear"},
+    "r":     {"lo": 4.0,  "hi": 9.0,  "n": 6, "scale": "linear"}
+  }
+}

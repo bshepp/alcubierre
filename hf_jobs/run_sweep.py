@@ -73,19 +73,83 @@ def _default_workers() -> int:
     return max(1, cpu - 1)
 
 
+def _load_points(points_path: Path) -> list[dict]:
+    """Load an explicit point list from CSV / parquet / JSON.
+
+    Each row / element becomes a dict that is fed directly to ``sweep.evaluate``
+    (after merging the per-point fixed scalars from ``--config`` -- see
+    ``_merge_config_defaults``).
+    """
+    suffix = points_path.suffix.lower()
+    if suffix in (".csv", ".tsv"):
+        sep = "\t" if suffix == ".tsv" else ","
+        df = pd.read_csv(points_path, sep=sep)
+        return df.to_dict(orient="records")
+    if suffix == ".parquet":
+        df = pd.read_parquet(points_path)
+        return df.to_dict(orient="records")
+    if suffix == ".json":
+        with points_path.open("r", encoding="utf-8") as fh:
+            data = json.load(fh)
+        if not isinstance(data, list):
+            raise SystemExit(f"{points_path}: JSON must be a list of objects.")
+        return data
+    raise SystemExit(
+        f"{points_path}: unsupported extension. Use .csv, .tsv, .parquet, or .json."
+    )
+
+
+def _merge_config_defaults(points: list[dict], config: dict) -> list[dict]:
+    """Merge per-point fixed scalars from the config into each point.
+
+    Two kinds of values are treated as fixed scalars and merged into each
+    point that does not already define them:
+
+    1. Top-level config keys that are NOT ``axes`` and NOT prefixed with ``_``
+       (e.g. ``Npts``, ``L``, ``Pi``).
+    2. Axes whose spec resolves to a single value (``n == 1`` or ``lo == hi``).
+       This lets a sweep config "pin" an axis (e.g. ``V`` at a single value)
+       while still being usable in --points mode.
+
+    Points already defining the key win (so a points file can override the
+    config's scalar).
+    """
+    fixed: dict = {
+        k: v for k, v in config.items()
+        if k != "axes" and not k.startswith("_")
+    }
+    # Pin single-value axes
+    axes = config.get("axes", {})
+    for name, spec in axes.items():
+        n = int(spec.get("n", 1))
+        lo = spec.get("lo")
+        hi = spec.get("hi", lo)
+        if n == 1 or lo == hi:
+            fixed.setdefault(name, lo)
+    return [{**fixed, **point} for point in points]
+
+
 def run(
     sweep_name: str,
     config_path: Path,
     out_dir: Path = SWEEPS_DIR,
     workers: int | None = None,
     limit: int | None = None,
+    points_path: Path | None = None,
 ) -> Path:
     """Execute a sweep and persist results. Returns the output parquet path."""
     sweep = _load_sweep(sweep_name)
     with config_path.open("r", encoding="utf-8") as fh:
         config = json.load(fh)
 
-    grid = sweep.build_grid(config)
+    if points_path is not None:
+        raw_points = _load_points(points_path)
+        grid = _merge_config_defaults(raw_points, config)
+        source = f"points={points_path.name}"
+    else:
+        grid = sweep.build_grid(config)
+        source = "grid=build_grid"
+
     if limit is not None:
         grid = grid[:limit]
     if not grid:
@@ -93,7 +157,7 @@ def run(
 
     workers = workers or _default_workers()
     print(
-        f"[run_sweep] sweep={sweep_name} points={len(grid)} "
+        f"[run_sweep] sweep={sweep_name} {source} points={len(grid)} "
         f"workers={workers} HF_JOB={bool(os.environ.get('HF_JOB'))}"
     )
 
@@ -142,8 +206,25 @@ def main(argv: list[str] | None = None) -> int:
         default=None,
         help="Cap the number of grid points (useful for smoke tests).",
     )
+    p.add_argument(
+        "--points",
+        type=Path,
+        default=None,
+        help=(
+            "Explicit point list (CSV / TSV / parquet / JSON) bypassing build_grid. "
+            "Each row maps to one evaluate() call. Per-point fixed scalars from --config "
+            "(e.g. Npts, L, Pi) are merged into each row that does not already define them."
+        ),
+    )
     args = p.parse_args(argv)
-    run(args.sweep, args.config, out_dir=args.out_dir, workers=args.workers, limit=args.limit)
+    run(
+        args.sweep,
+        args.config,
+        out_dir=args.out_dir,
+        workers=args.workers,
+        limit=args.limit,
+        points_path=args.points,
+    )
     return 0
 
 
