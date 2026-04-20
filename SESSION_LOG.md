@@ -647,3 +647,60 @@ The project's most-interesting-open-question (Session-10-era) has been answered:
 This is the **first time in the project's history** that any test of the energy conditions on a candidate warp metric has returned a strict positive answer. Every prior result (Slice 1 single-mode axisymmetric: 0/140; Slice 2 hybrid wall: 0/480; Task 2A.13 Krasnikov tube: 0/300; Session 10 FH single-anchor: 1.3% residual) was negative.
 
 Calibrated honestly, however, this is **a static-slice existence result, not a working warp drive**. The barriers that remain — horizons, CTCs, source matter, asymptotic matching, dynamical buildability, acceleration — are exactly the same barriers Path 2A's static result faced; they have just shifted from "we have no positive existence example" to "we have one but the dynamics are open." The §5 follow-up program in [`FELL_HEISENBERG_SWEEP_NOTES.md`](FELL_HEISENBERG_SWEEP_NOTES.md) lays out the next 4-7 sessions' worth of focused tests, in priority order. The honest one-liner project summary is now: *"the energy-condition bottleneck has a static-slice existence result; the dynamics remain the open question."*
+
+---
+
+## Session 12: 2026-04-19 — Connectivity and topology of the WEC+DEC-passing region (Task 2D.5)
+
+### Directive
+
+User-requested addition to the Session-11 follow-up plan: characterise the topology of the 1404 strict-pass points to determine whether they form a single connected region or scattered islands, and to look for an analytic sub-family hiding inside (which would be substantially more peer-review-defensible than "we swept and found hits").
+
+### What Was Accomplished
+
+**New analysis package + module:**
+- New package [`hf_jobs/analysis/`](hf_jobs/analysis/) for parquet-agnostic post-sweep analysis.
+- New module [`hf_jobs/analysis/fell_heisenberg_topology.py`](hf_jobs/analysis/fell_heisenberg_topology.py) (~360 lines) with public API: `load_strict_pass`, `grid_indices`, `connected_components` (4-conn and full-conn via `scipy.ndimage.label`), `boundary_cells`, `chebyshev_distance_to_boundary`, `project_2d`, `plot_pairwise`, `plot_boundary_2d`, `plot_slack_vs_distance`, `symmetry_probe`, `main`. Re-runnable on any future sweep parquet.
+
+**Stage 1 — analysis of existing 1404-pass parquet:**
+- All 1404 strict-pass points lie on the single grid value `m0 = 3.0` (the m0 axis collapsed to a 4-D slice in `(sigma, a, ell, r)`).
+- Single connected component (both 4-conn and full-conn) ✓
+- 234 / 320 lattice cells filled (73.1%) but only 16 interior cells / 218 boundary cells (93.2% boundary fraction)
+- Slack vanishes smoothly toward boundary in box plots (no cliff)
+- Symmetry probe contaminated by m0=3 grid restriction (`m0 ± a` looks invariant only because m0 is fixed)
+- Two Stage-2 trigger criteria from the plan fire: **boundary fraction > 40%** and **m0-dimension info-loss**
+
+**Stage 2 — refinement sweep (10080 pts at the band centre):**
+- New config [`hf_jobs/configs/fell_heisenberg_refine.json`](hf_jobs/configs/fell_heisenberg_refine.json): `V=1` (amplitude-redundant per Session 11 §2.4), `sigma in [4,10]` (7 pts), `m0 in [2.3,3.7]` (8 pts densifying the band centre), `a in [0.05,0.5] log` (6 pts), `ell in [2,8]` (5 pts), `r in [4,9]` (6 pts).
+- Dispatched HF Jobs job `69e5a90dcd8c002f31dffd2d` on cpu-xl, 37-min wall, ~$0.65, completed cleanly.
+- Result: **5334 / 10080 (52.9%) achieve strict full WEC + DEC** — a single connected component in 5-D; 648 interior cells (12.1%), 4686 boundary cells.
+- Symmetry probe (now uncontaminated): tightest invariants are `m0 ± a` (spread/mean = 0.13-0.14) and `r/m0`, `r/sqrt(sigma)` (both 0.28). Bounded but not constant. **No clean low-order analytic sub-family identified** at the resolution of this sweep.
+- Slack vanishes smoothly toward boundary in the refine sweep too — signature of an analytic boundary surface.
+
+**Documentation:**
+- [`FELL_HEISENBERG_SWEEP_NOTES.md`](FELL_HEISENBERG_SWEEP_NOTES.md) §7 (new, ~80 lines) — full Stage 1 + Stage 2 results, leaderboard, slack-vs-distance, symmetry probe, analytic-sub-family verdict.
+- 4 figures + summary JSON + boundary CSV in [`fell_heisenberg_topology/`](fell_heisenberg_topology/).
+- [`ROADMAP.md`](ROADMAP.md): Task 2D.5 marked complete with summary; new optional follow-up Task 2D.5b proposed (higher-order analytic surface fitting on the boundary cells).
+- [`NAVIGATOR.md`](NAVIGATOR.md): last-updated tag, headline summary, load-bearing-assumptions table, open leads (2D.5 retired, 2D.5b added at #2 priority), document index.
+
+### Decisions Made
+
+1. **The WEC+DEC-passing region is a single connected smooth-boundaried 5-D manifold** (not several islands, not a measure-zero curve). This is the next-best thing to an analytic sub-family for peer-review purposes.
+2. **No clean low-order closed-form sub-family was identified** at this sweep resolution. Tightest dimensionless invariants (`m0 ± a` at spread/mean = 0.13) are bounded but not constant. Higher-order surface fitting (Task 2D.5b) might surface a hidden invariant; left as an optional follow-up.
+3. **The refine sweep's grid extends past the WEC+DEC peak** — the leaderboard's top 50 all sit at the corner `(sigma, m0, r) = (10, 3.7, 9)`. The optimum extends *beyond* the refine grid's upper bounds. The existence claim is established; the precise optimum is open.
+4. **The combined-parquet analysis is not statistically meaningful** because the union of two disjoint regular grids is not itself a regular grid (5 components under full-conn, 293 under 4-conn — fragmentation artifact). Topology should always be analysed on a single regular-grid parquet.
+5. **The honest project summary is unchanged** from end-of-Session-11: the static-slice positive existence has now been *characterised* as a single connected manifold, but the dynamical-buildability questions remain the open frontier.
+
+### Open Items Entering Next Session
+
+- [ ] **Task 2D.6** (lapse-shift ratio horizon test) — *now top priority*, <0.1 session, zero compute.
+- [ ] **Task 2D.5b** (higher-order analytic surface fitting on the 4686 boundary cells) — optional, 1 session, no compute.
+- [ ] **Task 2D.7** (full horizon + CTC analysis) — gated by 2D.6.
+- [ ] **Task 2D.8-2D.10** (independent re-implementation, source-matter, asymptotic matching) — Session-11-defined.
+- [ ] **Update [`LANDSCAPE_SYNTHESIS.md`](LANDSCAPE_SYNTHESIS.md)** with the Session-11 + Session-12 result. Still pending from end-of-Session-11.
+
+### Conceptual State at End of Session 12
+
+The Session-11 positive-existence result is now **characterised topologically**: the strict WEC+DEC-passing configurations form a single connected smooth-boundaried 5-D manifold of positive measure in $(\sigma, m_0, a, \ell, r)$-space. The boundary surface is smooth (slack vanishes continuously, no cliff). No clean low-order analytic sub-family was identified at this resolution, but the smooth-boundary observation is consistent with one existing at higher order.
+
+This strengthens the Session-11 result's defensibility from "1404 sweep hits" to "a positive-measure connected smooth-boundaried region with characterised topology." The honest one-liner project summary is unchanged: *"the energy-condition bottleneck has a static-slice existence result with characterised positive-measure structure; the dynamics remain the open question."*

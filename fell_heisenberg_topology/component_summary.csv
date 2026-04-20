@@ -1,2 +1,2 @@
-component_id,size,sigma_min,sigma_max,a_min,a_max,ell_min,ell_max,r_min,r_max,dec_slack_min_min,dec_slack_min_max,central_N_max_min,central_N_max_max
-1,1404,4.0,10.0,0.05000000000000001,0.47287080450158797,2.0,8.0,4.0,9.0,5.499991814510359e-07,0.018705076388473872,0.7342394651980074,18.602829462847478
+component_id,size,sigma_min,sigma_max,m0_min,m0_max,a_min,a_max,ell_min,ell_max,r_min,r_max,dec_slack_min_min,dec_slack_min_max,central_N_max_min,central_N_max_max
+1,5334,4.0,10.0,2.3,3.7,0.05000000000000001,0.49999999999999994,2.0,8.0,4.0,9.0,4.5601183238925917e-07,0.015378306646758053,4.860959274099545,16.324870055733353
