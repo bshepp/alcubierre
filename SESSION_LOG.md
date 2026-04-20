@@ -762,3 +762,73 @@ The polynomial-fit story is **refined, not refuted**. The boundary $\partial\mat
 The Session-11 positive-existence and Session-12 connectivity results both survive the higher-resolution test cleanly. What the Session 13 result corrects is the **size estimate** of the strict-pass region (28% larger than Npts=65 reported) and the **claimed polynomial degree** of its boundary (4-5 not 3). For peer-review-defensibility purposes, this is a strengthening — we now have a resolution-converged dataset at Npts=97, a quantified Npts=65→97 drift breakdown showing where the lower-resolution data was reliable vs not, a documented path to the closed-form analytic boundary equation (Hard Fix, §8), and a new piece of reusable infrastructure (`--points` dispatch mode) for future targeted sweeps.
 
 Project one-liner unchanged: *"the energy-condition bottleneck has a static-slice existence result with characterised positive-measure structure; the dynamics remain the open question."*
+
+---
+
+## Session 14: 2026-04-20 — Tasks 2D.6 (lapse-shift horizon test) and 2D.5b (polynomial boundary extraction); the warp-drive interpretation gets brutally tempered
+
+### Directive
+
+User went to sleep with: "Please try and continue. If you don't get a response from me use your best judgement." Per the post-Session-13 NAVIGATOR open-leads list, the highest-signal-per-effort tasks were 2D.6 (cheap horizon test, <0.1 session, zero compute) and 2D.5b (polynomial boundary extraction, 1 session, zero compute). Both selected as Phase 1 + Phase 2 of an autonomous run.
+
+### What Was Accomplished
+
+#### Phase 1 — Task 2D.6: lapse-shift / foliation-health analysis
+
+New module [`hf_jobs/analysis/fell_heisenberg_horizon.py`](hf_jobs/analysis/fell_heisenberg_horizon.py) (~280 lines) computes the shift field $|\vec{N}|(x, y, z)$ on a 3D box for a representative WEC+DEC-passing winner, locates the $|\vec{N}| = 1$ surface, and characterises (i) the superluminal-region geometry, (ii) the connected $|\vec{N}| < 1$ region containing the origin (the "passenger zone"), (iii) the foliation-healthy fraction of the box.
+
+**Critical finding that significantly tempers Session 11**: every WEC+DEC-passing FH configuration tested has the geometry "$|\vec{N}| \approx 0$ at the origin only, $|\vec{N}| \sim 15$ throughout the rest of the box." The passenger zone is a single grid cell at every WEC+DEC-passing point — apparent radius scales **exactly as $h/2$** under refinement (Npts=49→65→81→97→129 confirmed), so the true continuum volume is **zero**.
+
+V-scan on canonical params $(\sigma=10, m_0=3, a=0.05, \ell=4, r=9)$ found a sharp foliation-health cliff at $V_{\rm crit} \approx 0.09$:
+- $V \le 0.08$: $|\vec{N}|_{\max} < 1$ everywhere — entire box subluminal, healthy foliation, but **no warp drive** (peak shift below $c$).
+- $V \ge 0.10$: $|\vec{N}|_{\max} > 1$ throughout almost the entire box, passenger zone collapses to a single cell. **Passenger volume drops 5 orders of magnitude across the threshold.**
+
+Outputs: 5 foliation-health plots, V-scan plot, summary JSON, leaderboard CSV in [`fell_heisenberg_horizon/`](fell_heisenberg_horizon/). New section §9 (~110 lines) added to [`FELL_HEISENBERG_SWEEP_NOTES.md`](FELL_HEISENBERG_SWEEP_NOTES.md).
+
+This is the **most significant tempering of the Session 11 result so far**. The energy-condition bottleneck is solved (positive-energy WEC+DEC-respecting metric exists), but the warp-drive interpretation is degraded substantially: there is no extended interior region for a passenger, only a single calm point at the centre of an otherwise uniformly superluminal box. The acceleration / propulsion question becomes partially moot since there is nothing to propel.
+
+#### Phase 2 — Task 2D.5b: polynomial boundary extraction
+
+New module [`hf_jobs/analysis/fell_heisenberg_boundary_eq.py`](hf_jobs/analysis/fell_heisenberg_boundary_eq.py) (~270 lines) fits logistic regression of pass/fail vs polynomial features (no regularisation) at degrees 3-5, extracts coefficients, tests hand-crafted sparse models, runs an L1-sparse path. Outputs in [`fell_heisenberg_topology_hires/`](fell_heisenberg_topology_hires/): `boundary_eq_summary.json`, `degree4_surviving_terms.csv`, `thresholding_effect.png`.
+
+**Findings**:
+- Degree-4 polynomial reaches **99.98% in-sample binary classification accuracy** (Npts=97 data) with 125 features.
+- **121 of 125 features survive a 1%-of-max coefficient threshold** — the polynomial is dense, not sparse.
+- L1-sparse experiment: minimum useful sparse model needs ~30 nonzero terms (97% accuracy). Hand-crafted sparse models (5-16 hand-picked features) plateau at 90-95%.
+- Top-12 dominant terms show interpretive but not algebraic patterns (`+a*ell`, `+sigma^2`, `+a^2*ell`, `-a`, `+r^2`, `+ell`, `-a*ell^2`, `+r^3`, `-a*r^2`, `+sigma^2*ell`, `-sigma^2*a`, `+m0^3`).
+
+**Verdict**: there is no clean low-term sparse closed-form representation. The polynomial-fit programme has reached its useful endpoint. **Task 2D.5e (Hard Fix: symbolic extraction of the transcendental closed-form boundary) is now PROMOTED from "deferred" to "active medium-priority"** — its promotion criterion §8.5.1 ("polynomial fit yields unphysical-looking coefficients that resist all symbolic simplification attempts") is now met.
+
+New section §10 (~110 lines) added to [`FELL_HEISENBERG_SWEEP_NOTES.md`](FELL_HEISENBERG_SWEEP_NOTES.md).
+
+#### Documentation updates
+
+- [`FELL_HEISENBERG_SWEEP_NOTES.md`](FELL_HEISENBERG_SWEEP_NOTES.md): new sections §9 (foliation health) and §10 (polynomial extraction), totaling ~220 lines.
+- [`ROADMAP.md`](ROADMAP.md): Tasks 2D.5b and 2D.6 marked complete with summaries; Task 2D.5e promoted from deferred; new Task 2D.11 (vorticity-augmented FH ansatz) added.
+- [`NAVIGATOR.md`](NAVIGATOR.md): last-updated tag, headline rewritten with "all wall, no interior" caveat, load-bearing-assumptions table updated, open leads completely reordered (Task 2D.11 at #1, Task 2D.5e Hard Fix promoted to #2; 2D.5b and 2D.6 retired to "completed" footer), document index updated with new directories.
+
+### Decisions Made
+
+1. **The Session 11 "static-slice existence" claim survives mathematically but is qualified substantially**. We have a positive-energy stationary metric satisfying WEC+DEC pointwise, but the natural foliation contains a horizon throughout almost the entire box, and there is no extended interior region a passenger could occupy. This is now the honest claim.
+2. **The "energy-condition bottleneck" framing was always under-determined.** The real question for warp drives is "extended foliation-healthy interior", not "WEC+DEC pointwise". The new top open question is whether *any* irrotational-shift ansatz (FH or otherwise) can avoid this, or if it's structural to $\nabla \times \vec{N} = 0$.
+3. **Vorticity-augmented FH ansatz (Task 2D.11) is the new top open lead.** Generalising to $\vec{N} = \nabla \phi + \vec{\nabla} \times \vec{A}$ is the natural test — non-trivial new symbolic infrastructure but conceptually clear.
+4. **Hard Fix (Task 2D.5e) is promoted.** With polynomial-fit reaching its limit, symbolic extraction is now the cleanest path to a concise interpretable boundary equation. 3-5 sessions of SymPy work.
+5. **Tasks 2D.7 (full horizon analysis) and 2D.10 (asymptotic matching) are partially obsolete** after §9 — the headline answers are already known. They remain on the roadmap for completeness but are demoted in priority.
+
+### Open Items Entering Next Session
+
+- [ ] **Task 2D.11** (vorticity-augmented FH ansatz) — *new top priority*, 3-5 sessions of new symbolic + numerical infrastructure.
+- [ ] **Task 2D.5e** (Hard Fix: symbolic boundary extraction) — promoted to active medium-priority, 3-5 sessions of SymPy.
+- [ ] **Task 2D.5d** (Npts=129 convergence test on subset, ~$0.20) — cheap, adds confidence.
+- [ ] Tasks 2D.7, 2D.8, 2D.9, 2D.10, others — see updated [`NAVIGATOR.md`](NAVIGATOR.md) ranked list.
+
+### Conceptual State at End of Session 14
+
+The Session 11-13 mathematical existence result (positive-energy WEC+DEC-respecting static metric, characterised topology, polynomial boundary surface) survives intact. What's been added is a brutal physical caveat: **the "warp drive" we found has zero-volume interior**.
+
+This is the kind of finding that could be embarrassing to publish without — and it was found by a cheap test (one numpy gradient + a connected-component label) that took ~30 minutes of analysis time after the user retired for the night. The honest project trajectory is now:
+- Mathematical claim (intact): there exists a positive-energy stationary metric satisfying full WEC and DEC pointwise in standard 4D GR, with characterised positive-measure parameter region in the FH ansatz.
+- Physical claim (substantially weakened): the metric has the shape of a warp bubble (calm centre + uniform asymptotic background) but lacks the extended interior region needed to carry a passenger.
+- New open question: does relaxing the irrotational constraint recover an extended interior?
+
+Project one-liner revised: *"the energy-condition bottleneck has a static-slice existence result with characterised positive-measure structure, but the foliation-extent bottleneck (extended interior) is unsolved within irrotational-shift ansätze; the natural next step is to test vorticity-augmented ansätze."*
