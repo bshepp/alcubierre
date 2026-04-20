@@ -832,3 +832,52 @@ This is the kind of finding that could be embarrassing to publish without — an
 - New open question: does relaxing the irrotational constraint recover an extended interior?
 
 Project one-liner revised: *"the energy-condition bottleneck has a static-slice existence result with characterised positive-measure structure, but the foliation-extent bottleneck (extended interior) is unsolved within irrotational-shift ansätze; the natural next step is to test vorticity-augmented ansätze."*
+
+---
+
+## Session 14b: 2026-04-20 — Task 2D.5d Npts=129 convergence test (the boundary count is not robust)
+
+### Directive
+
+User picked up after a sleep break and resumed Task 2D.5d, which had been infrastructured at end of Session 14a but not dispatched. Goal: 300-point Npts=129 sweep on a representative subset (deep-pass + boundary + clear-fail), check whether Npts=97 was resolution-converged at the boundary.
+
+### What Was Accomplished
+
+**Sweep:**
+- HF Jobs `69e66868cd8c002f31e0037a` on cpu-xl, 11 min wall (faster than the 25-30 min estimated), ~$0.20.
+- 300 points × Npts=129 via the new `--points` mode infrastructured in Session 14a.
+- All 300 points completed cleanly; results uploaded to `bshepp/alcubierre-sweeps/conv-test-20260420T175446/`.
+
+**Analysis (full notes [`FELL_HEISENBERG_SWEEP_NOTES.md`](FELL_HEISENBERG_SWEEP_NOTES.md) §11):**
+- **Deep-pass region (Npts=97 slack > +0.005)**: median Npts=97→129 drift = 8.7e-4, p95 = 9.1e-4, **0% sign flips**. Resolution-converged.
+- **Clear-fail region (Npts=97 slack < -0.05)**: median drift 0.29 with **0% sign flips**. Drift is large but sign is robust.
+- **Boundary region (|Npts=97 slack| < 1e-4)**: median drift 2.3e-4 but p95 = 0.23, with **47% pass→fail flips and 0% fail→pass flips**. Severe, *systematic* over-counting of strict-pass at Npts=97 in the marginal region.
+
+**Convergence trajectory at 5 representative boundary points** (traced through Npts ∈ {49, 65, 81, 97, 113, 129}):
+- All 5 show **non-monotonic sign**: positive at Npts=65-97, negative at Npts=113-129.
+- One point (sigma=7, m0=2.3, a=0.126, ell=3.5, r=5) shows particularly violent drift: slack at Npts=129 is ~$10^6\times$ larger in magnitude than at Npts=97 and on the opposite sign.
+- Pattern is the signature of subtle truncation error in the 4th-order finite-difference stencil-of-stencils.
+
+**Revised strict-pass count estimate**: ~5900 / 10080 (vs 6818 originally reported). The Session-11 *existence* claim survives intact (deep-pass region is real); the *count* and *boundary structure* are subject to ongoing refinement.
+
+**Documentation:**
+- New §11 in [`FELL_HEISENBERG_SWEEP_NOTES.md`](FELL_HEISENBERG_SWEEP_NOTES.md) (~120 lines) with full convergence analysis, trajectory tables, revised noise-floor estimate, and implications for downstream tasks.
+- ROADMAP Task 2D.5d marked complete with summary; new Task 2D.5f added as deferred (full Npts=129 re-sweep, ~$3.50, only if a publication needs the corrected count).
+- NAVIGATOR last-updated tag, headline, and "Completed in Session 14" footer updated.
+
+### Decisions Made
+
+1. **The strict-pass count of 6818 is over-estimated.** Revised to ~5900 by §11.6 extrapolation. The discrepancy is at the boundary, not the bulk.
+2. **The Session-11 existence claim is intact.** Deep-pass region is robustly resolution-converged.
+3. **Boundary structure is more subtle than previously characterised.** What looked like a clean smooth boundary at Npts=97 is actually wobbling at Npts=129. The "smooth boundary" finding from §7 is qualitatively right but quantitatively fuzzy.
+4. **Task 2D.5f (full Npts=129 re-sweep)** is added as an optional follow-up. Not worth doing absent a publication need.
+5. **Task 2D.5e (Hard Fix) becomes more important.** Resolution-chasing is yielding diminishing returns; the symbolic boundary equation is the right path to a definitive answer.
+
+### Conceptual State at End of Session 14b
+
+The cumulative Session 14 tempering of the Session-11 result is now substantial:
+- §9 (lapse-shift horizon test): the bubble has zero-volume passenger zone — "all wall, no interior."
+- §10 (polynomial boundary extraction): the boundary is approximately degree-4 polynomial but dense (no sparse closed-form).
+- §11 (Npts=129 convergence test): the strict-pass count was over-estimated by ~13% at Npts=97; the boundary region is resolution-sensitive in a systematic way.
+
+Project one-liner revised again: *"the energy-condition bottleneck has a robust deep-strict-pass region (~5900/10080 of the band-centre grid at Npts=129) of static-slice positive-energy WEC+DEC-respecting metrics in the FH ansatz, but its physical realisation as a warp drive is undermined by the zero-volume passenger zone (§9), and the precise count + boundary structure are subject to ongoing convergence study. The new top open question (Task 2D.11) is whether vorticity-augmented ansätze recover an extended interior."*

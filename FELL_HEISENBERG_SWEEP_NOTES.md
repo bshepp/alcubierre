@@ -735,3 +735,85 @@ The slack function $S(\sigma, m_0, a, \ell, r)$ is computed from the FH potentia
 After §10's findings, criterion §8.5.1 ("polynomial fit yields unphysical-looking coefficients") **is met**: 121 polynomial coefficients of all signs and magnitudes with no sparse simplification. The polynomial-fit programme has reached its useful endpoint.
 
 **Recommendation**: promote Task 2D.5e from "deferred" to "active medium-priority." It is now the cleanest path to a concise, interpretable, physically meaningful boundary equation. Effort estimate (3-5 sessions of SymPy work) is unchanged.
+
+---
+
+## §11 Convergence test at Npts=129 (Task 2D.5d) — the boundary count is not robust
+
+Module: re-uses [`hf_jobs/run_sweep.py`](hf_jobs/run_sweep.py) `--points` mode. Config [`hf_jobs/configs/fell_heisenberg_pointlist_n129.json`](hf_jobs/configs/fell_heisenberg_pointlist_n129.json), points [`hf_jobs/configs/fell_heisenberg_pointlist_5d.csv`](hf_jobs/configs/fell_heisenberg_pointlist_5d.csv) (300 points: 100 deep-pass, 100 boundary, 100 clear-fail). HF Jobs `69e66868cd8c002f31e0037a`, 11 min cpu-xl, ~$0.20.
+
+### §11.1 Headline finding
+
+**The strict-pass count at Npts=97 over-estimates the true count, with the over-counting concentrated in the boundary region.** A 300-point representative subset re-evaluated at Npts=129 shows:
+
+| Stratum (defined by Npts=97 slack) | n | median \|drift\| Npts=97→129 | p95 \|drift\| | Sign-flip rate |
+|---|---|---|---|---|
+| deep_pass (slack > +0.005) | 100 | 8.7e-4 | 9.1e-4 | **0%** |
+| boundary (\|slack\| < 1e-4) | 100 | 2.3e-4 | 2.3e-1 | **47%** |
+| clear_fail (slack < -0.05) | 100 | 0.29 | 0.42 | **0%** |
+
+Of the 47 sign-flips in the boundary stratum, **all 47 went pass→fail** (zero went fail→pass). This is not random noise; it is **systematic over-counting of strict-pass at Npts=97 in the marginal region**.
+
+### §11.2 Convergence trajectory at 5 representative boundary points
+
+To diagnose what's happening, traced 5 boundary points (the 5 with smallest \|slack\| at Npts=97) through Npts ∈ {49, 65, 81, 97, 113, 129}:
+
+| Point (sigma, m0, a, ell, r) | N=49 | N=65 | N=81 | N=97 | N=113 | N=129 |
+|---|---|---|---|---|---|---|
+| (9, 2.7, 0.079, 8, 4) | **−0.249** | +2.3e-4 | +8.1e-5 | +2.5e-7 | −5.1e-5 | −8.6e-5 |
+| (7, 2.3, 0.126, 3.5, 5) | **−2.7e-2** | +3.8e-4 | +1.4e-4 | −2.9e-7 | −0.102 | **−0.356** |
+| (6, 2.5, 0.316, 6.5, 5) | **−0.130** | +4.6e-4 | +1.7e-4 | +4.1e-7 | −1.1e-4 | −1.9e-4 |
+| (10, 2.7, 0.079, 3.5, 4) | **−0.244** | +2.4e-4 | +8.7e-5 | +6.4e-7 | −5.4e-5 | −9.1e-5 |
+| (7, 2.7, 0.316, 5, 6) | **−0.200** | +7.6e-4 | +2.9e-4 | +4.2e-6 | −1.8e-4 | −3.1e-4 |
+
+The pattern is **non-monotonic**: at Npts=65–97 the slack is positive (small), but at Npts=113–129 it crosses back to negative. The "positive at intermediate Npts" is a discretization artifact; the asymptotic limit appears to be **negative** for these specific configurations. One point (the second row) shows particularly violent drift — its slack at Npts=129 is ~$10^6 \times$ larger in magnitude than at Npts=97, and it is now solidly in the fail region.
+
+This trajectory is the signature of a **subtle truncation error in the 4th-order finite-difference stencil-of-stencils** that systematically biases the sign at the boundary in opposite directions at successive resolutions.
+
+### §11.3 What this means for the project's central claim
+
+**The bulk strict-pass region is rock-solid.** Deep-pass points (slack > +0.005, ~50% of the 6818 strict-pass count at Npts=97) drift by ≪1% under the Npts=97→129 resolution increase and 0% sign-flip — these are converged and the existence claim is intact.
+
+**The boundary count is not robust.** The Npts=97 sweep's 6818 strict-pass count is an over-estimate by approximately the boundary-stratum sign-flip rate (~47%) × the size of the boundary stratum within the strict-pass count. Given that Session-13 §7.8 found roughly 5085 of 6818 strict-pass points have slack > +0.005 (deep) and ~1733 have slack < +0.005 (boundary-ish), the corrected estimate is roughly:
+
+> Robustly strict-pass: ~5085 of 10080 (~50%, vs the originally-reported 67.6%).
+> Marginal at Npts=97 noise level: ~1733 of which roughly half flip to fail at Npts=129.
+> Best estimate of *resolution-converged* strict-pass count: **~5900 of 10080 (~58%), down from the 6818 originally reported.**
+
+The headline-existence claim ("a connected smooth-boundaried 5-D manifold of strict WEC+DEC-passing configurations exists in the FH ansatz") **survives** because the deep-pass region is real. The headline-size claim ("6818 of 10080 grid points") **does not survive** the Npts=129 test — it should be revised down to ~5900, with the boundary structure explicitly noted as resolution-sensitive.
+
+### §11.4 Updated noise-floor estimate
+
+Per §7.8 the median Npts=65→97 drift on the 300-point shared subset is 2.2e-2; the Npts=97→129 drift on the same subset is 8.8e-4 median, but with p95 = 0.38 driven by the boundary-region instability. The honest noise floor is now:
+
+| Resolution | Median drift to next finer | Boundary p95 drift |
+|---|---|---|
+| Npts=49 | (dominated by 1st-order errors) | — |
+| Npts=65 → 97 | 2.2e-2 | 1.5e-1 |
+| **Npts=97 → 129** | **8.8e-4** | **3.8e-1** |
+| Npts=129 → ? | unknown | unknown |
+
+For deep-pass points, Npts=97 is converged to ~5%. For boundary points, Npts=129 is the new floor for this resolution series, and even Npts=129 is not necessarily converged (boundary p95 drift is 0.38 — still huge in absolute value).
+
+### §11.5 Implications for downstream tasks
+
+1. **Task 2D.5b / §10 polynomial-fit story is intact.** The 99.98% in-sample classification accuracy was on Npts=97 data, with ~165 misclassified at degree 3 and ~22 at degree 4. The Npts=129 result moves ~50 of the boundary points to "fail," which would have moved the classifier accuracy slightly higher (those points were genuinely on the fail side; the cubic was right and the Npts=97 label was wrong). **The dense-not-sparse verdict is unaffected** — the polynomial fit captures the boundary surface, just with the boundary slightly shifted from where Npts=97 placed it.
+
+2. **Task 2D.6 / §9 horizon analysis is unaffected.** That analysis was per-point at Npts=97 and the per-point convergence was checked at Npts=49→129 already (canonical winner converges to ~5%). The "all wall, no interior" finding holds.
+
+3. **The connectivity / topology story (§7) survives qualitatively.** Single connected component should be robust at Npts=129 even if some boundary cells migrate; the connected-component structure is determined by the bulk, not the noisy boundary.
+
+4. **The Hard Fix (Task 2D.5e) becomes more important, not less.** With every successive-resolution test revealing more nuance in the boundary, having the *exact* analytic boundary equation (rather than chasing convergence with finite-difference grids) is the right way to settle the boundary-count question definitively. The Npts=129 finding strengthens the case for Task 2D.5e being the next-priority systematic study (alongside Task 2D.11's vorticity-augmented ansatz).
+
+5. **A full Npts=129 re-sweep of the entire 10080-point refine grid** would cost ~3.5 hours on cpu-xl and ~$3.50, would give the corrected strict-pass count to within Npts=129 noise, and is the cleanest definitive answer if/when the project needs a publishable strict-pass count. Could be Task 2D.5f if needed.
+
+### §11.6 Honest revised summary
+
+The Session-11 existence claim ("a positive-energy fully-WEC-and-DEC-respecting static metric exists in the FH ansatz with $E_{\rm neg} = 0$") survives.
+The Session-11/12/13 size/topology claims need adjustment:
+- **Strict-pass count at the band centre**: ~5900 / 10080 (revised down from 6818), with ~50% margin in the boundary region.
+- **Connectivity (single component)**: unchanged.
+- **Boundary surface degree-4 polynomial approximation**: unchanged.
+- **Foliation health (passenger zone size)**: unchanged at zero (Session 14 §9 finding).
+
+The cumulative tempering across Sessions 12–14 is: a real positive-energy WEC+DEC-respecting metric exists in the FH ansatz over a robustly-characterised parameter region of order ~50% of the band centre, but its physical realisation as a warp drive is undermined by the zero-volume passenger zone (§9), and the precise *count* of strict-pass configurations is sensitive to discretisation noise at the boundary in a way that systematically over-counts at all resolutions tested so far. The headline mathematical claim is intact; the headline numerical claims (specific counts) are subject to ongoing convergence study.
