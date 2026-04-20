@@ -21,6 +21,10 @@ sweeps/*.parquet
 sweeps/*.config.json
 !sweeps/.gitkeep
 
+# Local working copies of sweep results downloaded from HF Dataset
+# bshepp/alcubierre-sweeps. Re-fetchable via `hf download`.
+sweeps_remote/
+
 # Environment + secrets
 .env
 .env.*
