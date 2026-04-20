@@ -1,0 +1,14 @@
+{
+  "_comment": "Full Task 2D.4 sweep. Wider, denser grid over (V, sigma, m0, a, ell, r). 7200 raw -> ~5500 after filter (a>0, 2*m0>a, r<L-1). HF Jobs cpu-xl 16 vCPU, ~2.5-3 h, ~$2.50.",
+  "L": 12.0,
+  "Npts": 65,
+  "Pi": 0.25,
+  "axes": {
+    "V":     {"lo": 0.1,  "hi": 2.0,  "n": 6, "scale": "log"},
+    "sigma": {"lo": 1.0,  "hi": 12.0, "n": 6, "scale": "log"},
+    "m0":    {"lo": 0.5,  "hi": 4.0,  "n": 5, "scale": "linear"},
+    "a":     {"lo": 0.05, "hi": 1.0,  "n": 5, "scale": "log"},
+    "ell":   {"lo": 1.5,  "hi": 8.0,  "n": 4, "scale": "log"},
+    "r":     {"lo": 3.0,  "hi": 10.0, "n": 4, "scale": "linear"}
+  }
+}

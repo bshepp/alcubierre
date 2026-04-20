@@ -1,0 +1,14 @@
+{
+  "_comment": "Preview sweep for Task 2D.4. Grid axes chosen so the Session 10 anchor (V=0.5, sigma=4, m0=2, a=0.3, ell=4, r=6) lies exactly on the grid (linear axes), letting the local 3-point smoke test reproduce wec_pass_fraction~0.987 against the notebook. ~324 raw points, runs in ~15-20 min on HF Jobs cpu-upgrade.",
+  "L": 12.0,
+  "Npts": 49,
+  "Pi": 0.25,
+  "axes": {
+    "V":     {"lo": 0.25, "hi": 0.75, "n": 3, "scale": "linear"},
+    "sigma": {"lo": 2.0,  "hi": 6.0,  "n": 3, "scale": "linear"},
+    "m0":    {"lo": 1.0,  "hi": 3.0,  "n": 3, "scale": "linear"},
+    "a":     {"lo": 0.1,  "hi": 0.5,  "n": 3, "scale": "linear"},
+    "ell":   {"lo": 2.0,  "hi": 6.0,  "n": 3, "scale": "linear"},
+    "r":     {"lo": 4.0,  "hi": 8.0,  "n": 3, "scale": "linear"}
+  }
+}
