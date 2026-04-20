@@ -639,3 +639,99 @@ The transition is not gradual — passenger volume drops by **5 orders of magnit
 
 - **Task 2D.7 (full horizon analysis) is partially obsolete** — the cheap test already showed the foliation breaks down throughout the box at warp-drive amplitudes. The full geodesic-expansion / trapped-surface analysis would still be useful for characterising the precise causal structure, but the headline answer ("there is no significant interior") is already in.
 - **Task 2D.11 (NEW): vorticity-augmented FH ansatz.** Generalise to $\vec{N} = \nabla \phi + \vec{\nabla} \times \vec{A}$ and ask whether a non-trivial extended foliation-healthy interior is achievable while preserving WEC+DEC. Substantial new sweep direction; ~3-5 sessions of new symbolic + numerical infrastructure.
+
+---
+
+## §10 Polynomial-boundary extraction (Task 2D.5b)
+
+Implemented by [`hf_jobs/analysis/fell_heisenberg_boundary_eq.py`](hf_jobs/analysis/fell_heisenberg_boundary_eq.py); outputs in [`fell_heisenberg_topology_hires/boundary_eq_summary.json`](fell_heisenberg_topology_hires/boundary_eq_summary.json) and [`fell_heisenberg_topology_hires/degree4_surviving_terms.csv`](fell_heisenberg_topology_hires/degree4_surviving_terms.csv).
+
+**Headline finding**: the boundary surface admits a polynomial fit at high accuracy, but the fit is **dense, not sparse** — there is no clean low-term closed-form analytic sub-family.
+
+### §10.1 Setup
+
+Logistic regression of pass/fail vs `PolynomialFeatures(degree, include_bias=False)` of standardised $(\sigma, m_0, a, \ell, r)$, with effectively no regularisation ($C = 10^8$) so the fitted coefficients reflect the geometry rather than the optimiser's regularisation choice. All 10080 strict-pass-or-fail points from the Npts=97 refine sweep are used.
+
+### §10.2 Accuracy + sparsity at increasing degree
+
+| Degree | #features | In-sample acc | Surviving terms (drop $|c| < 1\%$ of max) | Thresholded acc |
+|---|---|---|---|---|
+| 3 | 55 | 99.6% | 46 / 55 | 99.3% |
+| 4 | 125 | **99.98%** | 121 / 125 | 99.96% |
+| 5 | 251 | 99.98% | 241 / 251 | 99.97% |
+
+**At every degree, almost ALL polynomial features survive the 1%-of-max threshold.** This is the opposite of the "a few dominant terms with everything else negligible" pattern that would indicate a clean sparse closed-form. The boundary is intrinsically **diffuse** in polynomial space.
+
+### §10.3 L1-sparse fit experiment
+
+To check whether sparsity is hiding behind the unregularised fit, ran logistic regression with L1 penalty at varying regularisation strength $C$:
+
+| $C$ | Nonzero features | Accuracy | Top 3 terms |
+|---|---|---|---|
+| 10.0 | 125 (all) | 99.76% | $+7.87 \cdot a\ell, -5.30 \cdot a\ell^2, +5.22 \cdot \sigma^2$ |
+| 1.0 | 104 | 99.69% | $+6.91 \cdot a\ell, -4.72 \cdot a, -4.43 \cdot a\ell^2$ |
+| 0.3 | 81 | 99.50% | $+6.52 \cdot a\ell, -5.34 \cdot a, +4.41 \cdot \ell$ |
+| 0.1 | 63 | 99.02% | $+4.38 \cdot a\ell, -4.26 \cdot a, +3.30 \cdot \ell$ |
+| 0.03 | 51 | 98.39% | $-2.76 \cdot a, +2.12 \cdot a\ell, +1.94 \cdot \ell$ |
+| 0.01 | 30 | 96.95% | $-1.98 \cdot a, +1.07 \cdot \ell, +0.94 \cdot a\ell$ |
+| 0.003 | 17 | 92.09% | $-0.93 \cdot a, +0.59 \cdot \ell^3, +0.46 \cdot m_0^3$ |
+| 0.001 | 7 | 83.64% | $-0.40 \cdot a^3, +0.32 \cdot m_0^3, +0.29 \cdot \ell^3$ |
+
+**Hand-crafted sparse models** using the L1-leading terms were also tested:
+
+| Hand-crafted feature set | n_features | Accuracy |
+|---|---|---|
+| 5 linear $(\sigma, m_0, a, \ell, r)$ | 5 | 89.3% |
+| L1-leading $(a, a\ell, \ell, \sigma^2)$ | 4 | 85.9% |
+| 5 linear + 5 squared | 10 | 90.9% |
+| All linear + squares + cross-products | 16 | 95.3% |
+
+**No sub-degree-4 sparse model reaches 98% accuracy.** The minimum useful sparse model has ~30 nonzero terms. **There is no clean low-dimensional closed-form expression for $\partial\mathcal{M}$.**
+
+### §10.4 Pattern in the dominant terms (degree-4 unregularised fit)
+
+Top 12 terms by absolute standardised coefficient:
+
+| Coefficient | Term |
+|---:|---|
+| +55.51 | $a \cdot \ell$ |
+| +49.80 | $\sigma^2$ |
+| +44.17 | $a^2 \cdot \ell$ |
+| -42.16 | $a$ |
+| +40.03 | $r^2$ |
+| +39.52 | $\ell$ |
+| -36.71 | $a \cdot \ell^2$ |
+| +34.77 | $r^3$ |
+| -32.97 | $a \cdot r^2$ |
+| +32.94 | $\sigma^2 \cdot \ell$ |
+| -31.95 | $\sigma^2 \cdot a$ |
+| +30.31 | $m_0^3$ |
+
+Three rough patterns visible:
+1. **`a` and its interactions dominate the negative-sign terms** ($-a$, $-a\ell^2$, $-ar^2$, $-\sigma^2 a$): consistent with "small $a$ keeps you inside the WEC+DEC region."
+2. **`sigma^2` and `r^2` are large positive terms**: consistent with "wide and large bubbles are inside the region."
+3. **`a*ell` interactions are large in both signs**: $a$ and $\ell$ are the asymmetry-amplitude/scale pair, and the boundary depends on their product nontrivially.
+
+But these patterns are **interpretive, not algebraic** — there's no single low-degree polynomial whose coefficients match these. The "clean dimensionless invariant" hope from §7.4 is decisively negative.
+
+### §10.5 Verdict on the analytic sub-family question (final)
+
+**The strict WEC+DEC-passing region's boundary $\partial\mathcal{M}$ is approximately a degree-4 polynomial implicit surface (99.98% in-sample accuracy at Npts=97), but the polynomial is dense — all 121-125 non-trivial terms contribute. There is no sparse low-term closed-form representation.**
+
+The honest peer-review-defensible claim is now:
+
+> The strict WEC+DEC-passing configurations form a single connected smooth-boundaried 5-D manifold $\mathcal{M} \subset \mathbb{R}^5_{(\sigma, m_0, a, \ell, r)}$ of positive 5-D measure, characterised by (i) connectivity testing (single component at both 4-conn and full-conn neighbour structures), (ii) smooth boundary surface confirmed by smooth slack-vs-distance behaviour, and (iii) a degree-4 polynomial implicit equation that achieves 99.98% binary classification accuracy in-sample but is dense (no sparse low-term simplification). The remaining ~0.02% binary error is concentrated at the manifold boundary itself where the slack is at the discretisation noise floor.
+
+**This is sufficient for peer-review defensibility but does not yield a clean physically interpretable formula.** Pursuing the symbolic Hard Fix (§8) is now strongly justified as the next step toward an *exact* closed-form boundary equation that would have a transcendental (exp + erf) form rather than a polynomial form.
+
+### §10.6 Why polynomial-boundary extraction was always going to be limited
+
+The slack function $S(\sigma, m_0, a, \ell, r)$ is computed from the FH potential's Hessian + ADM stress-energy + principal-pressure diagonalisation, all of which involve `exp` and `erf` functions of polynomial arguments in the parameters (notably $\arg = r \pm R^{2\Pi}/m$ for $R$ a spatial coordinate eliminated by global minimisation). The boundary $S = 0$ is therefore a **transcendental implicit surface**, not a polynomial one. A polynomial fit at any finite degree is approximating the level set of a transcendental function — and approximations of transcendental level sets generically require many polynomial terms (no sparse pattern).
+
+**The fact that degree 4 reaches 99.98% accuracy is itself remarkable** — it says the transcendental boundary is well-approximated by a polynomial in this parameter window. But the lack of sparse structure is exactly what one would predict from the underlying analytic form. Task 2D.5e (Hard Fix, §8) is the right route to the *exact* boundary equation.
+
+### §10.7 Promotion criteria for Task 2D.5e (Hard Fix) updated
+
+After §10's findings, criterion §8.5.1 ("polynomial fit yields unphysical-looking coefficients") **is met**: 121 polynomial coefficients of all signs and magnitudes with no sparse simplification. The polynomial-fit programme has reached its useful endpoint.
+
+**Recommendation**: promote Task 2D.5e from "deferred" to "active medium-priority." It is now the cleanest path to a concise, interpretable, physically meaningful boundary equation. Effort estimate (3-5 sessions of SymPy work) is unchanged.
