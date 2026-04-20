@@ -1,0 +1,29 @@
+{
+  "subtask3": {
+    "subtask": 3,
+    "symbolic_path_outcome": "B (intractable; fall to hybrid)",
+    "hybrid_validation": {
+      "n_compared_cells": 49758,
+      "max_abs_diff_per_eigenvalue": [
+        0.00448946014327984,
+        0.004708625286891144,
+        0.00875238449726512
+      ],
+      "mean_abs_diff_per_eigenvalue": [
+        3.412814388221394e-05,
+        6.0986785155147904e-05,
+        7.11016271700969e-05
+      ],
+      "p_sym_range": [
+        5.9620463040683435e-05,
+        0.3825049549768056
+      ],
+      "p_num_range": [
+        4.0121767442780065e-05,
+        0.3907623528830445
+      ],
+      "h": 0.5
+    },
+    "checkpoint_C_passes": true
+  }
+}

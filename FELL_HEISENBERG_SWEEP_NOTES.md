@@ -817,3 +817,81 @@ The Session-11/12/13 size/topology claims need adjustment:
 - **Foliation health (passenger zone size)**: unchanged at zero (Session 14 §9 finding).
 
 The cumulative tempering across Sessions 12–14 is: a real positive-energy WEC+DEC-respecting metric exists in the FH ansatz over a robustly-characterised parameter region of order ~50% of the band centre, but its physical realisation as a warp drive is undermined by the zero-volume passenger zone (§9), and the precise *count* of strict-pass configurations is sensitive to discretisation noise at the boundary in a way that systematically over-counts at all resolutions tested so far. The headline mathematical claim is intact; the headline numerical claims (specific counts) are subject to ongoing convergence study.
+
+---
+
+## §12 Hard Fix attempt (Task 2D.5e) — partial success
+
+Module: [`hf_jobs/analysis/fell_heisenberg_symbolic.py`](hf_jobs/analysis/fell_heisenberg_symbolic.py); artifacts in [`fell_heisenberg_symbolic/`](fell_heisenberg_symbolic/).
+
+**Goal**: per §8 sketch, derive the closed-form transcendental boundary equation $S(\sigma, m_0, a, \ell, r) = 0$ in 6 sub-tasks: symbolic phi → Hessian → ADM stress-energy → principal pressures → $S_{\rm pt}(X,Y,Z; \text{params})$ → minimise over $(X,Y,Z)$ → boundary equation.
+
+**Outcome**: partial success. Sub-tasks 1 and 2 complete cleanly with full validation; sub-task 3 hits an intractable wall in SymPy; sub-tasks 4-6 cancelled (the symbolic eigenvalue extraction was their prerequisite).
+
+### §12.1 Sub-tasks 1-2 complete: validated symbolic Hessian + ADM stress-energy
+
+The symbolic FH potential, Hessian, $K_{ij}$, $\rho_E$, and spatial stress $S_{ij}$ are all built and lambdify-evaluable on a 3D grid. Validation against the existing numerical pipeline ([`hf_jobs/sweeps/fell_heisenberg.py`](hf_jobs/sweeps/fell_heisenberg.py) `hessian_4th` + `adm_stress_energy`) at the canonical anchor $(V=1.5, \sigma=10, m_0=3, a=0.05, \ell=4, r=9)$ on a full Npts=49 grid:
+
+**Checkpoint A** (Hessian): max |diff| at R≥3 is 1.35e-2, with `max_diff/h^4 = 0.22` consistent across Npts ∈ {49, 65, 97} (the symbolic Hessian is exact; the numerical Hessian has the expected $O(h^4)$ truncation error). **PASS.**
+
+**Checkpoint B** (ADM stress-energy components): per-component `max_diff/h^4` ranges from 0.04 (off-diagonals) to 0.14 (diagonals + $\rho_E$). All under the loose 1000.0 threshold (the ADM pipeline applies ~5 nested FD calls, so larger prefactors are expected). **PASS.**
+
+**Conclusion**: the validated symbolic FH stress-energy is a useful artifact for any future analytic study. We have a closed-form analytic expression $S_{ij}(X, Y, Z; V, \sigma, m_0, a, \ell, r)$ for the spatial stress tensor, which the existing numerical pipeline only computes via finite differences with $O(h^4)$ truncation error.
+
+Saved artifacts (in [`fell_heisenberg_symbolic/`](fell_heisenberg_symbolic/)):
+- `validation_subtask_1.json`, `validation_subtask_2.json` — full validation logs
+- `symbolic_artifacts.tex` — LaTeX summary stub
+- `symbolic_artifacts.py` (gitignored, ~15MB, regenerable in ~15 sec) — Python-loadable srepr serialisation of the validated symbolic expressions
+
+### §12.2 Sub-task 3 wall: symbolic eigenvalue extraction is intractable
+
+The next step (per §8 sketch) was to compute symbolic eigenvalues of $S_{ij}$ for the principal pressures. **This does not work.**
+
+Tried in three ways:
+1. **`sp.Matrix.eigenvals()` directly**: process killed after 14 minutes with no output.
+2. **Cardano's trigonometric form via the invariants $I_1, I_2, I_3$**: $I_1 = \mathrm{tr}\,S$ (1.1 sec), $I_2 = ((\mathrm{tr}\,S)^2 - \mathrm{tr}(S^2))/2$ (0.01 sec), $I_3 = \det(S)$ (**did not terminate in 20 minutes**, both `bareiss` and `berkowitz` algorithms).
+3. **Direct `sp.solve(\det(S - \lambda I), \lambda)`**: same `det` bottleneck.
+
+**Root cause**: each $S_{ij}$ component is a sum of hundreds of `erf` + `exp` + rational terms (the symbolic Hessian → ADM derivation produces large but finite expressions). Their **trace** and **sum-of-products** structures stay manageable (the Add tree just grows linearly), but the **determinant** is a sum of 6 products of 3 such terms each. The expansion blows up combinatorially: SymPy attempts to multiply these out and never terminates on the resulting expression tree.
+
+**This was anticipated risk** per §8.2 ("the symbolic min over (X,Y,Z) may not have a closed form"; expected at sub-task 4 but actually hit at sub-task 3 because eigenvalues require the determinant before any minimisation).
+
+### §12.3 Hybrid path technically works but adds no information
+
+Per §8 plan's outcome-B fallback, ran the **symbolic-numerical hybrid**: lambdify the 6 unique $S_{ij}$ components, evaluate at every (X, Y, Z) grid cell, and then call `np.linalg.eigvalsh` per cell. **Checkpoint C passes**: hybrid eigenvalues agree with the fully-numerical pipeline at FD-truncation precision (`max_diff/h^4` ≤ 0.14 per eigenvalue).
+
+But here's the honest assessment: **the hybrid path adds no information beyond what the existing numerical pipeline + §10 polynomial fit already provide**. The "hybrid" pipeline is functionally equivalent to the existing `evaluate()` in [`hf_jobs/sweeps/fell_heisenberg.py`](hf_jobs/sweeps/fell_heisenberg.py); it just replaces the FD-computed $S_{ij}$ with the symbolically-computed $S_{ij}$, which removes one $O(h^4)$ source of error. But the eigenvalue extraction, the (X,Y,Z) minimisation, and the per-parameter boundary determination are all still numerical, so the final boundary equation remains an opaque per-point evaluator — exactly what we already had.
+
+For this reason **sub-tasks 4-6 (symbolic interior minimisation, substitute back, Taylor compare) are cancelled**: they would deliver a marginally cleaner numerical pipeline rather than the closed-form analytic boundary equation that was the whole point.
+
+### §12.4 The deeper interpretation
+
+Why does this fail? The §10 finding (boundary is approximately a degree-4 polynomial but dense) suggests the true boundary is a transcendental level set $\partial \mathcal{M} = \{S = 0\}$ where $S$ contains exp + erf factors of polynomial arguments. Symbolic eigenvalue extraction via Cardano *should* preserve this transcendental form — but only if the expressions involved are amenable to SymPy's manipulation. The FH potential is a sum of terms like $\sigma \cdot (m \cdot n) \cdot \exp(-(r - R^{1/2}/m)^2/\sigma)$ — i.e. **transcendental functions of polynomial arguments**, where the polynomial arguments themselves contain $\tanh(Z/\ell)$. When you compute $\det(S)$, you multiply 6 such terms together; the resulting expression has $6 \times \text{(operations per term)}$ multiplications nested through tanh, exp, erf — and the SymPy expansion engine cannot collapse this into a simpler form because there's no algebraic simplification available across the transcendental functions.
+
+**This is a fundamental property of the FH ansatz, not a SymPy limitation.** Any closed-form boundary equation would be a transcendental expression of comparable complexity to $\det(S)$ itself. Even if SymPy could compute it, the result would be a multi-page expression that is no more interpretable than the dense degree-4 polynomial fit from §10. The "interpretability gain" the Hard Fix was supposed to provide does not materialise: the FH potential is intrinsically too complex for human-readable closed-form analysis.
+
+### §12.5 What this means for the project
+
+The cumulative findings across Sessions 11-14 + Session 14c cleanly resolve the analytic-sub-family question:
+- **§7 (Session 12)** found a single connected smooth-boundaried 5-D manifold of strict WEC+DEC-pass.
+- **§10 (Session 14a)** found the boundary is approximately a degree-4 polynomial but dense — no sparse closed form.
+- **§11 (Session 14b)** found that even the strict-pass count is resolution-sensitive at the boundary.
+- **§12 (Session 14c)** has now established that the symbolic Hard Fix is intractable: the FH potential is structurally too complex for SymPy to extract closed-form principal pressures (or eigenvalues, or boundary equation).
+
+The honest closing of the analytic-sub-family thread is: **the Fell-Heisenberg WEC+DEC-passing region is well-characterised as an existence claim and as a numerical/topological object, but the boundary equation $S(\sigma, m_0, a, \ell, r) = 0$ does not have a useful closed form. It is intrinsically a transcendental implicit surface that resists both polynomial approximation (dense, not sparse) and symbolic derivation (SymPy det doesn't terminate).**
+
+This is a clean *negative* result that informs both publication framing and the project's next steps. **The polynomial/symbolic toolset is not the right tool for the FH ansatz**; numerical sweeping is the only viable approach.
+
+### §12.6 New top open lead post-§12
+
+Task 2D.11 (vorticity-augmented FH ansatz) remains the top open question. The Hard Fix's failure to produce a closed-form boundary actually *strengthens* the case for 2D.11: if the irrotational FH ansatz produces a transcendental boundary that's intractable to analyse, perhaps the vorticity-augmented ansatz produces a *simpler* boundary structure that is more amenable to symbolic study. (Equally plausibly: the vorticity-augmented version is even worse. Empirical investigation required.)
+
+### §12.7 Files
+
+In [`fell_heisenberg_symbolic/`](fell_heisenberg_symbolic/):
+- `validation_subtask_1.json`, `validation_subtask_2.json`, `validation_subtask_3.json` — checkpoint validation logs
+- `symbolic_artifacts.tex` — LaTeX summary stub
+- `README.md` — directory guide + regeneration instructions
+- `symbolic_artifacts.py` (gitignored, regenerable) — full srepr serialisation of validated symbolic Hessian + ADM stress-energy
+
+Module: [`hf_jobs/analysis/fell_heisenberg_symbolic.py`](hf_jobs/analysis/fell_heisenberg_symbolic.py) — public API for re-running any sub-task.

@@ -1,0 +1,57 @@
+{
+  "subtask2": {
+    "subtask": 2,
+    "validation": {
+      "_meta": {
+        "npts": 49,
+        "h": 0.5,
+        "exclude_origin_radius": 3.0,
+        "n_compared_cells": 49758
+      },
+      "rho_E": {
+        "max_abs_diff": 0.0061445348554726165,
+        "mean_abs_diff": 6.434676476513444e-05,
+        "ratio_max_diff_h4": 0.09831255768756186,
+        "symbolic_range": [
+          0.043221495255551114,
+          0.7729826040481007
+        ],
+        "numerical_range": [
+          0.0432219097048937,
+          0.7785265485476979
+        ]
+      },
+      "S_xx": {
+        "max_abs_diff": 0.008744826134845618,
+        "mean_abs_diff": 6.012961220610588e-05,
+        "ratio_max_diff_h4": 0.1399172181575299
+      },
+      "S_xy": {
+        "max_abs_diff": 0.002672089784881704,
+        "mean_abs_diff": 2.1042311169998916e-05,
+        "ratio_max_diff_h4": 0.04275343655810726
+      },
+      "S_xz": {
+        "max_abs_diff": 0.002671008199239433,
+        "mean_abs_diff": 2.1039770665925125e-05,
+        "ratio_max_diff_h4": 0.04273613118783093
+      },
+      "S_yy": {
+        "max_abs_diff": 0.008744826134845562,
+        "mean_abs_diff": 6.012961220610538e-05,
+        "ratio_max_diff_h4": 0.139917218157529
+      },
+      "S_yz": {
+        "max_abs_diff": 0.002671008199239433,
+        "mean_abs_diff": 2.1039770665925017e-05,
+        "ratio_max_diff_h4": 0.04273613118783093
+      },
+      "S_zz": {
+        "max_abs_diff": 0.00874371623906045,
+        "mean_abs_diff": 6.0119290400665176e-05,
+        "ratio_max_diff_h4": 0.1398994598249672
+      }
+    },
+    "checkpoint_B_passes": true
+  }
+}

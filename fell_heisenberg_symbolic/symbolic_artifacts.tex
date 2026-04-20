@@ -1,0 +1,36 @@
+\documentclass{article}
+\usepackage{amsmath, amssymb}
+\usepackage[a4paper, margin=2cm]{geometry}
+\title{Fell-Heisenberg WEC+DEC Symbolic Stress-Energy: Validated Pipeline (Task 2D.5e)}
+\date{Session 14c, 2026-04-20}
+\begin{document}
+\maketitle
+\section{Pipeline overview}
+Symbolic derivation of the Fell-Heisenberg ADM stress-energy from the smooth potential
+\\(\phi_{\\rm FH}(X, Y, Z; V, \\sigma, m_0, a, \\ell, r)\\) (FH 2021 Eq.~irrotationalpotential).
+Validated against the numerical pipeline at Npts=49 to 4th-order FD truncation precision.
+\section{Symbolic FH potential}
+\\[ \\phi = \frac{V \left(\sqrt{\pi} \sqrt{\sigma} \left(- 2 m_{0} \sqrt{X^{2} + Y^{2} + Z^{2}} \operatorname{erf}{\left(\frac{\sqrt{X^{2} + Y^{2} + Z^{2}}}{\sqrt{\sigma}} \right)} + \left(- a \tanh{\left(\frac{Z}{\ell} \right)} + m_{0}\right) \left(\left(a \tanh{\left(\frac{Z}{\ell} \right)} + m_{0}\right) \sqrt{X^{2} + Y^{2} + Z^{2}} - \sqrt[4]{X^{2} + Y^{2} + Z^{2}}\right) \operatorname{erf}{\left(\frac{r - \frac{\sqrt[4]{X^{2} + Y^{2} + Z^{2}}}{a \tanh{\left(\frac{Z}{\ell} \right)} + m_{0}}}{\sqrt{\sigma}} \right)} + \left(a \tanh{\left(\frac{Z}{\ell} \right)} + m_{0}\right) \left(\left(- a \tanh{\left(\frac{Z}{\ell} \right)} + m_{0}\right) \sqrt{X^{2} + Y^{2} + Z^{2}} - \sqrt[4]{X^{2} + Y^{2} + Z^{2}}\right) \operatorname{erf}{\left(\frac{r + \frac{\sqrt[4]{X^{2} + Y^{2} + Z^{2}}}{- a \tanh{\left(\frac{Z}{\ell} \right)} + m_{0}}}{\sqrt{\sigma}} \right)}\right) + \sigma \left(- 2 m_{0} e^{\frac{- X^{2} - Y^{2} - Z^{2}}{\sigma}} + \left(- a \tanh{\left(\frac{Z}{\ell} \right)} + m_{0}\right) \left(a \tanh{\left(\frac{Z}{\ell} \right)} + m_{0}\right) e^{- \frac{\left(r - \frac{\sqrt[4]{X^{2} + Y^{2} + Z^{2}}}{a \tanh{\left(\frac{Z}{\ell} \right)} + m_{0}}\right)^{2}}{\sigma}} + \left(- a \tanh{\left(\frac{Z}{\ell} \right)} + m_{0}\right) \left(a \tanh{\left(\frac{Z}{\ell} \right)} + m_{0}\right) e^{- \frac{\left(r + \frac{\sqrt[4]{X^{2} + Y^{2} + Z^{2}}}{- a \tanh{\left(\frac{Z}{\ell} \right)} + m_{0}}\right)^{2}}{\sigma}}\right)\right)}{2 m_{0}} \\]
+\section{Hessian \\(H_{ij} = \\partial_i \\partial_j \\phi\\)}
+\\subsection{H_00}
+(Expression too large to render in full here; see symbolic\\_artifacts.py for the srepr.)
+\\subsection{H_01}
+(Expression too large to render in full here; see symbolic\\_artifacts.py for the srepr.)
+\\subsection{H_02}
+(Expression too large to render in full here; see symbolic\\_artifacts.py for the srepr.)
+\\subsection{H_11}
+(Expression too large to render in full here; see symbolic\\_artifacts.py for the srepr.)
+\\subsection{H_12}
+(Expression too large to render in full here; see symbolic\\_artifacts.py for the srepr.)
+\\subsection{H_22}
+(Expression too large to render in full here; see symbolic\\_artifacts.py for the srepr.)
+\section{Eulerian energy density \\(\\rho_E = (K^2 - K_{ij}K^{ij}) / (16\\pi)\\)}
+(Same.)
+\section{Spatial stress \\(S_{ij}\\)}
+Built from the dynamical equation for \\(K_{ij}\\); validated to FD-truncation precision against numerical adm\\_stress\\_energy.
+\section{Sub-task 3 wall}
+\\(S.\\mathrm{det}()\\) does not terminate in reasonable time on the FH \\(S_{ij}\\) matrix.
+Symbolic eigenvalue extraction is therefore intractable; the closed-form boundary
+equation \\(S(\\sigma, m_0, a, \\ell, r) = 0\\) is not achievable within current SymPy capabilities.
+See section 12 of FELL\\_HEISENBERG\\_SWEEP\\_NOTES.md for analysis.
+\end{document}

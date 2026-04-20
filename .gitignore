@@ -25,6 +25,14 @@ sweeps/*.config.json
 # bshepp/alcubierre-sweeps. Re-fetchable via `hf download`.
 sweeps_remote/
 
+# Heavy regeneratable symbolic artifacts from Task 2D.5e (~15 MB each).
+# The serialised symbolic FH stress-energy expressions are very large
+# (hundreds of erf+exp+rational terms per S_ij component). Re-built in
+# ~15 sec by `python -m hf_jobs.analysis.fell_heisenberg_symbolic --out-dir fell_heisenberg_symbolic --subtask 2`.
+# The validation JSON files in fell_heisenberg_symbolic/ are kept (they
+# are small).
+fell_heisenberg_symbolic/symbolic_artifacts.py
+
 # Environment + secrets
 .env
 .env.*

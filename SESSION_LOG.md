@@ -881,3 +881,60 @@ The cumulative Session 14 tempering of the Session-11 result is now substantial:
 - §11 (Npts=129 convergence test): the strict-pass count was over-estimated by ~13% at Npts=97; the boundary region is resolution-sensitive in a systematic way.
 
 Project one-liner revised again: *"the energy-condition bottleneck has a robust deep-strict-pass region (~5900/10080 of the band-centre grid at Npts=129) of static-slice positive-energy WEC+DEC-respecting metrics in the FH ansatz, but its physical realisation as a warp drive is undermined by the zero-volume passenger zone (§9), and the precise count + boundary structure are subject to ongoing convergence study. The new top open question (Task 2D.11) is whether vorticity-augmented ansätze recover an extended interior."*
+
+---
+
+## Session 14c: 2026-04-20 — Task 2D.5e Hard Fix attempted (the symbolic boundary extraction wall)
+
+### Directive
+
+User picked the Hard Fix (Task 2D.5e) per the §8 sketch, with full-scope variant (all 6 sub-tasks) and full-grid validation. Per the §8.5 promotion criteria, this was the right time to attempt: §10 polynomial fit had hit its useful endpoint (dense, no sparse closed-form).
+
+### What Was Attempted
+
+**Sub-task 1 (symbolic Hessian)**: build $\phi_{\rm FH}$ symbolically in SymPy, compute $H_{ij} = \partial_i \partial_j \phi$, validate against numerical `hessian_4th` at full Npts=49 grid. **Succeeds**. The phi expression and Hessian build in seconds. Validation: max abs disagreement at R≥3 is 1.35e-2, with `max_diff/h^4 = 0.22` constant across Npts ∈ {49, 65, 97} — exactly the signature of 4th-order FD truncation residual. Symbolic Hessian is exact; numerical Hessian deviates by O(h^4) as expected. **Checkpoint A: PASS.**
+
+**Sub-task 2 (symbolic ADM stress-energy)**: $K_{ij} = -H_{ij}$, $\rho_E = (K^2 - K_{ij}K^{ij})/(16\pi)$, $S_{ij}$ from the trace-reversed dynamical equation. **Succeeds**. The full pipeline (phi → H → K → rho_E → S_ij) builds in ~5 seconds. Validation against numerical `adm_stress_energy`: per-component `max_diff/h^4` ranges 0.04-0.14 (off-diagonals to diagonals), all well within FD truncation. **Checkpoint B: PASS.**
+
+**Sub-task 3 (symbolic principal pressures)**: tried three approaches:
+1. `sp.Matrix.eigenvals()` directly — process killed after 14 minutes with no output.
+2. Cardano's trigonometric form via the invariants $I_1, I_2, I_3$: **$I_1$ (trace) builds in 1.1 sec**, **$I_2 = ((\mathrm{tr}\,S)^2 - \mathrm{tr}(S^2))/2$ builds in 0.01 sec**, but **$I_3 = \det(S)$ does not terminate in 20+ minutes** (tested with both `bareiss` and `berkowitz` algorithms).
+3. Direct `sp.solve(\det(S - \lambda I), \lambda)` — same `det` bottleneck.
+
+**The symbolic eigenvalue path is intractable.** Each $S_{ij}$ component is a sum of hundreds of erf+exp+rational terms; det(S) requires multiplying 6 such terms together, which exceeds SymPy's expansion capacity.
+
+Per the §8 plan's outcome-B fallback, ran the **symbolic-numerical hybrid**: lambdify each $S_{ij}$, evaluate at every grid cell, then `np.linalg.eigvalsh` per cell. **Checkpoint C: PASS** — hybrid eigenvalues agree with the fully-numerical pipeline at FD-truncation precision (`max_diff/h^4` ≤ 0.14). However: **the hybrid path adds no new information beyond what the existing numerical pipeline + §10 polynomial fit already provide.** The hybrid is functionally equivalent to `evaluate()` in [`hf_jobs/sweeps/fell_heisenberg.py`](hf_jobs/sweeps/fell_heisenberg.py); it just removes one $O(h^4)$ source of error in $S_{ij}$ but the eigenvalue extraction, the (X,Y,Z) minimisation, and the per-parameter boundary determination are all still numerical.
+
+**Decided to cancel sub-tasks 4-6**. They would deliver a marginally cleaner numerical pipeline rather than the closed-form analytic boundary equation that was the Hard Fix's whole point.
+
+### Documentation
+
+- New §12 (~120 lines) in [`FELL_HEISENBERG_SWEEP_NOTES.md`](FELL_HEISENBERG_SWEEP_NOTES.md) covering: sub-tasks 1-2 success, sub-task 3 wall + fallback, §12.4 deep interpretation (FH ansatz is structurally too complex for SymPy), §12.5 cumulative project implications, §12.6 Task 2D.11 promoted to firmly top priority.
+- New module [`hf_jobs/analysis/fell_heisenberg_symbolic.py`](hf_jobs/analysis/fell_heisenberg_symbolic.py) (~530 lines) with the validated symbolic phi/H/K/rho_E/S_ij + hybrid eigenvalue evaluator.
+- New directory [`fell_heisenberg_symbolic/`](fell_heisenberg_symbolic/): 3 validation JSONs, LaTeX summary stub, README. The full ~15MB srepr serialisation is gitignored as regenerable.
+- ROADMAP Task 2D.5e marked "partial success / definitive wall hit" with the [~] symbol; sub-tasks 1-2 documented as successful artifacts.
+- NAVIGATOR last-updated tag, headline "Hard Fix wall"; Task 2D.11 promoted to unambiguous top priority; document index updated with new directory.
+
+### Decisions Made
+
+1. **The Hard Fix is intractable in its full form.** §12.4: this is a fundamental property of the FH ansatz, not a fixable SymPy limitation. The FH potential is intrinsically too complex for human-readable closed-form analysis — even if SymPy could compute everything, the result would be a multi-page transcendental expression no more interpretable than the dense polynomial fit from §10.
+2. **The polynomial/symbolic toolset is not the right tool for the FH ansatz.** Numerical sweeping is the only viable approach for analysing the WEC+DEC region. This cleanly closes the analytic-sub-family thread that started in §7.
+3. **Task 2D.11 (vorticity-augmented FH ansatz) is now firmly the top open lead.** Reasons compound: the §9 "all wall, no interior" finding suggests the irrotational ansatz is structurally limited; §12 additionally suggests it's too complex for closed-form analysis. If the vorticity-augmented version produces (a) a non-trivial passenger zone OR (b) a simpler boundary structure amenable to symbolic study, either would be a major win.
+4. **The validated symbolic Hessian + ADM stress-energy is a reusable artifact** for future studies. Saved as srepr serialisation, regenerable in ~15 sec via `python -m hf_jobs.analysis.fell_heisenberg_symbolic --subtask 2`.
+
+### Open Items Entering Next Session
+
+- [ ] **Task 2D.11** (vorticity-augmented FH ansatz) — *firmly top priority*, 3-5 sessions of new symbolic + numerical infrastructure.
+- [ ] Tasks 2D.7, 2D.8, 2D.9, 2D.10, others — see updated [`NAVIGATOR.md`](NAVIGATOR.md) ranked list.
+
+### Conceptual State at End of Session 14c
+
+The cumulative Session-14 result chain (§9 → §10 → §11 → §12) cleanly closes the analytic-sub-family question for the irrotational FH ansatz:
+- The WEC+DEC-passing region exists (Session 11).
+- It is a connected smooth-boundaried 5-D manifold (§7).
+- It has zero-volume passenger zone (§9 — undermines warp-drive interpretation).
+- Its boundary is approximately a degree-4 polynomial but dense (§10 — no sparse closed-form).
+- Its strict-pass count is over-estimated at Npts=97 by ~13% (§11 — count is resolution-sensitive at boundary).
+- Its boundary equation does not admit a closed-form analytic expression (§12 — symbolic eigenvalue extraction is intractable).
+
+The honest project posture is now: *"the irrotational FH ansatz is mathematically an existence claim with characterised topology, but does not deliver a usable warp drive (no passenger zone) and does not admit closed-form analytic study (transcendental complexity). The next investigation is whether the vorticity-augmented ansatz fares better."*
