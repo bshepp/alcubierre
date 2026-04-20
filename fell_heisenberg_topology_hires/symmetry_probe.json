@@ -1,0 +1,74 @@
+{
+  "r_over_m0": {
+    "pass_mean": 2.2013703055997453,
+    "pass_std": 0.6572794236203748,
+    "pass_range": 2.8319623971797894,
+    "pass_min": 1.081081081081081,
+    "pass_max": 3.91304347826087,
+    "n_unique": 45,
+    "spread_normalized": 0.29857740060743865
+  },
+  "r_over_sigma": {
+    "pass_mean": 1.0339754827324494,
+    "pass_std": 0.41829929155027235,
+    "pass_range": 1.85,
+    "pass_min": 0.4,
+    "pass_max": 2.25,
+    "n_unique": 33,
+    "spread_normalized": 0.4045543618160539
+  },
+  "r_over_sqrt_sigma": {
+    "pass_mean": 2.5955859442858618,
+    "pass_std": 0.7545702588683185,
+    "pass_range": 3.235088935932648,
+    "pass_min": 1.2649110640673518,
+    "pass_max": 4.5,
+    "n_unique": 40,
+    "spread_normalized": 0.2907128775795277
+  },
+  "a_over_m0": {
+    "pass_mean": 0.04972587190355788,
+    "pass_std": 0.036810162005844194,
+    "pass_range": 0.17167167167167166,
+    "pass_min": 0.013513513513513516,
+    "pass_max": 0.18518518518518517,
+    "n_unique": 46,
+    "spread_normalized": 0.7402617711206072
+  },
+  "ell_over_r": {
+    "pass_mean": 0.8826227667658438,
+    "pass_std": 0.4146963705842088,
+    "pass_range": 1.7777777777777777,
+    "pass_min": 0.2222222222222222,
+    "pass_max": 2.0,
+    "n_unique": 28,
+    "spread_normalized": 0.4698455401323519
+  },
+  "sigma_over_r2": {
+    "pass_mean": 0.19404303115757562,
+    "pass_std": 0.12512746274456468,
+    "pass_range": 0.5756172839506173,
+    "pass_min": 0.04938271604938271,
+    "pass_max": 0.625,
+    "n_unique": 40,
+    "spread_normalized": 0.6448438884824109
+  },
+  "m0_minus_a": {
+    "pass_mean": 2.949563535716109,
+    "pass_std": 0.4229183226508978,
+    "pass_range": 1.6654786722400972,
+    "pass_min": 1.9845213277599032,
+    "pass_max": 3.6500000000000004,
+    "n_unique": 46,
+    "spread_normalized": 0.14338335741197034
+  },
+  "m0_plus_a": {
+    "pass_mean": 3.2569486379418544,
+    "pass_std": 0.4543675503067246,
+    "pass_range": 1.8500000000000005,
+    "pass_min": 2.3499999999999996,
+    "pass_max": 4.2,
+    "n_unique": 46,
+    "spread_normalized": 0.13950712793366327
+  }
+}

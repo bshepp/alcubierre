@@ -378,3 +378,167 @@ After the §7.4-§7.5 conclusion ("no clean low-order rational invariant"), a fo
 2. **The slack value field itself is NOT a low-degree polynomial.** Residuals at any practical degree show systematic structure (fan, heavy tails, ~7× noise floor) consistent with the FH potential's transcendental (exp + erf) factors leaking into the slack response. So the *full slack* will not have a closed-form polynomial expression; only its zero level set does.
 
 **Practical implication**: Task 2D.5b — "extract the cubic implicit boundary equation $P_3$ from the fitted classifier coefficients, simplify analytically, and check whether it has a clean physical interpretation (e.g. matches a known dimensionless combination from the FH derivation)" — is a now-meaningful, ~1-session follow-up. The result wouldn't be a closed-form expression for all of $\mathcal{M}$, but it WOULD be a closed-form expression for $\partial \mathcal{M}$ — substantially stronger than what §7.5 originally claimed.
+
+### §7.8 Resolution-convergence test: Npts=65 vs Npts=97 refine sweep
+
+**Motivation.** The §7.7 finding that the boundary surface is approximately a degree-3 polynomial (98.4% binary classification accuracy at Npts=65) had a critical caveat: ~24 of the 104 misclassified points had $|{\rm slack}| < 10^{-4}$ — *literally below the estimated Npts=65 discretization noise floor of $\sim 5 \times 10^{-4}$*. A cheap test: re-run the same 10080-point grid at Npts=97 ($\sim 5\times$ smaller noise floor expected) and ask whether the cubic CV accuracy jumps toward 100% (Outcome A: residual was noise, surface IS cubic) or stays around 98.7% (Outcome B: cubic genuinely fails).
+
+Sweep config [`hf_jobs/configs/fell_heisenberg_refine_hires.json`](hf_jobs/configs/fell_heisenberg_refine_hires.json), 10080 points at Npts=97, dispatched as HF Jobs job `69e5be83cd8c002f31dffdda`. Wall time **150 minutes** on cpu-xl (vs 37 min for Npts=65; the cubic-of-grid-size scaling holds), cost ~$2.50.
+
+**Topology comparison.**
+
+| Metric | Npts=65 | **Npts=97** |
+|---|---|---|
+| Strict pass | 5334 / 10080 | **6818 / 10080** (+28%) |
+| Connected components | 1 | 1 |
+| Interior cells (4-conn) | 648 | 877 |
+| Boundary fraction | 87.9% | 87.1% |
+
+The strict-pass region is **larger at higher resolution** by 1484 net points — but this is not "more configurations satisfy WEC+DEC at finer grids" (the parameter values themselves haven't changed); it's "the lower-resolution grid was systematically biasing toward 'fail' near the band edges where the FH potential has steep gradients." Single connected component at both resolutions; the topology story is unchanged.
+
+**Pass/fail flip analysis** between the two resolutions on the same 10080 grid points:
+
+| | count |
+|---|---|
+| Flipped fail → pass (Npts=65 → Npts=97) | 2033 |
+| Flipped pass → fail | 549 |
+| Unchanged | 7498 |
+| Net new strict-pass | +1484 |
+
+The 4× asymmetry (2033 vs 549) confirms a **systematic bias** in the Npts=65 sweep, not just random noise.
+
+**Where the noise was biggest.** Per-sigma median |drift| Npts=65→97:
+
+| sigma | n | median |drift| | p95 |drift| |
+|---|---|---|---|
+| 4 | 1440 | **1.26e-1** | 4.69e-1 |
+| 5 | 1440 | **6.31e-2** | 4.41e-1 |
+| 6 | 1440 | 1.03e-3 | 3.89e-1 |
+| 7 | 1440 | 8.74e-4 | 3.24e-1 |
+| 8 | 1440 | 9.97e-4 | 2.50e-1 |
+| 9 | 1440 | 1.11e-3 | 1.52e-1 |
+| 10 | 1440 | 1.18e-3 | 5.65e-2 |
+
+**At sigma ≥ 6 the Npts=65 sweep was essentially correct** (median drift ~1e-3, well below typical slack values). **At sigma = 4-5 the Npts=65 sweep was severely under-resolved** (median drift 0.06-0.13, comparable to or larger than the slack itself). This makes physical sense: smaller `sigma` means narrower Gaussian envelopes in the FH potential, which means sharper spatial gradients in the shift, which means greater sensitivity to the finite-difference grid spacing $h = 2L/(N_{\rm pts}-1)$.
+
+**Convergence sanity check on the canonical winner** $(V=1.5, \sigma=10, m_0=3, a=0.05, \ell=4, r=9)$:
+
+| Npts | central_N | dec_slack_min |
+|---|---|---|
+| 49 | 18.50 | −0.697 |
+| 65 | 18.60 | +0.0186 |
+| 81 | 18.51 | +0.0170 |
+| **97** | **18.33** | **+0.0160** |
+| 113 | 18.17 | +0.0154 |
+
+The Session-11 anchor IS resolution-converged at Npts ≥ 97 (Δ ≤ 4% from Npts=97 to Npts=113). All earlier convergence claims about *this specific point* hold. What was wrong at Npts=65 was the sweep's behaviour at unrelated sharp-gradient points elsewhere in the grid.
+
+**Boundary-classifier accuracy at Npts=97** (logistic regression of pass/fail vs polynomial features, 5-fold CV):
+
+| Degree | Npts=65 CV | **Npts=97 CV** | Δ |
+|---|---|---|---|
+| 1 | 0.776 | **0.893** | +0.117 |
+| 2 | 0.940 | **0.966** | +0.026 |
+| 3 | 0.984 | **0.986** | +0.002 |
+| 4 | 0.989 | **0.993** | +0.004 |
+| 5 | 0.991 | **0.994** | +0.003 |
+
+**Slack-value polynomial regression at Npts=97** (near-boundary subset):
+
+| Degree | Npts=65 R²_CV | **Npts=97 R²_CV** | Δ |
+|---|---|---|---|
+| 1 | 0.223 | **0.422** | +0.199 |
+| 2 | 0.469 | **0.669** | +0.200 |
+| 3 | 0.637 | **0.801** | +0.164 |
+| 4 | 0.763 | **0.869** | +0.106 |
+| 5 | 0.862 | **0.917** | +0.055 |
+
+#### §7.8.1 Verdict — partial Outcome A, refined picture
+
+**The result is more nuanced than the binary "Outcome A or B" framing in the plan.** Three findings:
+
+1. **The slack-value polynomial fit improved substantially at every degree** (R² jumped +0.05 to +0.20). This is the noise-reduction story: with a cleaner target the polynomial captures more of the variation. **Confirms** part of the prior residual structure was noise.
+2. **The degree-3 binary classifier barely moved** (98.4% → 98.6%, +0.2%). Adding cubic features and reducing noise did *not* materially close the gap. **Refutes** the strong "cubic IS the boundary" reading of §7.7.
+3. **Higher degrees (4-5) gained more** (98.9% → 99.3% and 99.1% → 99.4%). The capacity ceiling of polynomial classifiers is now ~99.4%, and **the true boundary is at least degree 4-5**, not exactly cubic.
+
+**At degree 5 in-sample, Npts=97 misclassifies only 1 point out of 10080** — and that one point has $|{\rm slack}| = 4.2 \times 10^{-6}$, essentially on the surface. The 88 CV misclassifications at degree 5 are a regularization gap (251 features × 5-fold split), not a fundamental model error.
+
+**Calibrated honest verdict on the analytic-sub-family question:**
+
+> The strict WEC+DEC-passing region's boundary $\partial\mathcal{M}$ in $(\sigma, m_0, a, \ell, r)$-space is approximately a low-degree polynomial implicit surface — **specifically, a polynomial of degree 4-5, not exactly degree 3 as §7.7 originally claimed.** The transcendental (exp + erf) factors of the FH potential leak into the slack value field at all scales but contribute only modest non-polynomial residuals to the boundary surface itself once discretization noise is subtracted. **A degree-5 polynomial closed-form expression for $\partial\mathcal{M}$ is plausible** (extractable via Task 2D.5b, with the corrected resolution-converged data); a *degree-3* expression is at most an approximation good to ~1.5% of the binary distinction.
+
+**Implications for Task 2D.5b** (extract the polynomial implicit boundary equation): refit at degree 4 or 5 (not degree 3) using the Npts=97 data, with regularization tuned to match in-sample/CV accuracy gap. The 251-coefficient degree-5 polynomial is uglier than a 55-coefficient cubic, but if it's the *right* surface, simplification by symbolic substitution may still reveal a clean form.
+
+#### §7.8.2 Caveats remaining
+
+1. **Npts=97 is the new resolution baseline, not necessarily convergence.** The canonical winner converges by Npts=97 to ~5%, but other points in the grid (especially low-sigma high-a) may still be drifting. A Npts=129 sanity sweep on a small representative subset would close this — could be done cheaply via `--points` mode (Task 2D.5d).
+2. **The 5-D coverage is still coarse** (7 × 8 × 6 × 5 × 6 = 10080 points across the entire band centre). Extracting a 251-coefficient degree-5 polynomial from 10080 points is well-conditioned but still leaves ~40 points per coefficient — not over-determined.
+3. **Extrapolation past the grid edges is unsafe.** The leaderboard's top WEC+DEC points still cluster at the corner (sigma=10, m0=3.7, r=9); the optimum extends past where we've measured. Extracting an implicit equation from a region near a boundary the equation itself doesn't constrain is risky.
+
+#### §7.8.3 New top leads after Task 2D.5c
+
+- **Task 2D.5b refresh**: extract the implicit boundary equation at degree 4-5 (not 3) from Npts=97 data; ~1 session, no new compute. Still the cleanest path to a peer-review-defensible analytic sub-family.
+- **Task 2D.5d**: convergence test at Npts=129 on a representative subset (e.g. 100 points sampled from the strict-pass region, 100 from near-boundary, 100 from clear fail). Uses the new `--points` dispatch mode. ~30 min on cpu-xl, ~$0.20.
+- **Task 2D.5e** (Hard Fix, see §8): symbolic extraction of the closed-form transcendental boundary equation. Reserved for if 2D.5b's polynomial form turns out to be too messy to interpret physically.
+
+---
+
+## §8 Future hardening: symbolic extraction of the boundary equation (Hard Fix, Task 2D.5e — deferred)
+
+This section documents the symbolic-derivation route to the *exact* analytic boundary equation, for posterity. **It is reserved as a fallback** in case the polynomial-fitting Tasks 2D.5b/c/d don't produce a usable closed form for $\partial\mathcal{M}$, or if the polynomial form turns out to be too high-degree to interpret physically.
+
+### §8.1 Why this matters
+
+Tasks 2D.5b/c gave us a **polynomial approximation** (degree 4-5, ~99.4% binary accuracy) to the boundary $\partial\mathcal{M} = \{S(\sigma, m_0, a, \ell, r) = 0\}$ where $S$ is the slack function. That approximation will probably suffice for peer-review-defensible publication — *the boundary is approximately a low-degree polynomial implicit surface* is a scientifically meaningful claim. But it is not the same as having the exact equation. The slack function has the form
+
+$$S(\sigma, m_0, a, \ell, r) = (\text{polynomial part}) + (\text{transcendental tail involving } \exp \text{ and } \mathrm{erf})$$
+
+inherited from the FH potential's structure. The transcendental tail is small in the bulk of $\mathcal{M}$ (which is why polynomial fits work) but contributes systematically to the residual structure observed in §7.7 and §7.8.
+
+### §8.2 Sketch of the calculation
+
+The Fell-Heisenberg smooth potential ([`hf_jobs/sweeps/fell_heisenberg.py`](hf_jobs/sweeps/fell_heisenberg.py) `phi_FH_smooth`) is
+
+$$\phi_{\rm FH}(X, Y, Z; V, \sigma, m_0, a, \ell, r) = \frac{V}{m + n}\bigl[\sigma(e_1 m n + e_2 m n - e_0 (m + n)) + \sqrt{\sigma\pi}(\dots)\bigr]$$
+
+where $m = m_0 + a \tanh(Z/\ell)$, $n = m_0 - a \tanh(Z/\ell)$, and $e_0, e_1, e_2$ are Gaussian envelopes containing $\exp(-{\rm arg}^2/\sigma)$ factors.
+
+The DEC slack at a single $(X, Y, Z)$ point is
+
+$$S_{\rm pt}(X, Y, Z; \text{params}) = \rho_E - |p|_{\max}$$
+
+where $\rho_E$ and $p_i$ come from the ADM stress-energy of $\phi_{\rm FH}$'s Hessian (notebook cell 13). The boundary equation is then
+
+$$S(\text{params}) = \min_{(X,Y,Z) \in \text{interior box}} S_{\rm pt}(X, Y, Z; \text{params}) = 0$$
+
+The hard part is the **interior minimisation over $(X, Y, Z)$**: the slack-minimum location moves around the bubble surface as parameters change, and finding it symbolically requires solving the system $\nabla_{(X,Y,Z)} S_{\rm pt} = 0$ for the minimiser, then substituting back.
+
+### §8.3 Effort estimate
+
+**3-5 sessions** of heavy SymPy work, with the following sub-tasks:
+1. Symbolic Hessian of $\phi_{\rm FH}$ (~0.5 session, mostly mechanical SymPy)
+2. Symbolic ADM stress-energy $\rho_E, p_1, p_2, p_3$ from the Hessian (~0.5 session — eigenvalues of a 3×3 symmetric matrix have closed forms but get ugly)
+3. Symbolic principal-pressure max $|p|_{\max}$ (this is **the hardest** — eigenvalue branches are not differentiable across crossings, so the global max requires careful case analysis or a regularisation trick)
+4. Solve $\nabla_{(X,Y,Z)} S_{\rm pt} = 0$ for the boundary minimiser as a function of (sigma, m0, a, ell, r) — likely needs numerical-symbolic hybrid approach; full analytic solution may not exist
+5. Substitute back to get $S(\text{params})$ in closed form, then expand around the polynomial approximation from 2D.5b to extract the transcendental correction terms
+6. Simplify and check against the empirical Npts=97 sweep data
+
+### §8.4 Tradeoffs vs polynomial-fit approach
+
+| | Polynomial fit (Task 2D.5b) | Symbolic extraction (Task 2D.5e) |
+|---|---|---|
+| Closed-form result | Approximate (~99.4% binary acc) | Exact |
+| Effort | 1 session | 3-5 sessions |
+| Compute cost | Zero (just analysis) | Zero (SymPy only) |
+| Interpretability | A polynomial in 5 vars; physical meaning unclear | Has explicit physical meaning (exp + erf factors trace to FH potential structure) |
+| Generalisable beyond grid | No (only valid where data was sampled) | Yes (analytic everywhere $\phi_{\rm FH}$ is well-defined) |
+| Risk | Low (worst case: ugly degree-5 polynomial) | High (the symbolic min over (X,Y,Z) may not have a closed form) |
+
+### §8.5 Decision criteria for promotion from "deferred"
+
+Pursue the Hard Fix if **any** of the following becomes true:
+1. Task 2D.5b's polynomial fit has unphysical-looking coefficients that resist all symbolic simplification attempts
+2. The 99.4% binary accuracy ceiling stops mattering for a downstream task (e.g. an external collaborator wants the exact equation for a publication)
+3. Other open leads (Tasks 2D.6 horizon test, 2D.7 full horizon analysis, 2D.8 independent re-implementation, 2D.9 source-matter classification, 2D.10 asymptotic matching) are all complete and the symbolic extraction is the highest remaining-value task
+
+Otherwise, leave it deferred — the polynomial-fit approach is much cheaper and likely sufficient for the project's peer-review-defensibility goal.

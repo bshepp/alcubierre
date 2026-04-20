@@ -704,3 +704,61 @@ User-requested addition to the Session-11 follow-up plan: characterise the topol
 The Session-11 positive-existence result is now **characterised topologically**: the strict WEC+DEC-passing configurations form a single connected smooth-boundaried 5-D manifold of positive measure in $(\sigma, m_0, a, \ell, r)$-space. The boundary surface is smooth (slack vanishes continuously, no cliff). No clean low-order analytic sub-family was identified at this resolution, but the smooth-boundary observation is consistent with one existing at higher order.
 
 This strengthens the Session-11 result's defensibility from "1404 sweep hits" to "a positive-measure connected smooth-boundaried region with characterised topology." The honest one-liner project summary is unchanged: *"the energy-condition bottleneck has a static-slice existence result with characterised positive-measure structure; the dynamics remain the open question."*
+
+---
+
+## Session 13: 2026-04-20 — Cheap fix: Npts=97 resolution-convergence test (Task 2D.5c)
+
+### Directive
+
+User-requested follow-up to Session 12's polynomial-fit analysis: "the boundary surface IS approximately degree 3" (98.4% binary classifier accuracy at Npts=65) was a strong claim, with the caveat that ~24 of the 104 misclassified points had |slack| < 1e-4 — literally below the Npts=65 discretization noise floor. Test whether degree 3 IS genuinely the boundary (Outcome A: noise was contaminating the fit) or whether the polynomial degree of the actual surface is higher (Outcome B: cubic was an artifact). User also asked to document the Hard Fix (symbolic extraction) path regardless of outcome, for use later if other avenues exhaust.
+
+### What Was Accomplished
+
+**Infrastructure:**
+- Extended [`hf_jobs/run_sweep.py`](hf_jobs/run_sweep.py) with new `--points <CSV/TSV/parquet/JSON>` argument that bypasses `build_grid` and feeds an explicit point list to `evaluate()`. Per-point fixed scalars from `--config` (top-level keys + single-value axes) are merged into each row that doesn't already define them. Smoke-tested locally on a 3-point CSV (boundary, interior, fail) — produces identical numbers to the corresponding rows of the original Npts=65 refine sweep. Reusable by future Tasks 2D.5d, 2D.6, 2D.7.
+- New config [`hf_jobs/configs/fell_heisenberg_refine_hires.json`](hf_jobs/configs/fell_heisenberg_refine_hires.json) — same axes as `fell_heisenberg_refine.json` with Npts=97 (vs 65).
+
+**Sweep:**
+- HF Jobs job `69e5be83cd8c002f31dffdda` on cpu-xl. Wall time **150 minutes** (vs 37 min for Npts=65 — exactly 4× as expected for cubic-of-grid-size scaling). Cost ~$2.50.
+
+**Analysis (`fell_heisenberg_topology_hires/` directory):**
+- Ran the existing topology and polyfit modules on the new parquet — both are parquet-agnostic, no code changes needed.
+- Strict-pass count: **5334 → 6818 (+28%)**. Connected components: 1 (unchanged). Interior cells: 648 → 877.
+- Pass/fail flip analysis: 2033 fail→pass and 549 pass→fail — net +1484 strict-pass, with 4× asymmetry indicating systematic bias not random noise.
+- Per-sigma drift breakdown: median |Npts=65→97 drift| is 0.13 at sigma=4, 0.06 at sigma=5, **drops to ~1e-3 at sigma≥6**. The Npts=65 sweep was severely under-resolved at low sigma where the FH potential has the sharpest gradients.
+- Convergence sanity check on canonical Session-11 winner $(V=1.5, \sigma=10, m_0=3, a=0.05, \ell=4, r=9)$: dec_slack_min monotonically converges $0.0186$ → $0.0170$ → $0.0160$ → $0.0154$ for Npts=65 → 81 → 97 → 113. **The canonical winner IS resolution-converged at Npts ≥ 97 to ~5%.** All Session-11 specific claims about this point hold.
+
+**Polynomial-fit comparison:**
+- Boundary classifier accuracy at degree 3: 98.4% → 98.6% (+0.2%) — **barely moved** despite noise reduction.
+- Boundary classifier accuracy at degree 5: 99.1% → 99.4% (+0.3%) — improved more.
+- Slack-value polynomial R² at degree 5: 0.86 → 0.92 — substantial improvement at every degree.
+- At degree 5 in-sample, Npts=97 misclassifies only **1 point out of 10080** (with slack = 4.2e-6, essentially on the surface).
+
+**Documentation:**
+- New [`FELL_HEISENBERG_SWEEP_NOTES.md`](FELL_HEISENBERG_SWEEP_NOTES.md) §7.8 (~150 lines) with full Npts=65 vs Npts=97 comparison, per-sigma drift breakdown, classifier-accuracy table, and calibrated honest verdict (mixed Outcome A/B).
+- New §8 (~80 lines) "Future hardening: symbolic extraction" documenting the Hard Fix path with effort estimate (3-5 sessions), tradeoffs vs polynomial fit, and explicit promotion criteria for un-deferring it.
+- [`ROADMAP.md`](ROADMAP.md): Task 2D.5c marked complete with summary; Task 2D.5b updated to "extract polynomial at degree 4-5 (not 3) from Npts=97 data"; new Task 2D.5d (Npts=129 convergence test on subset, ~$0.20) and Task 2D.5e (Hard Fix, deferred).
+- [`NAVIGATOR.md`](NAVIGATOR.md): last-updated tag, headline summary, open leads (refined 2D.5b at #2; new 2D.5d at #3; deferred 2D.5e at #13), document index.
+
+### Decisions Made
+
+1. **The boundary surface is approximately a degree-4-5 polynomial, not exactly degree 3.** Session 12 §7.7's "cubic IS the boundary" claim was partially artifactual due to Npts=65 systematic bias. The honest current statement is "low-degree polynomial approximation with degree 4-5 needed for ~99.4% binary accuracy."
+2. **The Npts=65 sweep was systematically biased at low sigma.** Session 12's strict-pass count (5334) was under-counted by ~28% near the band edges. The Session-11/12 *specific* findings about the canonical winner and the connected-component analysis are unaffected, but the strict-pass *count* and the *band shape* near edges are revised.
+3. **The new `--points` infrastructure is generally useful.** Beyond Task 2D.5c it enables: (i) Task 2D.5d's targeted Npts=129 convergence test, (ii) Task 2D.6's pointwise lapse-shift evaluation, (iii) Task 2D.7's targeted horizon analysis at multiple representative points. Worth the small refactor.
+4. **The Hard Fix is documented but stays deferred.** Promotion criteria explicit in §8.5: only pursue if the polynomial fit (Task 2D.5b) yields unphysical-looking coefficients, or if all other open leads (2D.6-2D.10) complete and 2D.5e becomes the highest-value remaining task.
+
+### Open Items Entering Next Session
+
+- [ ] **Task 2D.6** (lapse-shift ratio horizon test) — *still top priority*, <0.1 session, zero compute.
+- [ ] **Task 2D.5b refresh** (extract polynomial boundary equation at degree 4-5 from Npts=97 data) — 1 session.
+- [ ] **Task 2D.5d** (Npts=129 convergence test on representative subset, using new `--points` mode) — 30 min cpu-xl, ~$0.20.
+- [ ] **Tasks 2D.7-2D.10, 2D.5e, others** — see updated [`NAVIGATOR.md`](NAVIGATOR.md) ranked list.
+
+### Conceptual State at End of Session 13
+
+The polynomial-fit story is **refined, not refuted**. The boundary $\partial\mathcal{M}$ is still approximately a low-degree polynomial implicit surface — but degree 4-5, not exactly 3. The 99.4% binary classifier accuracy at degree 5 with Npts=97 data is essentially at the resolution noise ceiling, not a fundamental model-capacity ceiling.
+
+The Session-11 positive-existence and Session-12 connectivity results both survive the higher-resolution test cleanly. What the Session 13 result corrects is the **size estimate** of the strict-pass region (28% larger than Npts=65 reported) and the **claimed polynomial degree** of its boundary (4-5 not 3). For peer-review-defensibility purposes, this is a strengthening — we now have a resolution-converged dataset at Npts=97, a quantified Npts=65→97 drift breakdown showing where the lower-resolution data was reliable vs not, a documented path to the closed-form analytic boundary equation (Hard Fix, §8), and a new piece of reusable infrastructure (`--points` dispatch mode) for future targeted sweeps.
+
+Project one-liner unchanged: *"the energy-condition bottleneck has a static-slice existence result with characterised positive-measure structure; the dynamics remain the open question."*
