@@ -542,3 +542,100 @@ Pursue the Hard Fix if **any** of the following becomes true:
 3. Other open leads (Tasks 2D.6 horizon test, 2D.7 full horizon analysis, 2D.8 independent re-implementation, 2D.9 source-matter classification, 2D.10 asymptotic matching) are all complete and the symbolic extraction is the highest remaining-value task
 
 Otherwise, leave it deferred — the polynomial-fit approach is much cheaper and likely sufficient for the project's peer-review-defensibility goal.
+
+---
+
+## §9 Pointwise lapse-shift ratio and foliation-health analysis (Task 2D.6)
+
+**This is the cheap horizon test promoted as the top open lead from Sessions 11-13.** Implemented by [`hf_jobs/analysis/fell_heisenberg_horizon.py`](hf_jobs/analysis/fell_heisenberg_horizon.py); outputs in [`fell_heisenberg_horizon/`](fell_heisenberg_horizon/).
+
+The Fell-Heisenberg construction has unit lapse $\alpha = 1$ everywhere by definition, so the foliation-health condition $|\vec{N}|/\alpha < 1$ reduces to $|\vec{N}|(x, y, z) < 1$ pointwise. This is the condition for $\partial_t$ to remain a timelike vector (i.e. for the $t = \text{const}$ slices to remain spacelike). Where $|\vec{N}| \ge 1$ the foliation is degenerate and the spacetime contains an effective horizon.
+
+### §9.1 Headline finding (calibrated honestly)
+
+**The Session 11 / 12 / 13 positive-existence result has a brutal physical caveat now made explicit: every WEC+DEC-passing FH configuration tested is essentially "all wall, no interior."** The shift field $|\vec{N}|$ is approximately zero only at the single point $(x, y, z) = (0, 0, 0)$ and is uniformly $|N| \gg 1$ at every other point in the box. There is no extended "passenger zone" inside the bubble where an observer could sit at rest in the lapse foliation; the only foliation-healthy point is the origin itself, with **zero physical volume**.
+
+### §9.2 Geometry of the FH shift field
+
+A misconception in earlier sections (§1.1, §3) was that `central_N_max` (the maximum $|\vec{N}|$ in the central $7^3$ cube) measured "frame-dragging at the center of the bubble." It does not. It measures $|\vec{N}|$ at the **wall** of a bubble whose centre is at the origin. The actual structure of $|\vec{N}|(x, y, z)$ for the canonical winner $(V=1.5, \sigma=10, m_0=3, a=0.05, \ell=4, r=9)$ at Npts=97 is:
+
+- **At origin**: $|\vec{N}| \approx 1.5 \times 10^{-5}$ (numerically zero).
+- **At $|R| = 0.25$ (one grid step out)**: $|\vec{N}| \approx 13$.
+- **Throughout the box** ($0.5 \le |R| \le 12$): $|\vec{N}| \approx 15$–$18$ uniformly.
+
+See [`fell_heisenberg_horizon/foliation_canonical-V1p5.png`](fell_heisenberg_horizon/foliation_canonical-V1p5.png). The cross-sections through the origin show $|\vec{N}|$ as a single sharp dip at the centre against a uniform $\sim 15c$ background; the histogram shows ~99.9999% of cells at $|N| \in [14, 19]$ with a single outlier near zero.
+
+### §9.3 Passenger-zone analysis
+
+Defining the "passenger zone" as the **connected component of $\{|\vec{N}| < 1\}$ that contains the origin**, the diagnostic results across 5 representative WEC+DEC-passing winners (all at Npts=97):
+
+| Label | $V$ | $\sigma$ | $m_0$ | $a$ | $\ell$ | $r$ | $|\vec{N}|_{\max}$ | Passenger $R$ | Passenger volume |
+|---|---|---|---|---|---|---|---|---|---|
+| canonical-V1p5 | 1.5 | 10 | 3.0 | 0.05 | 4 | 9 | **18.33** | **0.25** | **1.6e-2** |
+| canonical-V0p1 | 0.1 | 10 | 3.0 | 0.05 | 4 | 9 | 1.22 | 0.35 | 0.11 |
+| compact-V1 | 1.0 | 6 | 3.0 | 0.10 | 4 | 6 | 9.25 | 0.25 | 1.6e-2 |
+| edge-V0p5 | 0.5 | 4 | 2.5 | 0.05 | 4 | 5 | 2.81 | 0.25 | 1.6e-2 |
+| high-m0-V0p5 | 0.5 | 8 | 3.5 | 0.05 | 4 | 7 | 6.67 | 0.25 | 1.6e-2 |
+
+(Box volume for reference: $24^3 = 13824$.)
+
+**Passenger zone is one grid cell at every WEC+DEC-passing configuration tested**, with apparent radius $\approx h/2$ (half the grid spacing). Convergence test:
+
+| Npts | $h$ | Passenger $R$ at canonical-V1p5 | Passenger volume |
+|---|---|---|---|
+| 49 | 0.500 | 0.500 | 1.25e-1 |
+| 65 | 0.375 | 0.375 | 5.27e-2 |
+| 81 | 0.300 | 0.300 | 2.70e-2 |
+| 97 | 0.250 | 0.250 | 1.56e-2 |
+| 129 | 0.188 | 0.188 | 6.59e-3 |
+
+Passenger radius scales **exactly as $h/2$** under refinement. The "passenger zone" is the single grid cell containing the origin, with apparent radius being the half-cell spacing — a discretization artifact for a continuum object whose true size is **zero**.
+
+### §9.4 V-scan: where does the horizon first appear?
+
+Varying $V$ at fixed $(\sigma=10, m_0=3, a=0.05, \ell=4, r=9)$ at Npts=97:
+
+| $V$ | $|\vec{N}|_{\max}$ | Passenger $R$ | Passenger volume | Foliation-healthy fraction |
+|---|---|---|---|---|
+| 0.01 | 0.122 | 20.78 (= box diagonal) | 1.43e+4 (full box) | 100% |
+| 0.03 | 0.367 | 20.78 | 1.43e+4 | 100% |
+| 0.05 | 0.611 | 20.78 | 1.43e+4 | 100% |
+| 0.08 | 0.978 | 20.78 | 1.43e+4 | 100% |
+| **0.10** | **1.222** | **0.35** | **1.09e-1** | **0%** |
+| 0.13 | 1.589 | 0.25 | 1.56e-2 | 0% |
+| 0.15 | 1.833 | 0.25 | 1.56e-2 | 0% |
+| 0.30 | 3.666 | 0.25 | 1.56e-2 | 0% |
+| 1.50 | 18.332 | 0.25 | 1.56e-2 | 0% |
+
+**The foliation-health "cliff" sits at $V_{\rm crit} \approx 0.09$** for these parameters. Below it, $|\vec{N}| < 1$ everywhere — fully healthy foliation, but no warp drive (peak shift is sub-c). Above it, $|\vec{N}| \ge 1$ throughout almost the entire box and the passenger zone collapses to a single cell (zero physical volume in the continuum limit).
+
+The transition is not gradual — passenger volume drops by **5 orders of magnitude** (from $1.4 \times 10^4$ to $1.6 \times 10^{-2}$) across the threshold, and foliation-healthy fraction drops from 100% to 0%. See [`fell_heisenberg_horizon/v_scan.png`](fell_heisenberg_horizon/v_scan.png).
+
+### §9.5 What this means for the warp-drive interpretation
+
+**The Session 11 result is now characterised correctly:**
+
+1. **Existence claim survives.** The strict WEC+DEC-passing region in $(\sigma, m_0, a, \ell, r)$-space exists, is a connected smooth-boundaried 5-D manifold, and contains 6818 grid points at Npts=97. Nothing here changes that.
+
+2. **The "warp-drive" interpretation is degraded substantially.** "Warp drive" historically means: an observer can sit safely *inside* a bubble while the bubble's wall warps spacetime around them. The FH configuration **does not provide that.** The bubble has no significant interior — only the exact centre point is foliation-healthy, and the entire surrounding region is superluminal-shift territory where the natural foliation breaks down and observers cannot remain at rest in the $t = \text{const}$ slicing.
+
+3. **What remains is "geometric existence" not "physical drive."** The configuration is a positive-energy stationary metric satisfying WEC+DEC everywhere, with the property that an observer following the lapse-vector flow at the centre experiences zero shift. But that observer cannot be displaced from the centre without leaving the foliation-healthy region.
+
+4. **The acceleration / propulsion question collapses.** Without an extended interior, there is no payload for the bubble to carry. The FH metric does not transport anything beyond the single centre-point observer.
+
+**This is the most significant tempering of the Session 11 result so far.** The energy-condition story is intact, but the *physical content* of "static-slice positive existence" turns out to be much weaker than originally read. We have a metric that satisfies WEC+DEC and has the geometric features of a warp bubble (large central shift surrounded by an asymptotic background) but lacks an interior region a passenger could occupy.
+
+### §9.6 Open questions raised by this finding
+
+1. **Is the FH ansatz too restrictive?** The original Alcubierre metric does have an extended interior region (the "comoving" zone where $\beta^x$ is approximately constant). The FH multi-mode-irrotational ansatz constrains the shift to be the gradient of a scalar potential, which forces $\nabla \times \vec{N} = 0$ and means $|\vec{N}|$ cannot have an extended plateau interior unless the underlying $\phi$ is linear there — which would make $\nabla \phi$ constant and non-zero, contradicting "calm centre." **The "all wall, no interior" property may be a structural consequence of irrotationality**, not a tunable feature of the ansatz.
+
+2. **Does adding a vorticity component recover an interior?** Generalising from $\vec{N} = \nabla \phi$ to $\vec{N} = \nabla \phi + \vec{\nabla} \times \vec{A}$ for some vector potential $\vec{A}$ would allow shift profiles with extended plateau interiors. Whether such generalisations preserve the WEC+DEC pass is unknown — and is a substantial new sweep direction (Task 2D.11, new).
+
+3. **Can a smaller bubble at a higher amplitude work?** Maybe at very small bubble radius $r$ the passenger zone could be made to occupy a meaningful fraction of the bubble. The data so far suggests not (passenger radius is $\sim h/2$ regardless of $r$), but a focused sweep over very small $r$ + high resolution might surface something.
+
+4. **The Hard Fix (§8) is more attractive now.** With the polynomial-boundary picture refined and the warp-drive interpretation softened, having the *exact* analytic boundary equation becomes more valuable as the cleanest defensible claim about the FH ansatz.
+
+### §9.7 Remaining tasks downstream of 2D.6
+
+- **Task 2D.7 (full horizon analysis) is partially obsolete** — the cheap test already showed the foliation breaks down throughout the box at warp-drive amplitudes. The full geodesic-expansion / trapped-surface analysis would still be useful for characterising the precise causal structure, but the headline answer ("there is no significant interior") is already in.
+- **Task 2D.11 (NEW): vorticity-augmented FH ansatz.** Generalise to $\vec{N} = \nabla \phi + \vec{\nabla} \times \vec{A}$ and ask whether a non-trivial extended foliation-healthy interior is achievable while preserving WEC+DEC. Substantial new sweep direction; ~3-5 sessions of new symbolic + numerical infrastructure.
