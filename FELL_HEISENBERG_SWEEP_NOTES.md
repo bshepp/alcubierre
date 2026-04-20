@@ -333,3 +333,48 @@ Saved to [`fell_heisenberg_topology/`](fell_heisenberg_topology/):
 - `symmetry_probe.json` — dimensionless ratio invariance table
 
 The analysis module [`hf_jobs/analysis/fell_heisenberg_topology.py`](hf_jobs/analysis/fell_heisenberg_topology.py) is parquet-agnostic — re-runnable on any future sweep with the same schema.
+
+### §7.7 Polynomial-surface fitting and residual structure
+
+After the §7.4-§7.5 conclusion ("no clean low-order rational invariant"), a follow-up question: **does the boundary surface itself admit a low-degree polynomial implicit equation, and if we fit `dec_slack_min` directly with polynomials, are the residuals consistent with discretisation noise or do they show systematic structure?** Module [`hf_jobs/analysis/fell_heisenberg_polyfit.py`](hf_jobs/analysis/fell_heisenberg_polyfit.py) (separate from the topology module so the two analyses can evolve independently) answers both.
+
+**Setup.** Restrict to the near-boundary subset $|{\rm dec\_slack\_min}| < 0.05$ (7591 of 10080 points) so the regression isn't dominated by deep-failure points. Standardise the 5 parameters. Fit polynomial regressions of degree 1-5 with 5-fold CV.
+
+**Slack-value polynomial regression results:**
+
+| Degree | #features | $R^2_{\rm CV}$ | RMSE | Resid 95th-pctile |
+|---:|---:|---:|---:|---:|
+| 1 | 5 | 0.223 | 9.08e-3 | 2.04e-2 |
+| 2 | 20 | 0.469 | 7.47e-3 | 1.32e-2 |
+| 3 | 55 | 0.637 | 6.12e-3 | 1.18e-2 |
+| 4 | 125 | 0.763 | 4.87e-3 | 9.73e-3 |
+| **5** | **251** | **0.862** | **3.62e-3** | **6.99e-3** |
+
+**Residual structure at degree 5** (saved to [`fell_heisenberg_topology/poly_fit_residuals.png`](fell_heisenberg_topology/poly_fit_residuals.png)):
+- **Residuals vs predicted** plot shows a clear *fan structure* — heteroskedastic, with width opening at both signs of predicted slack.
+- **QQ vs Gaussian** has heavy tails on both sides — strongly non-Gaussian, far more outliers than noise would produce.
+- **Spearman correlations** of residuals with each input axis are all $|\rho| < 0.03$ (no monotonic trend) but **the residuals visibly cluster vertically into discrete columns** at each grid value, with within-column spread larger near the band edges.
+- **RMSE / Npts=65 noise floor** $\approx 7\times$. Well above what discretisation alone would produce.
+
+**Verdict on slack-value fits**: the slack response surface has **systematic non-polynomial structure**. The polynomial fits never reach noise-level residuals; the QQ and fan plots make it clear the missing structure is not random. This is the expected fingerprint of the FH potential's **erf and exp factors** — transcendental in the parameters — that no polynomial of any practical degree can match.
+
+**Boundary-surface classification results** (logistic regression of pass/fail vs polynomial features, 5-fold CV):
+
+| Degree | #features | Accuracy | F1 |
+|---:|---:|---:|---:|
+| 1 | 5 | 0.776 | 0.792 |
+| 2 | 20 | 0.940 | 0.944 |
+| **3** | **55** | **0.984** | **0.985** |
+| 4 | 125 | 0.989 | 0.989 |
+| 5 | 251 | 0.991 | 0.992 |
+
+(see [`fell_heisenberg_topology/boundary_classifier_curve.png`](fell_heisenberg_topology/boundary_classifier_curve.png) for the elbow shape).
+
+**Verdict on the boundary surface**: the zero level set $\partial \mathcal{M} = \{{\rm dec\_slack} = 0\}$ **IS approximately a degree-3 polynomial surface** in $(\sigma, m_0, a, \ell, r)$. The classifier's accuracy jumps from 78% (deg 1, hyperplane) to 94% (deg 2, quadric) to **98.4% (deg 3)** with diminishing returns past degree 3. Over the 5-D space of 10080 grid points, a degree-3 implicit polynomial misclassifies only ~165 points — and those 165 are concentrated *at the boundary itself* where the slack is closest to zero, i.e. exactly the points where any noise dominates the sign.
+
+**Combined honest answer to "is there an analytic sub-family":**
+
+1. **The boundary surface admits a low-degree polynomial approximation.** The implicit equation $P_3(\sigma, m_0, a, \ell, r) = 0$ for some specific cubic $P_3$ recovers ~98.4% of the pass/fail distinction. **A genuine analytic sub-family of the form "configurations satisfying $P_3(\sigma, m_0, a, \ell, r) = 0$ are on the WEC+DEC marginal manifold" is plausible** — this is the *existence* of an analytic sub-family.
+2. **The slack value field itself is NOT a low-degree polynomial.** Residuals at any practical degree show systematic structure (fan, heavy tails, ~7× noise floor) consistent with the FH potential's transcendental (exp + erf) factors leaking into the slack response. So the *full slack* will not have a closed-form polynomial expression; only its zero level set does.
+
+**Practical implication**: Task 2D.5b — "extract the cubic implicit boundary equation $P_3$ from the fitted classifier coefficients, simplify analytically, and check whether it has a clean physical interpretation (e.g. matches a known dimensionless combination from the FH derivation)" — is a now-meaningful, ~1-session follow-up. The result wouldn't be a closed-form expression for all of $\mathcal{M}$, but it WOULD be a closed-form expression for $\partial \mathcal{M}$ — substantially stronger than what §7.5 originally claimed.
