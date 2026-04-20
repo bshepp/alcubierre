@@ -16,3 +16,9 @@ ipykernel>=6,<7
 # Sweep I/O for HF Jobs parameter grids.
 pandas>=2.3,<3
 pyarrow>=17,<23
+
+# Hub access from sweep modules / notebooks (kernel repos, Space logs,
+# server-side bucket copies, etc.). Sweep dispatch via the `hf` CLI works
+# without this, but in-process API calls require it. v1.x renumbering as of
+# 2025-11; see https://huggingface.co/docs/huggingface_hub/release_notes.
+huggingface_hub>=1.5,<2
