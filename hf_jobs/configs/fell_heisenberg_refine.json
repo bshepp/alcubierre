@@ -1,0 +1,14 @@
+{
+  "_comment": "Stage-2 refinement sweep for Task 2D.5 connectivity analysis. Densifies the band centre identified in the full sweep: V dropped to a single value (V is V^2-amplitude-redundant for the sign of the slacks), m0 densified across the [2.3, 3.7] band that the full sweep's m0=3 grid value missed. ~10080 points, ~50 min on cpu-xl, ~$0.80.",
+  "L": 12.0,
+  "Npts": 65,
+  "Pi": 0.25,
+  "axes": {
+    "V":     {"lo": 1.0,  "hi": 1.0,  "n": 1, "scale": "linear"},
+    "sigma": {"lo": 4.0,  "hi": 10.0, "n": 7, "scale": "linear"},
+    "m0":    {"lo": 2.3,  "hi": 3.7,  "n": 8, "scale": "linear"},
+    "a":     {"lo": 0.05, "hi": 0.5,  "n": 6, "scale": "log"},
+    "ell":   {"lo": 2.0,  "hi": 8.0,  "n": 5, "scale": "linear"},
+    "r":     {"lo": 4.0,  "hi": 9.0,  "n": 6, "scale": "linear"}
+  }
+}

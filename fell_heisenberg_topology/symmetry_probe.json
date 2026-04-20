@@ -1,0 +1,74 @@
+{
+  "r_over_m0": {
+    "pass_mean": 2.2539173789173788,
+    "pass_std": 0.5549107670893236,
+    "pass_range": 1.6666666666666667,
+    "pass_min": 1.3333333333333333,
+    "pass_max": 3.0,
+    "n_unique": 5,
+    "spread_normalized": 0.24619836214043622
+  },
+  "r_over_sigma": {
+    "pass_mean": 1.073139245014245,
+    "pass_std": 0.4865652138037282,
+    "pass_range": 1.85,
+    "pass_min": 0.4,
+    "pass_max": 2.25,
+    "n_unique": 19,
+    "spread_normalized": 0.4534036156671071
+  },
+  "r_over_sqrt_sigma": {
+    "pass_mean": 2.6541679571031764,
+    "pass_std": 0.8311868741419284,
+    "pass_range": 3.235088935932648,
+    "pass_min": 1.2649110640673518,
+    "pass_max": 4.5,
+    "n_unique": 19,
+    "spread_normalized": 0.3131628772465123
+  },
+  "a_over_m0": {
+    "pass_mean": 0.053612784268169615,
+    "pass_std": 0.04466608492225825,
+    "pass_range": 0.14095693483386265,
+    "pass_min": 0.01666666666666667,
+    "pass_max": 0.15762360150052931,
+    "n_unique": 4,
+    "spread_normalized": 0.8331237694882581
+  },
+  "ell_over_r": {
+    "pass_mean": 0.8777673250377964,
+    "pass_std": 0.4251990816735251,
+    "pass_range": 1.7777777777777777,
+    "pass_min": 0.2222222222222222,
+    "pass_max": 2.0,
+    "n_unique": 20,
+    "spread_normalized": 0.48440978553766073
+  },
+  "sigma_over_r2": {
+    "pass_mean": 0.195534899491602,
+    "pass_std": 0.13992396235362864,
+    "pass_range": 0.5756172839506173,
+    "pass_min": 0.04938271604938271,
+    "pass_max": 0.625,
+    "n_unique": 19,
+    "spread_normalized": 0.7155958487075
+  },
+  "m0_minus_a": {
+    "pass_mean": 2.839161647195491,
+    "pass_std": 0.13399825476677482,
+    "pass_range": 0.4228708045015881,
+    "pass_min": 2.527129195498412,
+    "pass_max": 2.95,
+    "n_unique": 4,
+    "spread_normalized": 0.04719641620234537
+  },
+  "m0_plus_a": {
+    "pass_mean": 3.1608383528045088,
+    "pass_std": 0.13399825476677482,
+    "pass_range": 0.4228708045015881,
+    "pass_min": 3.05,
+    "pass_max": 3.472870804501588,
+    "n_unique": 4,
+    "spread_normalized": 0.04239326400474815
+  }
+}
