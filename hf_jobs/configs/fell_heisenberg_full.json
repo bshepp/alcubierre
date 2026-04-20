@@ -1,14 +1,14 @@
 {
-  "_comment": "Full Task 2D.4 sweep. Wider, denser grid over (V, sigma, m0, a, ell, r). 7200 raw -> ~5500 after filter (a>0, 2*m0>a, r<L-1). HF Jobs cpu-xl 16 vCPU, ~2.5-3 h, ~$2.50.",
+  "_comment": "Full Task 2D.4 sweep at Npts=65. Grid informed by the preview (Npts=49) finding that wec_pass=1.0 is concentrated at m0>=3.0 - the m0 axis is shifted upward to densely cover the WEC-passing region. Includes the Session 10 anchor (V=0.5, sigma=4, m0=2, a=0.3, ell=4, r=6) on the grid for direct cross-resolution comparison. 6*5*5*5*4*5 = 15000 raw, ~12000 after filter. HF Jobs cpu-xl 16 vCPU (the container reports 64 workers in practice), ~2-3 h, ~$2-3.",
   "L": 12.0,
   "Npts": 65,
   "Pi": 0.25,
   "axes": {
-    "V":     {"lo": 0.1,  "hi": 2.0,  "n": 6, "scale": "log"},
-    "sigma": {"lo": 1.0,  "hi": 12.0, "n": 6, "scale": "log"},
-    "m0":    {"lo": 0.5,  "hi": 4.0,  "n": 5, "scale": "linear"},
+    "V":     {"lo": 0.1,  "hi": 1.5,  "n": 6, "scale": "linear"},
+    "sigma": {"lo": 2.0,  "hi": 10.0, "n": 5, "scale": "linear"},
+    "m0":    {"lo": 2.0,  "hi": 6.0,  "n": 5, "scale": "linear"},
     "a":     {"lo": 0.05, "hi": 1.0,  "n": 5, "scale": "log"},
-    "ell":   {"lo": 1.5,  "hi": 8.0,  "n": 4, "scale": "log"},
-    "r":     {"lo": 3.0,  "hi": 10.0, "n": 4, "scale": "linear"}
+    "ell":   {"lo": 2.0,  "hi": 8.0,  "n": 4, "scale": "linear"},
+    "r":     {"lo": 4.0,  "hi": 9.0,  "n": 5, "scale": "linear"}
   }
 }
