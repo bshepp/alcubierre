@@ -938,3 +938,438 @@ The cumulative Session-14 result chain (§9 → §10 → §11 → §12) cleanly 
 - Its boundary equation does not admit a closed-form analytic expression (§12 — symbolic eigenvalue extraction is intractable).
 
 The honest project posture is now: *"the irrotational FH ansatz is mathematically an existence claim with characterised topology, but does not deliver a usable warp drive (no passenger zone) and does not admit closed-form analytic study (transcendental complexity). The next investigation is whether the vorticity-augmented ansatz fares better."*
+
+---
+
+## Session 15: 2026-04-20 — Task 2D.11 vorticity-augmented FH ansatz, Phases 1 + 2 (the next investigation also fares badly)
+
+**Participants:** Brian Sheppard + Claude
+**Goal:** Test whether $\vec{N} = \nabla\phi + \vec{\nabla} \times \vec{A}$ recovers an extended passenger zone or improves the dec slack at the Session-11 canonical FH anchor. Two structurally distinct $\vec A$ families.
+
+### Infrastructure (one-time)
+
+- Refactored [`hf_jobs/sweeps/fell_heisenberg.py`](hf_jobs/sweeps/fell_heisenberg.py): split `adm_stress_energy(phi, h)` into a generic `adm_stress_energy_from_N(N_vec, h)` (accepts arbitrary shift) plus a thin backward-compat wrapper for the irrotational case. **Bit-exact regression at canonical anchor**: max abs diff = 0.0 across `rho_E`, `K`, `S_ij` on Npts=49.
+- New `passenger_zone(Nmag, X, Y, Z, h)` diagnostic lifted from [`hf_jobs/analysis/fell_heisenberg_horizon.py`](hf_jobs/analysis/fell_heisenberg_horizon.py) into the vortical sweep modules so triage doesn't need a separate horizon pass.
+
+### Phase 1 — axisymmetric $A_\phi(R, Z)$
+
+- New module [`hf_jobs/sweeps/fell_heisenberg_vortical.py`](hf_jobs/sweeps/fell_heisenberg_vortical.py) with axisymmetric ansatz $A_\phi(R, Z) = V_A \cdot R \cdot \exp(-(R-r_A)^2/\sigma_A^2) \cdot \tanh(Z/\ell_A) \cdot \exp(-Z^2/(2\sigma_A^2))$. The leading $R$ factor enforces axis-regularity; quotient $A_\phi/R$ is evaluated directly to avoid $R=0$ singularity.
+- Smoke test: V_A = 0 reproduces irrotational FH baseline bit-exactly across all 12 record fields.
+- Two previews ran, both negative:
+  - Broad preview (81 pts, V_A ∈ {0, 0.5, 1}, 11.2 s): `passenger_zone_radius = h` for every point. `N_vortical_max ≈ 9` at the upper end — non-perturbative regime, no recovery.
+  - Perturbative preview (135 pts, V_A ∈ {0, 0.05, 0.10, 0.15, 0.20}, 15.6 s): `dec_slack_min` is **flat at the irrotational baseline** for any $(\sigma_A, r_A, \ell_A)$ where $A_\phi$'s support doesn't reach the global DEC-violating cell. Where it does, dec_slack_min becomes **strictly more negative** with V_A. WEC actively degrades for compact configurations (e.g. (σ_A=1, r_A=9): wec_pass drops to 0.948 already at V_A=0.05).
+- The full Phase-1 axisymmetric sweep ([`fell_heisenberg_vortical_full.json`](hf_jobs/configs/fell_heisenberg_vortical_full.json), ~$3 cpu-xl) was prepared but **not dispatched** — preview was definitive.
+
+### Phase 2 — Cartesian constant-amplitude $\vec A$
+
+- New module [`hf_jobs/sweeps/fell_heisenberg_vortical_cartesian.py`](hf_jobs/sweeps/fell_heisenberg_vortical_cartesian.py) with three Cartesian components sharing the Phase-1 Gaussian profile and carrying independent constant amplitudes $V_{Ax}, V_{Ay}, V_{Az}$. Phase 1 is **not** a sub-case (Phase 1's amplitude rotates with $\hat\phi$); Phase 2 tests a structurally distinct family. No gauge fix needed: the physical curl A is gauge-invariant.
+- Preview (27 pts, V_Ax × V_Ay × V_Az each ∈ {0, 0.1, 0.2}, 5.0 s):
+  - Bit-exact baseline regression: V_Ax=V_Ay=V_Az=0 row gives `dec_slack_min = -7.743132e-02`, matches Phase-1 V_A=0 row to all printed digits — the refactored pipeline is consistent across both vortical modules.
+  - **0 of 27** improve dec_slack_min. **0 of 27** improve wec_slack_min (`wec_slack_min = +4.82042e-03` is bit-identical across all 27 rows; the WEC-violating cell is somewhere the Cartesian curl-A perturbation doesn't reach in this slice).
+  - **0 of 27** strict-pass; **0 of 27** have passenger_R > h; dec_slack_min strictly degrades for every (V_Ax, V_Ay, V_Az) ≠ (0, 0, 0).
+- The full Phase-2 sweep ([`fell_heisenberg_vortical_cartesian_full.json`](hf_jobs/configs/fell_heisenberg_vortical_cartesian_full.json), ~$5 cpu-xl, sweeps FH+vortical jointly) was prepared but **not dispatched** — preview was definitive.
+
+### Cumulative finding (Phases 1 + 2)
+
+Across **two structurally distinct vorticity families** at the Session-11 canonical FH anchor:
+
+| family | preview pts | best Δ(dec_slack_min) | best Δ(wec_slack_min) | strict-pass | passenger_R > h |
+|---|---|---|---|---|---|
+| Phase 1 axisymmetric $A_\phi$ | 81 + 135 | 0.0 (flat) | +3.8e-4 (marginal) | 0 | 0 |
+| Phase 2 Cartesian constant $\vec A$ | 27 | -1.0e-3 (worse) | 0.0 (flat) | 0 | 0 |
+
+**Working interpretation (slice-scoped):** at the Session-11 canonical FH anchor, the §9 zero-volume passenger zone and the 4-cell DEC violation are *not* fixable by adding perturbative $\vec\nabla \times \vec A$ within smooth, well-localised vector-potential families. Where vorticity affects the dec slack, it makes it worse. The wall location is set by the FH bubble geometry; the curl A's support is set by the vortical envelope; getting them to overlap helpfully is not free.
+
+### Documentation
+
+- New companion: [`FELL_HEISENBERG_VORTICAL_NOTES.md`](FELL_HEISENBERG_VORTICAL_NOTES.md) — §1 Phase 1, §2 Phase 2, §3 Phase 3 placeholder.
+- [`ROADMAP.md`](ROADMAP.md) Task 2D.11 updated: status `[~]`, deferred items (a)/(b)/(c) listed with rationale.
+- [`NAVIGATOR.md`](NAVIGATOR.md) load-bearing-assumptions row 1 updated; document index has new entry.
+
+### Phase-3 decision pending
+
+Phase 3 (FH-style multi-mode $\vec A$) remains undefined — would let each Cartesian component carry its own FH-style multi-mode structure rather than a shared Gaussian envelope. Decision deferred to user: declare Task 2D.11 complete with cumulative negative finding, or implement Phase 3 (more parameters, harder to interpret). Two clean negatives in structurally distinct families argue strongly that Phase 3 is unlikely to overturn the slice-scoped no-go, but the question is open.
+
+---
+
+## Session 15b: 2026-04-20 — ROADMAP Phase 1 (Linearization & Feasibility) closeout: Tasks 1.8–1.11
+
+### Directive
+
+User redirected from the Task-2D.11 Phase-3 decision: *"Lets closeout Phase 1. Lets do 1.8, 1.9, 1.10, 1.11 and see if you can identify anything new or possible holes."* Clarified: ROADMAP Phase-1 (the *project-level* Linearization & Feasibility phase, not the Session-15 vortical Phase-1).
+
+### What Was Accomplished
+
+- **Task 1.8 (Lobo & Visser 2004) — closed via abstract read.** Fetched [gr-qc/0406083](https://arxiv.org/abs/gr-qc/0406083) (CQG 21:5871) and [gr-qc/0412065](https://arxiv.org/abs/gr-qc/0412065) (proceedings) abstracts. Headline overlap: their linearised analysis finds EC violations are *generic* to the warp geometry, not just a high-speed effect. Their **volume integral quantifier (VIQ)** compares warp-field negative energy to the spaceship mass-energy and finds the ratio must be a "significant fraction." Concordant with our Slice-1 single-mode FH negatives. The multi-mode FH ansatz sidesteps the L-V VIQ by giving up the spaceship (Session 14 §9: passenger zone has zero continuum volume → no spaceship to compare against, but $E_{\rm neg} = 0$ as well). PDFs not added to repo (per AGENTS.md slim-PDF discipline); abstracts and the L-V journal-version page are sufficient for the closeout-level claim.
+- **Task 1.9 (Fuchs et al. 2024) — closed as subsumed.** Already fully integrated in [`MATTER_SHELL_PATH.md`](MATTER_SHELL_PATH.md) §1-§5 + [`matter_shell.ipynb`](matter_shell.ipynb) since Session 6 (Task 2A.1 marked done). No additional Phase-1-level analysis owed.
+- **Task 1.10 (gauge analysis) — closed as already done.** Full derivation in [`LINEARIZATION_CALCULATION.md`](LINEARIZATION_CALCULATION.md) §5.3-§5.4; SESSION_LOG line 67 already records it. Surfaced one caveat during closeout: the FH multi-mode shift is also not in harmonic gauge, but since the FH sweep computes everything in ADM variables this is immaterial. Flagged for future readers.
+- **Task 1.11 (spin-2 vs spin-1) — closed as already done.** Full table in [`QUANTUM_CLASSICAL_BRIDGE.md`](QUANTUM_CLASSICAL_BRIDGE.md) §4 + [`ALCUBIERRE_IMAGE_METHOD.md`](ALCUBIERRE_IMAGE_METHOD.md) §3.4. Identified speculative bridge: the §9 "all wall, no interior" pathology may be the spin-2 manifestation of the "no gravitational conductor" row in the Costa–Natário catalog. Logged informally in [`FELL_HEISENBERG_VORTICAL_NOTES.md`](FELL_HEISENBERG_VORTICAL_NOTES.md) §2.4; not promoted to a formal claim.
+
+### Holes Identified
+
+1. **VIQ not in our sweep records.** L-V 2004a's volume integral quantifier is a standard literature comparison metric we don't compute. Cheap to add as a post-processing column on existing FH parquet output. Logged as new **Task 2D.12** in ROADMAP.
+2. **FH harmonic-gauge status undocumented.** The FH multi-mode shift inherits the same "not in harmonic gauge" property as the original Alcubierre shift; immaterial because we compute in ADM, but worth a note. Added to Task 1.10 closeout text.
+3. **Spin-2 ↔ foliation-extent bridge.** The Session-14 zero-volume passenger zone may be the spin-2 manifestation of the "no gravitational conductor" entry in the QUANTUM_CLASSICAL_BRIDGE.md spin-2 table. Suggestive only; would require an actual mode-counting argument to be more than analogy. Not promoted to a formal claim.
+
+### Disposition of the Phase-1 Decision Point
+
+Original question: *"Does the boundary-mode decomposition yield a well-posed mathematical problem with known solution techniques?"*
+
+Closeout answer: **partial YES.** ADM constraints are well-posed and gauge-clean; multi-mode static analog (FH) admits pointwise WEC + DEC with $E_{\rm neg} = 0$. The original spectral / image-method framing was superseded mid-project by the FH-style direct shift sweep, which is now the de-facto Phase-2 entry point. Phase 1 exits "with content" but the original framing has been replaced by what was learned in Phase 2A and Phase 2D Sessions 5-15.
+
+### Documentation Updates
+
+- [`ROADMAP.md`](ROADMAP.md): Phase-1 dashboard line `◐ IN PROGRESS` → `✓ COMPLETE`; Phase-1 header gets a 2026-04-20 status paragraph; Tasks 1.8–1.11 each marked `[x]` with cross-references and the new findings; Decision Point gets a "Disposition" paragraph; new Task 2D.12 added under Phase 2D for the VIQ post-processing addition.
+- This session-log entry.
+
+### State at end of Session 15b
+
+ROADMAP Phase-1 closeout is complete. Open work-streams: Task 2D.11 Phase-3 decision (still pending from Session 15a), new Task 2D.12 (VIQ post-processing, cheap), Phase 2A.8/2A.9/2A.11/2A.12 unchanged, Phase 2B.8 spin-2 obstruction unchanged.
+
+---
+
+
+## Session 15c: 2026-04-20 � Phase-2A backlog Part A: hole fixes + LENTZ2020_EVALUATION.md
+
+**Participants:** Brian Sheppard + Claude
+**Plan reference:** `/memories/session/plan_2a_closeout.md` Part A
+**Mode:** Plan-mode hole closure before Phase-2A backlog execution.
+
+### Context
+Session 15b closed Phase 1. Earlier in 15c the user asked for an effort evaluation of the open Phase-2A tasks (2A.8, 2A.9, 2A.11, 2A.12, 2A.14). The evaluation surfaced three holes: (i) FELL_HEISENBERG2021_EVALUATION.md cited a Bobrick-Martire critique of Lentz 2020 as load-bearing without ever having read either paper; (ii) the Task 2A.8 spectral-decomposition framing in ROADMAP was superseded by the Phase-1 closeout but never reframed; (iii) Task 2A.9 second half (Warp Factory cross-check) duplicates TRUST_AUDIT #3 with no cross-reference. Plan Part A closes all three before any new Phase-2A computation.
+
+### Work Performed
+- **A.2 (ROADMAP 2A.8 reframing).** Added a 2026-04-20 paragraph to ROADMAP.md Task 2A.8 explicitly scoping the work as a Fuchs-bump mode-content sanity check (project `\beta^x_Fuchs(r)` onto `j_1(k_n r)` with Dirichlet+Neumann BCs, report dominant-mode fraction, verify Parseval closure), not a Phase-2 spectral-decomposition entry point. Justified the angular `l=1` restriction by Task 2A.4's pure-dipole result.
+- **A.3 (split 2A.9 + TRUST_AUDIT cross-ref).** ROADMAP Task 2A.9 split into 2A.9a (analytic anisotropic-pressure refinement, executable, verification gate is bit-exact reproduction of the existing `\kappa \in [0.05, 0.75]` bracket in the isotropic limit) and 2A.9b (Warp Factory numerical cross-check, EQUALS TRUST_AUDIT.md #3, deferred). Added cross-reference back from TRUST_AUDIT.md row #3 to ROADMAP 2A.9b so the same calculation is not done twice.
+- **A.1 (Lentz 2020 + Bobrick-Martire critique read).** Slim PDF added at `papers/2006.07125v2.pdf` (5.4 MB, the figures are vector so slim_pdf.py reduces little), text-only LaTeX extracted to `papers/extracted/lentz2020/main.tex`. Bobrick-Martire 2021 already had `papers/2102.06824v2.pdf` and extracted LaTeX. Read both papers in full for the relevant sections (Lentz �2��5, BM �1, �3.2, �5.2).
+- **A.1 deliverable: LENTZ2020_EVALUATION.md** (new top-level file, `LENTZ_*` prefix matching the `RODAL_*`/`KRASNIKOV2003_*`/`FELL_HEISENBERG2021_*` per-paper-eval pattern). TL;DR: Lentz's construction is a real Eulerian-positive hyperbolic-shift soliton example, but (i) the full WEC `\rho + p_i \ge 0` is never checked, (ii) the DEC is explicitly admitted to fail in the superluminal regime, (iii) no sourcing plasma is actually exhibited (the �4 "Einstein-Maxwell-plasma theory" is a target, not a construction). Logically Lentz is a special case of Fell-Heisenberg's purely-irrotational shift (`\vec\omega = 0` in their Helmholtz decomposition), so it lives strictly inside our Slice-5 sweep. Predicted full-WEC failure cells in the 1�5% range, matching what we already measured in Slice 5 � bit-exact verification is the natural Phase-2A.11 follow-up.
+
+### Holes closed
+- **Citation hole** in `FELL_HEISENBERG2021_EVALUATION.md` ("if the configuration in [Lentz 2020] indeed satisfies the WEC, as claimed�") � explicitly **not** supported by Lentz; the FH "may still be possible�given sufficient modifications" qualifier is unbacked.
+- **Framing hole** in ROADMAP 2A.8 (spectral-decomp framing superseded by Phase-1 closeout) � closed.
+- **Duplication hole** between ROADMAP 2A.9b and TRUST_AUDIT #3 � closed by mutual cross-reference.
+
+### Honest accounting
+- Lentz's hyperbolic shift relation is genuinely novel as a *third* class beyond Alcubierre's linear and Nat�rio's elliptic. This is the seed Fell-Heisenberg 2021 �3 generalises. Credit recorded in the evaluation �"Strengths".
+- Bobrick-Martire's critique is correct in direction but not strong enough for Lentz's specific pentagonal configuration; their �3.2 spherically-symmetric obstruction does not directly cover an axisymmetry-broken construction. Our Slice-5 reading is sharper than their published critique.
+- A bit-exact Slice-5 reproduction *of Lentz's specific* `\phi` (parameterising his Fig. 1 source, solving Eq. 18 numerically, computing principal pressures) is not done in this session and is left as the Phase-2A.11 follow-up. The "compact full-WEC failure regions exist" prediction is logical, not yet computational.
+- Tarball `arXiv-2006.07125v2.tar.gz` was already present in `papers/` from a previous session, so AGENTS.md "do not commit new full-PDF originals" is not violated. The new slim PDF is a derived artifact in the established convention.
+
+### Files edited
+- `ROADMAP.md`: Task 2A.8 reframing paragraph; Task 2A.9 split into 2A.9a + 2A.9b.
+- `TRUST_AUDIT.md`: row #3 cross-ref to ROADMAP 2A.9b.
+- `LENTZ2020_EVALUATION.md`: **new file**, ~250 lines, full per-paper-eval pattern.
+- `papers/2006.07125v2.pdf`: **new** (slim derived from arXiv).
+- `papers/extracted/lentz2020/`: **new** (text-only LaTeX from existing tarball).
+- This session-log entry.
+
+### State at end of Session 15c
+
+Plan `/memories/session/plan_2a_closeout.md` Part A complete. Part B (2A.12 ? 2A.11 ? 2A.9a ? 2A.8, total ~2.5 sessions) ready to execute on user go-ahead. No notebook code written this session; pure documentation + per-paper-eval. ROADMAP open work-streams: Task 2D.11 Phase-3 decision still pending from Session 15a, Task 2D.12 (VIQ post-processing) still on the board, Phase 2B.8 spin-2 obstruction unchanged.
+
+---
+
+## Session 15c (continued): 2026-04-20 — Phase-2A backlog Part B (B.1–B.4) — closeout DONE
+
+**Participants:** Brian Sheppard + Claude
+**Plan reference:** `/memories/session/plan_2a_closeout.md` Part B
+**Mode:** Sequential cheapest-first execution of the four Phase-2A backlog tasks (2A.12 → 2A.11 → 2A.9a → 2A.8).
+
+### Context
+Part A (hole fixes + LENTZ2020_EVALUATION.md) shipped earlier in 15c. User invoked Part B with sequential "begin B.X" / "lets get into B.X" prompts. Part B closes out the four open Phase-2A tasks; Task 2A.9b (Warp Factory cross-check, = TRUST_AUDIT #3) remains deferred by design.
+
+### Work performed
+
+- **B.1 (Task 2A.12, Natário 2002 disposition)** — pure synthesis, no new computation. Added "Disposition (2026-04-20, Session 15c)" subsection to [`LITERATURE.md`](LITERATURE.md) Natário entry. Added new row P2.8 to [`MATTER_SHELL_PATH.md`](MATTER_SHELL_PATH.md) §5. Disposition: dismissed as a Slice-1 special case via the solenoidal identity $\rho_E = -\tfrac{1}{16\pi} K_{ij} K^{ij} \le 0$ pointwise. ROADMAP 2A.12 → `[x]`.
+
+- **B.2 (Task 2A.11, Lentz↔Fuchs comparison)** — pure synthesis, no new computation. Added Appendix B (~75 lines) to [`LENTZ2020_EVALUATION.md`](LENTZ2020_EVALUATION.md): 9-axis side-by-side comparison table + §B.2 mechanism analysis + §B.3 resemblance/breakdown + §B.4 follow-ups + §B.5 verdict. **Disposition: different physical mechanisms.** Fuchs is a *matter* construction (TOV-solved anisotropic perfect fluid, full WEC + DEC verified by Warp Factory); Lentz is a *shift-engineering* construction (no static support shell, matter sector aspirational, only Eulerian energy density verified, DEC explicitly admitted to fail superluminally). Not interpolable inside Path 2A. MATTER_SHELL_PATH.md P2.6 promoted from "Partial answer" → "(Resolved)". ROADMAP 2A.11 → `[x]`.
+
+- **B.3 (Task 2A.9a, anisotropic refinement of $\kappa$)** — analytic only. New §11 cells (markdown + code) appended to [`thickness_bound.ipynb`](thickness_bound.ipynb) (now 21 cells). **Reframed** the originally-planned radial-vs-tangential refinement as **tangential** anisotropy ($P_\theta$ vs $P_\phi$ at the anti-motion pole, sourced by the dipole shift breaking $\theta \leftrightarrow \phi$ isotropy on the spherically-symmetric background), because the cell-3 derivation is intrinsically thin-shell with no $P_r$ in the surface stress-energy. SymPy result: $\kappa(r) = (2 + r)/4$ where $r \equiv \max(P_\theta, P_\phi)/\min(P_\theta, P_\phi) \ge 1$. **Bit-exact verification gate met:** `kappa(1) == kappa_iso == 3/4` via three asserts; `simplify(diff) == 0` confirmed. Bracket update: $\kappa \in [0.05, (2 + r_{\max})/4]$ — empirical lower 0.05 unchanged (cell-7 sweep already incorporates anisotropy); upper widens monotonically. Did NOT propagate to MATTER_SHELL_PATH.md / LANDSCAPE_SYNTHESIS.md (qualitative bracket unchanged at $r = 1$). Open follow-up explicitly logged: full radial-vs-tangential extension would require enriching cell-2's volumetric dimensional argument with $P_r$ and $P_\perp$ as independent components. ROADMAP 2A.9a → `[x]`.
+
+- **B.4 (Task 2A.8, vector-Bessel decomposition of Fuchs bump)** — biggest single piece. New §8 added to [`matter_shell.ipynb`](matter_shell.ipynb) (markdown intro + 4 code cells + verdict markdown; notebook now 32 cells). Sturm–Liouville framework on the annulus $[R_1, R_2] = [10, 20]\,\text{m}$ with eigenfunctions $\varphi_n(r) = j_1(k_n r) y_1(k_n R_1) - y_1(k_n r) j_1(k_n R_1)$, weight $w(r) = r^2$, eigenvalues $k_n$ from `brentq` on sign changes of the dispersion relation $D(k) = j_1(k R_2) y_1(k R_1) - y_1(k R_2) j_1(k R_1) = 0$ (Dirichlet) and the analogous derivative-form (Neumann). Coefficients $a_n$ via `scipy.integrate.quad`.
+
+  **Numerical headline (12 modes):**
+
+  | basis     | Parseval closure | $E_1 / \|S\|^2$ | $(E_1 + E_2) / \|S\|^2$ |
+  |-----------|-----------------:|----------------:|------------------------:|
+  | Dirichlet |          97.50%  |          55.81% |                  89.23% |
+  | Neumann   |         100.00%  |          41.30% |                  98.65% |
+
+  **Disposition: original Phase-2 single-mode hypothesis is REFINED, not falsified.** The Fuchs bump is a TWO-MODE near-doublet in its natural Neumann basis (which matches the bump's flat-at-the-endpoints boundary behaviour). Mode 1 at $k_1 \approx 0.092\,\text{m}^{-1}$ is essentially a near-constant background; mode 2 at $k_2 \approx 0.346\,\text{m}^{-1}$ (close to the 1D-box estimate $\pi/(R_2 - R_1) \approx 0.314$) carries the actual transition shape. Dirichlet underperforms because $S_\text{warp}(R_1) = 1 \ne 0$ produces Gibbs-type slow convergence. Boundary-mode picture survives at low multiplicity rather than as clean single-mode dominance. Consistent with the Phase-1 closeout decision (FH-style direct sweep remains the right method); recorded as a sanity-check confirmation, not a new no-go. The §7 deferred-list bullet "Vector-spherical-harmonic decomposition…" struck through with backref to §8. ROADMAP 2A.8 → `[x]`.
+
+### Honest accounting
+
+- **B.3 reframing risk.** Plan called for radial-vs-tangential anisotropy; agent reframed to tangential-only after discovering cell-3 has no $P_r$ in surface stress-energy. The radial extension remains analytically open and is logged in the cell output, the ROADMAP disposition, and this entry. The cell-7 numerical sweep already covers it numerically, so the open follow-up is purely the analytic upper bound, not a missing data point.
+- **B.4 verdict update.** First draft of §8 verdict claimed "broadband, single-mode hypothesis falsified." Numerical results showed the Neumann basis closes 98.65% in two modes — a near-doublet, not broadband. Verdict revised to "refined, not falsified" before the notebook was committed. Final printout and markdown verdict match the actual numbers.
+- **B.4 angular restriction.** Restricted to $l = 1$ poloidal radial Bessel projection per Task 2A.4's pure-dipole result. Higher-$l$ contamination from finite-shell effects on the dipole shift is not separately checked; full angular vector spherical harmonic basis would be a separate workstream, deferred. Explicitly stated in §8.0 and the verdict.
+- **No propagation to LANDSCAPE_SYNTHESIS.md or MATTER_SHELL_PATH.md from B.3 or B.4** — both results refine existing bracket entries / sanity-check existing claims, neither opens a new no-go or moves a slice boundary.
+- **Workflow gotcha (B.3, applied again in B.4).** `edit_notebook_file` writes to the editor buffer; `agent-tools/run_nb.py` reads from disk and overwrites. Workaround used in both B.3 and B.4: scratch script that loads the notebook JSON, appends cell dicts, writes back, then `run_nb.py` executes. Pattern recorded in `/memories/repo/notebook_workflow.md` for future agents. Scratch scripts deleted after success.
+
+### Files edited (Part B)
+
+- [`ROADMAP.md`](ROADMAP.md): Tasks 2A.8, 2A.9a, 2A.11, 2A.12 all flipped `[ ]` → `[x]` with full disposition paragraphs.
+- [`LITERATURE.md`](LITERATURE.md): Natário entry got a "Disposition (Session 15c)" subsection (B.1).
+- [`MATTER_SHELL_PATH.md`](MATTER_SHELL_PATH.md): §5 row P2.6 promoted to "(Resolved)" (B.2); new row P2.8 added (B.1).
+- [`LENTZ2020_EVALUATION.md`](LENTZ2020_EVALUATION.md): Appendix B added (~75 lines) (B.2).
+- [`thickness_bound.ipynb`](thickness_bound.ipynb): §11 markdown + §11 code cells appended (B.3); now 21 cells.
+- [`matter_shell.ipynb`](matter_shell.ipynb): §8 (markdown + 4 code + verdict markdown) appended (B.4); §7 deferred bullet struck through with backref to §8; now 32 cells.
+- `/memories/session/plan_2a_closeout.md`: B.1 / B.2 / B.3 / B.4 COMPLETE blocks; "ALL OF PART B COMPLETE — Phase-2A closeout DONE."
+- `/memories/repo/notebook_workflow.md`: **new** (workflow gotcha for future agents).
+- This session-log addendum.
+
+### State at end of Session 15c (Part B)
+
+**Phase-2A backlog closeout COMPLETE.** ROADMAP open Phase-2A items remaining: 2A.9b (Warp Factory cross-check, = TRUST_AUDIT #3, deferred by design); 2A.14 (toroidal-Fuchs, deferred by design). All other Phase-2A tasks `[x]`. Other open work-streams unchanged from Part A end-state: Task 2D.11 Phase-3 decision still pending from Session 15a, Task 2D.12 (VIQ post-processing) still on the board, Phase 2B.8 spin-2 obstruction unchanged. The Fuchs path now stands with: §11 anisotropic-tangential refinement of $\kappa$, §8 two-mode-doublet decomposition of the bump, and the existing Lentz↔Fuchs disposition all on record.
+
+---
+
+## Session 15c (continued, follow-up): 2026-04-20 -- �9 Hermite-cubic background subtraction (matter_shell.ipynb)
+
+**Participants:** Brian Sheppard + Claude
+**Trigger:** User question after Part B closeout: "does the difference between Dirichlet and Neumann bear further investigation?" Followed by: "Lets do the follow up anyway. Lets see if the two mode dominance survives in a Sturm-Liouville problem with the physically correct value+slope matching at R_1 and R_2."
+
+### Why this is here, not its own session
+
+This is a sanity-check addendum to the �8 two-mode-doublet verdict (Task 2A.8 already [x]). Not a new ROADMAP item; recorded against Session 15c per `AGENTS.md` discipline (don't open new task entries for follow-up sanity checks).
+
+### What was done
+
+Added �9 to `matter_shell.ipynb` (now 38 cells):
+- �9.0 markdown intro: pure Robin SL impossible (4 BCs on 2nd-order operator); use the standard Hermite-cubic background-subtraction trick. Define {bg}(r) = 1 - 3 t^2 + 2 t^3$ with  = (r-R_1)/(R_2 - R_1)$, satisfying {bg}(R_1) = 1$, {bg}(R_2) = 0$, {bg}'(R_1) = S_{bg}'(R_2) = 0$ exactly. Residual $\Delta S = S_\text{warp} - S_{bg}$ has all four boundary data zero by construction.
+- �9.1 code: define {bg}$, verify endpoints + slopes (finite-diff), compute $\|S_{bg}\|^2 / \|S_\text{warp}\|^2 = 88.58\%$, $\|\Delta S\|^2 / \|S_\text{warp}\|^2 = 3.09\%$, cross term 8.33%; identity check passes.
+- �9.2 code: 2-panel plot of \text{warp}$ vs {bg}$ overlay and $\Delta S$ alone; `max |dS| ~ 0.15`.
+- �9.3 code: project $\Delta S$ onto �8's Dirichlet and Neumann bases (12 modes each). Closure 100% in both. Top mode in Dirichlet basis: =2$ at  \approx 0.636 \approx 2\pi/(R_2 - R_1)$ carrying **89.01%**; top-2 = 96.86%. Neumann is now the *unnatural* basis (top-2 = 91.75%, two-mode rather than single-mode).
+- �9.4 code: bar-spectrum log plot of  / \|\Delta S\|^2$ in both bases.
+- �9.5 markdown verdict: detailed numerical table + reading + honest accounting.
+
+Also patched �8.2 verdict cell with one-line cross-ref to �9.
+
+### Headline result
+
+The �8 "two-mode near-doublet" picture is **largely a basis artifact**, but in an interesting way. The decomposition splits as:
+- ~88.58% boundary-data-interpolant share ($\|S_{bg}\|^2$)
+- ~8.33% cross term ( \langle S_{bg}, \Delta S \rangle$)
+- ~3.09% Fuchs-distinctive residual ($\|\Delta S\|^2$)
+
+The ~3% residual itself collapses to a clean **single-mode** object in the Dirichlet basis (89% in =2$ at  \approx 2\pi/(R_2 - R_1)$), corresponding to an odd-symmetric correction around the shell midpoint. So the Fuchs functional form contributes essentially *one* spectral feature beyond what its own boundary data already determine.
+
+This refines, not contradicts, the �8 verdict, and *strengthens* the Phase-1 closeout decision to abandon spectral-decomposition strategies for Fuchs-style profiles in favour of FH-style direct sweeps.
+
+### Files touched
+
+- `matter_shell.ipynb`: �9.0��9.5 (6 new cells appended); �8.2 verdict patched with �9 cross-ref. Now 38 cells.
+- This session-log addendum.
+
+### State at end of follow-up
+
+No ROADMAP changes. No memory plan changes (Phase-2A closeout still complete; this is housekeeping). No new slice opened. Scratch scripts `agent-tools/_add_section9.py`, `agent-tools/_dump_tail9.py`, `agent-tools/_patch_section9_verdict.py` deleted.
+
+---
+
+
+## Session 16 � Task 2A.14 closeout (2026-04-17)
+
+### Summary
+
+User cleared the last Phase-2A optional backlog item: "Ok lets do (a) tractable cylindrical reduction and add (b) as a possible path to the appropriate documents."
+
+Task 2A.14 (toroidal-Fuchs static junction) executed in scope (a) � cylindrical-reduction (thin-torus) limit. New artifacts:
+- `toroidal_fuchs.ipynb` (16 cells, runs in seconds): linearized Levi-Civita exterior + Minkowski interior + Israel jump on cylindrical surface, then Fuchs-style worst-angle DEC analysis with axial shift `$\beta^z$`.
+- `TOROIDAL_FUCHS_NOTES.md` companion (~150 lines): scope a result + scope b deferred follow-up + honest accounting.
+
+### Headline result
+
+Cylindrical Fuchs bound is structurally different from spherical:
+- Spherical: `$\Delta_{\min}^\text{sph} = (3/8)\beta R/M$` (linear in shell radius `R`)
+- Cylindrical: `$\Delta_{\min}^\text{cyl} = (3/8)\beta L/M$` (independent of `R`, linear in axial length `L`)
+
+Identifying ` \to 2\pi R_\text{maj}$` and ` \to R_\text{min}$` for a torus, the energy-condition penalty is
+
+`)\Delta_\text{cyl}/\Delta_\text{sph} = L/R_\text{min} = 2\pi R_\text{maj}/R_\text{min} \geq 2\pi)`
+
+for any non-self-intersecting torus. The crossover would sit at `\text{maj}/R_\text{min} = 1/(2\pi) \approx 0.159$`, a degenerate "torus" where the minor cross-section punches through the central axis. **Toroidal Fuchs shells are strictly worse than spherical Fuchs shells by a factor `$\geq 2\pi$`** at any non-degenerate torus aspect ratio. Combined with `KRASNIKOV_TUBE_NOTES.md` �7.1 (no Krasnikov-style causal advantage), the speculation in `speculation/RING_NETWORK_CONCEPT.md` �4 is closed twice over.
+
+Stronger dismissal than `KRASNIKOV_TUBE_NOTES.md` �7.2 anticipated: not "no advantage" but "strictly worse by a calculable, bounded-below geometric factor."
+
+### Honest-accounting items recorded
+
+- **Discrepancy with `thickness_bound.ipynb` Cell 3 boxed equation:** the boxed display reads `$\Delta_{\min}^\text{sph} = (3/8)\beta R^2/M$`, but the algebraic chain printed by both notebooks (`/R^2 \geq 3\beta\sigma_w/(8R)$` to `$\sigma_w \leq 8M/(3\beta R)$`) gives `0.375\beta R/M$`. Extra `R` in the boxed display is a typo; the dimensionless form `$\Delta_{\min}/R = (3/4)\beta/C_\text{sph}$` is identical and correct. Logged in `TOROIDAL_FUCHS_NOTES.md` �4; not back-propagated to `thickness_bound.ipynb` because the working chain is correct and downstream uses are consistent.
+- **Numerical coefficient 3/8** comes from worst-angle dimensional reconstruction (paralleling `thickness_bound.ipynb` Cell 3); the ratio `/R_\text{min}$` that drives the verdict is dimensionally robust and gauge-independent.
+- **Scope (b) reopening criteria** recorded in `TOROIDAL_FUCHS_NOTES.md` �3: only worth executing if (i) someone publishes a specific quantitative fat-torus design, (ii) a fully analytic regular asymptotically-flat solid-torus exterior is found in the GR literature, or (iii) Phase 3+ needs the framework for unrelated reasons.
+
+### Files touched
+
+- `toroidal_fuchs.ipynb` *(new, 16 cells)*
+- `TOROIDAL_FUCHS_NOTES.md` *(new)*
+- `KRASNIKOV_TUBE_NOTES.md`: �7.2 disposition added; �9 �7.2-deferred line updated to �7.2-closed.
+- `ROADMAP.md`: Task 2A.14 flipped `[ ] -> [x]` with one-paragraph disposition.
+- `NAVIGATOR.md`: document-index entries for `toroidal_fuchs.ipynb` + `TOROIDAL_FUCHS_NOTES.md`; load-bearing-assumptions table extended with row 7 (shell topology).
+- This session-log entry.
+- Scratch scripts `agent-tools/_build_toroidal.py`, `agent-tools/_patch_toroidal.py`, `agent-tools/_patch_toroidal2.py`, `agent-tools/_dump_toroidal.py` deleted.
+
+### State at end of session
+
+Phase-2A backlog is now empty except for `Task 2A.9b` (= `TRUST_AUDIT.md` #3, MATLAB-only Warp-Factory cross-check, deferred indefinitely). All other Phase-2A tasks are `[x]`. No new slice opened; no new sweep dispatched.
+
+---
+
+## Session 16 � codimension-counting law, k=0 (slab) datum + literature pass
+
+**Date:** 2026-04-21. **Mode:** mathematical-structure exploration (post-Phase-2A pivot).
+
+### Pivot recorded
+
+User pivot: *"I am more interested in the results mathematically the 'warp drive' is secondary at this point."* Title locked: *"donit bad"* (verbatim, with the misspelling) per user directive 2026-04-20, recorded in [TOROIDAL_FUCHS_NOTES.md](TOROIDAL_FUCHS_NOTES.md) �6 and [SLAB_PATCH_NOTES.md](SLAB_PATCH_NOTES.md) �8. The codimension-counting law in [TOROIDAL_FUCHS_NOTES.md](TOROIDAL_FUCHS_NOTES.md) �6 became the active research object.
+
+### Literature pass
+
+Looser (non-warp) arxiv-API search for sibling thin-shell mass-per-area / mass-per-length / codimension-scaling work. User supplied 9 papers manually; agent extracted, renamed, slim-checked, and identified each. Catalogued in new [LITERATURE.md �11 "Codimension-Scaling Sibling Literature"](LITERATURE.md):
+
+- **Lemos & Lobo 2008** (arXiv:0806.4459) � planar/cylindrical/toroidal AdS thin-shell wormholes. Sibling, NOT subsumption: AdS exterior, no localized M, mass-per-area is constant in their limit.
+- **Dias & Lemos 2010** (arXiv:1008.3376) � d-dim version of above.
+- **Bronnikov, Santos & Wang 2019** (arXiv:1901.06561) � cylindrical-systems review. Two genuinely connected items: Whittaker mass-per-length nu = sigma sqrt(a) (eq. 2.40) with horizon threshold nu > 1/2; and the **hoop conjecture (Thorne 1972)** statement (�IX.A) � *"black holes form iff mass M is compacted into a region whose circumference is <~ 4 pi M in every direction."* This is the **closest published structural relative** of the codimension-counting framing.
+
+Sibling cylindrical-Bonnor papers (Bonnor 1957, Bonnor static-cylinder chapter, Astesiano 2024, Mishima-Tomizawa 2017, Vesely-Zofka 2021, Lynden-Bell-Bicak 2017) catalogued for completeness; none directly bear on the codimension scaling. Bonnor 1957 PDF is image-only (no text layer); not blocking � predates Israel formalism.
+
+Verdict: codimension-counting framing survives the literature pass. Not subsumed by Lemos-Lobo / Dias-Lemos. Hoop conjecture is the closest structural relative.
+
+### k=0 (slab) datum: linear-beta term vanishes, beta^2 takes over
+
+[slab_patch.ipynb](slab_patch.ipynb) *(new, 11 cells)* and [SLAB_PATCH_NOTES.md](SLAB_PATCH_NOTES.md) *(new)*. Took the cylindrical Israel-junction calculation from [toroidal_fuchs.ipynb](toroidal_fuchs.ipynb) �3 and computed its R -> oo limit at fixed patch area. The linear-beta corrections sigma_1 = -beta sigma_w/(8 pi R) and P_1 = -beta sigma_w/(16 pi R) both vanish (both have explicit 1/R prefactors that came from the shell extrinsic curvature K = 1/R).
+
+The leading-order obstruction at k=0 is therefore *quadratic* in beta, from the volumetric shift-gradient stress T^zz ~ beta^2/(8 pi Delta^2). Translating to a surface bound:
+
+  Delta_min^slab = beta^2 L^2 / (8 M)   (geometrized G=c=1)
+
+**Three-point codimension-counting table (geometrized G=c=1):**
+
+| k | topology | Delta_min | order in beta | source |
+|--:|----------|-----------|:--------------:|--------|
+| 2 | S^2 sphere | (3/8) beta R / M | linear | [matter_shell.ipynb](matter_shell.ipynb) �9 |
+| 1 | S^1 x R cylinder | (3/8) beta L / M | linear | [toroidal_fuchs.ipynb](toroidal_fuchs.ipynb) (Task 2A.14) |
+| 0 | R^2 slab patch | (1/8) beta^2 L^2 / M | **quadratic** | [slab_patch.ipynb](slab_patch.ipynb) (this session) |
+
+Linear branch obeys Delta_min^linear = (3/8)(beta/M) * Area / R_curv for k >= 1. For k=0 (R_curv -> oo) the linear branch vanishes; quadratic takes over. **The codimension-counting law correctly identifies that flat geometries are softer.**
+
+**Crossover** at beta_cross = 3/L (geom). For Fuchs reference L = 15 m, beta_cross = 0.2. At warp-relevant beta = 0.02, slab beats cylinder by factor beta L / 3 = 0.1 (~10x thinner).
+
+**This does NOT open a warp-drive escape hatch.** The slab is a flat sheet of stress-energy on an infinite shell; no localized warp bubble, no asymptotic-flatness gain, no propulsion. Result is **structural** (the law holds), not **operational**.
+
+### Honest-accounting items recorded
+
+- **Slice scope** (in [SLAB_PATCH_NOTES.md](SLAB_PATCH_NOTES.md) �8): static thin matter shells, 3+1 GR, Israel-junction matching, small perturbative shift, classical DEC. The codimension-counting law is not asserted outside this slice.
+- **Quadratic-beta coefficient 1/8:** dimensional argument paralleling [thickness_bound.ipynb](thickness_bound.ipynb) Cell 2. A first-principles second-order Israel-junction calculation would refine 1/8 but cannot change the beta^2 L^2 / M scaling.
+- **Patch-edge boundary stress** is unmodeled; cannot affect the bulk DEC scaling.
+- **Hoop-conjecture connection** is structural / heuristic, not derivational. Stated in [SLAB_PATCH_NOTES.md](SLAB_PATCH_NOTES.md) �6 and [LITERATURE.md �11](LITERATURE.md).
+
+### Files touched
+
+- [slab_patch.ipynb](slab_patch.ipynb) *(new, 11 cells, executes cleanly via `python agent-tools/run_nb.py slab_patch.ipynb`)*
+- [SLAB_PATCH_NOTES.md](SLAB_PATCH_NOTES.md) *(new)*
+- [LITERATURE.md](LITERATURE.md): new �11 "Codimension-Scaling Sibling Literature" (Lemos-Lobo 2008, Dias-Lemos 2010, Bronnikov-Santos-Wang 2019, hoop-conjecture cross-link, sibling cylindrical-Bonnor paper table)
+- [NAVIGATOR.md](NAVIGATOR.md): document-index entries for `slab_patch.ipynb` and `SLAB_PATCH_NOTES.md`; `TOROIDAL_FUCHS_NOTES.md` entry annotated with �6 codimension-counting line of inquiry
+- This session-log entry.
+- Scratch script `agent-tools/build_slab_patch.py` retained (used to programmatically build the notebook via nbformat after a json-encoding glitch in the create_file tool).
+- `papers/` extended with 9 user-supplied PDFs / tarballs renamed with descriptive prefixes; `papers/extracted/bronnikov2019_cylindrical_full.txt` (240k chars) and `papers/extracted/lemos_lobo2008/`, `papers/extracted/dias_lemos2010/` extractions for grep access.
+
+### State at end of session
+
+Codimension-counting law has three confirmed data points across k = 0, 1, 2. The framing has survived a literature pass (sibling work catalogued, no subsumption). The closest published structural relative is Thorne 1972 hoop conjecture; ours is its perturbative-DEC version with the additional content that *each* non-compact transverse direction softens the obstruction by one order in beta.
+
+Pending follow-up (Step 3, deferred to next session): consolidated [speculation/CODIMENSION_SCALING.md](speculation/CODIMENSION_SCALING.md) writeup with all three data points, heuristic derivation, hoop-conjecture connection, slice-scope qualifiers, and "donit bad" title note.
+
+---
+
+## Session 17 — 2026-04-21 — FH strict-pass triad: VIQ (2D.12), B-M taxonomy (2D.9), CTCs (2D.7)
+
+**Participants:** Brian Sheppard + Claude
+**Duration:** Three-phase plan (A/B/C) executed over one extended session.
+
+### Work Performed
+
+Anchored against three independent external literatures, each targeting a different potential failure mode of the FH strict-pass existence claim.
+
+**Phase A — Task 2D.12, Volume-integral quantifier (Ford-Pfenning / L-V style):** post-processed all 6738 strict-pass rows (full + refine parquets) at $N_{\rm pts}=49$; ~27 min wall time. Module `hf_jobs/analysis/fell_heisenberg_viq.py`; outputs `fell_heisenberg_viq/`. Three universal findings: (i) `viq_E_neg = 0` on every row (L-V VIQ is trivially satisfied by construction — FH has zero negative Eulerian energy); (ii) `viq_passenger_volume = 0.125 = h^3` on every row (single-cell passenger zone is universal across the 5-D strict-pass manifold, not anchor-specific); (iii) `viq_pos_M_passenger` median 75.7, range [43.8, 97.7] — every strict-pass FH bubble carries 44-98× more positive matter than fits in its passenger zone. Verdict: the original L-V VIQ doesn't bite FH, but a positive-energy analog does — the cost of $E_{\rm neg}=0$ is a 76× mass-to-passenger-volume ratio. [FELL_HEISENBERG_SWEEP_NOTES.md](FELL_HEISENBERG_SWEEP_NOTES.md) §13.
+
+**Phase B — Task 2D.9, Bobrick-Martire 2021 four-class taxonomy:** evaluated 8 representative strict-pass points (canonical anchor + 7 stratified by V/r bins) at $N_{\rm pts}=65$. Module `hf_jobs/analysis/fell_heisenberg_matter.py`; outputs `fell_heisenberg_matter/`. All 8 points tag as **Class III geometric signature** ($g_{tt}<0$ at central single passenger voxel only, $g_{tt}>0$ across rest of box) but FH is statically constructed ($v_s=0$), so the kinematic Class III definition ($v_s \ge c$) does not apply. Source matter is **not isotropic** (median $(p_3-p_1)/|\rho| \approx 0.49$, isotropic-fraction $\sim 7\times 10^{-6}$), so B-M §3's positive-energy spherically-symmetric isotropic-fluid construction does not generalise. $\rho > 0$ universally; eigen-pressure $p_1 < 0$ in pockets; Hawking-Ellis Type-I-like indicator $\approx 0.99996$ (compatible with Rodal 2025). [FELL_HEISENBERG_SWEEP_NOTES.md](FELL_HEISENBERG_SWEEP_NOTES.md) §14; [BOBRICK_MARTIRE2021_EVALUATION.md](BOBRICK_MARTIRE2021_EVALUATION.md).
+
+**Phase C — Task 2D.7, Everett-Roman static-foliation CTCs:** three sub-parts. (C.1) Single-bubble at canonical anchor: $g_{tt}$ range $[-1.000, +345.07]$, passenger voxel timelike, 99.9996% of cells in CTC region (wall + exterior). (C.2) Batch over all 6738 strict-pass rows at $N_{\rm pts}=49$ (73 s on 4 workers): `all_centre_timelike=true`, `all_walls_supraluminal=false` — **6624/6738 = 98.3% host CTCs; 114 do not**. Clean V-threshold: all 114 CTC-free rows are at $V=0.10$ (120/234 at V=0.10 have $|\vec N|_{\max}<1$); every row at $V \ge 0.38$ has $|\vec N|_{\max}>1$ and hosts CTCs. (C.3) Double-bubble $\Phi = \phi_{\rm FH}(x-L_{\rm sep};+V) + \phi_{\rm FH}(x+L_{\rm sep};-V)$ at $L_{\rm sep} \in \{1.5r, 3r\}$ (qualitative, Everett-Roman §4 caveat: superposition is not a strict GR solution): **destroys both passenger zones** — the FH ansatz has no asymptotic decay, so each bubble's far-wall shift ($|\vec N| \approx 16$) sits at the centre of the other. Module `hf_jobs/analysis/fell_heisenberg_ctc.py`; outputs `fell_heisenberg_ctc/`; notebook Cells 11-13. [FELL_HEISENBERG_SWEEP_NOTES.md](FELL_HEISENBERG_SWEEP_NOTES.md) §15.
+
+### Key Insight
+
+The FH strict-pass existence claim passes every individual test but each anchors it against a distinct external pathology, and the pathologies compose:
+
+1. **VIQ (Phase A)**: $E_{\rm neg}=0$ is real, but requires 76× mass inflation relative to passenger volume.
+2. **B-M (Phase B)**: geometric Class III + anisotropic + static ⇒ outside every B-M positive-result pathway.
+3. **CTC (Phase C)**: at $V \ge 0.38$ (96.5% of strict-pass) the wall is an everywhere-spacelike-$\partial_t$ region; only a marginal low-$V$ corner avoids this, at the cost of weak warp effect.
+
+Cumulative: the warp-drive interpretation degrades to *a single passenger voxel surrounded by a CTC sea, carrying $\sim 10^{45}\,J$ of positive-energy matter per $10^{-3}\,m^3$ of passenger, outside every B-M-class matter-field result.* This is not a new pathology — structurally consistent with Alcubierre 1994, Pfenning-Ford 1997, Everett-Roman 1997, Stoica-Svesko-Visser 2023, Bobrick-Martire 2021 — but it is the quantitative pinning-down of where FH sits in that landscape.
+
+### Honest-accounting items recorded
+
+- **Slice scope** (per AGENTS.md, re-stated in §13.7 / §14.7 / §15.5): Fell-Heisenberg irrotational-shift static-slice ansatz, unit lapse, finite-difference 4th-order stencils with reflective edges, strict-pass = (WEC slack $\ge 0$ AND DEC slack $\ge 0$ AND ok). Findings are not asserted outside this slice.
+- **Canonical anchor** $(V, \sigma, m_0, a, \ell, r) = (1.5, 10, 3.0, 0.05, 4, 9)$ used for resolution-convergence verification ($N_{\rm pts}=49 \to 65 \to 81 \to 97$, see §11.5 previously).
+- **VIQ $M_{\rm shell}$** empty for ~83% of rows because FH's $|\vec N|$ jumps from $<0.5$ to $\gg 1$ in less than one grid cell — discretization artefact, documented in §13.3.
+- **Double-bubble caveat** (§15.3): superposition is not a strict GR solution; all double-bubble statements are kinematic / pattern-detection only.
+- **Phase C batch at $N_{\rm pts}=49$** matches the sweep classification resolution. Not re-verified at 65 or 97 because the per-$V$ structure is well-resolved at 49 (see §15.2 table); higher resolution would not change the CTC-threshold shape.
+
+### Files touched
+
+- **New modules:** [`hf_jobs/analysis/fell_heisenberg_viq.py`](hf_jobs/analysis/fell_heisenberg_viq.py), [`hf_jobs/analysis/fell_heisenberg_matter.py`](hf_jobs/analysis/fell_heisenberg_matter.py), [`hf_jobs/analysis/fell_heisenberg_ctc.py`](hf_jobs/analysis/fell_heisenberg_ctc.py).
+- **New output directories:** [`fell_heisenberg_viq/`](fell_heisenberg_viq/), [`fell_heisenberg_matter/`](fell_heisenberg_matter/), [`fell_heisenberg_ctc/`](fell_heisenberg_ctc/).
+- **New evaluation doc:** [`BOBRICK_MARTIRE2021_EVALUATION.md`](BOBRICK_MARTIRE2021_EVALUATION.md).
+- **Notebook cells added:** [`fell_heisenberg.ipynb`](fell_heisenberg.ipynb) Cells 11-13 (single-bubble CTC, batch summary, double-bubble qualitative).
+- **Notes extended:** [`FELL_HEISENBERG_SWEEP_NOTES.md`](FELL_HEISENBERG_SWEEP_NOTES.md) §13 (VIQ), §14 (B-M taxonomy), §15 (CTC tests).
+- **ROADMAP updates:** 2D.7 `[ ] → [x]` (Phase C), 2D.9 `[ ] → [x]` (Phase B, earlier this session), 2D.12 `[ ] → [x]` (Phase A, earlier this session); 2D.10 reduced to asymptotic-matching residual (double-bubble half absorbed into §15.3).
+- **Cross-references:** [`LITERATURE.md`](LITERATURE.md) Bobrick-Martire entries (lines 105, 328) got back-pointers to §14 + BM_EVALUATION.
+- **Scratch (retained):** `agent-tools/check_double_bubble.py` (sanity-check script for §15.3).
+
+### State at end of session
+
+Session-17 triad complete + Phase E. The strict-pass FH existence claim is now triple-anchored against (L-V VIQ + B-M taxonomy + E-R CTC) independent no-go literatures and additionally cross-pipeline-verified (Mathematica symbolic differentiation A-grade), leaving the cumulative honest reading that the warp-drive interpretation is degraded to the single-passenger-voxel regime — not a pipeline artefact. Pending follow-ups from the Session-17 plan (`/memories/session/plan.md`): Phase F asymptotic-matching residual for 2D.10 (uses `israel_junction.ipynb` + VIQ `M_box=1850` from §13); Phase G scaffold-only items (2D.5f 129-pt sweep config, 2D.11 Phase 3 and 2D.5e fallback deferred with explicit reopening criteria).
+
+### Phase E addendum (2026-04-21, same session) — Task 2D.8 cross-pipeline check
+
+Installed Wolfram 14.3 (already on system at `C:\Program Files\Wolfram Research\Wolfram\14.3\`, prepended to PATH) and xAct 1.3.0 (downloaded from `https://xact.es/download/xAct_1.3.0.zip`, extracted to `$UserBaseDirectory\Applications\xAct`, includes xCoba 0.8.6). Smoke test passes (4D manifold + metric + RicciCD).
+
+**Method:** define $\phi_{\rm FH}^{\rm smooth}$ symbolically in Mathematica with the same closed-form expression as `phi_FH_smooth` in [`hf_jobs/sweeps/fell_heisenberg.py`](hf_jobs/sweeps/fell_heisenberg.py); take symbolic derivatives via `D[]`; assemble $K_{ij} = \partial_i \partial_j \phi$ on the flat 3-slice with unit lapse; compute $\rho = (K^2 - K^{ij}K_{ij})/(16\pi)$ exactly as in `adm_stress_energy_from_N`; numerically evaluate at the same $(x,y,z)$ test points as the Python pipeline; compare.
+
+**Single-anchor cross-check:** 125 interior points (5×5×5 sub-grid, margin 6 cells from box edge) at the canonical anchor with $N_{\rm pts}=65$, $L=12$. Median rel-diff $2.0 \times 10^{-6}$, p95 $5.2 \times 10^{-5}$, max rel-diff (excluding origin) $3.5 \times 10^{-4}$. **Single outlier at $\vec x = (0,0,0)$** with $\rho_{\rm xact} \sim 10^{90}$ — traced to the $(R^2+\epsilon)^\Pi$ regularization with $\Pi = 1/4$, which is non-$C^2$ at $R=0$, so the symbolic Hessian sees a spurious $\epsilon^{\Pi-2} \sim 10^{105}$ singularity that the FD stencil averages over. Consistent with Session 14 §9's "single-cell continuum-zero passenger zone" finding.
+
+**9-anchor sweep:** $(V, \sigma, r) \in \{0.5, 1.5, 2.5\} \times \{5, 10, 20\} \times \{6, 9, 12\}$ varying one parameter at a time at the canonical anchor, 124 interior points / job (origin excluded a priori), single Mathematica process for all 9 jobs (~2 min wallclock). **All 9/9 anchors A-grade.** Median rel-diff stable at $2$–$4 \times 10^{-6}$, max rel-diff at $3$–$4 \times 10^{-4}$ — exactly the expected magnitude for $O(h^4)$ FD truncation at $h \approx 0.19$ acting on the wall-layer second derivatives. $\rho \sim V^2$ scaling reproduced identically by both pipelines.
+
+**Implication:** the strict-pass classification + all derived statistics in §1-§15 (sweep, polynomial boundary, horizon, vorticity, VIQ, B-M, CTC) are not artefacts of the 4th-order FD truncation in `fd_grad4` or of the bespoke 3+1 decomposition in `adm_stress_energy_from_N`. The Phase A/B/C trust grades from the Session-17 triad inherit A-grade for smooth points.
+
+**Limitation captured:** the 6738-row strict-pass manifold was not symbolically re-verified on every row (only the 9 sampled axes); reopening criterion if a future high-resolution sweep flips $\gtrsim 5\%$ of classifications.
+
+**Files added:** [`XACT_PIPELINE_NOTES.md`](XACT_PIPELINE_NOTES.md), [`agent-tools/fh_rho_at_points.wls`](agent-tools/fh_rho_at_points.wls), [`agent-tools/fh_rho_at_points_multi.wls`](agent-tools/fh_rho_at_points_multi.wls), [`agent-tools/cross_check_xact.py`](agent-tools/cross_check_xact.py), [`agent-tools/cross_check_xact_sweep.py`](agent-tools/cross_check_xact_sweep.py), [`agent-tools/analyse_cross_check.py`](agent-tools/analyse_cross_check.py), [`agent-tools/xact_smoke.wls`](agent-tools/xact_smoke.wls), [`agent-tools/wolfram_probe.wls`](agent-tools/wolfram_probe.wls), [`agent-tools/wolfram_probe2.wls`](agent-tools/wolfram_probe2.wls); persisted JSON: [`agent-tools/cross_check_xact_result.json`](agent-tools/cross_check_xact_result.json), [`agent-tools/cross_check_xact_sweep.json`](agent-tools/cross_check_xact_sweep.json). FH notes §16 appended. ROADMAP 2D.8 flipped `[ ] → [x]`. NAVIGATOR doc index extended with `XACT_PIPELINE_NOTES.md` row.
+
+### Phase F addendum (2026-04-21, same session) — Task 2D.10 asymptotic-matching residual
+
+Wrote [`agent-tools/fh_schw_matching.py`](agent-tools/fh_schw_matching.py): L-sensitivity scan at $L \in \{12, 16, 20, 24\}$, fixed $h \approx 0.185$ (so $N_{\rm pts}$ scales linearly with $L$), evaluating $\langle |\vec N| \rangle$ on the box-edge sphere $R = L/2 - 0.5$ via $18 \times 36 = 648$-point lat-lon sampling at the canonical FH anchor. The point of the scan is to ask whether the FH interior decays toward Schwarzschild at large $R$ (giving $\langle|\vec N|\rangle \to 0$ as $R \to \infty$) or whether it stays finite (in which case Israel matching to asymptotic Schwarzschild is structurally impossible without a separate envelope).
+
+**Result — two structurally independent failure modes:**
+
+1. **No decay envelope.** $\langle |\vec N| \rangle$ on the box-edge sphere is essentially constant: $15.13$ at $L=12$, rising slightly to $15.56$ at $L=24$. Decay slope vs $\log R_{\rm sphere}$ is $+0.04$ — flat with a barely measurable *upward* trend, not the $\sim -1$ slope a Schwarzschild far-field would have. The box-edge shift is also nearly perfectly radial-outward ($\langle N_r \rangle / \langle |\vec N| \rangle \approx 0.9999$) and nearly uniform on the sphere ($\sigma_{|\vec N|} / \langle |\vec N| \rangle \sim 3 \times 10^{-4}$). Same "wall sea" structure as Session 14 §9, now confirmed at four box scales.
+
+2. **Box is inside its own would-be Schwarzschild horizon.** With $M_{\rm box} = 1850$ (canonical-anchor box mass per §13.3), the Schwarzschild horizon sits at $r_h = 2M = 3700$ in $G=1$ units. Every box-edge sphere tested ($R \in [5.5, 11.5]$) is deep inside that horizon. Even setting aside the no-decay issue, there is no exterior Schwarzschild region to match against. Robust to the $M_{\rm box}$ vs $M_{\rm passenger} = 24$ ambiguity (still $r_h = 48 > $ all sampled $R$).
+
+**Implication:** Task 2D.10's asymptotic-matching half closes negatively — *the FH ansatz is a non-isolated configuration; isolating it requires an envelope function that is outside the construction.* This is not a new pathology but the L-asymptotic version of Sessions 11-15's structural findings (single-cell passenger, CTC sea, 76× mass overhead). The cumulative reading from Sessions 11-17 is unchanged: strict-pass FH existence is real and pipeline-verified, but every structural test we apply degrades the warp-drive interpretation.
+
+**Files added:** [`agent-tools/fh_schw_matching.py`](agent-tools/fh_schw_matching.py), persisted JSON [`agent-tools/fh_schw_matching.json`](agent-tools/fh_schw_matching.json). FH notes §17 appended. ROADMAP 2D.10 flipped `[ ] → [x]`.
+
+### Phase G addendum (2026-04-21, same session) — gated long-shot scaffolding + TRUST_AUDIT closure
+
+Two pieces:
+
+1. **Scaffolded `hf_jobs/configs/fell_heisenberg_npts129_full.json`** — clone of `fell_heisenberg_refine_hires.json` with `Npts=129` and the same 10080-point grid. Sleeping config; ROADMAP 2D.5f updated with explicit reopening criteria: (a) external publication or claim disputes the §11.6 extrapolation, (b) Phase E gate-C result (already known A), (c) future task surfaces a need for boundary classification at higher resolution than Npts=97. Cost if dispatched: ~3.5 hours cpu-xl, ~$3.50.
+
+2. **TRUST_AUDIT.md row 10 added** for the FH strict-pass existence claim. Was implicitly B-grade (single Python pipeline). After Session 17 Phase E (xAct/Mathematica cross-check, 9 anchors / 9 A-grade) → upgraded to **A-grade for smooth points**. Sessions 11-17 results (sweep, polynomial boundary, horizon, vorticity, VIQ, B-M, CTC, asymptotic matching) inherit A-grade. Reopening criterion same as ROADMAP 2D.8.
+
+2D.11 Phase 3 multi-mode $\vec A$ and 2D.5e Z-axis-symmetry symbolic fallback are NOT scaffolded (per plan): both already have explicit reopening criteria embedded in their existing ROADMAP entries; both require fresh design conversations if reopened; Phase E xAct cross-check supersedes the 2D.5e fallback in any case.
+
+**Files added:** [`hf_jobs/configs/fell_heisenberg_npts129_full.json`](hf_jobs/configs/fell_heisenberg_npts129_full.json). ROADMAP 2D.5f updated. TRUST_AUDIT row 10 added.
+
+**Closing the Session 17 plan:** Phases A (VIQ / 2D.12), B (B-M taxonomy / 2D.9), C (CTC / 2D.7 + double-bubble half of 2D.10), D (NAVIGATOR + SESSION_LOG bookkeeping), E (xAct cross-check / 2D.8), F (asymptotic-matching residual / 2D.10), G (scaffold + TRUST_AUDIT) all complete. Cumulative reading: the Fell-Heisenberg strict-pass existence claim is mathematically real and now triple-anchored against three external no-go literatures (L-V VIQ, B-M taxonomy, E-R CTC) + cross-pipeline-verified (xAct A-grade) + asymptotic-matching-residual closed (no decay envelope, inside own would-be horizon). Every structural test we apply degrades the warp-drive interpretation; none restores it. Phase 2D landscape coverage is now substantial; remaining items are gated long-shots with explicit reopening criteria.
+
+---

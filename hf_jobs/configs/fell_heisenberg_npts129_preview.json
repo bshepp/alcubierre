@@ -1,0 +1,14 @@
+{
+  "_comment": "Preview for the gated Task 2D.5f Npts=129 full sweep (Session 17 Phase G). Tiny 2x2x2x2x2x1 = 32-point grid at Npts=129 to validate schema and parquet output before dispatching the full 10080-point grid on HF Jobs. Local preview takes ~7-15 minutes (32 points * ~14 sec/pt single-threaded; parallelized across 4 workers ~2-4 min on the dev box per the run_sweep dispatcher's Windows worker cap).",
+  "L": 12.0,
+  "Npts": 129,
+  "Pi": 0.25,
+  "axes": {
+    "V":     {"lo": 1.0,  "hi": 1.0,  "n": 1, "scale": "linear"},
+    "sigma": {"lo": 4.0,  "hi": 10.0, "n": 2, "scale": "linear"},
+    "m0":    {"lo": 2.3,  "hi": 3.7,  "n": 2, "scale": "linear"},
+    "a":     {"lo": 0.05, "hi": 0.5,  "n": 2, "scale": "log"},
+    "ell":   {"lo": 2.0,  "hi": 8.0,  "n": 2, "scale": "linear"},
+    "r":     {"lo": 4.0,  "hi": 9.0,  "n": 2, "scale": "linear"}
+  }
+}

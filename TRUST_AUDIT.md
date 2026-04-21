@@ -110,13 +110,14 @@ Sorted by how much would actually break:
 |---|---|---|---|---|
 | 1 | **Israel junction formalism for matching warp interior to Schwarzschild exterior** | A | Project-ending; everything in Path 2A uses it | None — already A. |
 | 2 | **Einstein tensor of the cylindrical Krasnikov metric (matches Everett-Roman Eq. 14 exactly)** | A | Task 2A.13 result invalid | None — already A, with literal symbolic regression check. |
-| 3 | **Fuchs et al. 2024 has a real DEC-satisfying static warp shell** | B | Path 2A loses its anchor; our scaling law still holds in vacuum but we lose the existence example | 1 session: install Warp Factory + reproduce their Fig. 10 (Phase 3 Task 3.1, already on the roadmap). **STATUS: deferred (MATLAB-only on Windows).** |
+| 3 | **Fuchs et al. 2024 has a real DEC-satisfying static warp shell** | B | Path 2A loses its anchor; our scaling law still holds in vacuum but we lose the existence example | 1 session: install Warp Factory + reproduce their Fig. 10 (Phase 3 Task 3.1, already on the roadmap). **STATUS: deferred (MATLAB-only on Windows). Cross-ref: ROADMAP.md Task 2A.9b is the same calculation tracked from the Phase-2A side.** |
 | 4 | **Schwarzschild extrinsic curvature formulas (Poisson 2004 §3.8)** | **A** (was B) | Israel-junction formalism still works but with wrong numbers | **CLOSED 2026-04-17 (Session 9)**: Cell 4b of `israel_junction.ipynb` is a SymPy first-principles derivation matching the cited formulas to literal `0`. |
 | 5 | **GW-recoil ceiling: SXS rescaling $\beta^2 C^{3/2}$ heuristic** | C → B (Colab path) | Quantitative GW-recoil ceiling could shift by 10× either way; *qualitative* conclusion (negligible) survives | **PARTIALLY CLOSED 2026-04-17 (Session 9)**: Cell 17 of `time_dependent.ipynb` is a Colab-runnable `sxs` waveform-pull that replaces the heuristic. Locally falls back. To fully close, run Cell 17 on Colab. |
 | 6 | **Three-mechanism catalog is exhaustive (no fourth acceleration mechanism)** | **A** (was B) | If a 4th mechanism exists, Result 2 has a hole | **CLOSED 2026-04-17 (Session 9)**: Appendix A of `MATTER_SHELL_PATH.md` is the formal proof using ADM + Bianchi. No fourth mechanism is possible under the stated assumptions. |
 | 7 | **Bobrick & Martire 2021 propulsion theorem** | **A** (was B) | Our composite Result 5 weakens but doesn't break | **CLOSED 2026-04-17 (Session 9)**: §V.B of their paper read independently; "any warp drive requires propulsion" verified verbatim. Audit summary in `KRASNIKOV2003_EVALUATION.md` and `LITERATURE.md` Bobrick-Martire entry. |
 | 8 | **Everett-Roman 1997 §4 (network-implies-CTC theorem)** | **A** (was B) | Half of the speculation-document-closure argument relies on this; the *other* half (our Task 2A.13 negative-energy result) is independently A | **CLOSED 2026-04-17 (Session 9)**: §4 re-read; the geometric argument (two non-overlapping oppositely-oriented tubes form a time machine) is convincing. Audit summary in `KRASNIKOV2003_EVALUATION.md` and `LITERATURE.md` Everett-Roman entry. |
 | 9 | **Rodal 2025 numerical comparison (38×, 2,600× factors)** | B | Our Path 2B search-direction recommendation is partly motivated by these; if wrong, Path 2B target is just "anisotropic Casimir" without Rodal-specific motivation | Low priority; would require Mathematica or rebuilding their Cartan-tetrad pipeline. **STATUS: deferred.** |
+| 10 | **Fell-Heisenberg strict-pass existence claim (Sessions 11-17)** | **A** (was B) | Headline finding of the Phase 2D landscape arc would not survive a sign error in the Python ADM pipeline | **CLOSED 2026-04-21 (Session 17, Phase E)**: Wolfram 14.3 + xAct 1.3.0 + xCoba 0.8.6 second pipeline cross-checks the Python `adm_stress_energy` 4th-order FD against `D[]` symbolic differentiation of `phi_FH_smooth`. 9-anchor sweep across $(V, \sigma, r) \in \{0.5, 1.5, 2.5\} \times \{5, 10, 20\} \times \{6, 9, 12\}$ on a 5×5×5 sub-grid (124 interior points / anchor) finds median rel-diff $2$–$4 \times 10^{-6}$, max rel-diff $3$–$4 \times 10^{-4}$ consistent with $O(h^4)$ FD truncation at $h \approx 0.19$ — full agreement on every smooth point. Single $\vec x = (0,0,0)$ outlier is the FH ansatz's own $\Pi=1/4$ non-smooth point, already flagged by Session 14 §9 as the continuum-zero passenger zone. Sessions 11-17 results (strict-pass classification, polynomial boundary, horizon test, vorticity, VIQ, B-M taxonomy, CTC sea, asymptotic-matching residual) inherit A-grade for smooth points. See [`XACT_PIPELINE_NOTES.md`](XACT_PIPELINE_NOTES.md) and [`FELL_HEISENBERG_SWEEP_NOTES.md`](FELL_HEISENBERG_SWEEP_NOTES.md) §16. Reopening criterion: any future high-resolution sweep (e.g. 2D.5f at $N_{\rm pts}=129$) that flips $\gtrsim 5\%$ of strict-pass classifications would warrant a 20-anchor stratified re-cross-check. |
 
 ---
 
@@ -158,3 +159,22 @@ Even if every single B/C dependency above turned out worse than expected:
 - **None of the project's strategic conclusions depend on a single load-bearing C-grade dependency.** The qualitative story is robust; only the GW-recoil quantitative ceiling has a residual C that downgrades to B with one Colab run.
 
 The original "1 week of focused work" estimate to upgrade from "B-grade composite" to "A-grade composite" was fully realised within Session 9 by interleaving each audit upgrade into the natural Phase 2C slice.
+
+
+---
+
+## Session 16 addendum � codimension-counting law (k=0,1,2)
+
+**Result.** Three confirmed perturbative-DEC thickness bounds at k=2 (sphere), k=1 (cylinder), k=0 (slab patch). Linear-beta branch obeys Delta_min = (3/8)(beta/M) * Area / R_curv for k >= 1; quadratic branch Delta_min = (1/8) beta^2 Area / M takes over at k=0 where R_curv -> oo.
+
+**Per-data-point grading:**
+
+- **k=2 (sphere) datum** � grade A. Hermite-cubic Path-2A in [matter_shell.ipynb](matter_shell.ipynb) �9, derived in front of the user, slice-scope explicitly recorded.
+- **k=1 (cylinder) datum** � grade A. [toroidal_fuchs.ipynb](toroidal_fuchs.ipynb) Task 2A.14, linearized Levi-Civita exterior + Israel junction, derived in front of the user.
+- **k=0 (slab) datum** � grade A. [slab_patch.ipynb](slab_patch.ipynb), R -> oo limit of the cylindrical Israel-jump corrections + dimensional second-order shift-gradient stress, derived in front of the user.
+
+**Codimension-counting *law* (the inductive generalization across the three points):** grade C. Heuristic / dimensional / structural pattern, not a theorem. Recorded in [speculation/CODIMENSION_SCALING.md](speculation/CODIMENSION_SCALING.md) with explicit reopening criteria. The connection to the Thorne 1972 hoop conjecture (via [Bronnikov-Santos-Wang 2019](LITERATURE.md) �IX.A) is structural, not derivational.
+
+**Slice scope** (recorded in [speculation/CODIMENSION_SCALING.md](speculation/CODIMENSION_SCALING.md) �6): static thin matter shells, 3+1 GR, Israel-junction matching, small perturbative shift, classical DEC. The law is not asserted outside this slice.
+
+**No load-bearing dependency change.** This work does NOT modify the existing Path 2A composite verdict � it explores the *mathematical structure* of the obstructions rather than adding new ones. The codimension-counting law is parallel to, not part of, the warp-drive no-go programme. Grade summary unchanged: composite Path 2A verdict remains A-.

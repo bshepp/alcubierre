@@ -895,3 +895,385 @@ In [`fell_heisenberg_symbolic/`](fell_heisenberg_symbolic/):
 - `symbolic_artifacts.py` (gitignored, regenerable) — full srepr serialisation of validated symbolic Hessian + ADM stress-energy
 
 Module: [`hf_jobs/analysis/fell_heisenberg_symbolic.py`](hf_jobs/analysis/fell_heisenberg_symbolic.py) — public API for re-running any sub-task.
+
+### §12.8 Un-attempted fallback (Z-axis symmetry, §8.2 plan B)
+
+The original §8.2 plan listed *two* fallbacks if the interior $(X,Y,Z)$ minimisation failed: (i) symbolic-numerical hybrid (tried — see §12.3, technically works but information-empty), and (ii) **Z-axis-symmetry fallback** (assume the global slack minimum sits at $X = Y = 0$, on which the off-diagonal $S_{ij}$ vanish by FH symmetry so eigenvalues are read off the diagonal — sidesteps the `det()` wall). **The Z-axis fallback was never attempted.** It remains open as a low-cost alternative if anyone wants to revisit symbolic boundary extraction.
+
+Pre-flight verification required before any work: confirm on the existing numerical sweep + horizon data that $\arg\min_{(X,Y,Z)} S_{\rm pt}$ actually lands at $X = Y = 0$ for the canonical anchor. The horizon leaderboard reports `N_max_pos = (-0.5, 0, 0)` (shift-magnitude max, not slack-min) which is off-axis — a yellow flag, not a disqualifier, but it warrants checking before committing to the axis-symmetric assumption. See [`fell_heisenberg_symbolic/README.md`](fell_heisenberg_symbolic/README.md) §"Un-attempted fallback" for the full discussion.
+
+---
+
+## §13 Lobo-Visser Volume Integral Quantifier post-processing (Task 2D.12)
+
+Module: [`hf_jobs/analysis/fell_heisenberg_viq.py`](hf_jobs/analysis/fell_heisenberg_viq.py).
+Outputs: [`fell_heisenberg_viq/full_viq.parquet`](fell_heisenberg_viq/), [`fell_heisenberg_viq/refine_viq.parquet`](fell_heisenberg_viq/), paired `*_summary.json` files.
+
+**Goal.** Lobo & Visser (gr-qc/0406083, gr-qc/0412065) introduced the Volume Integral Quantifier (VIQ) as a way to quantify "how non-trivial" the violation of an energy condition is in a warp-drive solution. Their original target was the negative-energy obstruction in standard Alcubierre / van den Broeck constructions: the integrated $|E_{\rm neg}|$ should be a "small" fraction of the spaceship mass for the construction to be physically reasonable. Their numerical finding for those constructions was that $|E_{\rm neg}|$ scales as $\sim v^2 \cdot M_{\rm bubble}$, badly violating the bound for any useful $v$.
+
+The Fell-Heisenberg construction sidesteps the original L-V obstruction by being explicitly $E_{\rm neg} = 0$ at the strict-pass point. So the original L-V VIQ as stated trivially gives 0. **The interesting question is what *positive*-energy ratio the FH construction needs.** The post-processor computes both the original L-V VIQ (trivially 0) and an analogous *positive-energy* VIQ across all 1404 strict-pass full-sweep + 5334 strict-pass refine-sweep rows.
+
+**Reference masses.** Defined as integrated $|\rho_E|$ over four regions identified by the shift magnitude $|N|$:
+- $M_{\rm box}$ = whole box
+- $M_{\rm shell}$ = $0.5 < |N| < 1.5$ (the $|N|=1$ transition layer; usually empty — see §13.3)
+- $M_{\rm exterior}$ = $|N| \geq 0.5$ (everything outside passenger zone)
+- $M_{\rm passenger}$ = $|N| < 0.5$ (the foliation-healthy interior; single-cell for FH per §9)
+
+**Slice scope.** This §13 reports findings for the strict-pass populations of the two large sweeps. Conclusions apply *within the FH ansatz at strict pass*. The post-processor was run at $N_{\rm pts}=49$ (smooth volumetric integrals do not need the eigenvalue-sensitive resolution of the sweep itself). Per-row cost ~0.19 s.
+
+### §13.1 Three universal findings across 6738 strict-pass rows
+
+| Quantity | Full sweep (1404 rows) | Refine sweep (5334 rows) |
+|----------|------------------------|--------------------------|
+| `viq_E_neg_recompute` | 0 for **all 1404** rows | 0 for **all 5334** rows |
+| `viq_passenger_volume` | 0.125 = $h^3$ for **all 1404** rows | 0.125 = $h^3$ for **all 5334** rows |
+| `viq_pos_M_passenger` | median 75.7, range $[48.4, 83.1]$ | median 75.7, range $[43.8, 97.7]$ |
+
+1. **$E_{\rm neg} = 0$ universally.** Every strict-pass FH point produces zero negative Eulerian energy density. This generalises the canonical-anchor finding from §1.1 to the entire 5-D strict-pass manifold. The L-V VIQ in its original form (negative-energy version) is not a useful obstruction for the FH ansatz — it gives 0 trivially.
+
+2. **Single-cell passenger zone is universal.** Every strict-pass FH point has its $|N|<0.5$ region restricted to a single Cartesian cell at the bubble centre. This generalises §9's canonical-anchor finding (`passenger_zone_radius = 0`) to all 6738 strict-pass points. The "passenger zone" is structurally a point at this resolution. Discretization caveat: at finer resolution the single-cell could resolve to a $(2k+1)^3$-cell sub-region, but §11's resolution sweep at the canonical anchor up to $N_{\rm pts}=129$ saw no growth — the geometric passenger zone is consistent with a literal point.
+
+3. **Positive-energy VIQ ratio: 76× more matter than the passenger zone.** Defining `viq_pos_M_passenger = E_pos / M_passenger`, the ratio is tightly distributed across the entire strict-pass manifold: median 75.7, 5th-95th percentile $[53.2, 83.1]$, full range $[43.8, 97.7]$. **Every strict-pass FH bubble carries 44-98× more positive matter than fits in its passenger zone.** This is the *true* L-V-style obstruction for FH-class constructions: even with $E_{\rm neg} = 0$, the construction needs ~76× more total stress-energy than its "ship volume".
+
+Anchor numbers (canonical $(V, \sigma, m_0, a, \ell, r) = (1.5, 10, 3, 0.05, 4, 9)$, $N_{\rm pts}=49$):
+- $E_{\rm pos} = 1850$, $E_{\rm neg} = 0$
+- $M_{\rm box} = 1850$, $M_{\rm exterior} = 1826$, $M_{\rm passenger} = 24.3$
+- $|N|_{\rm origin} = 2 \times 10^{-5}$, $|N|_{\rm max} = 18.5$
+- $\text{viq\_pos\_M\_passenger} = 76.0$
+
+### §13.2 The exact L-V NEC integrand: trivially satisfied
+
+The closer analogue of L-V's exact NEC obstruction is $\int (\rho + p_r)\,dV$, which they show must integrate to $-O(M_{\rm bubble})$ for standard Alcubierre. The FH sweep records principal-pressure eigenvalues $(p_1, p_2, p_3)$ but not the principal frame, so the radial $p_r$ is not directly available. The post-processor uses $p_{\rm min}$ as a stand-in (`viq_LV_exact_approx = ∫ (rho + p_min) dV`).
+
+For all 1404 + 5334 strict-pass rows: `viq_LV_exact_approx > 0`. Median 216 (full) / 334 (refine), full-sweep range $[2.2, 1373]$, refine-sweep range $[83, 1157]$. The L-V NEC integrand never goes negative within the strict-pass manifold — confirming that the FH construction's "trick" is exactly to inflate $\rho$ everywhere so that $\rho + p_{\rm min}$ remains non-negative. The cost of this trick is captured by §13.1's finding-3: the inflation factor is ~76×.
+
+### §13.3 The $|N|$ field has no resolved transition layer at $N_{\rm pts}=49$
+
+The "shell band" $0.5 < |N| < 1.5$ (intended to capture the $|N|=1$ transition layer that delineates passenger zone from exterior) is **empty** for 1170/1404 = 83% of full-sweep rows and similarly for the refine sweep. The FH $|N|$ field jumps from $|N| < 0.5$ inside the central cell to $|N| \gg 1$ outside, with no resolved transition.
+
+This is a discretization artefact, not physics: the §11 convergence study showed $|N|$ grows from 0 to ~15 over a radial scale of ~1 grid cell at $N_{\rm pts}=65$. At $N_{\rm pts}=49$ there are even fewer transition cells. Two interpretations:
+- **Optimistic**: at finer resolution the transition layer would resolve and $M_{\rm shell}$ would become a well-defined physical quantity.
+- **Honest**: the FH potential is structurally a near-step in $|N|$ (the smooth $C^2$ profile that motivated FH in the first place is in $\phi$, not in $|N| = |\nabla\phi|$). The "wall" is genuinely thin compared to the bubble scale, and $M_{\rm shell}$ as defined is not a useful diagnostic. The proper bookkeeping is the `M_exterior` = $|N| \geq 0.5$ definition, which captures all matter outside the passenger zone and is well-defined at any resolution.
+
+Recommendation: report `M_box`, `M_exterior`, `M_passenger`, treat `M_shell` as a diagnostic for the wall-resolution-dependent transition layer and not a primary reference mass.
+
+### §13.4 What this kills, what survives, what's open
+
+**Kills:** any framing of FH as a "low-VIQ" construction. The L-V negative-energy version is trivially satisfied because $E_{\rm neg} = 0$ — that part is a real virtue. But the positive-energy version is brutal: 76× more matter than the passenger zone, universally across the strict-pass manifold. This is comparable to or worse than van den Broeck-class compactified constructions (where the "compactified" volume can be made small but the stress-energy budget is bounded below).
+
+**Survives:** FH as an existence proof of *strict* WEC+DEC pass with $E_{\rm neg} = 0$. The construction does what it claims; the cost is the 76× mass ratio.
+
+**Open:** does the vorticity-augmented ansatz (Task 2D.11, see §12.6) reduce the 76× ratio? The vorticity machinery is in [`hf_jobs/sweeps/fell_heisenberg.py`](hf_jobs/sweeps/fell_heisenberg.py) `adm_stress_energy_from_N`; a small targeted study could compute `viq_pos_M_passenger` for the vortical augmentations already explored under 2D.11 to check.
+
+### §13.5 Cross-references to literature evaluations
+
+- [`LITERATURE.md`](LITERATURE.md) Lobo-Visser entries (gr-qc/0406083, gr-qc/0412065) — see back-pointer added there.
+- [`MATTER_SHELL_PATH.md`](MATTER_SHELL_PATH.md) §3 — the matter-shell shell-mass discussion is independent of this; the FH construction is *not* a shell construction (it has matter throughout the box) and these VIQ ratios are bookkeeping for that fact.
+- [`SHIFT_FAMILIES_NOTES.md`](SHIFT_FAMILIES_NOTES.md) — none of the shift families surveyed there carry the FH-specific 76× ratio as a property of the family; the 76× is specific to FH-style smooth $C^2$ irrotational shifts at strict WEC+DEC pass.
+
+### §13.6 Files
+
+- [`hf_jobs/analysis/fell_heisenberg_viq.py`](hf_jobs/analysis/fell_heisenberg_viq.py) — module + CLI
+- [`fell_heisenberg_viq/full_viq.parquet`](fell_heisenberg_viq/) — 1404 rows × 49 cols (sweep + 24 VIQ columns)
+- [`fell_heisenberg_viq/full_viq_summary.json`](fell_heisenberg_viq/) — quantile summary + canonical anchor
+- [`fell_heisenberg_viq/refine_viq.parquet`](fell_heisenberg_viq/) — 5334 rows × 49 cols
+- [`fell_heisenberg_viq/refine_viq_summary.json`](fell_heisenberg_viq/) — quantile summary
+
+CLI re-run:
+
+```powershell
+python -m hf_jobs.analysis.fell_heisenberg_viq sweeps_remote/full-20260420T022727/fell_heisenberg_20260420T022809.parquet --output fell_heisenberg_viq/full_viq.parquet --summary fell_heisenberg_viq/full_viq_summary.json --strict-pass-only --npts 49
+```
+
+Wall time: ~6 min for 1404 rows, ~21 min for 5334 rows on a Windows workstation.
+
+---
+
+## §14 Bobrick-Martire 2021 source-matter classification (Task 2D.9)
+
+Source-matter classification of the FH spatial stress tensor against the Bobrick-Martire 2021 ([arXiv:2102.06824](https://arxiv.org/abs/2102.06824)) four-class warp-drive taxonomy. Companion: [BOBRICK_MARTIRE2021_EVALUATION.md](BOBRICK_MARTIRE2021_EVALUATION.md). Implementation: [`hf_jobs/analysis/fell_heisenberg_matter.py`](hf_jobs/analysis/fell_heisenberg_matter.py).
+
+### §14.1 What B-M classifies
+
+B-M §2.1 defines four classes by the static Killing vector $\xi = \partial_t$ behaviour, characterised by $g_{tt} = -\alpha^2 + |\vec N|^2$:
+
+| Class | $\xi$ inside | $\xi$ outside | $v_s$ |
+|-------|-------------|---------------|-------|
+| I  (mild subluminal)     | timelike  | timelike       | $<c$    |
+| II (mild superluminal)   | spacelike | spacelike/null | $\geq c$ |
+| III (extreme superluminal)| timelike | spacelike/null | $\geq c$ |
+| IV (extreme subluminal)  | spacelike/null | timelike  | $<c$    |
+
+B-M §3 then constrains spherically-symmetric, **isotropic-fluid** ($T_{rr} = P\Lambda$, $T_{\theta\theta} = T_{\varphi\varphi} = P r^2$) Class-I drives and proves they admit positive-energy solutions. This is the result usually cited as "B-M 2021 manifestly positive-energy warp drive."
+
+### §14.2 What we measured
+
+For 8 representative strict-pass points (canonical anchor + 7 stratified picks across $V$ and $r$), we re-evaluated FH at $N_{\rm pts}=65$ and computed:
+
+- the principal-pressure triple $(p_1, p_2, p_3) = \mathrm{eigvalsh}(S_{ij})$ per cell,
+- the static Killing norm $g_{tt} = -1 + |\vec N|^2$ on the full grid (FH has unit lapse $\alpha=1$),
+- a B-M class assignment from the inside/outside sign pattern of $g_{tt}$,
+- an anisotropy ratio $(p_3 - p_1)/|\rho|$ per cell to test the isotropic-fluid hypothesis,
+- a Hawking-Ellis Type-I-like indicator $\mathbf{1}[\rho > 0\;\wedge\;p_3 - p_1 < |\rho|]$ (heuristic; not a full eigenvector decomposition).
+
+### §14.3 Universal findings across the 8 points
+
+- **All 8 points tag as B-M Class III** (extreme superluminal). $g_{tt}$ is negative only at the central single passenger voxel ($1/65^3 \approx 3.6\times 10^{-6}$ of the box) and positive across the wall and asymptotic exterior.
+- **FH is statically constructed: $v_s = 0$.** This makes the Class III tag *kinematically incompatible* with B-M's definition — which requires $v_s \geq c$. **FH realises the Class III geometric signature at $v_s = 0$.** This is a regime B-M's taxonomy was not designed to cover.
+- **$\rho_{\rm pos\,fraction} = 1.0$ everywhere** for all 8 points — consistent with the strict-pass WEC (interior cells, stride-6 inset). The canonical anchor reaches $\rho \in [0.04, 290]$.
+- **Anisotropy is large.** Median $(p_3 - p_1)/|\rho| \approx 0.49$ across points, peak $\approx 1.5$. The isotropic-fluid fraction (cells where $(p_3-p_1)/|\rho| < 0.05$) is $\sim 7\times 10^{-6}$, i.e. the central voxel only. **B-M §3's isotropic-fluid framework therefore does not apply to FH.**
+- **Hawking-Ellis Type-I-like indicator $\approx 0.99996$** across all 8 points, broadly consistent with the Rodal 2025 observation that irrotational shifts give globally Type-I stress-energy ([RODAL2025_EVALUATION.md §3](RODAL2025_EVALUATION.md)). Note this is a heuristic, not a rigorous eigenvector classification.
+- **$p_2 \approx p_3$ in the interior bulk** (tangential degeneracy): both $p_2$ and $p_3$ peak at $\approx 72.6$ at the canonical anchor, with $p_1$ ranging $[-8.1, +72.6]$. Two-fold tangential symmetry is consistent with the smooth $\phi(r)$-driven shift profile, but $p_1 < 0$ at small fraction of cells flags an anisotropic eigen-pressure pocket.
+
+### §14.4 Why FH lies outside the B-M taxonomy
+
+Three independent ways FH does not fit any B-M class:
+
+1. **Kinematic mismatch.** Class III requires $v_s \geq c$ (the comoving observer is superluminal). FH is static, $v_s = 0$. None of the four B-M classes was designed for "static drive with strongly varying $|\vec N|$."
+
+2. **No isotropic-fluid description.** B-M §3's positive-energy proof works only under the spherical-symmetry + isotropic-fluid ansatz. FH is axisymmetric (not spherically symmetric in the comoving frame in the strict B-M sense — the $\phi$ multi-mode breaks $\mathrm{SO}(3)$) and the $S_{ij}$ eigenvalues are anisotropic across the bulk.
+
+3. **No asymptotic flatness for $\xi$.** B-M's classes assume $\xi$ has a definite sign at asymptotic infinity. FH's box-edge $|\vec N|$ is large (canonical anchor: $g_{tt,{\rm max}} = +345$ at the box edge), and the construction does not include an explicit asymptotic-decay envelope. Whether $|\vec N| \to 0$ at true spatial infinity (beyond the $L=12$ box) is a property of the smooth-bump form factors that has not been verified and probably does not hold for the multi-mode part with $\ell=4$.
+
+### §14.5 What this changes about the strict-pass slice
+
+The Phase-2D §1.1 cumulative qualifiers gain one more entry. The strict-pass slice is now:
+
+- (\§1.1) bounded box $L=12$, finite resolution $N_{\rm pts} \in \{49, 65, 81, 97\}$,
+- (§13) Lobo-Visser VIQ $E_{\rm neg} = 0$, single-cell passenger zone with $M_{\rm passenger} \approx 75.7$ but $\sim 99\%$ of the bulk mass in the wall+exterior,
+- (§14, **NEW**) static Killing vector spacelike everywhere except the central voxel; B-M class assignment is geometrically III but kinematically empty (FH has $v_s = 0$); the source matter is *not* an isotropic fluid (anisotropy median $\sim 0.5$).
+
+The strict-pass FH bubbles are not a B-M Class-I positive-energy spherically-symmetric warp drive. They satisfy WEC+DEC pointwise on the discrete grid but are anisotropic and live outside the kinematic regime of any B-M class.
+
+### §14.6 Cross-references
+
+- [MATTER_SHELL_PATH.md §3, §5](MATTER_SHELL_PATH.md) — anisotropy as the practical wedge for matter-shell engineering.
+- [RODAL2025_EVALUATION.md §3](RODAL2025_EVALUATION.md) — global Type-I result for irrotational shifts (FH is irrotational by construction).
+- [BOBRICK_MARTIRE2021_EVALUATION.md](BOBRICK_MARTIRE2021_EVALUATION.md) — companion paper-level evaluation (taxonomy + §3 isotropic-fluid framework).
+- [TRUST_AUDIT.md](TRUST_AUDIT.md) — A-grade for the per-point eigenvalue computation; B-grade for the BM class labels (heuristic mapping from $g_{tt}$ sign pattern, not from a full Killing-horizon analysis).
+
+### §14.7 Files
+
+- [`hf_jobs/analysis/fell_heisenberg_matter.py`](hf_jobs/analysis/fell_heisenberg_matter.py) — module + CLI
+- [`fell_heisenberg_matter/leaderboard.csv`](fell_heisenberg_matter/) — one row per point, ~30 cols
+- [`fell_heisenberg_matter/summary.json`](fell_heisenberg_matter/) — global + per-point JSON
+- [`fell_heisenberg_matter/<label>/eigenvalues.npz`](fell_heisenberg_matter/) — full $(p_1,p_2,p_3,\rho,g_{tt},|\vec N|)$ arrays
+- [`fell_heisenberg_matter/<label>/slice_plots.png`](fell_heisenberg_matter/) — $z=0$ diagnostic plots (6 panels: $\rho, p_1, p_3, (p_3-p_1)/|\rho|, |\vec N|, g_{tt}$)
+
+CLI re-run:
+
+```powershell
+python -m hf_jobs.analysis.fell_heisenberg_matter --output fell_heisenberg_matter --npts 65 --n-points 8
+```
+
+Wall time: ~3 min for 8 points at $N_{\rm pts}=65$ on a Windows workstation.
+
+---
+
+## §15 Closed timelike curves in the static foliation (Task 2D.7)
+
+This section completes the Everett-Roman 1997 / Stoica-Svesko-Visser lineage question: given the FH strict-pass existence, are the static-foliation observers that "sit at rest" in the $t$-coordinate worldlines timelike, or does the FH wall region host closed timelike curves?
+
+The mathematical hook is the norm of the static Killing vector. With unit lapse $\alpha = 1$ (FH ansatz, cf. §1.1) and shift $\vec N = \nabla\phi$, the $tt$ component of the ADM metric is
+$$g_{tt} \;=\; -\alpha^2 + |\vec N|^2 \;=\; -1 + |\nabla\phi|^2 \,.$$
+$\partial_t$ is timelike where $g_{tt} < 0$, i.e. where $|\vec N| < 1$. This is the **same locus** as Task 2D.6's foliation-health surface — they coincide by $\alpha = 1$. Where $g_{tt} > 0$, the integral curves of $\partial_t$ are spacelike; in a static metric these integral curves are geometrically trivial closed loops, so the region hosts CTCs in the static-foliation sense.
+
+Cross-links: Task 2D.6 (`FELL_HEISENBERG_SWEEP_NOTES.md` §2 horizon analysis) already found $|\vec N|_{\max}=18.5$ at the canonical anchor; §15 exploits the same field to answer the CTC question across the full strict-pass region.
+
+### §15.1 Single-bubble CTC test at the canonical anchor (Phase C.1)
+
+At the anchor $(V, \sigma, m_0, a, \ell, r) = (1.5, 10, 3.0, 0.05, 4, 9)$, $L=12$, $N_{\rm pts}=65$:
+
+- $g_{tt}$ range: $[-1.000,\ +345.07]$ — matches §14 anchor numbers to 6 sig figs.
+- $g_{tt}$ at origin (passenger): $-1.000$ (fully timelike).
+- fraction of cells with $g_{tt} > 0$: $99.9996\%$ ($274625 - 1$ CTC cells out of $65^3$).
+- worst-point (max $g_{tt}$): off-axis in the bubble wall, not at the centre.
+
+**Reading.** The wall + exterior is a CTC sea; only the central voxel (the passenger zone) hosts timelike static-observer worldlines. Structurally the same result as Everett-Roman 1997 §3 and Stoica-Svesko-Visser 2023 §4 for static Alcubierre configurations, now verified for the multi-mode non-axisymmetric FH ansatz.
+
+### §15.2 Batch single-bubble CTC sweep over all strict-pass rows (Phase C.2)
+
+`hf_jobs/analysis/fell_heisenberg_ctc.py` runs the same $g_{tt}$ test over every strict-pass row in the full ($1404$) + refine ($5334$) parquets, deduplicated to $6738$ unique parameter points, at $N_{\rm pts}=49$ (the sweep's classification resolution). Wall time: $73$ s on 4 Windows workers.
+
+Aggregate (`fell_heisenberg_ctc/summary.json`):
+
+| quantity | min | median | max |
+|---|---|---|---|
+| $\max(g_{tt})$ | $-0.484$ | $+86.2$ | $+341.2$ |
+| $g_{tt}(\vec 0)$ | $-1.000$ | $-1.000$ | $-0.99963$ |
+| $\mathrm{frac}(g_{tt}>0)$ | $0.000$ | $0.99999$ | $0.99999$ |
+
+- `all_centre_timelike: true` — the passenger zone at the origin is always healthy across every strict-pass row.
+- `all_walls_supraluminal: false` — **6624 / 6738 = 98.31% of strict-pass rows host a CTC region; 114 do not.**
+
+The 114 CTC-free rows form a well-defined loophole. Per-$V$ breakdown:
+
+| $V$ | $n$ | with CTC | frac | max $|\vec N|$ | max $g_{tt}$ |
+|---|---|---|---|---|---|
+| 0.10 | 234 | 120 | 51% | 1.23 | $+0.52$ |
+| 0.38 | 234 | 234 | 100% | 4.69 | $+21.0$ |
+| 0.66 | 234 | 234 | 100% | 8.14 | $+65.3$ |
+| 0.94 | 234 | 234 | 100% | 11.6 | $+133.4$ |
+| 1.00 | 5334 | 5334 | 100% | 16.3 | $+263.3$ |
+| 1.22 | 234 | 234 | 100% | 15.0 | $+225.4$ |
+| 1.50 | 234 | 234 | 100% | 18.5 | $+341.2$ |
+
+**Structure.** CTC avoidance requires $|\vec N|_{\max} < 1$, i.e. strictly subluminal shift everywhere. At $V=0.10$, some $\sigma, m_0, a, \ell, r$ combinations land in that regime (120 out of 234); at $V \ge 0.38$ the wall amplitude $|\vec N|_{\max}$ is already $> 1$ for every strict-pass parameter choice, so every point hosts CTCs.
+
+**Reading.** The §14 anchor extrapolation ("CTC everywhere outside the passenger zone") is universal across the *high-amplitude* slice of strict-pass but **not** across the whole strict-pass region. A $V \lesssim 0.1$ corner of the strict-pass region exists where the bubble is everywhere subluminal and no CTC pathology appears — but that is also the corner where $|\vec N|_{\max}$ is of order unity, which is not what a useful warp drive would look like (the "warp" effect is correspondingly weak). This is the standard amplitude-vs-CTC tradeoff of the Alcubierre lineage, now quantified for the FH ansatz.
+
+### §15.3 Double-bubble construction (Phase C.3 — qualitative)
+
+Construct a double-bubble kinematic ansatz by superposing two FH potentials displaced along $x$ with opposite-sign amplitude:
+$$\Phi_{\rm total}(x, y, z) \;=\; \phi_{\rm FH}(x - L_{\rm sep},\,y,\,z;\,+V) \;+\; \phi_{\rm FH}(x + L_{\rm sep},\,y,\,z;\,-V) \,,$$
+tested at $L_{\rm sep} \in \{1.5\, r,\ 3\, r\} = \{13.5, 27.0\}$ with the canonical anchor parameters and $L_{\rm box}=36$, $N_{\rm pts}=81$.
+
+**Caveat — qualitative only.** $T_{\mu\nu}$ is non-linear in $\phi$ (via $K_{ij} K^{ij}$ and $\mathcal{L}_N K_{ij}$), so superposition of $\phi$ is not a strict GR solution. This test is pattern-detection only: does the FH ansatz *kinematically* admit a multi-passenger-zone structure?
+
+Result:
+
+| $L_{\rm sep}$ | $|\vec N|$ at $+V$ centre | $|\vec N|$ at $-V$ centre | $|\vec N|$ at midpoint | $g_{tt}$ range | $\mathrm{frac}(g_{tt} > 0)$ |
+|---|---|---|---|---|---|
+| $1.5\,r = 13.5$ | 15.98 | 15.98 | 31.33 | $[-0.97, +1221]$ | 99.94% |
+| $3.0\,r = 27.0$ | 16.14 | 16.14 | 31.96 | $[-1.00, +1233]$ | 100.00% |
+
+**Reading.** Naive FH superposition **destroys** the passenger zones, regardless of separation. The FH ansatz has no built-in asymptotic decay envelope, so each bubble's far-wall shift sits at the *centre* of the other bubble. At $L_{\rm sep}=3r$ the two "centres" ($x = \pm 27$) have $|\vec N| \approx 16$ — i.e. deep in the wall-sea regime — not the $|\vec N| \approx 0$ that a passenger zone requires.
+
+Consequence: the FH ansatz kinematically cannot support a two-bubble / double-passenger configuration without an explicit asymptotic-decay envelope grafted on. This is the same structural gap that Phase F (Task 2D.10 asymptotic matching, §17 to follow) will probe from the single-bubble box-edge side. Not a CTC obstruction per se — a missing-envelope pathology that also blocks the Everett-Roman double-bubble CTC-amplification construction from even being formulable in this ansatz.
+
+### §15.4 CTC fundamental-group remark (Phase C.4)
+
+For the single-bubble canonical anchor, the spacelike-$\partial_t$ region in $(t, x, y, z)$ is the complement of a single connected timelike passenger zone (central voxel + its infinitesimal neighbourhood). Projecting to $(t, x, y=0, z)$ or $(t, x, y, z=0)$: the CTC region is a connected open set containing the box boundary and $\partial_t$-orbits in it are closed-by-periodicity. **Fundamental group:** trivial if we treat the CTC region as simply connected (which the single-voxel passenger zone essentially implies — the CTC region has a single hole of measure zero); non-trivial in the double-bubble degenerate case above only because we artificially imposed a finite box.
+
+The real Everett-Roman / SSV question — *can a warp drive generate CTCs by carrying a passenger through a wall region* — translates here to: given the single passenger voxel, is there a worldline (parametrised by proper time $\tau$) that starts and ends at the same spacetime event, stays timelike throughout, and encloses a region with non-trivial topology? **No such worldline exists in the static foliation**, because the $\partial_t$-orbit through the passenger voxel is closed (trivially, by periodicity) but timelike — i.e. the only "CTC" here is the trivial $\partial_t$-orbit, which is not a pathology. The pathological CTCs are in the spacelike-$\partial_t$ region, where *no* timelike worldline can sit.
+
+This is structurally consistent with Everett-Roman §3: the FH wall is nowhere a "passageway" for a timelike traveller, so the CTC-amplification scenarios that require dragging a passenger through the wall do not apply. The wall-as-CTC-sea is an observation about the static foliation, not a dynamical pathology in the FH slice. What a *moving* FH bubble would do to this picture is open (ROADMAP §2D would need a time-dependent ansatz — beyond our present static-slice scope; flagged in §12 boundary anchors).
+
+### §15.5 Honest reading
+
+- **Within the strict-pass slice at $V \ge 0.38$** (= 6504 / 6738 = 96.5% of strict-pass rows including the canonical anchor): the FH construction realises the standard Alcubierre-lineage CTC pathology — timelike passenger voxel surrounded by a CTC sea that extends to the box boundary. No new obstruction, but also no escape from the known one.
+- **In the low-$V$ corner ($V = 0.10$, 120 / 234 rows = 1.78% of total strict-pass)**: CTC-free configurations exist, but $|\vec N|_{\max} \approx 1.2$ means the "warp effect" is marginal at best.
+- **Double-bubble**: not kinematically viable without an asymptotic-decay envelope that the FH ansatz does not supply. Same structural gap as the box-edge matching question (Phase F / §17).
+- **Fundamental-group CTC argument**: does not close independently (the wall sea contains only spacelike-$\partial_t$ orbits, not traversable timelike CTCs); the pathology is a *foliation-health* pathology, not an E-R-style CTC-trip-builder pathology, in this static slice.
+
+Slice-scope qualifier (per AGENTS.md): *Within the Fell-Heisenberg irrotational-shift static-slice ansatz with unit lapse, the strict-pass existence claim survives; at $V \ge 0.38$ it is accompanied by an everywhere-outside-passenger CTC pathology consistent with the Alcubierre-lineage literature; at $V \simeq 0.10$ a sub-pathological corner exists but with correspondingly weak warp effect; multi-bubble configurations are kinematically blocked by the missing asymptotic-decay envelope.*
+
+### §15.6 Files
+
+- [`hf_jobs/analysis/fell_heisenberg_ctc.py`](hf_jobs/analysis/fell_heisenberg_ctc.py) — batch module + CLI
+- [`fell_heisenberg_ctc/single_bubble.csv`](fell_heisenberg_ctc/) — one row per strict-pass point (6738 rows)
+- [`fell_heisenberg_ctc/summary.json`](fell_heisenberg_ctc/) — aggregate statistics
+- `fell_heisenberg.ipynb` Cell 11 (single-bubble $g_{tt}$ at anchor, §15.1), Cell 12 (batch summary, §15.2), Cell 13 (double-bubble qualitative, §15.3)
+
+CLI re-run:
+
+```powershell
+python -m hf_jobs.analysis.fell_heisenberg_ctc --output fell_heisenberg_ctc --npts 49 --workers 4
+```
+
+Wall time: ~75 s on a Windows workstation (4 workers).
+
+---
+
+## §16 xAct/Mathematica cross-pipeline check (Task 2D.8)
+
+**Status (Session 17 Phase E):** A-grade. The Fell-Heisenberg strict-pass existence claim is independently verified by a fully symbolic Mathematica pipeline (Wolfram 14.3 + xAct 1.3.0 + xCoba 0.8.6).
+
+**Headline.** A 9-anchor cross-check across $(V, \sigma, r) \in \{0.5, 1.5, 2.5\} \times \{5, 10, 20\} \times \{6, 9, 12\}$ at the canonical anchor and a 5×5×5 sub-grid (124 interior points after excluding the origin) finds **median rel-diff $\sim 2$–$4 \times 10^{-6}$** between $\rho$ from the Python `adm_stress_energy` (4th-order FD on `phi_FH_smooth`) and $\rho$ from Mathematica `D[]` symbolic differentiation of the closed-form $\phi$ followed by the same algebraic Gauss-Codazzi reduction. **Maximum rel-diff $\sim 3$–$4 \times 10^{-4}$** consistent with $O(h^4)$ FD truncation at $h \approx 0.19$ acting on the wall layer's large second derivatives.
+
+**Single outlier.** Only $\vec x = (0,0,0)$ disagrees (catastrophically, $\sim 10^{90}$). Cause: $(R^2+\epsilon)^\Pi$ with $\Pi=1/4$ is non-$C^2$ at $R=0$, so the symbolic Hessian has a spurious $\epsilon^{\Pi-2} \sim 10^{105}$ singularity from the regularization while the FD stencil averages over the singular region. This is a faithful exposure of the FH ansatz's non-smoothness at origin — already captured by Session 14 §9 as the "single-cell continuum-zero passenger zone" — and is not a pipeline disagreement on a smooth point.
+
+**Implication for Sessions 11-17.** All sweep-derived results in §1-§15 (strict-pass classification, polynomial boundary, horizon test, vorticity slice, VIQ, B-M taxonomy, CTC) compute their summary statistics from the same `phi_FH_smooth` + `adm_stress_energy_from_N` chain whose smooth-point output is now A-grade verified. Their conclusions are not artefacts of the FD truncation order or the bespoke 3+1 decomposition.
+
+**Limitation.** The 6738-row strict-pass manifold was not symbolically re-verified on every row — only the 9-anchor cross of (V, σ, r). Reopening criterion: any future sweep at higher $N_{\rm pts}$ (e.g. ROADMAP 2D.5f at $N_{\rm pts}=129$) that flips $\gtrsim 5\%$ of strict-pass classifications would warrant a 20-anchor stratified re-cross-check.
+
+**Files** (full details in [`XACT_PIPELINE_NOTES.md`](XACT_PIPELINE_NOTES.md)):
+
+- Mathematica scripts: [`agent-tools/fh_rho_at_points.wls`](agent-tools/fh_rho_at_points.wls) (single-anchor), [`agent-tools/fh_rho_at_points_multi.wls`](agent-tools/fh_rho_at_points_multi.wls) (multi-anchor)
+- Python harnesses: [`agent-tools/cross_check_xact.py`](agent-tools/cross_check_xact.py), [`agent-tools/cross_check_xact_sweep.py`](agent-tools/cross_check_xact_sweep.py)
+- Persisted JSON: [`agent-tools/cross_check_xact_result.json`](agent-tools/cross_check_xact_result.json), [`agent-tools/cross_check_xact_sweep.json`](agent-tools/cross_check_xact_sweep.json)
+- Wolfram smoke test: [`agent-tools/xact_smoke.wls`](agent-tools/xact_smoke.wls)
+
+CLI re-run (single anchor):
+
+```powershell
+$env:PYTHONPATH = "."
+python agent-tools/cross_check_xact.py --npts 65 --ngrid 5 --label canonical_anchor_npts65
+```
+
+CLI re-run (9-anchor sweep):
+
+```powershell
+$env:PYTHONPATH = "."
+python agent-tools/cross_check_xact_sweep.py
+```
+
+Wall time: ~30 s for the single-anchor check, ~2 min for the 9-anchor sweep (single Mathematica process).
+
+Slice-scope qualifier (per AGENTS.md): *Within the Fell-Heisenberg irrotational-shift static-slice ansatz with unit lapse, the strict-pass classification produced by the Python pipeline is independently confirmed by symbolic differentiation at the canonical anchor and at 9 sampled anchors across (V, σ, r). The cross-check does not extend to the $\vec x = 0$ point of the canonical anchor (FH ansatz is not $C^2$ there) nor to the full 6738-row strict-pass manifold (sampled axes only).*
+
+---
+
+## §17 FH-to-Schwarzschild box-edge L-sensitivity (Task 2D.10 residual)
+
+**Status (Session 17 Phase F):** Asymptotic matching of the FH interior to a Schwarzschild exterior fails at the canonical anchor by **two structurally independent mechanisms**, both robust under L-sensitivity scan from $L=12$ to $L=24$.
+
+### §17.1 Setup
+
+Phase C (§15.3) closed the double-bubble half of Task 2D.10 by direct construction. The asymptotic-matching half is the question: does the FH interior, evaluated on a sphere of areal radius $R = L/2 - 0.5$ (one cell inside the box edge), match an exterior Schwarzschild geometry of mass $M_{\rm box} = 1850$ (the canonical-anchor box mass from §13.3) via the Israel junction conditions?
+
+The script [`agent-tools/fh_schw_matching.py`](agent-tools/fh_schw_matching.py) measures, at $L \in \{12, 16, 20, 24\}$ with $N_{\rm pts}$ chosen to keep $h \approx 0.185$ constant:
+
+- $\langle |\vec N| \rangle_{\rm sphere}$, area-averaged on the box-edge sphere via a $18 \times 36 = 648$-point lat-lon grid with $\sin\theta$ weighting;
+- $\langle N_r \rangle_{\rm sphere}$, the radial component (outward-pointing);
+- the Schwarzschild horizon radius $r_h = 2 M_{\rm box}$ for context.
+
+### §17.2 Results
+
+| $L$ | $N_{\rm pts}$ | $h$ | $R_{\rm sphere} = L/2 - 0.5$ | $\langle|\vec N|\rangle$ | $\langle N_r\rangle$ | $\sigma_{|\vec N|}$ |
+|---|---|---|---|---|---|---|
+| 12 | 65 | 0.1875 | 5.50 | 15.13 | +15.13 | 3.2e-3 |
+| 16 | 87 | 0.1860 | 7.50 | 15.28 | +15.28 | 6.4e-3 |
+| 20 | 109 | 0.1852 | 9.50 | 15.44 | +15.44 | 4.4e-3 |
+| 24 | 131 | 0.1846 | 11.50 | 15.56 | +15.56 | 3.9e-3 |
+
+Decay slope: $\log\langle|\vec N|\rangle$ vs $\log R_{\rm sphere}$ has slope **$+0.04$** (essentially flat, with a barely measurable *upward* trend). For comparison, Schwarzschild far-field decay would give slope $\approx -1$, a $1/r^2$ decay slope $\approx -2$.
+
+### §17.3 First failure mode: no decay envelope
+
+The shift magnitude on the box-edge sphere is $\sim 15.5$ at every $L$ tested — **roughly $15c$ throughout, with no detectable decay as $R$ grows from $5.5$ to $11.5$**. The shift is also nearly perfectly radial-outward ($\langle N_r \rangle / \langle |\vec N| \rangle \approx 0.9999$) and nearly uniform on the sphere ($\sigma_{|\vec N|} / \langle |\vec N| \rangle \sim 3 \times 10^{-4}$). This is the same "wall sea" structure Session 14 §9 identified as an obstruction to defining an extended passenger zone, now confirmed at four box scales.
+
+Israel matching to Schwarzschild requires the interior shift to vanish at the matching surface (Schwarzschild's canonical chart has zero shift). The interior shift on the FH box edge is $\sim 15$ at all sampled scales. Closing this gap with a finite Israel surface stress-energy is not possible; an envelope function (a smooth window multiplying $\phi$) would have to be inserted, which by construction is *outside* the FH ansatz.
+
+### §17.4 Second failure mode: the box is inside its own would-be Schwarzschild horizon
+
+At the canonical anchor with $M_{\rm box} = 1850$ (positive matter content per §13.3), the corresponding Schwarzschild horizon sits at $r_h = 2M_{\rm box} = 3700$ in $G=1$ units. **Every box-edge sphere $R \le 11.5$ tested here is deep inside that horizon**, so even setting aside the no-decay issue, there is no exterior Schwarzschild region to match against — the would-be exterior is all interior, and $f(R) = 1 - 2M/R < 0$ at every sampled $R$.
+
+Two readings:
+
+(i) The FH ansatz parameters that produce the strict-pass region also produce a positive matter content far in excess of what could be confined inside its own coordinate radius — the central-passenger geometry is a black hole as far as a distant Schwarzschild observer is concerned.
+
+(ii) The "$M_{\rm box} = 1850$" figure is itself a sum over a wall layer of $\sim L^3$ cells each contributing $\sim O(1)$ to the integrated $\rho$. A different choice of "what counts as the bubble's mass" (e.g. only the passenger-volume integrated mass, $\sim 24$ per §13.3) shifts the horizon to $r_h = 48$, which is now larger than every $R$ tested but still keeps every box edge inside the horizon at this scale. The qualitative finding (interior is its own horizon at every $L$ measured) is robust to that ambiguity.
+
+### §17.5 Honest reading
+
+Within the Fell-Heisenberg irrotational-shift static-slice ansatz at the canonical anchor:
+
+- The FH solution has no asymptotic decay envelope. Box-edge shift magnitude is uniform across the sphere and stable across box rescaling.
+- The interior matter content is too large to fit inside its own coordinate radius — the interior $|g_{tt}| > 0$ region (CTC sea, §15) is structurally consistent with the box being inside the would-be exterior horizon.
+- Therefore Task 2D.10's asymptotic-matching question reduces to: *the FH ansatz is a non-isolated configuration; isolating it requires an envelope function that is outside the construction.*
+
+This is **not a new pathology** — Sessions 11-15 already established (§7 connectivity, §9 single-cell passenger, §15 CTC sea) that the FH ansatz lives in a different regime than the conventional Alcubierre bubble. §17 quantifies the L-asymptotic version of those findings: there is no $L \to \infty$ limit in which FH approaches a Schwarzschild exterior.
+
+Cumulative reading from Sessions 11-17 (L-V VIQ + B-M taxonomy + CTC + xAct-cross-check + asymptotic-matching): the Fell-Heisenberg strict-pass existence claim is mathematically real and pipeline-verified, but the physical-warp-drive interpretation is degraded by every structural test we apply: single-voxel passenger zone, 76× mass-to-passenger-volume, geometric Class III + non-isotropic + static, CTC sea outside the passenger, no asymptotic decay envelope, configuration sits inside its own would-be Schwarzschild horizon. **No further test relaxes any of these obstructions.**
+
+### §17.6 Files
+
+- [`agent-tools/fh_schw_matching.py`](agent-tools/fh_schw_matching.py) — the L-sensitivity measurement script
+- [`agent-tools/fh_schw_matching.json`](agent-tools/fh_schw_matching.json) — persisted summary
+
+Slice-scope qualifier (per AGENTS.md): *Within the Fell-Heisenberg irrotational-shift static-slice ansatz at the canonical anchor, box scales $L \in [12, 24]$ at fixed $h \approx 0.185$. The "no decay envelope" finding is robust across all four scales tested. The "inside own horizon" finding is robust against the $M_{\rm box}$ vs $M_{\rm passenger}$ choice within the canonical anchor. Findings outside this slice — different anchors, different ansatz envelopes — are not asserted.*
+
+
+
+

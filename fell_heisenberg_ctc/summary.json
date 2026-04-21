@@ -1,0 +1,22 @@
+{
+  "n_rows": 6738,
+  "Npts": 49,
+  "gtt_max": {
+    "min": -0.48441681529368297,
+    "median": 86.20667315743984,
+    "max": 341.2446344426136
+  },
+  "gtt_centre": {
+    "min": -1.0,
+    "median": -0.9999999892894409,
+    "max": -0.99962499103832
+  },
+  "frac_gtt_positive": {
+    "min": 0.0,
+    "median": 0.9999915001402477,
+    "max": 0.9999915001402477
+  },
+  "all_centre_timelike": true,
+  "all_walls_supraluminal": false,
+  "elapsed_seconds": 72.70662021636963
+}

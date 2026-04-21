@@ -1,0 +1,14 @@
+{
+  "_comment": "GATED — Task 2D.5f Phase G scaffold (Session 17). DO NOT DISPATCH unless reopening criteria are met (see ROADMAP 2D.5f). Stage-2 refine grid re-run at Npts=129 (vs hires 97). Pushes the discretization noise floor on dec_slack_min from ~5e-5 absolute (Npts=97) to ~1.5e-5 absolute (Npts=129, scaling as h^4 = (97/129)^4). Used to publish a corrected strict-pass count if the extrapolation in §11.6 (~5900/10080) is challenged externally, or if a Phase E decision-gate-C result needs higher-resolution boundary classification. ~10080 points * ~14 sec/pt at Npts=129 / 16 cores ~ 3.5 hr on cpu-xl, ~$3.50. Reopening criterion: explicit publication request OR Phase E gate-C OR independent claim disputing the §11.6 extrapolation.",
+  "L": 12.0,
+  "Npts": 129,
+  "Pi": 0.25,
+  "axes": {
+    "V":     {"lo": 1.0,  "hi": 1.0,  "n": 1, "scale": "linear"},
+    "sigma": {"lo": 4.0,  "hi": 10.0, "n": 7, "scale": "linear"},
+    "m0":    {"lo": 2.3,  "hi": 3.7,  "n": 8, "scale": "linear"},
+    "a":     {"lo": 0.05, "hi": 0.5,  "n": 6, "scale": "log"},
+    "ell":   {"lo": 2.0,  "hi": 8.0,  "n": 5, "scale": "linear"},
+    "r":     {"lo": 4.0,  "hi": 9.0,  "n": 6, "scale": "linear"}
+  }
+}
