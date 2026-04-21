@@ -1,0 +1,18 @@
+{
+  "_comment": "Refined preview for Task 2D.11 (axisymmetric A_phi). Same FH-anchor pin as fell_heisenberg_vortical_preview.json, but V_A scanned tightly in the perturbative regime [0, 0.2] (5 values) to isolate small-vorticity effects from the non-perturbative regime probed by the original preview (where N_vortical_max reached ~9). Headline question: does perturbative axisymmetric vorticity move dec_slack_min in the favourable direction (toward zero from below) at the canonical anchor where the irrotational baseline misses strict-pass by ~4 cells? 5x3x3x3 = 135 vortical points at the fixed FH anchor.",
+  "L": 12.0,
+  "Npts": 49,
+  "Pi": 0.25,
+  "axes": {
+    "V":       {"lo": 0.5,  "hi": 0.5,  "n": 1, "scale": "linear"},
+    "sigma":   {"lo": 10.0, "hi": 10.0, "n": 1, "scale": "linear"},
+    "m0":      {"lo": 3.0,  "hi": 3.0,  "n": 1, "scale": "linear"},
+    "a":       {"lo": 0.05, "hi": 0.05, "n": 1, "scale": "linear"},
+    "ell":     {"lo": 4.0,  "hi": 4.0,  "n": 1, "scale": "linear"},
+    "r":       {"lo": 9.0,  "hi": 9.0,  "n": 1, "scale": "linear"},
+    "V_A":     {"lo": 0.0,  "hi": 0.2,  "n": 5, "scale": "linear"},
+    "sigma_A": {"lo": 1.0,  "hi": 4.0,  "n": 3, "scale": "linear"},
+    "r_A":     {"lo": 3.0,  "hi": 9.0,  "n": 3, "scale": "linear"},
+    "ell_A":   {"lo": 1.0,  "hi": 4.0,  "n": 3, "scale": "linear"}
+  }
+}

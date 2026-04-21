@@ -44,6 +44,8 @@ This catalog covers all papers referenced in the project seed documents, organiz
 
 **Relevance:** **CRITICAL — highest priority reading.** They already performed linearized analysis of Alcubierre and Natario drives. Key findings: (1) energy condition violations persist at arbitrarily low speeds; (2) the linearized framework allows treating the ship as finite mass; (3) the net negative warp field energy must be a significant fraction of ship mass. Must determine overlap with our ADM-based results before claiming novelty. The gravitomagnetic framing and boundary-mode decomposition may still be new contributions.
 
+**Quantitative comparison done — see [`FELL_HEISENBERG_SWEEP_NOTES.md`](FELL_HEISENBERG_SWEEP_NOTES.md) §13 (Task 2D.12).** Across 6738 strict-pass rows of the Fell-Heisenberg construction (which lives outside L-V's slice), the original L-V negative-energy VIQ is trivially zero (FH has $E_{\rm neg} = 0$ by construction); but a positive-energy analog (`viq_pos_M_passenger = E_pos / M_passenger`) gives median 75.7, full range $[43.8, 97.7]$. The cost of FH's $E_{\rm neg} = 0$ trick is a 76× mass-to-passenger-volume ratio.
+
 **NOTE:** Previously cited incorrectly as gr-qc/0410087 (which is a solo Lobo wormhole paper). Corrected in this catalog.
 
 ---
@@ -56,6 +58,8 @@ This catalog covers all papers referenced in the project seed documents, organiz
 > "Warp drive" spacetimes are useful as "gedanken-experiments" and as a theoretician's probe of the foundations of general relativity. Applying linearized gravity to the weak-field warp drive, i.e., for non-relativistic warp-bubble velocities, we find that the occurrence of energy condition violations in this class of spacetimes is generic to the form of the geometry under consideration and is not simply a side-effect of the "superluminal" properties. Using the linearized construction it is now possible to compare the warp field energy with the mass-energy of the spaceship, and applying the "volume integral quantifier", extremely stringent conditions on the warp drive spacetime are found.
 
 **Relevance:** Companion paper applying the "volume integral quantifier" to bound warp-field energy. Establishes that energy condition violations are generic, not a superluminal artifact — consistent with our finding that $\rho \leq 0$ at all $v_s$.
+
+**Quantitative comparison done — see [`FELL_HEISENBERG_SWEEP_NOTES.md`](FELL_HEISENBERG_SWEEP_NOTES.md) §13 (Task 2D.12).** The L-V "exact" NEC integrand $\int (\rho + p_r) dV$ (here approximated by $\int (\rho + p_{\rm min}) dV$ since the FH sweep records eigenvalues but not principal frame) is positive for all 6738 strict-pass FH points (median +216 to +334), confirming FH's construction sidesteps the L-V exact obstruction trivially. The 76× positive-mass-to-passenger ratio reported in §13 is the cost of that sidestep.
 
 ---
 
@@ -83,6 +87,8 @@ This catalog covers all papers referenced in the project seed documents, organiz
 
 **Relevance:** Alternative shift-vector construction with $\theta = 0$ everywhere. Second test case for boundary-mode analysis: if the framework applies, it should work for the Natário metric with a different mode spectrum. Also challenges the intuition that expansion/contraction is the warp mechanism.
 
+**Disposition (2026-04-20, Session 15c — closes ROADMAP Task 2A.12):** Dismissed as a special case of Slice 1. Natário's $\theta = K = 0$ ansatz is the purely-solenoidal ($\vec\nabla \cdot \vec N = 0$) corner of Fell-Heisenberg 2021's Helmholtz decomposition. In that corner the Hamiltonian-constraint identity reduces to $8\pi\rho_E = -\tfrac{1}{2}K_{ij}K^{ij} \le 0$ pointwise (proven symbolically in [`fell_heisenberg.ipynb`](fell_heisenberg.ipynb) Phase 3b regression; see [`FELL_HEISENBERG2021_EVALUATION.md`](FELL_HEISENBERG2021_EVALUATION.md) §3.2). Slice 1 ([`shift_families.ipynb`](shift_families.ipynb)) included the Natário family explicitly: 0/140 sweep points achieve full WEC. Lobo & Visser 2004 reach the same conclusion by an independent linearised-gravity argument (see ROADMAP Task 1.8). The boundary-mode framing therefore *dismisses* Natário 2002 as a positive-energy candidate; it does *not* recover it. Compare to Rodal 2025, which is a *different* (kinematically-irrotational, not solenoidal) Natário-class drive that lives in a different corner of the Helmholtz decomposition and has different (still non-positive) energy properties — see `RODAL2025_EVALUATION.md`.
+
 ---
 
 ### Lentz 2020 — "Breaking the warp barrier: hyper-fast solitons in Einstein-Maxwell-plasma theory"
@@ -104,6 +110,8 @@ This catalog covers all papers referenced in the project seed documents, organiz
 > We develop a model of a general warp drive spacetime in classical relativity that encloses all existing warp drive definitions and allows for new metrics without the most serious issues present in the Alcubierre solution. We present the first general model for subluminal positive-energy, spherically symmetric warp drives; construct superluminal warp-drive solutions which satisfy quantum inequalities; provide optimizations for the Alcubierre metric that decrease the negative energy requirements by two orders of magnitude. Conceptually, we demonstrate that any warp drive, including the Alcubierre drive, is a shell of regular or exotic material moving inertially with a certain velocity. Therefore, any warp drive requires propulsion.
 
 **Relevance:** Classification framework for warp drives. Their finding that every warp drive is a material shell moving inertially is directly compatible with the boundary-mode picture (the "shell" IS the boundary). Their subluminal positive-energy solutions are priority comparison targets.
+
+**Status (Session 17):** Independently evaluated in [`BOBRICK_MARTIRE2021_EVALUATION.md`](BOBRICK_MARTIRE2021_EVALUATION.md). The four-class §2.1 taxonomy is applied to FH in [FELL_HEISENBERG_SWEEP_NOTES.md §14](FELL_HEISENBERG_SWEEP_NOTES.md): FH realises the Class III geometric signature at $v_s = 0$ — outside the kinematic regime any B-M class was designed for — and the FH source matter is anisotropic, so B-M §3's spherically-symmetric isotropic-fluid construction does not apply.
 
 ---
 
@@ -330,9 +338,15 @@ The speculation doc's claim that "static infrastructure approach is novel" is in
 
 **Audit status (TRUST_AUDIT #7, closed Session 9):** §III–IV read independently. Two key statements verified from their text: §III.A shows that for spherically symmetric subluminal positive-matter warp drives, the inner-region time can only pass *more slowly* than at infinity (never faster) — this is the rigorous reason the Alcubierre-class drives need negative energy. §V.B states verbatim *"Whatever is the acceleration mechanism, it must obey the conservation of 4-momentum. This is because all warp drive spacetimes are asymptotically-flat. ... no metric which describes an accelerating warp drive solution has so far been presented in the literature."* This is the rigorous "any warp drive requires propulsion" theorem. Audit summary in `KRASNIKOV2003_EVALUATION.md` §"TRUST_AUDIT #7" and `MATTER_SHELL_PATH.md` Appendix A.
 
+**Cross-reference (Session 17):** Full critical evaluation now in [`BOBRICK_MARTIRE2021_EVALUATION.md`](BOBRICK_MARTIRE2021_EVALUATION.md) covering the four-class §2.1 taxonomy, the §3 spherically-symmetric positive-energy construction, and the FH-specific application in [FELL_HEISENBERG_SWEEP_NOTES.md §14](FELL_HEISENBERG_SWEEP_NOTES.md).
+
 ### Krasnikov-Everett network ↔ ring-wormhole literature
 
 - **Garattini, Cardoso et al.** (e.g., [arXiv:2305.03887](https://arxiv.org/abs/2305.03887)) develop ring wormholes with toroidal topology. Distinct from warp shells but worth noting as the closest published work on toroidal exotic-matter geometries. Local copy: `papers/arXiv-2305.03887v1.tar.gz`.
+
+### Pretorius, Vollick & Israel 1998 — "An Operational Approach To Black Hole Entropy"
+
+- **arXiv:** [gr-qc/9712085](https://arxiv.org/abs/gr-qc/9712085) · **Phys. Rev. D 57, 6311 (1998)**. Sibling-machinery reference for the codimension-scaling framing in [TOROIDAL_FUCHS_NOTES.md](TOROIDAL_FUCHS_NOTES.md): same Israel-junction thin-shell apparatus on $S^2$, but asks for the entropy at the BH limit (→ A/4) rather than the perturbative DEC-compatible thickness $\Delta_\min$. Not prior art for the codimension law itself, but the closest published use of the same machinery on the k=2 data point.
 
 ---
 
@@ -372,3 +386,46 @@ The speculation doc's claim that "static infrastructure approach is novel" is in
 - Adopt Rodal 2025 as a new comparison target alongside Fuchs 2024 in `MATTER_SHELL_PATH.md` § Comparison.
 - Re-evaluate whether our Path 2B (Casimir) program should target *anisotropic transverse pressures* on a thin wall (matching Rodal's profile) rather than isotropic negative energy density (matching Alcubierre's profile). This is a meaningful change of search direction.
 - Note in `QUANTUM_CLASSICAL_BRIDGE.md` outcome matrix: the irrotational construction strengthens scenario "C — fails at translation; only static frame-drag" (because translation still costs propulsion per Bobrick–Martire even if the steady-state drive is cheap), but weakens scenario "D — energy conditions impassable" since the *peak* deficit just dropped by orders of magnitude.
+
+---
+
+## 11. Codimension-Scaling Sibling Literature (added Session 16)
+
+Added in response to the codimension-counting framing in [TOROIDAL_FUCHS_NOTES.md](TOROIDAL_FUCHS_NOTES.md). All three are sibling constructions, none subsume the perturbative-shift `\Delta_\min(\Sigma) \sim (\beta/M) \cdot \mathrm{Area}(\Sigma)/R_\mathrm{curv}(\Sigma)` law.
+
+### Lemos & Lobo 2008 � "Plane symmetric thin-shell wormholes: solutions and stability"
+
+- **arXiv:** [0806.4459](https://arxiv.org/abs/0806.4459)  Phys. Rev. D 78, 044030 (2008). Local copy: `papers/arXiv-0806.4459_lemos_lobo_plane_thinshell.tar.gz`, extracted to `papers/extracted/lemos_lobo2008/`.
+
+**Relevance.** Cut-and-paste construction of planar thin-shell wormholes in vacuum-with-`\Lambda<0`. Explicitly notes that *""upon compactification of one or two coordinates, cylindrical topology or toroidal topology, respectively""* � the planar/cylindrical/toroidal hierarchy in published form. Computes `\sigma` and `\mathcal{P}` on the throat shell, but the exterior is AdS (not asymptotically flat) and there is no localized `M`: `\sigma \to -\alpha/(2\pi)` at large throat radius is a constant mass-per-unit-area, *not* a codimension scaling in our sense. **Different question, different regime.** Their k=0/k=1/k=2 hierarchy emerges from compactifying coordinates of a single AdS-black-membrane metric; ours emerges from a localized perturbative shift on a closed shell embedded in asymptotic flat space.
+
+### Dias & Lemos 2010 � "Thin-shell wormholes in d-dimensional general relativity: solutions, properties, and stability"
+
+- **arXiv:** [1008.3376](https://arxiv.org/abs/1008.3376)  Phys. Rev. D 82, 084023 (2010). Local copy: `papers/arXiv-1008.3376_dias_lemos_ddim_thinshell.tar.gz`, extracted to `papers/extracted/dias_lemos2010/`.
+
+**Relevance.** `d`-dimensional version of Lemos-Lobo 2008, with spherical / planar / hyperbolic throats, NEC computed for each. Same caveat: cut-and-paste of `d`-dim AdS-Schwarzschild, no localized `M`, no perturbative shift. Useful template for a higher-`d` extension of our codimension scaling, should that ever become interesting.
+
+### Bronnikov, Santos & Wang 2019 � "Cylindrical Systems in General Relativity"
+
+- **arXiv:** [1901.06561](https://arxiv.org/abs/1901.06561). 51-page review. Local copy: `papers/bronnikov2019_cylindrical_systems_review_1901.06561v4.pdf`; full-text dump at `papers/extracted/bronnikov2019_cylindrical_full.txt`.
+
+**Relevance � the actual jackpot.** Two genuinely connected items:
+
+1. **Whittaker mass-per-unit-length** (eq. 2.40): for a static cylinder matched to the Levi-Civita exterior, `\nu = \sigma\sqrt{a}`, with the threshold remark *""the minimum mass per unit length to form a black hole satisfies `\nu > 1/2`.""* A sharp lower bound on a cylindrical-source observable, structurally analogous to our `\Delta_\min` but a *different* quantity (mass-per-length to form a horizon, not perturbative-shift thickness to satisfy DEC).
+2. **Hoop conjecture (Thorne 1972), �IX.A:** *""black holes with horizons form when and only when a mass `M` gets compacted into a region whose circumference is `C \lesssim 4\pi M` in every direction.""* **This is the closest published statement of the codimension-counting idea.** Our `\Delta_\min(\Sigma) \sim (\beta/M) \cdot \mathrm{Area}/R_\mathrm{curv}` law is essentially a *perturbative-DEC version of the hoop conjecture*: the geometry needs to be compactified in *every* spatial direction, and each non-compact direction multiplies the required exotic budget by an extra factor of (length scale)/M. The hoop says ""compactness everywhere or no horizon;"" ours says ""compactness everywhere or no DEC-compatible thin-shell warp.""
+
+**Cylindrical-collapse references** ([129, 135, 172, 187, 200, 201, 217, 244, 260, 287] in the Bronnikov bibliography) form the Bonnor / van Stockum / Goncalves / Pereira-Wang catalog of cylindrical-shell matching. None compute `\Delta_\min` under perturbative shifts; all are collapse / dust / fluid problems. Our specific Fuchs-style perturbative thickness bound is **not** in this corpus.
+
+### Sibling cylindrical-Bonnor papers (added Session 16)
+
+Catalogued for completeness; none directly bear on the codimension scaling, but together they cover the cylindrical-Levi-Civita / Weber-Wheeler-Bonnor / cosmic-string corner of the literature:
+
+| File | Paper |
+|------|-------|
+| `papers/bonnor_static_cylinder_chapter.pdf` | **Bonnor** � *The Static Cylinder in General Relativity* (book chapter) |
+| `papers/bonnor1957_nonsingular_fields_indiana.pdf` | **Bonnor 1957** � *Non-Singular Fields in GR*, Indiana Univ. Math. J. (image-only PDF) |
+| `papers/astesiano2024_bonnor_rotating_dust_2310.04157v2.pdf` | Astesiano, Bini, Geralico, Ruggiero 2024 � particle motion in Bonnor 1977 rotating-dust spacetime |
+| `papers/mishima2017_cyl_gw_weber_wheeler_bonnor_1704.03251v4.pdf` | Mishima & Tomizawa 2017 � variations on cylindrical Weber-Wheeler-Bonnor GW packets |
+| `papers/vesely2021_cyl_radial_magnetic_2104.01557v1.pdf` | Vesel� & �ofka 2021 � cylindrical electrovacuum with radial magnetic fields |
+| `papers/lyndenbell2017_komar_cylindrical_1712.06980v1.pdf` | Lynden-Bell & Bic�k 2017 � Komar fluxes and cylindrical metrics |
+

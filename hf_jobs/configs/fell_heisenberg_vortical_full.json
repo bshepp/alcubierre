@@ -1,0 +1,18 @@
+{
+  "_comment": "Full sweep for Task 2D.11 (vorticity-augmented FH ansatz, axisymmetric A_phi). 6 FH params scanned over the Session-11 strict-pass region; 4 vortical params scanned to probe whether vortical augmentation recovers an extended passenger zone. Estimated ~10 800 raw points (3x3x3x3x3x3 FH x 5x3x3x3 vortical = ~10920) at Npts=65; per-point cost ~0.7 s on cpu-xl gives ~70 min ~= $1.5-$3.0. Budget cap: $3. Headline metric: max(passenger_zone_radius) across the grid for strict-pass (wec_pass_fraction == 1 AND dec_pass_fraction == 1) points -- if it scales as h instead of >> h, the all-wall-no-interior pathology is robust to vortical augmentation in the axisymmetric A family.",
+  "L": 12.0,
+  "Npts": 65,
+  "Pi": 0.25,
+  "axes": {
+    "V":       {"lo": 0.4,  "hi": 0.6,  "n": 3, "scale": "linear"},
+    "sigma":   {"lo": 8.0,  "hi": 12.0, "n": 3, "scale": "linear"},
+    "m0":      {"lo": 2.5,  "hi": 3.5,  "n": 3, "scale": "linear"},
+    "a":       {"lo": 0.03, "hi": 0.07, "n": 3, "scale": "linear"},
+    "ell":     {"lo": 3.0,  "hi": 5.0,  "n": 3, "scale": "linear"},
+    "r":       {"lo": 8.0,  "hi": 10.0, "n": 3, "scale": "linear"},
+    "V_A":     {"lo": 0.0,  "hi": 2.0,  "n": 5, "scale": "linear"},
+    "sigma_A": {"lo": 1.0,  "hi": 4.0,  "n": 3, "scale": "linear"},
+    "r_A":     {"lo": 3.0,  "hi": 9.0,  "n": 3, "scale": "linear"},
+    "ell_A":   {"lo": 1.0,  "hi": 4.0,  "n": 3, "scale": "linear"}
+  }
+}

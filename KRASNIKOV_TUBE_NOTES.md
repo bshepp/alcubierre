@@ -193,6 +193,8 @@ Value: marginal. We already proved (Path 2A Package 1) that *spherical* Fuchs sh
 
 Cost: ~1 session. Smaller payoff than 7.1.
 
+**Disposition (Task 2A.14, 2026-04-17, Session 16, scope a):** executed in the cylindrical-reduction (thin-torus) limit in [`toroidal_fuchs.ipynb`](toroidal_fuchs.ipynb) — see [`TOROIDAL_FUCHS_NOTES.md`](TOROIDAL_FUCHS_NOTES.md) for the full write-up. Result: the cylindrical Fuchs bound is $\Delta_{\min}^\text{cyl} = (3/8)\beta L/M$, structurally different from the spherical bound $\Delta_{\min}^\text{sph} = (3/8)\beta R/M$ — the cylindrical bound is *independent of the shell radius* $R$ and depends instead on the axial length $L$ (one trapped angular dimension instead of two). For a torus with $L \to 2\pi R_\text{maj}$, the penalty is $\Delta_\text{cyl}/\Delta_\text{sph} = L/R_\text{min} = 2\pi R_\text{maj}/R_\text{min}$, which is bounded below by $2\pi \approx 6.28$ for any non-self-intersecting torus. **The toroidal-Fuchs path is dismissed: strictly worse than spherical by a factor $\geq 2\pi$, and (per §7.1's Krasnikov result) no causal advantage either.** Scope (b) — full fat-torus matched to a Weyl/Bach-Weyl axisymmetric vacuum exterior — recorded as a deferred follow-up in [`TOROIDAL_FUCHS_NOTES.md`](TOROIDAL_FUCHS_NOTES.md) §3.
+
 ### 7.3 Recommendation
 
 **Do (7.1).** It directly extends our Path 2A framework, settles the Krasnikov-network half of the speculation question, and produces a publication-grade quantitative result. We can decide whether to do (7.2) afterward.
@@ -221,7 +223,7 @@ The "reframed Calculation 1" anticipated in §7.1 above was executed in [`krasni
 - **§3 sharpened to a pointwise scaling law.** Their global negative-energy estimate $\sim -\eta\,\rho_{\max} D / \epsilon$ is the integral of the *local* result $\rho_p^{\min} = -\kappa_K(\eta)/\epsilon^2$ with $\kappa_K(\eta) \approx 0.122\,\eta$ at small $\eta$. Verified to $\epsilon$-independence at the 14-decimal level (Cell 13).
 - **§7.1 (proposed calculation) executed.** No classical positive-matter wall satisfies WEC anywhere in $(\eta, \epsilon, \rho_{\max})$ parameter space. 300-point HF Jobs preview run returns WEC pass rate 0.0000 and DEC pass rate 0.0000.
 - **§4 unobservability quantified.** Both the negative-energy density and the observable lightcone opening scale linearly with $\eta$, so their ratio is a fixed constant. You cannot make the warp drive useful and the energy violation small simultaneously. This is the strongest classical no-go for Krasnikov geometries.
-- **§7.2 (toroidal-Fuchs) deferred.** Task 2A.14 still optional; the speculation document is closed by the §7.1 result alone, since the speculation merges incompatible Krasnikov+Fuchs features.
+- **§7.2 (toroidal-Fuchs) executed in scope-a limit.** Task 2A.14 closed; see [`TOROIDAL_FUCHS_NOTES.md`](TOROIDAL_FUCHS_NOTES.md). Toroidal Fuchs shell is *strictly worse* than spherical by factor $L/R_\text{min} \geq 2\pi$ for any non-degenerate torus aspect ratio, and (per §7.1) offers no causal advantage. The speculation document is closed twice over.
 
 For the full documented result, see `MATTER_SHELL_PATH.md` §9.
 

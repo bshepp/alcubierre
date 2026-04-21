@@ -1,0 +1,18 @@
+{
+  "_comment": "Preview sweep for Task 2D.11 (vorticity-augmented FH ansatz, axisymmetric A_phi). Pins the 6 FH params at the Session 11 strict-pass anchor (V=0.5, sigma=10, m0=3, a=0.05, ell=4, r=9) and scans 4 vortical params (V_A, sigma_A, r_A, ell_A) on a small 3x3x3x3 = 81-point grid. V_A=0 reproduces the irrotational baseline bit-exactly (regression checked). Designed to run in <30 s locally with the dispatcher's worker cap. Decision gate after preview: does any vortical augmentation produce passenger_zone_radius > h?",
+  "L": 12.0,
+  "Npts": 49,
+  "Pi": 0.25,
+  "axes": {
+    "V":       {"lo": 0.5,  "hi": 0.5,  "n": 1, "scale": "linear"},
+    "sigma":   {"lo": 10.0, "hi": 10.0, "n": 1, "scale": "linear"},
+    "m0":      {"lo": 3.0,  "hi": 3.0,  "n": 1, "scale": "linear"},
+    "a":       {"lo": 0.05, "hi": 0.05, "n": 1, "scale": "linear"},
+    "ell":     {"lo": 4.0,  "hi": 4.0,  "n": 1, "scale": "linear"},
+    "r":       {"lo": 9.0,  "hi": 9.0,  "n": 1, "scale": "linear"},
+    "V_A":     {"lo": 0.0,  "hi": 1.0,  "n": 3, "scale": "linear"},
+    "sigma_A": {"lo": 1.0,  "hi": 4.0,  "n": 3, "scale": "linear"},
+    "r_A":     {"lo": 3.0,  "hi": 9.0,  "n": 3, "scale": "linear"},
+    "ell_A":   {"lo": 1.0,  "hi": 4.0,  "n": 3, "scale": "linear"}
+  }
+}

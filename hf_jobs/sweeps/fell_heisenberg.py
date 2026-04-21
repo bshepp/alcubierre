@@ -86,33 +86,41 @@ def eulerian_rho_irrotational(phi: np.ndarray, h: float):
     return rho_E, H
 
 
-def adm_stress_energy(phi: np.ndarray, h: float):
+def adm_stress_energy_from_N(N_vec, h: float):
     """Compute the full Eulerian-frame stress-energy components for an
-    irrotational static shift N = grad phi with unit lapse and flat 3-metric.
+    arbitrary static shift vector ``N_vec`` (irrotational + vortical) with
+    unit lapse and flat 3-metric.
+
+    Parameters
+    ----------
+    N_vec : sequence of three np.ndarray
+        Cartesian components ``(N_x, N_y, N_z)`` of the shift on the grid.
+        Each component must share the same shape.
+    h : float
+        Uniform grid spacing (same in X, Y, Z).
 
     Returns
     -------
-    rho_E : np.ndarray
-        Eulerian energy density (scalar field).
-    K     : np.ndarray, shape (3, 3, *phi.shape)
-        Extrinsic curvature K_ij = -d_i d_j phi (symmetrised).
-    S_ij  : np.ndarray, shape (3, 3, *phi.shape)
-        Spatial stress tensor.
+    rho_E, K, S_ij
+        Same conventions as the legacy ``adm_stress_energy`` thin wrapper.
+        ``K_ij = -1/2 (d_i N_j + d_j N_i)`` (the irrotational case
+        ``N = grad phi`` reduces to ``K_ij = -d_i d_j phi`` exactly).
 
-    Derivation (port of notebook cell 13). Use the dynamical equation
-        L_N K_ij = N (R_ij + K K_ij - 2 K_ik K^k_j
-                      + 4 pi ((S - rho) gamma_ij - 2 S_ij))
-    with N = 1, gamma flat, (3)R_ij = 0, K_ij = -H_ij (irrotational case).
-    Solving the trace-reversed equation gives S_ij directly.
+    Derivation: dynamical equation for K_ij (Lie derivative form), with
+    alpha=1, gamma flat, (3)R_ij=0; trace-reverse to solve for S_ij. The
+    refactor splits the irrotational-only assumption out of the K_ij
+    construction so the same pipeline serves both ``N = grad phi`` and
+    ``N = grad phi + curl A`` (Task 2D.11 vortical extension).
     """
-    grads = [fd_grad4(phi, h, axis=ax) for ax in range(3)]
+    grads = [np.asarray(N_vec[ax]) for ax in range(3)]
+    shape = grads[0].shape
 
-    # K_ij = -d_i d_j phi (symmetrised against finite-difference asymmetry).
-    K = np.empty((3, 3) + phi.shape)
+    # K_ij = -1/2 (d_i N_j + d_j N_i). The symmetrisation handles both
+    # FD asymmetry (irrotational) and genuine antisymmetric pieces (vortical).
+    K = np.empty((3, 3) + shape)
     for i in range(3):
-        Ni = grads[i]
         for j in range(3):
-            K[i, j] = -fd_grad4(Ni, h, axis=j)
+            K[i, j] = -fd_grad4(grads[j], h, axis=i)
     K = 0.5 * (K + np.transpose(K, (1, 0, 2, 3, 4)))
     Ktrace = K[0, 0] + K[1, 1] + K[2, 2]
     KijKij = sum(K[i, j] ** 2 for i in range(3) for j in range(3))
@@ -137,6 +145,18 @@ def adm_stress_energy(phi: np.ndarray, h: float):
     S_ij += 0.5 * rho_E[np.newaxis, np.newaxis] * eye3
 
     return rho_E, K, S_ij
+
+
+def adm_stress_energy(phi: np.ndarray, h: float):
+    """Backward-compatible wrapper for the irrotational case ``N = grad phi``.
+
+    Computes the shift via 4th-order FD and delegates to
+    ``adm_stress_energy_from_N``. Returns bit-identical output to the
+    pre-refactor implementation (the K_ij symmetrisation makes the two
+    derivative orderings equivalent).
+    """
+    grads = [fd_grad4(phi, h, axis=ax) for ax in range(3)]
+    return adm_stress_energy_from_N(grads, h)
 
 
 # ---------------------------------------------------------------------------
