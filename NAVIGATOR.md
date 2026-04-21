@@ -188,7 +188,7 @@ These are preserved as record of the project's earlier hypotheses; their *symbol
 
 8. **Slice 4b (Krasnikov 2003 hybrid quantum/classical wall).** Reproduce Krasnikov's $10^{-3}$ g dihedral-portal + Van Den Broeck pocket and ask whether adding a Fuchs-class classical shell can eliminate the residual mg of QI-bounded negative energy. Focused, mostly computational. **Effort: 1 session.**
 
-9. **TRUST_AUDIT #3 (Warp Factory + Fuchs Fig. 10 reproduction).** Last deferred audit item. Requires MATLAB on Windows. **Effort: 1 session of MATLAB wrestling.**
+9. ~~**TRUST_AUDIT #3 (Warp Factory + Fuchs Fig. 10 reproduction).**~~ **CLOSED 2026-04-21 (Session 18).** Warp Factory installed (MATLAB R2023a Update 8); Fuchs Fig. 10 reproduced cleanly at canonical params (NEC=WEC=DEC=SEC=1.0000 in-shell); concurrent κ-bracket sweep (ROADMAP 2A.9b) returns $\kappa^{\rm num} \in (4.17, 5.83]$ vs analytic $[0.05, 0.875]$ — 6× tighter, refining 2A.7 downward. Full notes: [`WARP_FACTORY_NOTES.md`](WARP_FACTORY_NOTES.md).
 
 10. **Slice 6b (computational $f(R)$).** Build a 4th-order PDE solver. Significant new infrastructure. **Effort: large.**
 
