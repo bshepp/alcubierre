@@ -1,0 +1,29 @@
+cff-version: 1.2.0
+message: "If you use this work, please cite it using the metadata below."
+title: "Alcubierre warp drive — boundary-mode reformulation: notebooks, sweeps, and verification artifacts"
+abstract: >-
+  Personal landscape exploration of whether the exotic-matter requirement of the
+  Alcubierre warp-drive metric can be reinterpreted as a boundary effect
+  (Casimir analog) or evaded via classical anisotropic matter shells (Fuchs et
+  al. 2024 anchor). Includes SymPy/NumPy derivation notebooks, parameter sweeps
+  run on Hugging Face Jobs, independent MATLAB / Warp Factory numerical
+  verification, paper-evaluation companions, and the static research website
+  rendering the results. All claims are reported with explicit slice-scope
+  qualifiers; see NAVIGATOR.md and TRUST_AUDIT.md in the archive.
+type: dataset
+authors:
+  - family-names: Sheppard
+    given-names: Brian
+    affiliation: Independent researcher
+license: MIT
+repository-code: "https://github.com/bshepp/alcubierre"
+url: "https://github.com/bshepp/alcubierre"
+keywords:
+  - general relativity
+  - Alcubierre warp drive
+  - energy conditions
+  - exotic matter
+  - Casimir effect
+  - Fuchs shell
+  - Krasnikov tube
+  - parameter sweep

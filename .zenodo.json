@@ -1,0 +1,51 @@
+{
+  "title": "Alcubierre warp drive — boundary-mode reformulation: notebooks, sweeps, and verification artifacts",
+  "description": "<p>Personal landscape exploration of whether the exotic-matter requirement of the Alcubierre warp-drive metric can be reinterpreted as a boundary effect (Casimir analog) or evaded via classical anisotropic matter shells (Fuchs et al. 2024 anchor).</p><p>This deposit archives the full research repository at the tagged release: SymPy/NumPy notebooks deriving the linearization and slice geometry, parameter-sweep modules (run on Hugging Face Jobs and locally), independent MATLAB / Warp Factory numerical verification, evaluation companions for cited papers (Rodal 2025, Krasnikov 2003, Fell-Heisenberg 2021), the static-research website rendering the results, and the trust-audit / session-log / navigator documents that record provenance and slice scope of every claim.</p><p><strong>Honest framing:</strong> all results are reported with their slice of parameter space (which assumptions they depend on). The composite finding so far is &quot;within the static slice plus six relaxations explored to date, no useful classical warp drive exists,&quot; which is informative but does not close the broader question. See <code>NAVIGATOR.md</code>, <code>TRUST_AUDIT.md</code>, and <code>LANDSCAPE_SYNTHESIS.md</code> in the archive for the full provenance audit.</p><p>Companion live dataset on Hugging Face: <a href=\"https://huggingface.co/datasets/bshepp/alcubierre-sweeps\">bshepp/alcubierre-sweeps</a>. Source repository: <a href=\"https://github.com/bshepp/alcubierre\">github.com/bshepp/alcubierre</a>.</p>",
+  "upload_type": "dataset",
+  "creators": [
+    {
+      "name": "Sheppard, Brian",
+      "affiliation": "Independent researcher"
+    }
+  ],
+  "keywords": [
+    "general relativity",
+    "Alcubierre warp drive",
+    "energy conditions",
+    "exotic matter",
+    "Casimir effect",
+    "Fuchs shell",
+    "Krasnikov tube",
+    "warp drive metric",
+    "numerical relativity",
+    "parameter sweep"
+  ],
+  "license": "MIT",
+  "access_right": "open",
+  "language": "eng",
+  "related_identifiers": [
+    {
+      "identifier": "https://github.com/bshepp/alcubierre",
+      "relation": "isSupplementTo",
+      "scheme": "url"
+    },
+    {
+      "identifier": "https://huggingface.co/datasets/bshepp/alcubierre-sweeps",
+      "relation": "isIdenticalTo",
+      "scheme": "url"
+    },
+    {
+      "identifier": "10.48550/arXiv.2405.02709",
+      "relation": "references",
+      "scheme": "doi"
+    },
+    {
+      "identifier": "10.48550/arXiv.2404.03095",
+      "relation": "references",
+      "scheme": "doi"
+    }
+  ],
+  "communities": [
+    {"identifier": "general-relativity"}
+  ]
+}
