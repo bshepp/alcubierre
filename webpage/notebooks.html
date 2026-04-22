@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Notebooks &amp; Code — Alcubierre Boundary-Mode</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,600;0,8..60,700;1,8..60,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css">
+<script src="assets/theme.js"></script>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-left">
+    <a href="index.html">Dashboard</a>
+    <a href="roadmap.html">Roadmap</a>
+    <a href="fuchs-shell.html">Fuchs Shell</a>
+    <a href="six-slices.html">Six Slices</a>
+    <a href="fell-heisenberg.html">Fell–Heisenberg</a>
+    <a href="warp-factory.html">Warp Factory</a>
+    <a href="notebooks.html" class="active">Notebooks</a>
+    <a href="about.html">About</a>
+  </div>
+  <div class="topbar-right">
+    Alcubierre · Boundary-Mode
+    <a href="https://github.com/bshepp/alcubierre" target="_blank" rel="noopener" title="GitHub Repository"><svg class="gh-icon" viewBox="0 0 16 16"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0016 8c0-4.42-3.58-8-8-8z"/></svg></a>
+  </div>
+</div>
+
+<div class="page-header">
+  <h1>Notebooks &amp; Code <span class="dim">— project artefact catalog</span></h1>
+  <p class="subtitle">13 Jupyter notebooks, the MATLAB Warp Factory reproduction kit, and the HF-Jobs sweep dispatcher.</p>
+</div>
+
+<div class="container">
+
+  <div class="block">
+    <div class="block-eyebrow">Jupyter notebooks</div>
+    <div class="block-title">Symbolic + numerical workhorses</div>
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th style="width:24%;">Notebook</th>
+          <th>Scope</th>
+          <th style="width:18%;">Heavy compute</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="accent"><a href="https://github.com/bshepp/alcubierre/blob/main/verification.ipynb" target="_blank" rel="noopener" style="color:var(--accent);text-decoration:none;">verification</a></td>
+          <td>SymPy/numpy verification of every key linearization expression</td>
+          <td class="dim">Local · pure symbolic</td>
+        </tr>
+        <tr>
+          <td class="accent"><a href="https://github.com/bshepp/alcubierre/blob/main/matter_shell.ipynb" target="_blank" rel="noopener" style="color:var(--accent);text-decoration:none;">matter_shell</a></td>
+          <td>Path 2A — Fuchs bump function, Israel junction, angular decomposition, EC scaling</td>
+          <td class="dim">Local · moderate</td>
+        </tr>
+        <tr>
+          <td class="accent"><a href="https://github.com/bshepp/alcubierre/blob/main/israel_junction.ipynb" target="_blank" rel="noopener" style="color:var(--accent);text-decoration:none;">israel_junction</a></td>
+          <td>Task 2A.6 — full Israel junction (static + boosted), critical λ<sub>*</sub></td>
+          <td class="warm">Cell 8 → HF Jobs</td>
+        </tr>
+        <tr>
+          <td class="accent"><a href="https://github.com/bshepp/alcubierre/blob/main/thickness_bound.ipynb" target="_blank" rel="noopener" style="color:var(--accent);text-decoration:none;">thickness_bound</a></td>
+          <td>Task 2A.7 — minimum-thickness scaling Δ<sub>min</sub>/R = κβ/C, numerical sweep, Fuchs comparison</td>
+          <td class="warm">Cell 6 → HF Jobs</td>
+        </tr>
+        <tr>
+          <td class="accent"><a href="https://github.com/bshepp/alcubierre/blob/main/acceleration.ipynb" target="_blank" rel="noopener" style="color:var(--accent);text-decoration:none;">acceleration</a></td>
+          <td>Task 2A.10 — ADM 4-momentum obstruction, three-mechanism catalog, GW-recoil ceiling</td>
+          <td class="warm">Cells 9-12 → HF Jobs (GW)</td>
+        </tr>
+        <tr>
+          <td class="accent"><a href="https://github.com/bshepp/alcubierre/blob/main/krasnikov_tube.ipynb" target="_blank" rel="noopener" style="color:var(--accent);text-decoration:none;">krasnikov_tube</a></td>
+          <td>Task 2A.13 — Krasnikov 4D + Fuchs wall, Everett–Roman Eq. 14 reproduction, scaling law</td>
+          <td class="warm">Cell 19 → HF Jobs</td>
+        </tr>
+        <tr>
+          <td class="accent"><a href="https://github.com/bshepp/alcubierre/blob/main/shift_families.ipynb" target="_blank" rel="noopener" style="color:var(--accent);text-decoration:none;">shift_families</a></td>
+          <td>Phase 2C Slice 1 — alternate axisymmetric shifts (Alcubierre, Natário, Bessel)</td>
+          <td class="warm">HF Jobs sweep</td>
+        </tr>
+        <tr>
+          <td class="accent"><a href="https://github.com/bshepp/alcubierre/blob/main/hybrid_wall.ipynb" target="_blank" rel="noopener" style="color:var(--accent);text-decoration:none;">hybrid_wall</a></td>
+          <td>Phase 2C Slice 2 — Krasnikov wall + Fuchs perturbation</td>
+          <td class="warm">HF Jobs sweep</td>
+        </tr>
+        <tr>
+          <td class="accent"><a href="https://github.com/bshepp/alcubierre/blob/main/time_dependent.ipynb" target="_blank" rel="noopener" style="color:var(--accent);text-decoration:none;">time_dependent</a></td>
+          <td>Phase 2C Slice 3 — explicit v(t) ramp, antisymmetry of v̇ correction</td>
+          <td class="dim">Local</td>
+        </tr>
+        <tr>
+          <td class="accent"><a href="https://github.com/bshepp/alcubierre/blob/main/cosmological_exterior.ipynb" target="_blank" rel="noopener" style="color:var(--accent);text-decoration:none;">cosmological_exterior</a></td>
+          <td>Phase 2C Slice 5 — McVittie exterior, momentum-exchange ceiling</td>
+          <td class="dim">Local</td>
+        </tr>
+        <tr>
+          <td class="accent"><a href="https://github.com/bshepp/alcubierre/blob/main/fell_heisenberg.ipynb" target="_blank" rel="noopener" style="color:var(--accent);text-decoration:none;">fell_heisenberg</a></td>
+          <td>Phase 2D — multi-mode static shift, WEC + DEC at Eulerian level</td>
+          <td class="warm">Multiple HF-Jobs sweeps</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="block">
+    <div class="block-eyebrow">Out-of-tree dependency</div>
+    <div class="block-title">Warp Factory v1.0 (MATLAB)</div>
+    <div class="card-grid">
+      <div class="content-card">
+        <h3>Reproduction kit</h3>
+        <p>Helmerich, Fuchs et al. 2024's MATLAB Warp Factory toolkit (MIT-licensed, <a href="https://github.com/NerdsWithAttitudes/WarpFactory" target="_blank" rel="noopener" style="color:var(--accent);text-decoration:none;">github.com/NerdsWithAttitudes/WarpFactory</a>) is cloned out-of-tree at <code>F:/science-projects/WarpFactory/</code>. The project's interface lives in <code>warp_factory_repro/</code>:</p>
+        <ul style="font-size:0.82rem;color:var(--text-secondary);padding-left:1.2rem;line-height:1.8;">
+          <li><code>fuchs_fig10_repro.m</code> — Session 18 existence anchor</li>
+          <li><code>kappa_sweep.m</code> — Session 18 1-D Δ-bracket</li>
+          <li><code>kappa_surface_sweep.m</code> — Session 19 27-cell × 6-Δ surface</li>
+          <li><code>alcubierre_sanity.m</code> — Session 19 Pfenning-Ford textbook EC violator</li>
+        </ul>
+      </div>
+      <div class="content-card">
+        <h3>Pipeline notes</h3>
+        <p>Warp Factory's <code>metricGet_WarpShellComoving(...)</code> builds a TOV shell + bump-function shift; <code>evalMetric(M,1,1)</code> returns a struct of NEC/WEC/DEC/SEC arrays. Headless MATLAB R2023a runs typically take 90 sec for the anchor, ~140 min for the full κ-surface sweep on 8 cores.</p>
+        <p style="font-size:0.78rem;color:var(--text-dim);margin-top:0.7rem;">Headless invocation pattern:</p>
+        <pre style="font-family:var(--mono);font-size:0.72rem;color:var(--text-primary);background:rgba(0,0,0,0.25);padding:0.6rem 0.8rem;border-radius:3px;overflow-x:auto;">matlab.exe -batch "cd('warp_factory_repro');
+  run('kappa_surface_sweep.m')"</pre>
+      </div>
+    </div>
+  </div>
+
+  <div class="block">
+    <div class="block-eyebrow">Heavy compute</div>
+    <div class="block-title">HF-Jobs sweep dispatcher</div>
+    <div class="card-grid">
+      <div class="content-card">
+        <h3>hf_jobs/</h3>
+        <p>Parameter sweeps too heavy for a notebook are factored into pure-Python sweep modules under <code>hf_jobs/sweeps/</code>. The dispatcher <code>hf_jobs/run_sweep.py</code> takes a JSON config (<code>preview</code> for local validation, <code>full</code> for HF Jobs / cpu-xl) and outputs to <code>sweeps/&lt;sweep&gt;_&lt;timestamp&gt;.parquet</code>.</p>
+        <p>Typical HF Jobs invocation (from a notebook cell):</p>
+        <pre style="font-family:var(--mono);font-size:0.7rem;color:var(--text-primary);background:rgba(0,0,0,0.25);padding:0.6rem 0.8rem;border-radius:3px;overflow-x:auto;">hf jobs run --flavor cpu-xl --secrets HF_TOKEN \
+    --timeout 6h python:3.12 \
+    bash -c "git clone https://github.com/bshepp/alcubierre /work \
+             &amp;&amp; cd /work \
+             &amp;&amp; bash hf_jobs/jobs/run_fell_heisenberg.sh \
+                  npts129_full upload-subdir"</pre>
+      </div>
+      <div class="content-card">
+        <h3>Discipline</h3>
+        <p>Always validate the <code>*_preview</code> config locally before dispatching the <code>*_full</code> grid. HF Jobs is billed per second and the preview is the safety net.</p>
+        <p>Per-sweep pricing on cpu-xl (16 vCPU, 64 GB RAM): ~$0.10/hr; a full Fell–Heisenberg <code>npts=129</code> sweep is ~10080 points × 14 sec/pt ÷ 64 workers ≈ 3.5 hr ≈ <strong>$0.35</strong>. Sweeps go to <a href="https://huggingface.co/datasets/bshepp/alcubierre-sweeps" target="_blank" rel="noopener" style="color:var(--accent);text-decoration:none;">bshepp/alcubierre-sweeps</a> on HF Hub.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">
+    <a href="https://github.com/bshepp/alcubierre" target="_blank" rel="noopener">Repository</a>
+    &nbsp;·&nbsp;
+    <a href="https://github.com/bshepp/alcubierre/blob/main/requirements.txt" target="_blank" rel="noopener">requirements.txt</a>
+    &nbsp;·&nbsp;
+    <a href="index.html">← Dashboard</a>
+  </div>
+
+</div>
+</body>
+</html>

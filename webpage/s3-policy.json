@@ -1,0 +1,36 @@
+{
+  "_comment": "Sample IAM policy for the deploy user. Replace <YOUR-BUCKET-NAME> with your S3 bucket name. Mirrors the shape of F:/science-projects/3body/infra/s3-policy.json (Get/Put/List on bucket and bucket/*).",
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "BucketLevelOps",
+      "Effect": "Allow",
+      "Action": [
+        "s3:ListBucket",
+        "s3:GetBucketLocation"
+      ],
+      "Resource": "arn:aws:s3:::<YOUR-BUCKET-NAME>"
+    },
+    {
+      "Sid": "ObjectLevelOps",
+      "Effect": "Allow",
+      "Action": [
+        "s3:GetObject",
+        "s3:PutObject",
+        "s3:DeleteObject",
+        "s3:PutObjectAcl"
+      ],
+      "Resource": "arn:aws:s3:::<YOUR-BUCKET-NAME>/*"
+    },
+    {
+      "Sid": "OptionalCloudFrontInvalidation",
+      "Effect": "Allow",
+      "Action": [
+        "cloudfront:CreateInvalidation",
+        "cloudfront:GetInvalidation",
+        "cloudfront:ListInvalidations"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

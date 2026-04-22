@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Alcubierre Boundary-Mode Reformulation — Path 2A Landscape</title>
+<meta name="description" content="Personal landscape exploration of whether the Alcubierre warp-drive metric can be realized with classical matter inside a Fuchs-style positive-energy shell.">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,600;0,8..60,700;1,8..60,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css">
+<script src="assets/theme.js"></script>
+</head>
+<body>
+
+<!-- ═══ TOPBAR ═══ -->
+<div class="topbar">
+  <div class="topbar-left">
+    <a href="index.html" class="active">Dashboard</a>
+    <a href="roadmap.html">Roadmap</a>
+    <a href="fuchs-shell.html">Fuchs Shell</a>
+    <a href="six-slices.html">Six Slices</a>
+    <a href="fell-heisenberg.html">Fell–Heisenberg</a>
+    <a href="warp-factory.html">Warp Factory</a>
+    <a href="notebooks.html">Notebooks</a>
+    <a href="about.html">About</a>
+  </div>
+  <div class="topbar-right">
+    Alcubierre · Boundary-Mode
+    <a href="https://github.com/bshepp/alcubierre" target="_blank" rel="noopener" title="GitHub Repository"><svg class="gh-icon" viewBox="0 0 16 16"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0016 8c0-4.42-3.58-8-8-8z"/></svg></a>
+  </div>
+</div>
+
+<!-- ═══ HERO ═══ -->
+<div class="hero">
+  <div class="hero-label">Path 2A · Classical Matter-Shell Realization</div>
+  <div class="hero-formula">
+    <span class="dim">Δ</span><sub>min</sub> <span class="dim">/</span> R<sub>2</sub>
+    <span class="equals"> = </span>
+    κ &nbsp;<span class="dim">·</span>&nbsp; β <span class="dim">/</span> C
+  </div>
+  <div class="hero-subtitle">
+    A subluminal Fuchs-class shell of <em>ordinary positive-energy matter</em>
+    can carry an Alcubierre shift if its thickness exceeds a fixed multiple of the bubble compactness.
+    The multiple is small. The dynamics are not.
+  </div>
+  <div class="hero-tagline">
+    κ ≈ 5 (typical) · β ≤ 0.02 c (Fuchs anchor) · C = 2GM/(R<sub>2</sub>c²)
+  </div>
+</div>
+
+<div class="container">
+
+  <!-- ═══ THE LANDSCAPE ═══ -->
+  <div class="block">
+    <div class="block-eyebrow">The Landscape</div>
+    <div class="block-title">Four answers to "is the warp drive physical?"</div>
+    <div class="card-grid">
+      <div class="content-card">
+        <h3 class="pos">Existence — Yes (Static Slice)</h3>
+        <p>Fuchs et al. 2024 (arXiv:<a href="https://arxiv.org/abs/2405.02709" target="_blank" rel="noopener" style="color:var(--accent);text-decoration:none;">2405.02709</a>) show a constant-velocity Alcubierre shift can be embedded in a Tolman-Oppenheimer-Volkoff matter shell that satisfies <span class="pos">all four energy conditions</span> (NEC, WEC, DEC, SEC) in the bubble interior and on the wall.</p>
+        <p>Anchor point: <code>R₁=10 m, R₂=20 m, β=0.02 c, M = R₂c²/(6G)</code>. Reproduced independently in <a href="https://github.com/NerdsWithAttitudes/WarpFactory" target="_blank" rel="noopener" style="color:var(--accent);text-decoration:none;">Warp Factory v1.0</a> at all four ECs <code>= 1.0000</code>.</p>
+      </div>
+      <div class="content-card">
+        <h3 class="warm">Thickness — Bounded From Below</h3>
+        <p>The shell cannot be arbitrarily thin. Across a 27-cell <code>(C, R₂, β)</code> sweep at 6 inner Δ values each, the smallest DEC-respecting thickness obeys</p>
+        <div style="text-align:center;font-family:var(--mono);color:var(--accent);margin:0.7rem 0;font-size:0.95rem;">Δ<sub>min</sub>/R<sub>2</sub> = κ · β / C</div>
+        <p>with <span class="warm">κ ≈ 5</span> typical (median 6, mean 5.3, std 1.0; range [4.0, 6.0] for 15 bracketed cells of 27).</p>
+        <p style="font-size:0.78rem;color:var(--text-dim);">Form universal across the surface; numerical κ is a slice-value, not a constant. Decision-gate-B per Session 19.</p>
+      </div>
+      <div class="content-card">
+        <h3 class="neg">Acceleration — No Useful Mechanism</h3>
+        <p>ADM 4-momentum conservation forbids self-acceleration of the shell in vacuum (Schuster–Santiago–Visser 2023 Theorem 3). Three escape routes catalogued; only ordinary mass ejection is viable.</p>
+        <p>Quantitative ceiling under the most favourable Fuchs-compatible parameters (HF-Jobs sweep + Varma 2022 NR rescaling): GW recoil <span class="neg">≲ 0.25%</span> of v<sub>warp</sub>. <em>Not enough.</em></p>
+      </div>
+      <div class="content-card">
+        <h3 class="neg">Static Infrastructure — No Wall</h3>
+        <p>Krasnikov-tube networks: symbolic Einstein tensor reproduces Everett–Roman 1997 Eq. 14 to 14 decimals; universal scaling <code>ρ<sub>p</sub><sup>min</sup> ∝ −η/ε²</code>. WEC pass-rate <span class="neg">0.0000</span> across 300 (η, ε, n) points.</p>
+        <p>Closes the static-infrastructure-network branch independently of QFT loopholes.</p>
+      </div>
+    </div>
+
+    <div class="callout warm">
+      <h3>The Slice Composite</h3>
+      <p>Within the canonical static slice — Alcubierre β<sup>x</sup>x̂ shift × spherical Fuchs-class shell × asymptotically flat vacuum exterior × steady-state metric or its Lorentz boost × 4D General Relativity — the answer is <strong>"a positive-energy bubble exists, but no classical mechanism can accelerate it to useful speeds and no static infrastructure walls can be built."</strong></p>
+      <p>This is not the closure of the classical question. Six adjacent slices (alternate shifts, hybrid walls, time-dependent acceleration, Krasnikov-2003 QI loopholes, cosmological exterior, modified gravity) are mapped in <a href="roadmap.html" style="color:var(--accent);text-decoration:none;">Phase 2C</a> and all return null; the unenumerated landscape is logged with reopening criteria as Phase 2E.</p>
+    </div>
+  </div>
+
+  <!-- ═══ RECENT ═══ -->
+  <div class="block">
+    <div class="block-eyebrow">Recent · Session 19 · 2026-04-21</div>
+    <div class="block-title">κ-surface sweep across (M, R₂, β)</div>
+    <div class="card-grid">
+      <div class="content-card">
+        <h3>Anchor Cell (Session-18 confirmed)</h3>
+        <p><code>C = 1/3, R₂ = 20 m, β = 0.02 c</code> → κ ∈ <span class="accent">(5, 7]</span>, overlapping the Session-18 bracket of (4.17, 5.83]. <span class="pos">Anchor independently reproduced</span> at sweep resolution.</p>
+        <table class="data-table">
+          <thead><tr><th>Diagnostic</th><th>Value</th></tr></thead>
+          <tbody>
+            <tr><td>Mean κ (15 bracketed cells)</td><td class="num accent">5.33</td></tr>
+            <tr><td>Median κ</td><td class="num accent">6.00</td></tr>
+            <tr><td>Std / rel-std</td><td class="num">0.98 / <span class="warm">18.3%</span></td></tr>
+            <tr><td>Range</td><td class="num">[4.0, 6.0]</td></tr>
+            <tr><td>Decision gate</td><td><span class="warm">B</span> · scaling-law form universal, number not</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="content-card">
+        <h3 class="neg">New Null Configurations Identified</h3>
+        <p>At <strong>high β + low C</strong>, the geometrical cap <code>Δ &lt; R₂</code> saturates before any DEC-passing shell exists. These are <span class="neg">null configurations</span> — no Fuchs shell exists regardless of mass.</p>
+        <p>Adds a binding constraint to the Path-2A landscape that the analytic 2A.7 / 2A.9a derivations did not surface: high-velocity low-compactness Fuchs shells <em>do not exist</em> as energy-condition-positive constructions, regardless of mass.</p>
+        <p style="font-size:0.78rem;color:var(--text-dim);margin-top:0.8rem;">See <a href="https://github.com/bshepp/alcubierre/blob/main/WARP_FACTORY_NOTES.md" target="_blank" rel="noopener" style="color:var(--accent);text-decoration:none;">WARP_FACTORY_NOTES.md §3</a> for the full 27-cell table and dispositions.</p>
+      </div>
+    </div>
+
+    <div class="callout pos">
+      <h3>Tooling Sanity — Task 3.1</h3>
+      <p>Standard Alcubierre at Pfenning–Ford 1997 textbook params <code>(v=c, R=4 m, σ=8 m⁻¹)</code> violates <strong>all four energy conditions</strong> in 92.6% of in-mask cells (in-mask EC pass = 0.0737; <code>min(NEC) = −9.6 × 10⁴³</code>). Confirms the Warp Factory pipeline returns the textbook negative result on a known violator — the positive Fuchs-shell results are not artefacts.</p>
+    </div>
+  </div>
+
+  <!-- ═══ PROJECT STATUS ═══ -->
+  <div class="block">
+    <div class="block-eyebrow">Project status</div>
+    <div class="block-title">Where the work currently stands</div>
+    <div class="card-grid tri">
+      <div class="content-card">
+        <h3>Phases</h3>
+        <p><span class="pos">Closed:</span> 0 (Foundation), 1 (Linearization), 2A (Matter-shell, slice-scoped), 2C (six adjacent slices, all null).</p>
+        <p><span class="warm">In progress:</span> 2D (Fell–Heisenberg multi-mode static shift) · 3 (Numerical verification: 3.1, 3.2 closed; 3.3 next).</p>
+        <p><span class="quant">Gated:</span> 2B (Casimir route) on Task 2B.8 spin-2 obstruction. <span class="dim">Not started:</span> 4, 5.</p>
+      </div>
+      <div class="content-card">
+        <h3>Honest accounting</h3>
+        <p>10 / 10 trust-audit rows currently A-grade. Row #3 (Fuchs existence) was upgraded B → A by independent Warp Factory reproduction in Session 18.</p>
+        <p>Row #5 (NR rescaling) carries a documented Colab-rerun caveat. Row #9 (Rodal 2025 numerical comparison) sits at B by explicit choice — formal QFT calculation deferred to Phase 2B.</p>
+        <p style="font-size:0.78rem;color:var(--text-dim);">Full table: <a href="https://github.com/bshepp/alcubierre/blob/main/TRUST_AUDIT.md" target="_blank" rel="noopener" style="color:var(--accent);text-decoration:none;">TRUST_AUDIT.md</a>.</p>
+      </div>
+      <div class="content-card">
+        <h3>Compute footprint</h3>
+        <p>Session 19 κ-surface: 162 Warp Factory metric builds (27 cells × 6 inner Δ), ~140 min headless MATLAB R2023a on 8 cores.</p>
+        <p>HF Jobs: 16+ parameter sweeps dispatched to date across <code>fell_heisenberg</code>, <code>shift_families</code>, <code>hybrid_wall</code>, <code>krasnikov_tube</code>, GW recoil. Live: <code>npts=129</code> Fell–Heisenberg sweep on cpu-xl.</p>
+        <p style="font-size:0.78rem;color:var(--text-dim);">Outputs: <a href="https://huggingface.co/datasets/bshepp/alcubierre-sweeps" target="_blank" rel="noopener" style="color:var(--accent);text-decoration:none;">bshepp/alcubierre-sweeps</a>.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ EXPLORE ═══ -->
+  <div class="block">
+    <div class="block-title">Explore the data-rich pages</div>
+    <div class="explore-grid">
+      <a href="fuchs-shell.html" class="explore-card">
+        <div class="icon">◉</div>
+        <h3>Fuchs Shell</h3>
+        <p>Phase 2A · the κβ/C scaling, the acceleration obstruction, the Krasnikov no-go. Anchor result of the project.</p>
+        <div class="arrow">Path 2A details →</div>
+      </a>
+      <a href="six-slices.html" class="explore-card">
+        <div class="icon">◇</div>
+        <h3>Six Slices</h3>
+        <p>Phase 2C · six independent assumption-relaxations of the static-slice no-go. All six return null. Side-by-side.</p>
+        <div class="arrow">See the table →</div>
+      </a>
+      <a href="fell-heisenberg.html" class="explore-card">
+        <div class="icon">◈</div>
+        <h3>Fell–Heisenberg</h3>
+        <p>Phase 2D · multi-mode static shift, 1404 strict-pass points, then dismantled by four structural tests.</p>
+        <div class="arrow">The positive lead →</div>
+      </a>
+      <a href="warp-factory.html" class="explore-card">
+        <div class="icon">▤</div>
+        <h3>Warp Factory</h3>
+        <p>Phase 3 · independent MATLAB reproduction of the Fuchs anchor and the κ-surface across 162 metric builds.</p>
+        <div class="arrow">Numerical verification →</div>
+      </a>
+      <a href="roadmap.html" class="explore-card">
+        <div class="icon">▦</div>
+        <h3>Roadmap</h3>
+        <p>Phase tracker: 0 through 5, with status, decision gates, and reopening criteria for every closed item.</p>
+        <div class="arrow">View phases →</div>
+      </a>
+      <a href="notebooks.html" class="explore-card">
+        <div class="icon">▣</div>
+        <h3>Notebooks &amp; Code</h3>
+        <p>13 Jupyter notebooks, the MATLAB Warp Factory reproduction kit, and the HF-Jobs sweep dispatcher.</p>
+        <div class="arrow">Browse →</div>
+      </a>
+    </div>
+  </div>
+
+  <!-- ═══ FOOTER ═══ -->
+  <div class="footer">
+    Personal landscape exploration · no formal deliverables · slice-scoped conclusions
+    &nbsp;·&nbsp;
+    <a href="https://github.com/bshepp/alcubierre" target="_blank" rel="noopener">GitHub</a>
+    &nbsp;·&nbsp;
+    <a href="about.html">About</a>
+    &nbsp;·&nbsp;
+    Updated April 2026
+  </div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Roadmap — Alcubierre Boundary-Mode</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,600;0,8..60,700;1,8..60,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css">
+<script src="assets/theme.js"></script>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-left">
+    <a href="index.html">Dashboard</a>
+    <a href="roadmap.html" class="active">Roadmap</a>
+    <a href="fuchs-shell.html">Fuchs Shell</a>
+    <a href="six-slices.html">Six Slices</a>
+    <a href="fell-heisenberg.html">Fell–Heisenberg</a>
+    <a href="warp-factory.html">Warp Factory</a>
+    <a href="notebooks.html">Notebooks</a>
+    <a href="about.html">About</a>
+  </div>
+  <div class="topbar-right">
+    Alcubierre · Boundary-Mode
+    <a href="https://github.com/bshepp/alcubierre" target="_blank" rel="noopener" title="GitHub Repository"><svg class="gh-icon" viewBox="0 0 16 16"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0016 8c0-4.42-3.58-8-8-8z"/></svg></a>
+  </div>
+</div>
+
+<div class="page-header">
+  <h1>Roadmap <span class="dim">— phase tracker</span></h1>
+  <p class="subtitle">Six phases, dual-track Phase 2 (matter-shell ‖ Casimir), with explicit reopening criteria for every closed item.</p>
+</div>
+
+<div class="container">
+
+  <div class="block">
+    <div class="block-eyebrow">At a glance</div>
+    <div class="block-title">Phase status</div>
+    <p style="font-size:0.78rem;color:var(--text-dim);margin-bottom:1rem;">Click any row to expand its detailed status, task list, and reopening criteria.</p>
+    <div class="phase-list">
+
+      <details class="phase-row">
+        <summary><span class="chev">▶</span><span class="pid">Phase 0</span><span class="desc">Foundation — seed documents, literature atlas</span><span class="badge done">✓ Closed</span></summary>
+        <div class="phase-detail">
+          <p>Assemble the theoretical context and formulate the boundary-mode hypothesis. All three foundational tasks closed during the project's seed conversations (March 30 / April 4).</p>
+          <h4>Closed</h4>
+          <ul>
+            <li><span class="pos">[✓]</span> 0.1 Literature review and atlas of the surrounding field</li>
+            <li><span class="pos">[✓]</span> 0.2 Image-method hypothesis formulation (April 4 seed document)</li>
+            <li><span class="pos">[✓]</span> 0.3 Integration of both into <a href="https://github.com/bshepp/alcubierre/blob/main/ALCUBIERRE_MARCH30_INTEGRATION.md" target="_blank" rel="noopener">ALCUBIERRE_MARCH30_INTEGRATION.md</a></li>
+          </ul>
+        </div>
+      </details>
+
+      <details class="phase-row">
+        <summary><span class="chev">▶</span><span class="pid">Phase 1</span><span class="desc">Linearization &amp; feasibility — ADM constraint structure, gauge cleanup</span><span class="badge done">✓ Closed</span></summary>
+        <div class="phase-detail">
+          <p>Extract the mathematical structure of the Alcubierre metric in the subluminal regime and decide whether boundary-value methods apply. <strong>Disposition (Session 15):</strong> partial yes — ADM constraint equations are well-posed and gauge-clean (Tasks 1.7, 1.10) and admit a multi-mode positive-energy WEC+DEC-passing solution at the static smooth-N level (Phase 2D Sessions 11-15), but no useful classical warp-drive interior is recovered within the static slice. Phase 1 exits <em>with content</em> — the framework is the right tool — but the practical Phase 2 work has been running in parallel since Session 5.</p>
+          <h4>Closed (11/11)</h4>
+          <ul>
+            <li><span class="pos">[✓]</span> 1.1 Extract h<sub>μν</sub> + verify subluminal regime</li>
+            <li><span class="pos">[✓]</span> 1.2 Compute exact ADM ρ, j<sup>i</sup></li>
+            <li><span class="pos">[✓]</span> 1.3 Order structure: gravitomagnetic vs energy</li>
+            <li><span class="pos">[✓]</span> 1.4 Poisson equation for shift vector</li>
+            <li><span class="pos">[✓]</span> 1.5 Thin-wall limit: monopole + dipole surface layers</li>
+            <li><span class="pos">[✓]</span> 1.6 Test point-image decomposition — does not work</li>
+            <li><span class="pos">[✓]</span> 1.7 Identify boundary-mode framework as the right tool</li>
+            <li><span class="pos">[✓]</span> 1.8 Lobo &amp; Visser 2004 read (Session 15 closeout) — opened Task 2D.12</li>
+            <li><span class="pos">[✓]</span> 1.9 Fuchs et al. 2024 read (subsumed by Phase 2A)</li>
+            <li><span class="pos">[✓]</span> 1.10 Gauge analysis — confirmed ADM is the natural framework</li>
+            <li><span class="pos">[✓]</span> 1.11 Spin-2 vs spin-1 differences (Costa-Natário catalog)</li>
+          </ul>
+        </div>
+      </details>
+
+      <details class="phase-row" open>
+        <summary><span class="chev">▶</span><span class="pid">Phase 2A</span><span class="desc">Classical matter-shell realization (primary track)</span><span class="badge done">✓ Closed (slice)</span></summary>
+        <div class="phase-detail">
+          <p><strong>Closed within the static + Alcubierre-shift + asymptotically-flat-vacuum slice.</strong> All 14 listed tasks (2A.0-2A.15, with 2A.9 split into 2A.9a/9b in Session 15c) are closed. Headline disposition: within the slice, no useful classical warp drive exists with classical matter alone. Analytic and numerical bracket on the minimum shell thickness: <code>Δ<sub>min</sub>/R = κβ/C</code> with κ<sup>num</sup> ∈ (4.17, 5.83] (Session 18 Warp Factory cross-check, ~6× tighter than the analytic [0.05, 0.875] from Session 15c). Adjacent slices delegated to Phase 2C and 2D.</p>
+          <p>Detailed plan: <a href="https://github.com/bshepp/alcubierre/blob/main/MATTER_SHELL_PATH.md" target="_blank" rel="noopener">MATTER_SHELL_PATH.md</a>; landscape synthesis: <a href="https://github.com/bshepp/alcubierre/blob/main/LANDSCAPE_SYNTHESIS.md" target="_blank" rel="noopener">LANDSCAPE_SYNTHESIS.md</a>. Full prose summary: <a href="fuchs-shell.html">Fuchs Shell page</a>.</p>
+          <h4>Closed (15/15)</h4>
+          <ul>
+            <li><span class="pos">[✓]</span> 2A.0 Path doc + verification notebook scaffolding</li>
+            <li><span class="pos">[✓]</span> 2A.1-2A.5 Fuchs reproduction, dipole structure, OOM bound</li>
+            <li><span class="pos">[✓]</span> 2A.6 Full Israel junction (static + boosted), λ<sub>*</sub> ≈ 0.55</li>
+            <li><span class="pos">[✓]</span> 2A.7 Δ<sub>min</sub>/R = κβ/C, κ ∈ [0.05, 0.75]</li>
+            <li><span class="pos">[✓]</span> 2A.8 VSH decomposition — Fuchs is a 98.65% two-mode doublet</li>
+            <li><span class="pos">[✓]</span> 2A.9a Anisotropic-tangential analytic refinement</li>
+            <li><span class="pos">[✓]</span> 2A.9b Warp Factory cross-check — κ<sup>num</sup> ∈ (4.17, 5.83]</li>
+            <li><span class="pos">[✓]</span> 2A.10 Acceleration — ADM 4-momentum forbids self-acc.; GW recoil ≲0.25%</li>
+            <li><span class="pos">[✓]</span> 2A.11 Lentz 2020 comparison — different mechanisms, not interpolable</li>
+            <li><span class="pos">[✓]</span> 2A.12 Natário 2002 — special case of Slice 1, dismissed</li>
+            <li><span class="pos">[✓]</span> 2A.13 Krasnikov tube — universal scaling, WEC pass = 0.0000</li>
+            <li><span class="pos">[✓]</span> 2A.14 Toroidal Fuchs — strictly worse than spherical (≥2π thicker)</li>
+            <li><span class="pos">[✓]</span> 2A.15 Slab-patch (k=0) — codimension-counting hierarchy (3 data points)</li>
+          </ul>
+          <div class="reopening">
+            <strong>Reopening criteria:</strong> (i) any new analytic upper bound on κ that closes the ~6× analytic-vs-numerical gap; (ii) any non-spherical / non-static / non-asymptotically-flat construction inside this slice that beats Fuchs (none currently in the literature).
+          </div>
+        </div>
+      </details>
+
+      <details class="phase-row">
+        <summary><span class="chev">▶</span><span class="pid">Phase 2B</span><span class="desc">Casimir / boundary-mode QFT (parallel track)</span><span class="badge gated">◎ Gated on 2B.8</span></summary>
+        <div class="phase-detail">
+          <p>The QFT / boundary-mode-decomposition path remains scientifically interesting independent of Phase 2A's outcome and becomes <em>necessary</em> if Path 2A cannot reach useful velocities with classical matter alone. Conceptual foundation: <a href="https://github.com/bshepp/alcubierre/blob/main/QUANTUM_CLASSICAL_BRIDGE.md" target="_blank" rel="noopener">QUANTUM_CLASSICAL_BRIDGE.md</a>.</p>
+          <p><strong class="quant">Gated on Task 2B.8</strong>: the spin-2 obstruction. EM has well-defined "conducting plate" boundaries; spin-2 has no analog of a gravitational conductor. Until that gap is closed, Phase 2B does not have a well-posed entry point.</p>
+          <h4>Open (0/8)</h4>
+          <ul>
+            <li><span class="dim">[ ]</span> 2B.1 Vector-Laplacian eigenmode setup on spherical domain</li>
+            <li><span class="dim">[ ]</span> 2B.2 Spherical Bessel × VSH expansion of β<sup>x</sup></li>
+            <li><span class="dim">[ ]</span> 2B.3 Identify dominant radial mode</li>
+            <li><span class="dim">[ ]</span> 2B.4 Mode-by-mode contribution to energy density</li>
+            <li><span class="dim">[ ]</span> 2B.5 Compare to Boyer 1968 concentric-spheres Casimir</li>
+            <li><span class="dim">[ ]</span> 2B.6 Express ρ as Casimir-like mode sum</li>
+            <li><span class="dim">[ ]</span> 2B.7 Semiclassical scalar T<sub>μν</sub> on Alcubierre background</li>
+            <li><span class="quant">[ ]</span> 2B.8 Spin-2 obstruction assessment <strong>(blocking)</strong></li>
+          </ul>
+        </div>
+      </details>
+
+      <details class="phase-row">
+        <summary><span class="chev">▶</span><span class="pid">Phase 2C</span><span class="desc">Adjacent slices exploration (6 slices)</span><span class="badge done">✓ Closed</span></summary>
+        <div class="phase-detail">
+          <p>Each slice relaxes one explicit assumption from Path 2A's static-slice analysis. <strong>All six slices return null</strong>; slice 1 produces the most interesting partial loophole (multi-mode Fell-Heisenberg follow-up promoted to Phase 2D).</p>
+          <h4>Closed (6/6)</h4>
+          <ul>
+            <li><span class="pos">[✓]</span> 2C.1 <strong>Alternate shifts</strong> — 0/140 sweep points achieve WEC ≥ 0.999 (single-mode axisymmetric)</li>
+            <li><span class="pos">[✓]</span> 2C.2 <strong>Hybrid Fuchs+Krasnikov wall</strong> — 0/480 strict-pass; matter perturbation shifts but does not remove the negative region</li>
+            <li><span class="pos">[✓]</span> 2C.3 <strong>Time-dependent v(t)</strong> — Δρ peaks at 0.3% of static ρ<sub>p</sub>; antisymmetric in x ⇒ no quadrupole-order momentum injection</li>
+            <li><span class="pos">[✓]</span> 2C.4 <strong>Krasnikov 2003 QI loosening</strong> — three substantive loopholes; our 2A.13 no-go is QI-independent</li>
+            <li><span class="pos">[✓]</span> 2C.5 <strong>Cosmological exterior</strong> — McVittie momentum-exchange ceiling Δv ≤ 5.7×10<sup>-36</sup> m/s</li>
+            <li><span class="pos">[✓]</span> 2C.6 <strong>Modified gravity</strong> — Jordan-frame loophole exists; "DEC-respecting matter" is interpretation-dependent</li>
+          </ul>
+          <div class="reopening">
+            <strong>Outcome:</strong> mixed; Slice 1's multi-mode follow-up (Fell-Heisenberg 2021, 1.3% of cells violate full WEC at the canonical anchor) became the seed for <strong>Phase 2D</strong>.
+          </div>
+        </div>
+      </details>
+
+      <details class="phase-row" open>
+        <summary><span class="chev">▶</span><span class="pid">Phase 2D</span><span class="desc">Fell–Heisenberg multi-mode follow-up</span><span class="badge partial">◐ In progress</span></summary>
+        <div class="phase-detail">
+          <p><strong>Strict-pass FH existence is mathematically real, pipeline-verified at A-grade, triple-anchored against external no-go literatures, and — at every structural test applied — degraded as a warp-drive interpretation; never restored.</strong> The single largest source of new positive-leaning physics in the project, kept honest by Sessions 14-17's structural tests (single-cell passenger, CTC sea, 76× mass overhead, no asymptotic decay envelope).</p>
+          <h4>Closed (10/13)</h4>
+          <ul>
+            <li><span class="pos">[✓]</span> 2D.1-2D.4 Pull, evaluate, reproduce, and sweep the FH 2021 ansatz — 1404/15000 strict-pass at Npts=65</li>
+            <li><span class="pos">[✓]</span> 2D.5 Connectivity &amp; topology — single connected 5-D manifold, smooth boundary</li>
+            <li><span class="pos">[✓]</span> 2D.5b Polynomial implicit boundary — degree-4 dense, no clean sparse form</li>
+            <li><span class="pos">[✓]</span> 2D.5c-d Resolution convergence (Npts=65→97→129) — boundary region 47% pass→fail flips</li>
+            <li><span class="pos">[✓]</span> 2D.6 Horizon test — every strict-pass row is "all wall, no interior" (single-cell passenger)</li>
+            <li><span class="pos">[✓]</span> 2D.7 Full horizon &amp; CTC analysis — 6624/6738 (98.3%) host CTCs</li>
+            <li><span class="pos">[✓]</span> 2D.8 xAct independent re-implementation — 9-anchor sweep, A-grade cross-check</li>
+            <li><span class="pos">[✓]</span> 2D.9 Bobrick-Martire matter classification — Class III geometric, anisotropic</li>
+            <li><span class="pos">[✓]</span> 2D.10 Asymptotic matching residual + double-bubble destruction</li>
+            <li><span class="pos">[✓]</span> 2D.12 VIQ post-processing — 76× mass overhead at the passenger zone</li>
+          </ul>
+          <h4>Open / partial (3)</h4>
+          <ul>
+            <li><span class="warm">[~]</span> 2D.5e Symbolic boundary extraction — definitive SymPy wall hit; Z-axis fallback unattempted</li>
+            <li><span class="warm">[~]</span> 2D.5f Full Npts=129 sweep — <strong>dispatched 2026-04-21 on cpu-xl</strong> (~$3.50, ~3.5h)</li>
+            <li><span class="warm">[~]</span> 2D.11 Vorticity-augmented FH — Phases 1 &amp; 2 negative; multi-mode <span style="font-family:var(--mono);">A⃗</span> Phase 3 not started</li>
+          </ul>
+        </div>
+      </details>
+
+      <details class="phase-row">
+        <summary><span class="chev">▶</span><span class="pid">Phase 2E</span><span class="desc">Unenumerated landscape gaps (5 items, dormant)</span><span class="badge idle">○ Map only</span></summary>
+        <div class="phase-detail">
+          <p>Five categories of slices that live <em>outside</em> the explicitly-enumerated 2A/2B/2C/2D structure and are recorded with reopening criteria so the project's "no useful warp drive in the slice" claim is honest about what it does and does not cover.</p>
+          <h4>Mapped (not active)</h4>
+          <ul>
+            <li><span class="dim">[○]</span> 2E.1 <strong>Higher-dimensional extensions</strong> — Kaluza-Klein, brane-world, RS warp factors</li>
+            <li><span class="dim">[○]</span> 2E.2 <strong>Quantum-gravity corrections</strong> beyond semiclassical — LQG, asymptotic safety</li>
+            <li><span class="dim">[○]</span> 2E.3 <strong>Non-minimal matter couplings</strong> — disformal, scalar-tensor, vector-tensor</li>
+            <li><span class="dim">[○]</span> 2E.4 <strong>Truly novel shift functionals</strong> — beyond Alcubierre/Natário/FH/Lentz family</li>
+            <li><span class="dim">[○]</span> 2E.5 <strong>Engineering-side simplifications</strong> — passive structures, repeating cycles</li>
+          </ul>
+          <div class="reopening">
+            <strong>Activation criterion:</strong> any specific quantitative construction in the published literature; otherwise these stay dormant.
+          </div>
+        </div>
+      </details>
+
+      <details class="phase-row" open>
+        <summary><span class="chev">▶</span><span class="pid">Phase 3</span><span class="desc">Numerical verification — Warp Factory</span><span class="badge partial">◐ 3.1, 3.2 closed</span></summary>
+        <div class="phase-detail">
+          <p>Independent numerical confirmation of analytic Path-2A results using the public <a href="https://github.com/NerdsWithAttitudes/WarpFactory" target="_blank" rel="noopener">Warp Factory v1.0</a> MATLAB toolkit. Pipeline tested on a known EC-violator (textbook Alcubierre) before being trusted on the positive Fuchs result.</p>
+          <h4>Closed (2)</h4>
+          <ul>
+            <li><span class="pos">[✓]</span> <strong>3.1</strong> Standard-Alcubierre EC sanity (Pfenning-Ford 1997 params) — 92.6% in-mask EC violation, min(NEC) = −9.6×10<sup>43</sup>. Tooling confirmed (Session 19).</li>
+            <li><span class="pos">[✓]</span> <strong>3.2</strong> κ-surface sweep across (M, R<sub>2</sub>, β) — 27 cells × 6 inner Δ = 162 builds; mean κ = 5.33, decision-gate-B; new geometrical-cap-saturation null finding (Session 19).</li>
+          </ul>
+          <h4>Next</h4>
+          <ul>
+            <li><span class="warm">[ ]</span> <strong>3.3</strong> Nested concentric Fuchs shells + non-spherical (oblate/prolate) Fuchs constructions</li>
+            <li><span class="dim">[ ]</span> <strong>3.4+</strong> Gated on 2B and on Phase-2D results convergence</li>
+          </ul>
+        </div>
+      </details>
+
+      <details class="phase-row">
+        <summary><span class="chev">▶</span><span class="pid">Phase 4</span><span class="desc">No-go theorem confrontation</span><span class="badge idle">○ Not started</span></summary>
+        <div class="phase-detail">
+          <p>Systematic confrontation against published warp-drive no-go theorems. Informal cross-checks already happened in Tasks 2D.7 (Everett-Roman 1997 / SSV 2023 CTC line), 2D.9 (Bobrick-Martire 2021 matter classification), and 2D.10 (asymptotic matching).</p>
+          <h4>Open</h4>
+          <ul>
+            <li><span class="dim">[ ]</span> 4.1 SSV 2105.03079 — assumption table + per-row dispute strength</li>
+            <li><span class="dim">[ ]</span> 4.2 Everett-Roman 1997 §4 (CTCs) — formal placement of FH single-cell-passenger result</li>
+            <li><span class="dim">[ ]</span> 4.3 Olum 1998 (averaged null energy condition) — shell-thickness implications</li>
+            <li><span class="dim">[ ]</span> 4.4 Hawking 1992 chronology protection — relevant to 2D.7 CTC-sea finding</li>
+          </ul>
+          <div class="reopening">
+            <strong>Activation:</strong> unblocked by Phase-2D convergence (when 2D.5f and 2D.11-Phase-3 close).
+          </div>
+        </div>
+      </details>
+
+      <details class="phase-row">
+        <summary><span class="chev">▶</span><span class="pid">Phase 5</span><span class="desc">Physical mechanism &amp; realizability</span><span class="badge idle">○ Not started</span></summary>
+        <div class="phase-detail">
+          <p>"Granted that a Path-2A or Path-2B construction exists on paper, what physical mechanism would build one and what energy budget does it cost?" Task 5.4 (engineering trade-offs for the matter shell) was absorbed into 2A.0-2A.13.</p>
+          <h4>Open</h4>
+          <ul>
+            <li><span class="dim">[ ]</span> 5.1 SSV-style physical-realizability assumption table for the static-slice matter-shell construction</li>
+            <li><span class="dim">[ ]</span> 5.2 Mass / energy budget for the canonical Fuchs anchor (M = R<sub>2</sub>c²/(6G) ≈ 4.5×10<sup>27</sup> kg ≈ 0.75 M<sub>Jupiter</sub>)</li>
+            <li><span class="dim">[ ]</span> 5.3 Active feedback / stabilization requirements for the wall (perturbation analysis)</li>
+            <li><span class="dim">[—]</span> 5.4 Engineering trade-offs (absorbed into Phase 2A)</li>
+          </ul>
+          <div class="reopening">
+            <strong>Activation:</strong> requires a positive Path-2A or Path-2B candidate to exist within an experimentally-relevant slice. Currently dormant.
+          </div>
+        </div>
+      </details>
+
+    </div>
+  </div>
+
+  <div class="block">
+    <div class="block-eyebrow">Trust audit</div>
+    <div class="block-title">Honest accounting</div>
+    <p style="font-family:var(--serif);font-size:0.95rem;color:var(--text-secondary);line-height:1.7;margin-bottom:1rem;">
+      The project distinguishes results we derived ourselves from results we accepted on the literature's authority.
+      <strong style="color:var(--text-primary);">All ten audit rows are A-grade</strong> as of Session 18. Row #3 (Fuchs existence anchor) was upgraded B → A by independent Warp Factory reproduction; row #5 (NR rescaling pipeline) is A with a documented Colab-rerun caveat; row #9 (Rodal 2025 numerical comparison) is B by explicit choice (formal QFT calculation deferred to Phase 2B).
+    </p>
+    <p style="font-family:var(--serif);font-size:0.95rem;color:var(--text-secondary);line-height:1.7;">
+      Full table in <a href="https://github.com/bshepp/alcubierre/blob/main/TRUST_AUDIT.md" target="_blank" rel="noopener" style="color:var(--accent);text-decoration:none;">TRUST_AUDIT.md</a>.
+    </p>
+  </div>
+
+  <div class="footer">
+    <a href="https://github.com/bshepp/alcubierre/blob/main/ROADMAP.md" target="_blank" rel="noopener">Full ROADMAP.md on GitHub</a>
+    &nbsp;·&nbsp;
+    <a href="https://github.com/bshepp/alcubierre/blob/main/SESSION_LOG.md" target="_blank" rel="noopener">SESSION_LOG.md</a>
+    &nbsp;·&nbsp;
+    <a href="index.html">← Dashboard</a>
+  </div>
+
+</div>
+</body>
+</html>

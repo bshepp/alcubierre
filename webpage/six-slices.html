@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Six Slices — Phase 2C adjacent-slice exploration</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,600;0,8..60,700;1,8..60,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css">
+<script src="assets/theme.js"></script>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-left">
+    <a href="index.html">Dashboard</a>
+    <a href="roadmap.html">Roadmap</a>
+    <a href="fuchs-shell.html">Fuchs Shell</a>
+    <a href="six-slices.html" class="active">Six Slices</a>
+    <a href="fell-heisenberg.html">Fell–Heisenberg</a>
+    <a href="warp-factory.html">Warp Factory</a>
+    <a href="notebooks.html">Notebooks</a>
+    <a href="about.html">About</a>
+  </div>
+  <div class="topbar-right">
+    Alcubierre · Boundary-Mode
+    <a href="https://github.com/bshepp/alcubierre" target="_blank" rel="noopener" title="GitHub Repository"><svg class="gh-icon" viewBox="0 0 16 16"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0016 8c0-4.42-3.58-8-8-8z"/></svg></a>
+  </div>
+</div>
+
+<div class="page-header">
+  <h1>Six Slices <span class="dim">— Phase 2C · adjacent-slice exploration</span></h1>
+  <p class="subtitle">Each slice relaxes one explicit assumption from the static-slice no-go. All six return null. The point of the page is to lay them side-by-side so the no-go's robustness is visible.</p>
+</div>
+
+<div class="container">
+
+  <div class="block">
+    <div class="block-eyebrow">The slice frame</div>
+    <div class="block-title">What "static slice" means</div>
+    <div class="prose">
+      <p>The Phase 2A no-go is conditioned on five assumptions: (i) Alcubierre β<sup>x</sup>x̂ shift, (ii) spherical Fuchs-class shell topology, (iii) asymptotically flat vacuum exterior, (iv) steady-state metric, (v) standard 4D General Relativity. Phase 2C tests each one (plus a sixth on quantum-inequality loosening) by relaxing it independently and re-running the energy-condition pipeline. The diagnostic of interest is whether <em>any</em> point in the relaxed parameter space achieves WEC ≥ 0.999 (essentially-strict pass).</p>
+    </div>
+  </div>
+
+  <div class="block">
+    <div class="block-eyebrow">All six results</div>
+    <div class="block-title">Side-by-side</div>
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>#</th><th>Slice / what it relaxes</th><th>Sweep size</th><th>Best WEC pass</th><th>Strict-pass count</th><th>Notebook</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>1</td><td>Alternate single-mode shifts (Alcubierre · Natário · Rodal-irrotational · free-form j₁)</td>
+          <td class="num">140 pts</td><td class="num warm">0.94</td><td class="num neg">0 / 140</td>
+          <td><a href="https://github.com/bshepp/alcubierre/blob/main/shift_families.ipynb" target="_blank" rel="noopener">shift_families</a></td>
+        </tr>
+        <tr>
+          <td>2</td><td>Hybrid Fuchs + Krasnikov wall (Krasnikov tube wrapped in matter perturbation)</td>
+          <td class="num">480 pts</td><td class="num warm">&lt; 0.999</td><td class="num neg">0 / 480</td>
+          <td><a href="https://github.com/bshepp/alcubierre/blob/main/hybrid_wall.ipynb" target="_blank" rel="noopener">hybrid_wall</a></td>
+        </tr>
+        <tr>
+          <td>3</td><td>Time-dependent v(t) — drop steady-state assumption</td>
+          <td class="num">analytic</td><td class="num">—</td><td class="num neg">Quadrupole-order zero</td>
+          <td><a href="https://github.com/bshepp/alcubierre/blob/main/time_dependent.ipynb" target="_blank" rel="noopener">time_dependent</a></td>
+        </tr>
+        <tr>
+          <td>4</td><td>Krasnikov-2003 quantum-inequality loosening (drop QI bound)</td>
+          <td class="num">analytic</td><td class="num">—</td><td class="num neg">Our 2A.13 no-go is QI-independent</td>
+          <td><a href="https://github.com/bshepp/alcubierre/blob/main/krasnikov_tube.ipynb" target="_blank" rel="noopener">krasnikov_tube</a></td>
+        </tr>
+        <tr>
+          <td>5</td><td>Cosmological exterior (drop asymptotic flatness — McVittie embedding)</td>
+          <td class="num">analytic</td><td class="num">—</td><td class="num neg">Δv ≤ 5.7 × 10⁻³⁶ m/s</td>
+          <td><a href="https://github.com/bshepp/alcubierre/blob/main/cosmological_exterior.ipynb" target="_blank" rel="noopener">cosmological_exterior</a></td>
+        </tr>
+        <tr>
+          <td>6</td><td>Modified gravity (drop standard 4D GR — f(R), scalar-tensor, Jordan frame)</td>
+          <td class="num">survey</td><td class="num">—</td><td class="num warm">Interpretation-dependent</td>
+          <td><a href="https://github.com/bshepp/alcubierre/blob/main/MODIFIED_GRAVITY_LIT.md" target="_blank" rel="noopener">MODIFIED_GRAVITY_LIT.md</a></td>
+        </tr>
+      </tbody>
+    </table>
+    <p style="font-size:0.78rem;color:var(--text-dim);margin-top:0.8rem;">Strict-pass criterion: WEC pass-fraction ≥ 0.999 across the full $(r, \theta)$ grid (Slices 1, 2). Slices 3-6 use slice-specific diagnostics noted in the body sections below.</p>
+  </div>
+
+  <div class="block">
+    <div class="block-eyebrow">Slice 1 — alternate single-mode shifts</div>
+    <div class="block-title">The Path-2A negative result transfers across four shift families</div>
+    <div class="prose">
+      <p>Single-ADM-pipeline evaluation of $T_{\hat\mu\hat\nu}$ for four shift families at fixed Fuchs-class spherical-shell source. At a single-point benchmark ($v=0.1$, $R_0=5$, $\sigma=4$):</p>
+    </div>
+    <table class="data-table">
+      <thead><tr><th>Family</th><th>WEC fraction</th><th>DEC fraction</th><th>min ρ<sub>p</sub></th><th>min DEC slack</th></tr></thead>
+      <tbody>
+        <tr><td>Alcubierre</td><td class="num">0.479</td><td class="num neg">0.003</td><td class="num">−4.9 × 10⁻²</td><td class="num">−3.3 × 10⁻³</td></tr>
+        <tr><td>Natário (zero-expansion)</td><td class="num">0.696</td><td class="num neg">0.020</td><td class="num">−2.5 × 10⁻¹</td><td class="num">−1.0 × 10⁻¹</td></tr>
+        <tr><td>Irrotational (Rodal 2025)</td><td class="num">0.282</td><td class="num neg">0.019</td><td class="num accent">−1.6 × 10⁻³</td><td class="num">−1.4 × 10⁻²</td></tr>
+        <tr><td>Free-form j₁ (A₁=1, k=π/2R₀)</td><td class="num">0.473</td><td class="num neg">0.000</td><td class="num">−4.1 × 10⁻⁶</td><td class="num">−4.2 × 10⁻³</td></tr>
+      </tbody>
+    </table>
+    <div class="prose">
+      <p>Across a 140-point preview sweep over $(v, R_0, \sigma)$ for the closed-form families and $(v, A_1, k)$ for free-form, <strong>0/140 points achieve WEC ≥ 0.999</strong>. The best-performing point reaches 0.94 in the free-form family — still 6% in violation. The Path-2A no-go therefore narrows from "Alcubierre shift" to <strong>"single-mode axisymmetric shift + spherical fluid-shell source + asymptotically flat vacuum exterior + steady-state metric"</strong>.</p>
+      <p>This narrowing is what drove Phase 2D: the Fell–Heisenberg ansatz violates the "single-mode axisymmetric" assumption, and is the only place in the project where strict-pass solutions exist.</p>
+      <p><strong>Sources:</strong> <a href="https://github.com/bshepp/alcubierre/blob/main/shift_families.ipynb" target="_blank" rel="noopener">shift_families.ipynb</a>, <a href="https://github.com/bshepp/alcubierre/blob/main/SHIFT_FAMILIES_NOTES.md" target="_blank" rel="noopener">SHIFT_FAMILIES_NOTES.md</a>, sweep parquet <a href="https://github.com/bshepp/alcubierre/blob/main/sweeps/shift_families_20260416T235319.parquet" target="_blank" rel="noopener"><code>sweeps/shift_families_20260416T235319.parquet</code></a>.</p>
+    </div>
+  </div>
+
+  <div class="block">
+    <div class="block-eyebrow">Slice 2 — hybrid Fuchs + Krasnikov wall</div>
+    <div class="block-title">Adding matter to the Krasnikov wall does not cancel the negative spike</div>
+    <div class="prose">
+      <p>Embed the Krasnikov-tube wall inside a single Gaussian matter perturbation parameterised by amplitude $A$, location $\rho_0$, and width $\sigma$. Sweep 480 $(A, \rho_0, \sigma, \eta, \epsilon)$ points; record the in-wall WEC pass fraction.</p>
+      <p>Result: <strong>0/480 strict-pass</strong>. The matter perturbation shifts where the negative-energy spike sits but never cancels it. Single-bump matter is not enough; multi-bump and off-wall configurations remain untested but the linear scaling of the negative-energy density with the η lightcone-opening parameter (Slice 4 below) is suggestive that no cancellation is generic.</p>
+      <p><strong>Sources:</strong> <a href="https://github.com/bshepp/alcubierre/blob/main/hybrid_wall.ipynb" target="_blank" rel="noopener">hybrid_wall.ipynb</a>, sweep parquet <a href="https://github.com/bshepp/alcubierre/blob/main/sweeps/hybrid_wall_20260417T002249.parquet" target="_blank" rel="noopener"><code>sweeps/hybrid_wall_20260417T002249.parquet</code></a>.</p>
+    </div>
+  </div>
+
+  <div class="block">
+    <div class="block-eyebrow">Slice 3 — time-dependent v(t)</div>
+    <div class="block-title">Quadrupole-order momentum injection vanishes</div>
+    <div class="prose">
+      <p>Drop the steady-state assumption: replace $v_{\rm warp}$ with $v(t)$ and re-derive ADM 4-momentum $P^i(t)$ from a perturbative ramp. The leading time-dependent correction $\Delta\rho$ peaks at <strong>0.3% of the static $\rho_p$</strong> and is <strong>antisymmetric in $x$</strong>, so its quadrupole moment $Q_{xx}$ vanishes by symmetry. This is the bound on gravitational-wave-recoil momentum injection at quadrupole order.</p>
+      <p>Higher-multipole channels remain in principle but are bounded by the GW-recoil sweep in <a href="fuchs-shell.html">Path 2A's acceleration row</a> (≲ 0.25% of v<sub>warp</sub> under most-favourable Fuchs-compatible parameters).</p>
+      <p><strong>Sources:</strong> <a href="https://github.com/bshepp/alcubierre/blob/main/time_dependent.ipynb" target="_blank" rel="noopener">time_dependent.ipynb</a>, <a href="https://github.com/bshepp/alcubierre/blob/main/TIME_DEPENDENT_NOTES.md" target="_blank" rel="noopener">TIME_DEPENDENT_NOTES.md</a>.</p>
+    </div>
+  </div>
+
+  <div class="block">
+    <div class="block-eyebrow">Slice 4 — Krasnikov 2003 quantum-inequality loophole</div>
+    <div class="block-title">Three loopholes exist; none touches our scaling no-go</div>
+    <div class="prose">
+      <p>Krasnikov 2003 (gr-qc/0207057) catalogues three substantive ways the Pfenning–Ford / Ford–Roman quantum inequalities could fail for warp drives: (i) non-isolated systems, (ii) bounded curvature regions where the QI integration kernel under-counts, (iii) non-vacuum quantum states with constrained correlations. The Krasnikov-tube no-go (Phase 2A.13) is built from the <em>classical</em> Einstein equations and is therefore <strong>QI-independent</strong>: even if all three loopholes are real and the QI bounds are abandoned entirely, the symbolic Einstein-tensor calculation $\rho_p^{\min} = -\kappa_K(\eta)/\epsilon^2$ still holds, and 0/300 sweep points pass WEC.</p>
+      <p>The QI loosening therefore does not unblock Path-2A — it only changes which of the QFT-side bounds in Phase 2B might apply. Detailed reading: <a href="https://github.com/bshepp/alcubierre/blob/main/KRASNIKOV2003_EVALUATION.md" target="_blank" rel="noopener">KRASNIKOV2003_EVALUATION.md</a>.</p>
+      <p><strong>Sources:</strong> <a href="https://github.com/bshepp/alcubierre/blob/main/krasnikov_tube.ipynb" target="_blank" rel="noopener">krasnikov_tube.ipynb</a>, <a href="https://github.com/bshepp/alcubierre/blob/main/KRASNIKOV_TUBE_NOTES.md" target="_blank" rel="noopener">KRASNIKOV_TUBE_NOTES.md</a>, sweep parquet <a href="https://github.com/bshepp/alcubierre/blob/main/sweeps/krasnikov_tube_20260416T213051.parquet" target="_blank" rel="noopener"><code>sweeps/krasnikov_tube_20260416T213051.parquet</code></a>.</p>
+    </div>
+  </div>
+
+  <div class="block">
+    <div class="block-eyebrow">Slice 5 — cosmological exterior</div>
+    <div class="block-title">McVittie embedding: momentum exchange ceiling Δv ≤ 5.7 × 10⁻³⁶ m/s</div>
+    <div class="prose">
+      <p>Drop asymptotic flatness: embed the Fuchs shell in a McVittie cosmological exterior so that the shell can in principle exchange ADM momentum with the cosmological fluid (escaping the <a href="fuchs-shell.html">Path-2A acceleration obstruction</a>). Compute the maximum momentum-exchange rate using realistic ΛCDM parameters and the Fuchs-anchor shell mass.</p>
+      <p>Result: the maximum velocity gain <strong>over a Hubble time</strong> is</p>
+      <div class="formula-block">Δv ≤ 5.7 × 10⁻³⁶ m/s</div>
+      <p>which is <em>74 orders of magnitude smaller</em> than any useful warp velocity. The cosmological-exterior loophole is technically real but quantitatively negligible.</p>
+      <p><strong>Sources:</strong> <a href="https://github.com/bshepp/alcubierre/blob/main/cosmological_exterior.ipynb" target="_blank" rel="noopener">cosmological_exterior.ipynb</a>, <a href="https://github.com/bshepp/alcubierre/blob/main/COSMOLOGICAL_EXTERIOR_NOTES.md" target="_blank" rel="noopener">COSMOLOGICAL_EXTERIOR_NOTES.md</a>.</p>
+    </div>
+  </div>
+
+  <div class="block">
+    <div class="block-eyebrow">Slice 6 — modified gravity</div>
+    <div class="block-title">Jordan-frame loophole exists; the answer depends on what "DEC-respecting matter" means</div>
+    <div class="prose">
+      <p>Drop standard 4D GR: in $f(R)$ and scalar-tensor theories the effective Einstein equations include an extra geometric stress-energy term $T^{\rm geom}_{\mu\nu}$ that can absorb part of the negative-energy requirement. <strong>Jordan-frame matter</strong> (the matter that couples directly to the metric) can be DEC-respecting even when the <strong>Einstein-frame matter</strong> (the canonically-normalised stress-energy) is not.</p>
+      <p>This is a real loophole — but it is interpretation-dependent: physicists disagree about which frame is "physical". The slice does not return a strict yes or no; it returns a <span class="warm">conditional positive</span> that depends on a frame-choice convention. Detailed reading: <a href="https://github.com/bshepp/alcubierre/blob/main/MODIFIED_GRAVITY_LIT.md" target="_blank" rel="noopener">MODIFIED_GRAVITY_LIT.md</a>.</p>
+    </div>
+  </div>
+
+  <div class="block">
+    <div class="block-eyebrow">Outcome</div>
+    <div class="block-title">Where the six slices leave the project</div>
+    <div class="prose">
+      <p>Slice 1's negative result narrows the load-bearing assumption from "Alcubierre shift" to "single-mode axisymmetric shift" — and that narrowing is the seed of <a href="fell-heisenberg.html">Phase 2D</a>, the only place in the project where strict-pass solutions exist. Slices 2-5 close the obvious classical escape routes (hybrid wall, time-dependence, QI loosening, cosmological coupling). Slice 6 is genuinely undetermined and is logged with reopening criteria (a specific f(R) construction with quantitative warp velocity). Phase 2C is therefore <strong>closed</strong> as a phase but contributes the framing for everything downstream.</p>
+    </div>
+  </div>
+
+  <div class="footer">
+    <a href="https://github.com/bshepp/alcubierre/blob/main/LANDSCAPE_SYNTHESIS.md" target="_blank" rel="noopener">LANDSCAPE_SYNTHESIS.md</a>
+    &nbsp;·&nbsp;
+    <a href="https://github.com/bshepp/alcubierre/blob/main/SHIFT_FAMILIES_NOTES.md" target="_blank" rel="noopener">SHIFT_FAMILIES_NOTES.md</a>
+    &nbsp;·&nbsp;
+    <a href="roadmap.html">← Roadmap</a>
+  </div>
+
+</div>
+</body>
+</html>

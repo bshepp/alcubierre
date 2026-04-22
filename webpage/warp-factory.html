@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Warp Factory — Phase 3 numerical verification</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,600;0,8..60,700;1,8..60,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css">
+<script src="assets/theme.js"></script>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-left">
+    <a href="index.html">Dashboard</a>
+    <a href="roadmap.html">Roadmap</a>
+    <a href="fuchs-shell.html">Fuchs Shell</a>
+    <a href="six-slices.html">Six Slices</a>
+    <a href="fell-heisenberg.html">Fell–Heisenberg</a>
+    <a href="warp-factory.html" class="active">Warp Factory</a>
+    <a href="notebooks.html">Notebooks</a>
+    <a href="about.html">About</a>
+  </div>
+  <div class="topbar-right">
+    Alcubierre · Boundary-Mode
+    <a href="https://github.com/bshepp/alcubierre" target="_blank" rel="noopener" title="GitHub Repository"><svg class="gh-icon" viewBox="0 0 16 16"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0016 8c0-4.42-3.58-8-8-8z"/></svg></a>
+  </div>
+</div>
+
+<div class="page-header">
+  <h1>Warp Factory <span class="dim">— Phase 3 · independent numerical verification</span></h1>
+  <p class="subtitle">Independent MATLAB reproduction of the Fuchs anchor (closes TRUST_AUDIT #3, B → A) and 162-build κ-surface sweep across (M, R₂, β) (closes Task 3.2 at decision-gate B). New finding: high-velocity, low-compactness cells are <em>null configurations</em>.</p>
+</div>
+
+<div class="container">
+
+  <div class="block">
+    <div class="block-eyebrow">What this is</div>
+    <div class="block-title">A second pipeline, no shared code</div>
+    <div class="prose">
+      <p><a href="https://github.com/NerdsWithAttitudes/WarpFactory" target="_blank" rel="noopener">Warp Factory v1.0</a> (Helmerich et al. 2024, <a href="https://arxiv.org/abs/2404.03095" target="_blank" rel="noopener">arXiv:2404.03095</a>) is a public MATLAB toolkit for evaluating energy conditions on warp-drive metrics. It shares no code with this project's SymPy/NumPy pipeline and is maintained by an independent group. Phase 3 uses it to (i) reproduce the Fuchs et al. 2024 existence anchor independently, (ii) sweep the κ-scaling-law surface across $(M, R_2, \beta)$, and (iii) confirm the textbook Alcubierre violation as a tooling sanity check.</p>
+      <p>Environment: MATLAB R2023a Update 8 with Parallel Computing Toolbox + default toolboxes; Warp Factory cloned to <code>F:\science-projects\WarpFactory\</code> (out-of-tree). All scripts and outputs in the project's <a href="https://github.com/bshepp/alcubierre/tree/main/warp_factory_repro" target="_blank" rel="noopener"><code>warp_factory_repro/</code></a> directory.</p>
+    </div>
+  </div>
+
+  <div class="block">
+    <div class="block-eyebrow">Result 1 — Task 3.1 sanity</div>
+    <div class="block-title">Standard Alcubierre violates all four ECs at Pfenning–Ford 1997 textbook parameters</div>
+    <div class="prose">
+      <p>Run the standard Alcubierre metric at $(v=c, R=4\,{\rm m}, \sigma=8\,{\rm m^{-1}})$ — the Pfenning–Ford 1997 textbook configuration — and evaluate NEC, WEC, DEC, SEC pointwise on the in-mask grid:</p>
+    </div>
+    <table class="data-table">
+      <thead><tr><th>Energy condition</th><th>In-mask pass fraction</th><th>min value</th></tr></thead>
+      <tbody>
+        <tr><td>NEC</td><td class="num neg">0.0737</td><td class="num neg">−9.6 × 10⁴³</td></tr>
+        <tr><td>WEC</td><td class="num neg">0.0737</td><td class="num neg">−9.6 × 10⁴³</td></tr>
+        <tr><td>DEC</td><td class="num neg">0.0737</td><td class="num neg">violated</td></tr>
+        <tr><td>SEC</td><td class="num neg">0.0737</td><td class="num neg">violated</td></tr>
+      </tbody>
+    </table>
+    <p class="prose">92.6% of in-mask cells violate every energy condition — matching Pfenning-Ford 1997 expectations to within numerics. <strong>The pipeline returns the textbook negative result on a known violator</strong>, so positive-EC results from Warp Factory on Fuchs-class metrics are not artefacts.</p>
+    <p style="font-size:0.78rem;color:var(--text-dim);">Script: <a href="https://github.com/bshepp/alcubierre/blob/main/warp_factory_repro/alcubierre_sanity.m" target="_blank" rel="noopener"><code>warp_factory_repro/alcubierre_sanity.m</code></a>.</p>
+  </div>
+
+  <div class="block">
+    <div class="block-eyebrow">Result 2 — Task 2A.9b / TRUST_AUDIT #3 closure</div>
+    <div class="block-title">Fuchs Fig. 10 reproduced; analytic κ bound is ~6× too loose</div>
+    <div class="prose">
+      <p>Reproduce Fuchs et al. 2024 Fig. 10 at canonical parameters $(R_1=10\,{\rm m}, R_2=20\,{\rm m}, M=4.49\times10^{27}\,{\rm kg}, \beta=0.02c)$ and bracket $\Delta_{\min}$ by holding $(M, R_2, \beta)$ fixed and sweeping the shell thickness $\Delta = R_2 - R_1$.</p>
+      <p>At the canonical point, in-shell pass fractions for all four energy conditions are <strong>identically 1.0000</strong> — the existence claim is independently confirmed. The κ bracket:</p>
+    </div>
+    <table class="data-table">
+      <thead><tr><th>Δ [m]</th><th>R₁ [m]</th><th>passNEC</th><th>passWEC</th><th>passDEC</th><th>passSEC</th><th>κ = ΔC/(βR₂)</th></tr></thead>
+      <tbody>
+        <tr><td>1.0</td><td>19.0</td><td class="num">0.5014</td><td class="num">0.5014</td><td class="num neg">0.6328</td><td class="num">0.6369</td><td class="num">0.83</td></tr>
+        <tr><td>1.5</td><td>18.5</td><td class="num">0.5142</td><td class="num">0.5142</td><td class="num neg">0.6668</td><td class="num">0.6705</td><td class="num">1.25</td></tr>
+        <tr><td>2.0</td><td>18.0</td><td class="num">0.5142</td><td class="num">0.5142</td><td class="num neg">0.6752</td><td class="num">0.6766</td><td class="num">1.67</td></tr>
+        <tr><td>3.0</td><td>17.0</td><td class="num">0.5164</td><td class="num">0.5164</td><td class="num neg">0.6769</td><td class="num">0.6807</td><td class="num">2.50</td></tr>
+        <tr><td>5.0</td><td>15.0</td><td class="num">0.6486</td><td class="num">0.6486</td><td class="num neg">0.8909</td><td class="num">0.8951</td><td class="num">4.17</td></tr>
+        <tr><td>7.0</td><td>13.0</td><td class="num">0.8638</td><td class="num">0.8638</td><td class="num pos"><strong>1.0000</strong></td><td class="num pos"><strong>1.0000</strong></td><td class="num accent">5.83</td></tr>
+        <tr><td>10.0</td><td>10.0</td><td class="num pos"><strong>1.0000</strong></td><td class="num pos"><strong>1.0000</strong></td><td class="num pos"><strong>1.0000</strong></td><td class="num pos"><strong>1.0000</strong></td><td class="num">8.33</td></tr>
+      </tbody>
+    </table>
+    <div class="prose">
+      <p>Numerical bracket: <strong>κ<sup>num</sup> ∈ (4.17, 5.83]</strong>, vs the analytic 2A.9a bracket of $\kappa \in [0.05, 0.875]$. The numerical bound is <strong>~6× tighter</strong> than the analytic upper. This is not a refutation but a refinement: the analytic 2A.7 calculation is a thin-shell Israel-junction pole-only argument; the numerical 2A.9b calculation is the full thick-TOV-fluid + bump-function pointwise-DEC evaluation. The dominant failure mode at small $\Delta$ is <em>distributed warp-gradient stress through the shell interior</em>, not the pole jump. The matter-shell route is therefore <em>~6× harder</em> than 2A.7 alone advertises.</p>
+      <p>This closes TRUST_AUDIT row #3 (Fuchs existence anchor) at <strong>A-grade</strong> — the only B-row at the start of Session 18, now A.</p>
+    </div>
+    <p style="font-size:0.78rem;color:var(--text-dim);">Scripts: <a href="https://github.com/bshepp/alcubierre/blob/main/warp_factory_repro/fuchs_fig10_repro.m" target="_blank" rel="noopener"><code>fuchs_fig10_repro.m</code></a>, <a href="https://github.com/bshepp/alcubierre/blob/main/warp_factory_repro/kappa_sweep.m" target="_blank" rel="noopener"><code>kappa_sweep.m</code></a>. Outputs: <a href="https://github.com/bshepp/alcubierre/blob/main/warp_factory_repro/fuchs_repro.mat" target="_blank" rel="noopener"><code>fuchs_repro.mat</code></a>, slice plots <code>fuchs_repro_{rho,nec,wec,dec,sec}.png</code>.</p>
+  </div>
+
+  <div class="block">
+    <div class="block-eyebrow">Result 3 — Task 3.2 closure</div>
+    <div class="block-title">κ-surface sweep across (M, R₂, β) — 162 metric builds, 140 min</div>
+    <div class="prose">
+      <p>Hold the scaling-law form $\Delta_{\min}/R_2 = \kappa\beta/C$ and ask: <em>is κ a universal number, or does it vary with $(M, R_2, \beta)$?</em> Outer grid: $C \in \{1/6, 1/3, 1/2\}$, $R_2 \in \{15, 20, 30\}$ m, $\beta \in \{0.005, 0.02, 0.05\}$ — 27 cells. Inner sweep per cell: 6 candidate Δ's spanning a fixed κ-grid $\{1.5, 3, 5, 7, 10, 15\}$, capped at $\Delta \le R_2 - 0.5$ m. <strong>162 Warp Factory metric builds, 140 minutes headless on R2023a.</strong></p>
+      <p>Bracketed κ midpoint table (cells with grid floor / cap saturation flagged):</p>
+    </div>
+    <table class="data-table">
+      <thead><tr><th>C</th><th>R₂ [m]</th><th>β = 0.005</th><th>β = 0.02</th><th>β = 0.05</th></tr></thead>
+      <tbody>
+        <tr><td>1/6</td><td>15</td><td class="num dim">(NaN, 3]†</td><td class="num">(3, 5]</td><td class="num neg">cap‡</td></tr>
+        <tr><td>1/6</td><td>20</td><td class="num dim">(NaN, 3]†</td><td class="num">(5, 7]</td><td class="num neg">cap‡</td></tr>
+        <tr><td>1/6</td><td>30</td><td class="num">(3, 5]</td><td class="num">(5, 7]</td><td class="num neg">cap‡</td></tr>
+        <tr><td>1/3</td><td>15</td><td class="num dim">(NaN, 5]†</td><td class="num">(3, 5]</td><td class="num">(3, 5]</td></tr>
+        <tr><td>1/3</td><td>20</td><td class="num dim">(NaN, 5]†</td><td class="num accent"><strong>(5, 7]</strong></td><td class="num">(5, 7]</td></tr>
+        <tr><td>1/3</td><td>30</td><td class="num dim">(NaN, 5]†</td><td class="num">(5, 7]</td><td class="num">(5, 7]</td></tr>
+        <tr><td>1/2</td><td>15</td><td class="num dim">(NaN, 7]†</td><td class="num warm">(NaN, 1.5]§</td><td class="num">(5, 7]</td></tr>
+        <tr><td>1/2</td><td>20</td><td class="num dim">(NaN, 7]†</td><td class="num">(3, 5]</td><td class="num">(5, 7]</td></tr>
+        <tr><td>1/2</td><td>30</td><td class="num dim">(NaN, 7]†</td><td class="num">(5, 7]</td><td class="num">(5, 7]</td></tr>
+      </tbody>
+    </table>
+    <p style="font-size:0.78rem;color:var(--text-dim);">† low-β: even κ = 1.5 already passes; transition is below the grid floor. ‡ high-β + low-C: Δ-cap saturated at R₂ − 0.5 before transition — <strong>null configurations</strong>. § anomaly: likely wall-resolution artifact at smallest Δ (5 grid points across wall); excluded from statistics. The <span class="accent">bold cell</span> is the Session-18 anchor.</p>
+    <div class="prose">
+      <p>Statistics over the 15 bracketed (non-floor, non-cap, non-anomaly) cells:</p>
+    </div>
+    <table class="data-table">
+      <thead><tr><th>Diagnostic</th><th>Value</th></tr></thead>
+      <tbody>
+        <tr><td>Mean κ midpoint</td><td class="num accent">5.33</td></tr>
+        <tr><td>Median κ midpoint</td><td class="num accent">6.00</td></tr>
+        <tr><td>Std / relative std</td><td class="num">0.98 / <span class="warm">18.3%</span></td></tr>
+        <tr><td>Range</td><td class="num">[4.0, 6.0]</td></tr>
+        <tr><td>Anchor cell (C=1/3, R₂=20, β=0.02) bracket</td><td class="num pos">(5, 7] ⊂ Session-18 (4.17, 5.83]</td></tr>
+        <tr><td>Decision gate</td><td><span class="warm">B</span> · scaling-law form universal across surface; numerical κ varies 18%, above the gate-A threshold of 10%</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="block">
+    <div class="block-eyebrow">The non-trivial new finding</div>
+    <div class="block-title">High-β + low-C is null — no Fuchs shell exists regardless of mass</div>
+    <div class="prose">
+      <p>At $\beta = 0.05$ and $C = 1/6$ the geometrical cap $\Delta < R_2$ saturates before any DEC-passing shell exists. These cells are <strong class="neg">null configurations</strong> — the shell would have to be <em>thicker than the bubble</em>, which is geometrically impossible. This adds a binding constraint to the matter-shell landscape that the analytic 2A.7 / 2A.9a derivations <em>did not surface</em>.</p>
+      <p>The honest replacement statement for the Path-2A scaling law is:</p>
+      <div class="formula-block">κ ∈ (3, 7] across explored regimes, with κ ≈ 5 typical · high-β + low-C corner is null · no Fuchs construction exists there at any mass</div>
+      <p>This rules out the high-velocity low-compactness branch of the Path-2A landscape categorically — a non-trivial tightening of Phase 2A's slice scope that would not have been visible without the full numerical surface sweep.</p>
+    </div>
+  </div>
+
+  <div class="block">
+    <div class="block-eyebrow">Honest caveats</div>
+    <div class="block-title">What this does not close</div>
+    <div class="prose">
+      <ul>
+        <li><strong>Resolution-doubling check is not done.</strong> The R₂-dependence trend in κ (cells with $R_2 = 30$ consistently bracket at (5, 7] where $R_2 = 15$ cells bracket at (3, 5]) could partially be a discretisation effect. Closing this would require re-running 1-2 representative cells at <code>spaceScale = 2 × current</code>.</li>
+        <li><strong>Below-grid-floor κ is not constrained.</strong> Cells flagged $(\text{NaN}, \kappa_0]$ have $\kappa^{\rm true} < \kappa_0$ but no lower bound. Reaching down to where the analytic 2A.9a upper $\kappa = 0.875$ might live would need a finer Δ grid.</li>
+        <li><strong>The geometrical-cap null is for finite bubble interiors.</strong> Whether the obstruction persists as $R_2 \to \infty$ at fixed $(C, \beta)$ is not tested.</li>
+        <li><strong>The β-axis is not explored independently.</strong> The κ-sweep here sits at the published Fuchs amplitude $\beta = 0.02$ for the anchor; the broader surface samples three β values but not enough to fit the linear-in-β scaling-law slope independently.</li>
+      </ul>
+      <p>These are reopening criteria. Phase 3 closes 3.1 and 3.2 with full disposition; 3.3 (nested concentric Fuchs shells + non-spherical oblate/prolate Fuchs constructions) is the natural next step and 3.4+ remain gated on Phase 2B and on Phase 2D convergence.</p>
+    </div>
+  </div>
+
+  <div class="block">
+    <div class="block-eyebrow">Direct data access</div>
+    <div class="block-title">Where the bytes live</div>
+    <table class="data-table">
+      <thead><tr><th>What</th><th>Where</th></tr></thead>
+      <tbody>
+        <tr><td>κ-surface sweep — full per-cell results (27 × 6 × 4)</td><td><a href="https://github.com/bshepp/alcubierre/blob/main/warp_factory_repro/kappa_surface_sweep.mat" target="_blank" rel="noopener"><code>warp_factory_repro/kappa_surface_sweep.mat</code></a></td></tr>
+        <tr><td>κ-surface sweep — flat CSV table</td><td><a href="https://github.com/bshepp/alcubierre/blob/main/warp_factory_repro/kappa_surface_sweep.csv" target="_blank" rel="noopener"><code>warp_factory_repro/kappa_surface_sweep.csv</code></a></td></tr>
+        <tr><td>κ-surface sweep — 4-panel diagnostic figure (κ vs β, κ vs C, κ vs R₂, κ histogram)</td><td><a href="https://github.com/bshepp/alcubierre/blob/main/warp_factory_repro/kappa_surface_sweep.png" target="_blank" rel="noopener"><code>kappa_surface_sweep.png</code></a></td></tr>
+        <tr><td>Fuchs Fig. 10 reproduction — energy tensor + four EC arrays</td><td><a href="https://github.com/bshepp/alcubierre/blob/main/warp_factory_repro/fuchs_repro.mat" target="_blank" rel="noopener"><code>fuchs_repro.mat</code></a></td></tr>
+        <tr><td>Fuchs Fig. 10 reproduction — slice plots</td><td><code>fuchs_repro_{rho,nec,wec,dec,sec}.png</code></td></tr>
+        <tr><td>κ-bracket sweep (single-cell, 7 Δ samples)</td><td><a href="https://github.com/bshepp/alcubierre/blob/main/warp_factory_repro/kappa_sweep.mat" target="_blank" rel="noopener"><code>kappa_sweep.mat</code></a></td></tr>
+        <tr><td>Headless console logs</td><td><a href="https://github.com/bshepp/alcubierre/blob/main/warp_factory_repro/kappa_surface_sweep.log" target="_blank" rel="noopener"><code>kappa_surface_sweep.log</code></a> · <code>alcubierre_sanity.log</code></td></tr>
+        <tr><td>MATLAB scripts</td><td><a href="https://github.com/bshepp/alcubierre/tree/main/warp_factory_repro" target="_blank" rel="noopener"><code>warp_factory_repro/</code></a></td></tr>
+        <tr><td>Notes (sessions 18-19, full table, dispositions)</td><td><a href="https://github.com/bshepp/alcubierre/blob/main/WARP_FACTORY_NOTES.md" target="_blank" rel="noopener"><code>WARP_FACTORY_NOTES.md</code></a></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="footer">
+    <a href="https://github.com/bshepp/alcubierre/blob/main/WARP_FACTORY_NOTES.md" target="_blank" rel="noopener">WARP_FACTORY_NOTES.md</a>
+    &nbsp;·&nbsp;
+    <a href="https://github.com/NerdsWithAttitudes/WarpFactory" target="_blank" rel="noopener">Warp Factory v1.0</a>
+    &nbsp;·&nbsp;
+    <a href="https://arxiv.org/abs/2404.03095" target="_blank" rel="noopener">Helmerich et al. 2024</a>
+    &nbsp;·&nbsp;
+    <a href="roadmap.html">← Roadmap</a>
+  </div>
+
+</div>
+</body>
+</html>

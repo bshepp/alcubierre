@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fell–Heisenberg — Phase 2D multi-mode static shift</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,600;0,8..60,700;1,8..60,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css">
+<script src="assets/theme.js"></script>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-left">
+    <a href="index.html">Dashboard</a>
+    <a href="roadmap.html">Roadmap</a>
+    <a href="fuchs-shell.html">Fuchs Shell</a>
+    <a href="six-slices.html">Six Slices</a>
+    <a href="fell-heisenberg.html" class="active">Fell–Heisenberg</a>
+    <a href="warp-factory.html">Warp Factory</a>
+    <a href="notebooks.html">Notebooks</a>
+    <a href="about.html">About</a>
+  </div>
+  <div class="topbar-right">
+    Alcubierre · Boundary-Mode
+    <a href="https://github.com/bshepp/alcubierre" target="_blank" rel="noopener" title="GitHub Repository"><svg class="gh-icon" viewBox="0 0 16 16"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0016 8c0-4.42-3.58-8-8-8z"/></svg></a>
+  </div>
+</div>
+
+<div class="page-header">
+  <h1>Fell–Heisenberg <span class="dim">— Phase 2D · multi-mode static-shift follow-up</span></h1>
+  <p class="subtitle">A worked example of "how a positive result survives initial scrutiny and dies under structural tests." Strict-pass FH existence is mathematically real, A-grade pipeline-verified, triple-anchored against external no-go literatures — and degraded as a warp-drive interpretation at every structural test applied.</p>
+</div>
+
+<div class="container">
+
+  <div class="block">
+    <div class="block-eyebrow">The headline</div>
+    <div class="block-title">1404 strict-pass points exist; none look like a warp drive</div>
+    <table class="data-table">
+      <thead><tr><th>Diagnostic</th><th>Value</th><th>Status</th></tr></thead>
+      <tbody>
+        <tr><td>Strict-pass count (full WEC + full DEC, Eulerian frame)</td><td class="num accent">1404 / 15000</td><td class="num">9.4% of grid</td></tr>
+        <tr><td>Central frame-dragging |<strong>N</strong>|<sub>max</sub> range</td><td class="num">0.73 c → 18.6 c</td><td class="num">superluminal at upper end</td></tr>
+        <tr><td>Negative-energy region E<sub>neg</sub></td><td class="num pos">0.0000</td><td class="num pos">no negative ρ anywhere</td></tr>
+        <tr><td>Strict full-WEC slack at anchor</td><td class="num pos">+0.0339</td><td class="num">strictly positive</td></tr>
+        <tr><td>Strict full-DEC slack at anchor</td><td class="num pos">+0.0170</td><td class="num">strictly positive</td></tr>
+        <tr><td>Resolution convergence (Npts 65 → 97 → 113)</td><td class="num">DEC slack drift &lt; 5%</td><td class="num pos">resolution-converged</td></tr>
+        <tr><td>Strict-pass interior cells per row (horizon test)</td><td class="num neg">1 / N</td><td class="num neg">"all wall, no interior"</td></tr>
+        <tr><td>CTC-hosting fraction of strict-pass rows</td><td class="num neg">6624 / 6738 (98.3%)</td><td class="num neg">CTC sea</td></tr>
+        <tr><td>Mass overhead at passenger zone (VIQ)</td><td class="num neg">76 ×</td><td class="num neg">no useful interior</td></tr>
+        <tr><td>Asymptotic decay envelope</td><td class="num neg">no e<sup>−r/L</sup> falloff</td><td class="num neg">does not match flatness</td></tr>
+      </tbody>
+    </table>
+    <p style="font-size:0.78rem;color:var(--text-dim);margin-top:0.8rem;">Anchor: <code>(V=1.5, σ=10, m₀=3, a=0.05, ℓ=4, r=9)</code>. Verified at Npts ∈ {65, 81, 97, 113}; preview Npts=49 is undersampled and reports false negatives (see §2.2 of the notes).</p>
+  </div>
+
+  <div class="block">
+    <div class="block-eyebrow">What is this thing</div>
+    <div class="block-title">The multi-mode irrotational ansatz</div>
+    <div class="prose">
+      <p>Fell &amp; Heisenberg 2021 (Class. Quantum Grav. <strong>38</strong> 155020, <a href="https://arxiv.org/abs/2104.07673" target="_blank" rel="noopener">arXiv:2104.07673</a>) propose a smooth multi-mode irrotational shift $\vec{N} = \nabla\phi$ where $\phi$ is built from a soliton-like superposition of axisymmetric modes plus an asymmetry mode. Six free parameters $(V, \sigma, m_0, a, \ell, r)$ control amplitude, profile width, asymmetry baseline, asymmetry amplitude, asymmetry length, bubble radius. They claim full-WEC and full-DEC are violated <em>somewhere</em> in the bubble for every parameter point they tested, and assert (§3.3) that "these violations cannot be removed by modification."</p>
+      <p>This project's Phase 2D Tasks 2D.1–2D.4 (Sessions 10–11) reproduced their pipeline, swept 15000 grid points, and falsified that assertion: <strong>1404 points strict-pass</strong> at Eulerian level. The result is mathematically real, but every subsequent structural test in Tasks 2D.5–2D.12 has degraded its warp-drive interpretation.</p>
+    </div>
+  </div>
+
+  <div class="block">
+    <div class="block-eyebrow">Test 1 — anchor reproducibility</div>
+    <div class="block-title">FH 2021's own published failure case still fails</div>
+    <div class="prose">
+      <p>Sanity check: re-run the Fell–Heisenberg Session-10 anchor <code>(V=0.5, σ=4, m₀=2, a=0.3, ℓ=4, r=6)</code> through the sweep module. The notebook reports <code>wec_pass=0.987, dec_pass=0.947</code> at Npts=81. The sweep module reports:</p>
+    </div>
+    <table class="data-table">
+      <thead><tr><th>Npts</th><th>WEC pass-fraction</th><th>DEC pass-fraction</th><th>Match notebook?</th></tr></thead>
+      <tbody>
+        <tr><td>49</td><td class="num">0.99538</td><td class="num">0.96462</td><td>conservative drift</td></tr>
+        <tr><td>65</td><td class="num">0.99072</td><td class="num">0.95353</td><td>within drift</td></tr>
+        <tr><td><strong>81</strong></td><td class="num accent">0.98716</td><td class="num accent">0.94736</td><td><span class="pos">literal match</span></td></tr>
+      </tbody>
+    </table>
+    <p class="prose">The pipeline correctly reproduces FH 2021's published failure case. The new positive results come from different parameter regions, not from a code bug that always reports passing.</p>
+  </div>
+
+  <div class="block">
+    <div class="block-eyebrow">Test 2 — V scaling</div>
+    <div class="block-title">DEC slack scales as V², so amplitude is a free parameter</div>
+    <div class="prose">
+      <p>The shift $\vec{N} \propto V$, the metric perturbation $\propto V^2$, and the stress-energy slacks $\propto V^2$. A 9-point V-scan at fixed $(\sigma=10, m_0=3, a=0.05, \ell=4, r=9)$:</p>
+    </div>
+    <table class="data-table">
+      <thead><tr><th>V</th><th>|<strong>N</strong>|<sub>max</sub></th><th>dec_slack_min</th><th>E<sub>net</sub></th></tr></thead>
+      <tbody>
+        <tr><td>0.10</td><td class="num">1.24</td><td class="num pos">+8.25 × 10⁻⁵</td><td class="num">+8.17</td></tr>
+        <tr><td>0.50</td><td class="num">6.20</td><td class="num pos">+2.06 × 10⁻³</td><td class="num">+204</td></tr>
+        <tr><td>1.50</td><td class="num">18.6</td><td class="num pos">+1.86 × 10⁻²</td><td class="num">+1839</td></tr>
+        <tr><td>10.0</td><td class="num">124</td><td class="num pos">+0.825</td><td class="num">+81700</td></tr>
+      </tbody>
+    </table>
+    <div class="prose">
+      <p>Exact $V^2$ scaling. <strong>Consequence:</strong> if dec_slack_min &gt; 0 at any one $V$, it is positive at every $V > 0$ for the same $(\sigma, m_0, a, \ell, r)$. So the question reduces to "is there a $(\sigma, m_0, a, \ell, r)$ with positive dimensionless DEC slack" — the smallest superluminal DEC-passing point in the sweep has $|\vec{N}|_{\max} = 0.73c$ at $V=0.1$.</p>
+    </div>
+  </div>
+
+  <div class="block">
+    <div class="block-eyebrow">Test 3 — independent xAct re-implementation</div>
+    <div class="block-title">9-anchor cross-check, A-grade</div>
+    <div class="prose">
+      <p>Task 2D.8: independent re-implementation of the FH stress-energy in <a href="http://www.xact.es/" target="_blank" rel="noopener">xAct</a> (Mathematica, symbolic tensor algebra). Nine sweep anchors evaluated end-to-end through a <em>second</em> pipeline that shares no code with the SymPy/NumPy one. Strict-pass / strict-fail decisions agree at all 9 anchors; absolute slack values agree to 6 significant figures.</p>
+      <p>Symbolic artifacts: <a href="https://github.com/bshepp/alcubierre/blob/main/fell_heisenberg_symbolic/symbolic_artifacts.py" target="_blank" rel="noopener"><code>fell_heisenberg_symbolic/symbolic_artifacts.py</code></a>, <a href="https://github.com/bshepp/alcubierre/blob/main/fell_heisenberg_symbolic/symbolic_artifacts.tex" target="_blank" rel="noopener"><code>fell_heisenberg_symbolic/symbolic_artifacts.tex</code></a>. Validation outputs: <a href="https://github.com/bshepp/alcubierre/blob/main/fell_heisenberg_symbolic/validation_subtask_1.json" target="_blank" rel="noopener"><code>validation_subtask_1.json</code></a> through <code>validation_subtask_3.json</code>.</p>
+    </div>
+  </div>
+
+  <div class="block">
+    <div class="block-eyebrow">Test 4 — connectivity &amp; topology</div>
+    <div class="block-title">Single 5-D connected manifold with smooth boundary</div>
+    <div class="prose">
+      <p>Task 2D.5: the strict-pass region is a single connected 5-dimensional component (no isolated islands), and the boundary is smooth enough to fit with a degree-4 polynomial implicit form. The high-resolution component summary lives at <a href="https://github.com/bshepp/alcubierre/blob/main/fell_heisenberg_topology_hires/component_summary.csv" target="_blank" rel="noopener"><code>fell_heisenberg_topology_hires/component_summary.csv</code></a>; the polyfit summary at <a href="https://github.com/bshepp/alcubierre/blob/main/fell_heisenberg_topology_hires/polyfit_summary.json" target="_blank" rel="noopener"><code>polyfit_summary.json</code></a>; surviving degree-4 boundary terms enumerated in <a href="https://github.com/bshepp/alcubierre/blob/main/fell_heisenberg_topology_hires/degree4_surviving_terms.csv" target="_blank" rel="noopener"><code>degree4_surviving_terms.csv</code></a>.</p>
+      <p>Resolution convergence (Tasks 2D.5c, 2D.5d): the boundary region — i.e. the parameters that flipped strict-pass ↔ strict-fail between Npts=65 and Npts=97 — accounts for <strong>47% of the strict-pass rows</strong>. The <a href="https://github.com/bshepp/alcubierre/tree/main/sweeps_remote/refine-hires-20260420T054952" target="_blank" rel="noopener">Npts=97 hires refinement</a> stabilised the bulk; the live <code>npts=129</code> cpu-xl sweep (dispatched 2026-04-21, ~$3.50, ~3.5 h, run id <code>69e843fecd8c002f31e015d8</code>) is the resolution-convergence closer for Task 2D.5f.</p>
+    </div>
+  </div>
+
+  <div class="block">
+    <div class="block-eyebrow">Structural test A — horizon &amp; CTC analysis</div>
+    <div class="block-title">"All wall, no interior" + 98.3% of strict-pass rows host CTCs</div>
+    <div class="prose">
+      <p>Task 2D.6 (single-cell passenger horizon test): for every strict-pass parameter row, count the contiguous interior cells that are simultaneously inside the bubble's null cone <em>and</em> separated from the wall by enough buffer to support a passenger. Result: <strong>1 cell per row</strong>. The strict-pass solutions are not "warp drives carrying a passenger inside a flat-interior bubble" — they are "energy-condition-respecting walls with no useful interior."</p>
+      <p>Task 2D.7 (full horizon and CTC analysis): of the 6738 strict-pass rows that pass the horizon-resolvability filter, <strong>6624 (98.3%) host closed timelike curves</strong>. This places the FH solution family squarely in the SSV 2105.03079 "geometries with CTCs are physically pathological" basin. Leaderboard: <a href="https://github.com/bshepp/alcubierre/blob/main/fell_heisenberg_horizon/leaderboard.csv" target="_blank" rel="noopener"><code>fell_heisenberg_horizon/leaderboard.csv</code></a>; full summary <a href="https://github.com/bshepp/alcubierre/blob/main/fell_heisenberg_horizon/summary.json" target="_blank" rel="noopener"><code>summary.json</code></a>.</p>
+    </div>
+  </div>
+
+  <div class="block">
+    <div class="block-eyebrow">Structural test B — VIQ mass overhead</div>
+    <div class="block-title">76× mass at the passenger zone</div>
+    <div class="prose">
+      <p>Task 2D.12 (Lobo–Visser 2004 VIQ post-processing): integrate the strict-pass stress-energy over the passenger zone and compare to the canonical Fuchs-anchor mass. Result: the passenger-zone integrated mass is <strong>76 × the Fuchs-anchor mass</strong>. This is not an order-of-magnitude estimate — it is the literal pointwise integral of $\rho_E$ over the strict-pass interior, divided by $M_{\rm Fuchs}^{\rm anchor}$.</p>
+      <p>The "no negative energy" win comes at a 76× mass cost relative to the Fuchs comparator.</p>
+    </div>
+  </div>
+
+  <div class="block">
+    <div class="block-eyebrow">Structural test C — asymptotic matching</div>
+    <div class="block-title">No e<sup>−r/L</sup> decay envelope; double-bubble destruction</div>
+    <div class="prose">
+      <p>Task 2D.10: Fell–Heisenberg's smooth multi-mode profile does not decay exponentially to flatness at large $r$ — it has a polynomial-tail structure that makes asymptotic-flatness matching residuals grow with sweep box size. A "double-bubble" superposition of two FH solutions destroys the strict-pass property of either individually. Task 2D.9 (Bobrick-Martire matter classification): the FH stress-energy is <strong>Class III geometric, anisotropic</strong> in the BM 2021 catalog — i.e. the matter content is purely geometric and has no fluid-like Lagrangian, which is the BM warning class for "energy-condition-respecting but physically suspicious."</p>
+    </div>
+  </div>
+
+  <div class="block">
+    <div class="block-eyebrow">Open work</div>
+    <div class="block-title">What is still in flight</div>
+    <table class="data-table">
+      <thead><tr><th>Task</th><th>Status</th><th>What unblocks</th></tr></thead>
+      <tbody>
+        <tr><td>2D.5e — symbolic boundary extraction</td><td class="num warm">partial</td><td>SymPy wall hit; Z-axis fallback unattempted</td></tr>
+        <tr><td>2D.5f — Npts=129 full sweep</td><td class="num warm">live (cpu-xl)</td><td>Resolution-convergence closer</td></tr>
+        <tr><td>2D.11 — vorticity-augmented FH</td><td class="num warm">phases 1, 2 negative</td><td>Multi-mode <strong>A</strong> phase 3 not started</td></tr>
+      </tbody>
+    </table>
+    <p style="font-size:0.78rem;color:var(--text-dim);margin-top:0.8rem;">Live job: <code>69e843fecd8c002f31e015d8</code>, dispatched 2026-04-21 on cpu-xl, ~3.5 h wall clock, ~$3.50 budget. Outputs upload to <a href="https://huggingface.co/datasets/bshepp/alcubierre-sweeps" target="_blank" rel="noopener">bshepp/alcubierre-sweeps</a> under <code>npts129-full-{stamp}/</code>.</p>
+  </div>
+
+  <div class="block">
+    <div class="block-eyebrow">Where this leaves Phase 2D</div>
+    <div class="block-title">A real existence result, but not a warp drive</div>
+    <div class="prose">
+      <p>The strict-pass FH region is mathematically real, A-grade pipeline-verified, and triple-anchored against external no-go literatures (Bobrick-Martire 2021 matter classification, SSV 2105.03079 CTC line, Lobo-Visser 2004 VIQ post-processing). At every <em>structural</em> test applied — single-cell passenger interior, 98.3% CTC-hosting, 76× mass overhead, no asymptotic decay envelope — the warp-drive interpretation is degraded. None of these tests has been escaped by any subset of the strict-pass region.</p>
+      <p>This is the single largest source of new positive-leaning physics in the project, kept honest by being the most aggressively structurally-tested. It is also the strongest argument the project produces for <em>where</em> the no-go is load-bearing: relax the single-mode assumption (Slice 1) and you get strict-pass solutions that are still not warp drives.</p>
+    </div>
+  </div>
+
+  <div class="block">
+    <div class="block-eyebrow">Direct data access</div>
+    <div class="block-title">Where the bytes live</div>
+    <table class="data-table">
+      <thead><tr><th>What</th><th>Where</th></tr></thead>
+      <tbody>
+        <tr><td>Raw sweep parquets (Npts=65 full, refines, hires)</td><td><a href="https://huggingface.co/datasets/bshepp/alcubierre-sweeps" target="_blank" rel="noopener">HF Dataset · bshepp/alcubierre-sweeps</a></td></tr>
+        <tr><td>Local sweep checkpoints</td><td><a href="https://github.com/bshepp/alcubierre/tree/main/sweeps_remote" target="_blank" rel="noopener"><code>sweeps_remote/</code></a> (full-, refine-, refine-hires-, conv-test-)</td></tr>
+        <tr><td>Topology summary (component analysis, polyfit, symmetry probe)</td><td><a href="https://github.com/bshepp/alcubierre/tree/main/fell_heisenberg_topology_hires" target="_blank" rel="noopener"><code>fell_heisenberg_topology_hires/</code></a></td></tr>
+        <tr><td>Horizon &amp; CTC leaderboard</td><td><a href="https://github.com/bshepp/alcubierre/tree/main/fell_heisenberg_horizon" target="_blank" rel="noopener"><code>fell_heisenberg_horizon/</code></a></td></tr>
+        <tr><td>xAct symbolic cross-check artifacts</td><td><a href="https://github.com/bshepp/alcubierre/tree/main/fell_heisenberg_symbolic" target="_blank" rel="noopener"><code>fell_heisenberg_symbolic/</code></a></td></tr>
+        <tr><td>Sweep module + configs</td><td><a href="https://github.com/bshepp/alcubierre/blob/main/hf_jobs/sweeps/fell_heisenberg.py" target="_blank" rel="noopener"><code>hf_jobs/sweeps/fell_heisenberg.py</code></a></td></tr>
+        <tr><td>Notebook</td><td><a href="https://github.com/bshepp/alcubierre/blob/main/fell_heisenberg.ipynb" target="_blank" rel="noopener"><code>fell_heisenberg.ipynb</code></a></td></tr>
+        <tr><td>Notes (sweep results, evaluation, sessions 10-17)</td><td><a href="https://github.com/bshepp/alcubierre/blob/main/FELL_HEISENBERG_SWEEP_NOTES.md" target="_blank" rel="noopener"><code>FELL_HEISENBERG_SWEEP_NOTES.md</code></a> · <a href="https://github.com/bshepp/alcubierre/blob/main/FELL_HEISENBERG2021_EVALUATION.md" target="_blank" rel="noopener"><code>FELL_HEISENBERG2021_EVALUATION.md</code></a></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="footer">
+    <a href="https://github.com/bshepp/alcubierre/blob/main/FELL_HEISENBERG_SWEEP_NOTES.md" target="_blank" rel="noopener">FELL_HEISENBERG_SWEEP_NOTES.md</a>
+    &nbsp;·&nbsp;
+    <a href="https://github.com/bshepp/alcubierre/blob/main/FELL_HEISENBERG2021_EVALUATION.md" target="_blank" rel="noopener">FELL_HEISENBERG2021_EVALUATION.md</a>
+    &nbsp;·&nbsp;
+    <a href="https://huggingface.co/datasets/bshepp/alcubierre-sweeps" target="_blank" rel="noopener">HF dataset</a>
+    &nbsp;·&nbsp;
+    <a href="roadmap.html">← Roadmap</a>
+  </div>
+
+</div>
+</body>
+</html>
