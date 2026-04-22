@@ -152,6 +152,63 @@
   </div>
 
   <div class="block">
+    <div class="block-eyebrow">Picture gallery</div>
+    <div class="block-title">The κ-surface, the textbook violator, and the Fuchs reproduction</div>
+    <p class="prose" style="margin-bottom:1.0rem;">All figures generated directly from MATLAB Warp Factory outputs and the Phase-2A thickness-bound parquet. Click for full resolution.</p>
+
+    <section class="image-gallery gallery-wide">
+      <figure>
+        <a href="assets/figures/warp_factory/kappa_surface_3d.png" target="_blank" rel="noopener"><img src="assets/figures/warp_factory/kappa_surface_3d.png" alt="κ-surface 3D scatter"></a>
+        <figcaption><strong>κ-surface 3D.</strong> All 27 sweep cells in (β, C, R₂); colour = midpoint κ; red ✕ marks geometrically-saturated null cells.<span class="scope">slice: spaceScale = 0.2, κ-bracket grid (3, 5, 7); 27-cell mat sweep</span></figcaption>
+      </figure>
+      <figure>
+        <a href="assets/figures/warp_factory/kappa_surface_facets.png" target="_blank" rel="noopener"><img src="assets/figures/warp_factory/kappa_surface_facets.png" alt="κ-surface facet grid"></a>
+        <figcaption><strong>κ-surface facets.</strong> κ vs β at each (C, R₂); error bars = lower/upper bracket; dashed line = analytic κ = 0.875 from 2A.9a.<span class="scope">slice: same as above; 3 × 3 panel grid</span></figcaption>
+      </figure>
+      <figure>
+        <a href="assets/figures/wf_existing/kappa_surface_sweep.png" target="_blank" rel="noopener"><img src="assets/figures/wf_existing/kappa_surface_sweep.png" alt="MATLAB κ-surface 4-panel"></a>
+        <figcaption><strong>κ-surface — MATLAB 4-panel.</strong> Original Warp Factory output: contour panels of midpoint κ in each (C, R₂) face.<span class="scope">slice: <code>warp_factory_repro/kappa_surface_sweep.m</code> direct render</span></figcaption>
+      </figure>
+      <figure>
+        <a href="assets/figures/thickness_bound/heatmap_with_analytic.png" target="_blank" rel="noopener"><img src="assets/figures/thickness_bound/heatmap_with_analytic.png" alt="Thickness-bound heatmap with analytic overlay"></a>
+        <figcaption><strong>Thickness-bound heatmap.</strong> Worst DEC slack over (β, Δ/R) at three compactness values; overlaid lines = analytic κ predictions (0.05, 0.875, 5).<span class="scope">slice: <code>thickness_bound.ipynb</code> 600-cell preview sweep</span></figcaption>
+      </figure>
+      <figure>
+        <a href="assets/figures/wf_existing/fuchs_repro_rho.png" target="_blank" rel="noopener"><img src="assets/figures/wf_existing/fuchs_repro_rho.png" alt="Fuchs ρ slice"></a>
+        <figcaption><strong>Fuchs reproduction — ρ.</strong> Energy density slice through the 2024 Fuchs &amp; Helmerich shell anchor (β = 0.02, C = 1/3, R₂ = 20).<span class="scope">slice: anchor cell, Warp Factory exact reproduction</span></figcaption>
+      </figure>
+      <figure>
+        <a href="assets/figures/wf_existing/fuchs_repro_nec.png" target="_blank" rel="noopener"><img src="assets/figures/wf_existing/fuchs_repro_nec.png" alt="Fuchs NEC slice"></a>
+        <figcaption><strong>Fuchs — NEC.</strong> Same anchor; minimum NEC eigenvalue ≥ 0 throughout interior.<span class="scope">slice: anchor cell, NEC tensor</span></figcaption>
+      </figure>
+      <figure>
+        <a href="assets/figures/wf_existing/fuchs_repro_wec.png" target="_blank" rel="noopener"><img src="assets/figures/wf_existing/fuchs_repro_wec.png" alt="Fuchs WEC slice"></a>
+        <figcaption><strong>Fuchs — WEC.</strong> Anchor passes WEC pointwise.<span class="scope">slice: anchor cell, WEC tensor</span></figcaption>
+      </figure>
+      <figure>
+        <a href="assets/figures/wf_existing/fuchs_repro_dec.png" target="_blank" rel="noopener"><img src="assets/figures/wf_existing/fuchs_repro_dec.png" alt="Fuchs DEC slice"></a>
+        <figcaption><strong>Fuchs — DEC.</strong> DEC slack &gt; 0 throughout the shell; this is the construction we anchor against.<span class="scope">slice: anchor cell, DEC slack</span></figcaption>
+      </figure>
+      <figure>
+        <a href="assets/figures/wf_existing/fuchs_repro_sec.png" target="_blank" rel="noopener"><img src="assets/figures/wf_existing/fuchs_repro_sec.png" alt="Fuchs SEC slice"></a>
+        <figcaption><strong>Fuchs — SEC.</strong> SEC violation is intrinsic to the construction (Fuchs &amp; Helmerich allow it).<span class="scope">slice: anchor cell, SEC tensor</span></figcaption>
+      </figure>
+      <figure>
+        <a href="assets/figures/wf_existing/alcubierre_textbook_nec.png" target="_blank" rel="noopener"><img src="assets/figures/wf_existing/alcubierre_textbook_nec.png" alt="Textbook Alcubierre NEC violator"></a>
+        <figcaption><strong>Textbook Alcubierre — NEC.</strong> Pfenning–Ford era top-hat top displays the canonical NEC violation: deep negative ρ ring around the bubble equator.<span class="scope">slice: textbook v = 0.1, R = 1, σ = 8 Alcubierre</span></figcaption>
+      </figure>
+      <figure>
+        <a href="assets/figures/wf_existing/alcubierre_textbook_wec.png" target="_blank" rel="noopener"><img src="assets/figures/wf_existing/alcubierre_textbook_wec.png" alt="Textbook Alcubierre WEC violator"></a>
+        <figcaption><strong>Textbook Alcubierre — WEC.</strong> Same configuration; WEC violator structure.<span class="scope">slice: textbook v = 0.1, R = 1, σ = 8 Alcubierre</span></figcaption>
+      </figure>
+      <figure>
+        <a href="assets/figures/wf_existing/alcubierre_textbook_dec.png" target="_blank" rel="noopener"><img src="assets/figures/wf_existing/alcubierre_textbook_dec.png" alt="Textbook Alcubierre DEC violator"></a>
+        <figcaption><strong>Textbook Alcubierre — DEC.</strong> DEC equally violated.<span class="scope">slice: textbook v = 0.1, R = 1, σ = 8 Alcubierre</span></figcaption>
+      </figure>
+    </section>
+  </div>
+
+  <div class="block">
     <div class="block-eyebrow">Direct data access</div>
     <div class="block-title">Where the bytes live</div>
     <table class="data-table">

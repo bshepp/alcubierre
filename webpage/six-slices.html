@@ -168,6 +168,35 @@
     </div>
   </div>
 
+  <div class="block">
+    <div class="block-eyebrow">Picture gallery</div>
+    <div class="block-title">What the six slices look like</div>
+    <p class="prose" style="margin-bottom:1.0rem;">One figure per slice (where the slice is reducible to a single image). Each is generated directly from the underlying parquet sweep.</p>
+
+    <section class="image-gallery gallery-wide">
+      <figure>
+        <a href="assets/figures/shift_families/family_comparison.png" target="_blank" rel="noopener"><img src="assets/figures/shift_families/family_comparison.png" alt="Shift-family comparison bar chart"></a>
+        <figcaption><strong>Slice 1 — shift families.</strong> WEC / DEC pass fractions and DEC-slack medians for four single-mode shift families. None reach strict-pass; Slice 1 closes negative.<span class="scope">slice: <code>shift_families.ipynb</code> 140-cell sweep</span></figcaption>
+      </figure>
+      <figure>
+        <a href="assets/figures/hybrid_wall/pass_fraction.png" target="_blank" rel="noopener"><img src="assets/figures/hybrid_wall/pass_fraction.png" alt="Hybrid Fuchs+Krasnikov wall pass fractions"></a>
+        <figcaption><strong>Slice 2 — hybrid wall.</strong> Fuchs-anchor + Krasnikov tail; WEC / DEC pass fraction over (δ_M, w_M) at four η. WEC has a small wedge of green; DEC is null almost everywhere.<span class="scope">slice: ε = 1, n = 100, n<sub>ρ</sub> = 1601 (hybrid_wall.ipynb)</span></figcaption>
+      </figure>
+      <figure>
+        <a href="assets/figures/krasnikov/universal_collapse.png" target="_blank" rel="noopener"><img src="assets/figures/krasnikov/universal_collapse.png" alt="Krasnikov tube universal collapse"></a>
+        <figcaption><strong>Slice 4 — Krasnikov tube QI.</strong> Left: raw |ρ<sub>p,min</sub>| vs η at 5 ε. Right: |ρ<sub>p,min</sub>| · ε² collapses onto a single curve — the Krasnikov 2003 quantum-inequality scaling holds across the sweep.<span class="scope">slice: <code>krasnikov_tube.ipynb</code> 300-cell sweep</span></figcaption>
+      </figure>
+      <figure>
+        <a href="assets/figures/gw_recoil/dv_cliff.png" target="_blank" rel="noopener"><img src="assets/figures/gw_recoil/dv_cliff.png" alt="GW recoil cliff"></a>
+        <figcaption><strong>Acceleration ledger — GW recoil cliff.</strong> Δv<sub>kick</sub> from a single GW-emitting bubble episode vs β at 5 compactness values; dashed line = c·tanh β saturation. The kicks span 7 orders of magnitude and saturate well below c.<span class="scope">slice: PN inspiral + SXS rescaling, single-bubble (Path 2A acceleration null)</span></figcaption>
+      </figure>
+      <figure>
+        <a href="assets/figures/matter/canonical_anchor_slice.png" target="_blank" rel="noopener"><img src="assets/figures/matter/canonical_anchor_slice.png" alt="Matter shell canonical slice"></a>
+        <figcaption><strong>Matter-shell anchor.</strong> Six-panel ρ, p₁, p₃, anisotropy, |N|, g<sub>tt</sub> for the canonical Fuchs-anchor shell — the "what does a passing shell actually look like" reference.<span class="scope">slice: canonical Fuchs anchor (β = 0.02, C = 1/3, R₂ = 20)</span></figcaption>
+      </figure>
+    </section>
+  </div>
+
   <div class="footer">
     <a href="https://github.com/bshepp/alcubierre/blob/main/LANDSCAPE_SYNTHESIS.md" target="_blank" rel="noopener">LANDSCAPE_SYNTHESIS.md</a>
     &nbsp;·&nbsp;

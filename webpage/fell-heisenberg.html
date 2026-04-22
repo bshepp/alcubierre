@@ -146,6 +146,63 @@
   </div>
 
   <div class="block">
+    <div class="block-eyebrow">Picture gallery</div>
+    <div class="block-title">What the strict-pass region looks like</div>
+    <p class="prose" style="margin-bottom:1.0rem;">Click any figure to open the full-resolution PNG. Every caption carries its <strong>slice scope</strong> — the parameters held fixed and the assumptions that bound the claim. None of these images is a schematic; each is generated directly from the underlying parquet/sweep artifacts.</p>
+
+    <section class="image-gallery gallery-wide">
+      <figure>
+        <a href="assets/figures/fell_heisenberg/strict_pass_corner.png" target="_blank" rel="noopener"><img src="assets/figures/fell_heisenberg/strict_pass_corner.png" alt="5×5 corner plot of the FH strict-pass manifold"></a>
+        <figcaption><strong>Strict-pass manifold corner plot.</strong> All 1 404 strict-pass cells (WEC = 100 %, DEC > 0) from the 15 000-cell full sweep, projected pairwise into (σ, m₀, a, ℓ, r). Diagonals: marginal counts. Off-diagonal points coloured by <code>dec_slack_min</code>.<span class="scope">slice: V ∈ [0.1, 1.5]; full sweep <code>sweeps_remote/full-20260420T022727/</code></span></figcaption>
+      </figure>
+      <figure>
+        <a href="assets/figures/topology/pairwise_pass_count.png" target="_blank" rel="noopener"><img src="assets/figures/topology/pairwise_pass_count.png" alt="Pairwise pass-count projection"></a>
+        <figcaption><strong>Hires pairwise pass-count.</strong> Projection of the 6 818-cell hires strict-pass set onto each (σ, m₀, a, ℓ, r) pair; bin colour = number of strict-pass cells.<span class="scope">slice: Npts = 97 hires refinement</span></figcaption>
+      </figure>
+      <figure>
+        <a href="assets/figures/topology/pairwise_dec_slack.png" target="_blank" rel="noopener"><img src="assets/figures/topology/pairwise_dec_slack.png" alt="Pairwise DEC slack projection"></a>
+        <figcaption><strong>Hires pairwise DEC slack.</strong> Same projection as above but coloured by max <code>dec_slack_min</code> per bin — the "depth" of the strict-pass manifold.<span class="scope">slice: Npts = 97 hires refinement</span></figcaption>
+      </figure>
+      <figure>
+        <a href="assets/figures/topology/boundary_cells.png" target="_blank" rel="noopener"><img src="assets/figures/topology/boundary_cells.png" alt="Boundary cells of the strict-pass manifold"></a>
+        <figcaption><strong>Boundary cells.</strong> Interior (purple) vs boundary (orange) cells of the strict-pass region. Boundary fraction = 87.1 %; the manifold is "all skin, almost no bulk".<span class="scope">slice: Npts = 97 hires refinement</span></figcaption>
+      </figure>
+      <figure>
+        <a href="assets/figures/topology/slack_vs_distance.png" target="_blank" rel="noopener"><img src="assets/figures/topology/slack_vs_distance.png" alt="DEC slack vs distance to boundary"></a>
+        <figcaption><strong>DEC slack vs distance.</strong> <code>dec_slack_min</code> as a function of Chebyshev distance to the strict-pass boundary; box plot per integer distance.<span class="scope">slice: Npts = 97 hires refinement</span></figcaption>
+      </figure>
+      <figure>
+        <a href="assets/figures/topology/boundary_classifier_curve.png" target="_blank" rel="noopener"><img src="assets/figures/topology/boundary_classifier_curve.png" alt="Boundary classifier ROC"></a>
+        <figcaption><strong>Boundary classifier curve.</strong> ROC for the degree-4 polynomial implicit boundary fit; AUC ≈ 1.0 ⇒ smooth.<span class="scope">slice: Npts = 97 hires; degree-4 polynomial fit</span></figcaption>
+      </figure>
+      <figure>
+        <a href="assets/figures/topology/poly_fit_residuals.png" target="_blank" rel="noopener"><img src="assets/figures/topology/poly_fit_residuals.png" alt="Polynomial-fit residuals"></a>
+        <figcaption><strong>Polynomial-fit residuals.</strong> Per-cell residual of the fitted boundary polynomial; tail magnitudes are the asymmetry of the strict-pass surface.<span class="scope">slice: Npts = 97 hires</span></figcaption>
+      </figure>
+      <figure>
+        <a href="assets/figures/horizon/v_scan.png" target="_blank" rel="noopener"><img src="assets/figures/horizon/v_scan.png" alt="V-scan of the FH horizon"></a>
+        <figcaption><strong>Horizon V-scan.</strong> Bubble-frame velocity sweep showing the lapse / shift behaviour around the FH wall.<span class="scope">slice: Task 2D.7 horizon analysis pipeline</span></figcaption>
+      </figure>
+      <figure>
+        <a href="assets/figures/horizon/foliation_canonical-V0p1.png" target="_blank" rel="noopener"><img src="assets/figures/horizon/foliation_canonical-V0p1.png" alt="Foliation health canonical V=0.1"></a>
+        <figcaption><strong>Foliation health — canonical anchor, V = 0.1.</strong> ADM lapse / shift consistency check.<span class="scope">slice: canonical strict-pass anchor</span></figcaption>
+      </figure>
+      <figure>
+        <a href="assets/figures/horizon/foliation_canonical-V1p5.png" target="_blank" rel="noopener"><img src="assets/figures/horizon/foliation_canonical-V1p5.png" alt="Foliation health canonical V=1.5"></a>
+        <figcaption><strong>Foliation health — canonical anchor, V = 1.5.</strong> Same anchor, super-luminal V — visible single-cell-passenger pathology.<span class="scope">slice: canonical strict-pass anchor</span></figcaption>
+      </figure>
+      <figure>
+        <a href="assets/figures/matter/canonical_anchor_slice.png" target="_blank" rel="noopener"><img src="assets/figures/matter/canonical_anchor_slice.png" alt="Matter slice — canonical anchor"></a>
+        <figcaption><strong>Matter slice — canonical anchor.</strong> Six-panel: ρ, p₁, p₃, anisotropy, |N|, g_tt at the canonical strict-pass anchor.<span class="scope">slice: Task 2D.9 anchor</span></figcaption>
+      </figure>
+      <figure>
+        <a href="assets/figures/matter/V1.50_r9.00_slice.png" target="_blank" rel="noopener"><img src="assets/figures/matter/V1.50_r9.00_slice.png" alt="Matter slice — V=1.5, r=9.0"></a>
+        <figcaption><strong>Matter slice — V = 1.5, r = 9.</strong> Super-luminal anchor. |N| > c throughout the wall — the all-wall-no-interior pathology made spatial.<span class="scope">slice: Task 2D.9, V = 1.5, r = 9</span></figcaption>
+      </figure>
+    </section>
+  </div>
+
+  <div class="block">
     <div class="block-eyebrow">Open work</div>
     <div class="block-title">What is still in flight</div>
     <table class="data-table">
