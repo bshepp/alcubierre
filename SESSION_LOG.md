@@ -1407,3 +1407,50 @@ Two pieces:
 
 The right framing is *refinement*, not *contradiction*. The analytic 2A.7 derivation is a clean local thin-shell calculation; it is correct in its limit but does not include the volumetric warp-gradient stress that dominates in the thick-shell + smooth-bump-function construction. A tighter analytic upper would require extending [`thickness_bound.ipynb`](thickness_bound.ipynb) cell 2's volumetric dimensional argument with the bump-function shape factor explicitly. Logged as a follow-up in [`WARP_FACTORY_NOTES.md`](WARP_FACTORY_NOTES.md) §'What this does not close'; not pursued in this session because the ~6× result is itself the headline.
 
+
+---
+
+## Session 19 — 2026-04-21 — Phase 3 numerical verification (Tasks 3.2, 3.1)
+
+**Participants:** Brian Sheppard + Claude (GitHub Copilot).
+**Duration:** ~3 hours (140 min MATLAB headless + writeup).
+**Trigger:** User invoked plan mode and requested `3.2 -> 3.3 -> 3.1 -> 4.1`. Phase 1 (3.2) and Phase 4 (3.1) of the plan executed; Phases 2-3 (3.3 nested + non-spherical) and Phase 5 (4.1) deferred to subsequent sessions.
+
+### Result — Task 3.2 kappa-surface sweep
+
+**Decision-gate-B**: scaling-law form `Delta_min/R_2 = kappa * beta / C` confirmed across a 27-cell `(C, R_2, beta)` outer grid; kappa midpoint mean 5.3, median 6, std 1.0, **relative spread 18%** -- above the gate-A threshold of 10%. Anchor cell (Session-18 params: `C=1/3`, `R_2=20`, `beta=0.02`) recovers `kappa in (5, 7]` overlapping the Session-18 bracket of `(4.17, 5.83]` -- anchor independently confirmed at sweep resolution. Two non-trivial new findings:
+
+1. **Geometrical-cap saturation at high beta + low C**: cells with `beta = 0.05` and `C = 1/6` exhaust the cap `Delta < R_2` before DEC can pass -- these are *null configurations* where no Fuchs shell exists regardless of mass. Adds a binding constraint to the Path-2A landscape that 2A.7 / 2A.9a did not surface.
+2. **kappa rises monotonically with both beta and R_2** at fixed remaining params; the latter trend may be partially a wall-resolution effect and deserves a single-cell resolution-doubling check before being read as physical.
+
+The Session-18 number `kappa in (4.17, 5.83]` is now explicitly downgraded to *a slice value*, not a universal constant. The honest replacement statement is `kappa in (3, 7]` with `kappa ~ 5` typical in the resolved regime.
+
+### Result — Task 3.1 standard-Alcubierre sanity
+
+Standard subluminal Alcubierre at Pfenning-Ford 1997 textbook params `(v=c, R=4 m, sigma=8 / m)` violates **all four energy conditions** in 92.6% of the in-mask grid cells (in-mask pass = 0.0737 for NEC=WEC=DEC=SEC; `min(NEC) = -9.6e+43`). Wired-correctly check on Warp Factory tooling -- confirms the *non-trivial*, *non-null* positive results on the Fuchs shell are not pipeline artefacts.
+
+### Files added
+
+- [`warp_factory_repro/kappa_surface_sweep.m`](warp_factory_repro/kappa_surface_sweep.m) -- the 162-build sweep script.
+- [`warp_factory_repro/kappa_surface_sweep.mat`](warp_factory_repro/kappa_surface_sweep.mat), `.csv`, `.png`, `.log` -- artifacts.
+- [`warp_factory_repro/alcubierre_sanity.m`](warp_factory_repro/alcubierre_sanity.m) -- standard-Alcubierre sanity script.
+- [`warp_factory_repro/alcubierre_textbook.mat`](warp_factory_repro/alcubierre_textbook.mat) + 4 EC PNGs + `.log`.
+
+### Files modified
+
+- [`WARP_FACTORY_NOTES.md`](WARP_FACTORY_NOTES.md) -- added Section 3 (kappa-surface sweep, Task 3.2 closure with full table and dispositions) and Section 4 (standard-Alcubierre sanity, Task 3.1 closure).
+- [`ROADMAP.md`](ROADMAP.md) -- Task 3.1 `[~] -> [x]`, Task 3.2 `[~] -> [x]`, Phase 3 status header updated.
+
+### Bookkeeping
+
+- TRUST_AUDIT not modified: no row's grade flipped. Session-18 kappa headline preserved as a slice-value statement (already framed that way in WARP_FACTORY_NOTES.md §Disposition).
+- NAVIGATOR not modified: WARP_FACTORY_NOTES.md and warp_factory_repro/ already cataloged in Session 18.
+- HF Jobs background sweep `69e7f512ac288e522d8f06d3` (npts=129 Phase-2D analysis) independent and untouched; results land separately at `bshepp/alcubierre-sweeps/npts129-full-20260421T220713/` regardless of this session.
+
+### Phase 3 backlog status after this session
+
+3.1 [x], 3.2 [x]. Next: **3.3 nested + non-spherical** (Plan Phases 2-3, multi-session). 3.4-3.5 remain gated on Phase 2B; 3.6-3.8 remain landscape extensions.
+
+### Plan-vs-actual
+
+Plan Phase 1 (3.2) and Phase 4 (3.1) executed. Plan Phases 2 (3.3-nested), 3 (3.3-non-spherical), and 5 (4.1) deferred to sessions 20+. No deviations from the plan; bundling 3.1 with 3.2 as anticipated saved a session boundary.
