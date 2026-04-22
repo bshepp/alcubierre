@@ -1376,7 +1376,7 @@ Two pieces:
 
 ---
 
-## Session 18 — 2026-04-21 — Warp Factory cross-check (Task 2A.9b / TRUST_AUDIT #3)
+## Session 18 ï¿½ 2026-04-21 ï¿½ Warp Factory cross-check (Task 2A.9b / TRUST_AUDIT #3)
 
 **Participants:** Brian Sheppard + Claude (GitHub Copilot).
 **Duration:** ~1 hour.
@@ -1386,12 +1386,12 @@ Two pieces:
 
 **Existence anchor confirmed cleanly.** Warp Factory v1.0 cloned to `F:\science-projects\WarpFactory\` (out-of-tree); `metricGet_WarpShellComoving` + `evalMetric` reproduce Fuchs et al. 2024 Fig. 10 at canonical params `(R_1, R_2, M, beta) = (10 m, 20 m, 4.49e27 kg, 0.02 c)` with **in-shell pass-fractions NEC=WEC=DEC=SEC=1.0000**. Visual signature: uniform DEC-positive annulus on `[R_1, R_2]`, white interior, white exterior. TRUST_AUDIT #3 closed: B ? A.
 
-**?-bracket cross-check refines analytic 2A.9a downward by ~6×.** Sweep over `Delta = R_2 - R_1 in {1, 1.5, 2, 3, 5, 7, 10}` m at fixed `(M, R_2, beta)`: numerical `Delta_min` falls in `(5, 7]` m, giving `kappa_num in (4.17, 5.83]`. Analytic 2A.9a bracket is `kappa in [0.05, 0.875]`. The two calculations test different limits of the same physics: 2A.7 is a thin-shell Israel-jump argument at the anti-motion pole only; 2A.9b is the full thick TOV-fluid + bump-function pointwise-DEC evaluation. The dominant failure mode at small `Delta` is the *distributed shift-gradient stress* through the shell interior, not the pole jump. The scaling-law form `Delta_min/R = kappa beta/C` holds; the numerical bound is ~6× tighter. **Strengthens the negative reading of the static slice**: matter-shell route is harder than 2A.7 alone advertises.
+**?-bracket cross-check refines analytic 2A.9a downward by ~6ï¿½.** Sweep over `Delta = R_2 - R_1 in {1, 1.5, 2, 3, 5, 7, 10}` m at fixed `(M, R_2, beta)`: numerical `Delta_min` falls in `(5, 7]` m, giving `kappa_num in (4.17, 5.83]`. Analytic 2A.9a bracket is `kappa in [0.05, 0.875]`. The two calculations test different limits of the same physics: 2A.7 is a thin-shell Israel-jump argument at the anti-motion pole only; 2A.9b is the full thick TOV-fluid + bump-function pointwise-DEC evaluation. The dominant failure mode at small `Delta` is the *distributed shift-gradient stress* through the shell interior, not the pole jump. The scaling-law form `Delta_min/R = kappa beta/C` holds; the numerical bound is ~6ï¿½ tighter. **Strengthens the negative reading of the static slice**: matter-shell route is harder than 2A.7 alone advertises.
 
 ### Files added
 
-- [`WARP_FACTORY_NOTES.md`](WARP_FACTORY_NOTES.md) — companion doc.
-- [`warp_factory_repro/`](warp_factory_repro/) — `fuchs_fig10_repro.m`, `kappa_sweep.m`, `fuchs_repro.mat`, `kappa_sweep.mat`, 5 PNGs.
+- [`WARP_FACTORY_NOTES.md`](WARP_FACTORY_NOTES.md) ï¿½ companion doc.
+- [`warp_factory_repro/`](warp_factory_repro/) ï¿½ `fuchs_fig10_repro.m`, `kappa_sweep.m`, `fuchs_repro.mat`, `kappa_sweep.mat`, 5 PNGs.
 
 ### Bookkeeping
 
@@ -1403,20 +1403,20 @@ Two pieces:
 
 `2A.9b` was the last remaining open item in Phase 2A's main analytic-vs-numerical bracket. Other previously-deferred items (`2A.14` scope b, `ROADMAP` Phase 3 `3.1` Warp Factory standard-Alcubierre sanity check) remain explicitly deferred per their existing reopening criteria. **TRUST_AUDIT now has zero deferred items.** All ten audit rows are A-grade (rows 1-2, 4, 6-8, 10) or A with a documented narrow caveat (row 3 closes the existence anchor; row 5 is partially-closed pending Colab re-run; row 9 Rodal 2025 numerical comparison remains B-grade by explicit choice).
 
-### Note on the 6× discrepancy
+### Note on the 6ï¿½ discrepancy
 
-The right framing is *refinement*, not *contradiction*. The analytic 2A.7 derivation is a clean local thin-shell calculation; it is correct in its limit but does not include the volumetric warp-gradient stress that dominates in the thick-shell + smooth-bump-function construction. A tighter analytic upper would require extending [`thickness_bound.ipynb`](thickness_bound.ipynb) cell 2's volumetric dimensional argument with the bump-function shape factor explicitly. Logged as a follow-up in [`WARP_FACTORY_NOTES.md`](WARP_FACTORY_NOTES.md) §'What this does not close'; not pursued in this session because the ~6× result is itself the headline.
+The right framing is *refinement*, not *contradiction*. The analytic 2A.7 derivation is a clean local thin-shell calculation; it is correct in its limit but does not include the volumetric warp-gradient stress that dominates in the thick-shell + smooth-bump-function construction. A tighter analytic upper would require extending [`thickness_bound.ipynb`](thickness_bound.ipynb) cell 2's volumetric dimensional argument with the bump-function shape factor explicitly. Logged as a follow-up in [`WARP_FACTORY_NOTES.md`](WARP_FACTORY_NOTES.md) ï¿½'What this does not close'; not pursued in this session because the ~6ï¿½ result is itself the headline.
 
 
 ---
 
-## Session 19 — 2026-04-21 — Phase 3 numerical verification (Tasks 3.2, 3.1)
+## Session 19 ï¿½ 2026-04-21 ï¿½ Phase 3 numerical verification (Tasks 3.2, 3.1)
 
 **Participants:** Brian Sheppard + Claude (GitHub Copilot).
 **Duration:** ~3 hours (140 min MATLAB headless + writeup).
 **Trigger:** User invoked plan mode and requested `3.2 -> 3.3 -> 3.1 -> 4.1`. Phase 1 (3.2) and Phase 4 (3.1) of the plan executed; Phases 2-3 (3.3 nested + non-spherical) and Phase 5 (4.1) deferred to subsequent sessions.
 
-### Result — Task 3.2 kappa-surface sweep
+### Result ï¿½ Task 3.2 kappa-surface sweep
 
 **Decision-gate-B**: scaling-law form `Delta_min/R_2 = kappa * beta / C` confirmed across a 27-cell `(C, R_2, beta)` outer grid; kappa midpoint mean 5.3, median 6, std 1.0, **relative spread 18%** -- above the gate-A threshold of 10%. Anchor cell (Session-18 params: `C=1/3`, `R_2=20`, `beta=0.02`) recovers `kappa in (5, 7]` overlapping the Session-18 bracket of `(4.17, 5.83]` -- anchor independently confirmed at sweep resolution. Two non-trivial new findings:
 
@@ -1425,7 +1425,7 @@ The right framing is *refinement*, not *contradiction*. The analytic 2A.7 deriva
 
 The Session-18 number `kappa in (4.17, 5.83]` is now explicitly downgraded to *a slice value*, not a universal constant. The honest replacement statement is `kappa in (3, 7]` with `kappa ~ 5` typical in the resolved regime.
 
-### Result — Task 3.1 standard-Alcubierre sanity
+### Result ï¿½ Task 3.1 standard-Alcubierre sanity
 
 Standard subluminal Alcubierre at Pfenning-Ford 1997 textbook params `(v=c, R=4 m, sigma=8 / m)` violates **all four energy conditions** in 92.6% of the in-mask grid cells (in-mask pass = 0.0737 for NEC=WEC=DEC=SEC; `min(NEC) = -9.6e+43`). Wired-correctly check on Warp Factory tooling -- confirms the *non-trivial*, *non-null* positive results on the Fuchs shell are not pipeline artefacts.
 
@@ -1443,7 +1443,7 @@ Standard subluminal Alcubierre at Pfenning-Ford 1997 textbook params `(v=c, R=4 
 
 ### Bookkeeping
 
-- TRUST_AUDIT not modified: no row's grade flipped. Session-18 kappa headline preserved as a slice-value statement (already framed that way in WARP_FACTORY_NOTES.md §Disposition).
+- TRUST_AUDIT not modified: no row's grade flipped. Session-18 kappa headline preserved as a slice-value statement (already framed that way in WARP_FACTORY_NOTES.md ï¿½Disposition).
 - NAVIGATOR not modified: WARP_FACTORY_NOTES.md and warp_factory_repro/ already cataloged in Session 18.
 - HF Jobs background sweep `69e7f512ac288e522d8f06d3` (npts=129 Phase-2D analysis) independent and untouched; results land separately at `bshepp/alcubierre-sweeps/npts129-full-20260421T220713/` regardless of this session.
 
@@ -1454,3 +1454,54 @@ Standard subluminal Alcubierre at Pfenning-Ford 1997 textbook params `(v=c, R=4 
 ### Plan-vs-actual
 
 Plan Phase 1 (3.2) and Phase 4 (3.1) executed. Plan Phases 2 (3.3-nested), 3 (3.3-non-spherical), and 5 (4.1) deferred to sessions 20+. No deviations from the plan; bundling 3.1 with 3.2 as anticipated saved a session boundary.
+
+---
+
+## Session 20 (2026-04-21) â€” Tier A figures programme
+
+### What
+
+Generated 8 quantitatively-strongest figures from existing sweep artifacts, surfaced them on the website, and wired permanent figure-generation infrastructure.
+
+### Infrastructure
+
+- `figures/plot_figures.py` â€” permanent script (placed under `figures/` rather than the gitignored `agent-tools/`); 7 subcommands + `all`; argparse-dispatched; `_save()` mirrors PNGs into `webpage/assets/figures/` for site deploys.
+- `figures/` â€” repo-rooted standalone PNG tree; one subdirectory per topic (`fell_heisenberg/`, `warp_factory/`, `thickness_bound/`, `krasnikov/`, `gw_recoil/`, `hybrid_wall/`, `shift_families/`).
+- `webpage/assets/figures/` â€” mirror copy auto-populated by `plot_figures.py` plus pre-existing PNGs from `fell_heisenberg_topology_hires/`, `fell_heisenberg_horizon/`, `fell_heisenberg_matter/`, `warp_factory_repro/`.
+- Gallery CSS rule `.image-gallery` added to `webpage/assets/style.css` (responsive grid, hover affordance, figcaption with monospaced "scope" line).
+
+### Figures generated (Tier A, zero new compute)
+
+1. `figures/fell_heisenberg/strict_pass_corner.png` â€” 5 x 5 corner plot, 1404/15000 strict-pass cells.
+2. `figures/warp_factory/kappa_surface_3d.png` + `kappa_surface_facets.png` â€” kappa-surface 3D scatter + 3 x 3 facet grid with analytic kappa = 0.875 reference.
+3. `figures/thickness_bound/heatmap_with_analytic.png` â€” 3-facet (beta, Delta/R) heatmap + 3 analytic kappa overlays.
+4. `figures/krasnikov/universal_collapse.png` â€” Krasnikov 2003 |rho_p_min| * eps^2 universal collapse.
+5. `figures/gw_recoil/dv_cliff.png` â€” Delta v_kick vs beta faceted by compactness, vs c-tanh(beta) saturation.
+6. `figures/hybrid_wall/pass_fraction.png` â€” 4 eta x 2 panel (delta_M, w_M) WEC/DEC heatmaps.
+7. `figures/shift_families/family_comparison.png` â€” 3-panel grouped bar of WEC/DEC frac + DEC slack medians.
+
+### Website
+
+Galleries inserted into 3 pages:
+
+- `webpage/fell-heisenberg.html` â€” 12-figure gallery (FH corner + 7 topology + 2 horizon + 2 matter).
+- `webpage/warp-factory.html` â€” 12-figure gallery (3 kappa-surface + thickness heatmap + 5 Fuchs + 3 textbook-Alcubierre).
+- `webpage/six-slices.html` â€” 5-figure gallery, one per slice where reducible to a single image.
+
+Local sanity-check via `python -m http.server` confirmed all 200s; deploy.ps1 sync recursively, no script changes needed.
+
+### Bookkeeping
+
+- `NAVIGATOR.md` â€” added "Generated figures" subsection to the Document index pointing at `figures/` and `figures/plot_figures.py`.
+- Appended "## Figures" sections to `SHIFT_FAMILIES_NOTES.md`, `KRASNIKOV_TUBE_NOTES.md`, `FELL_HEISENBERG_SWEEP_NOTES.md`, `WARP_FACTORY_NOTES.md`.
+- TRUST_AUDIT not modified: no claim's grade changed; figures are renderings of already-graded artifacts.
+- ROADMAP not modified: figure programme is presentation, not new physics.
+
+### Plan-vs-actual
+
+Tier A (zero new compute) of the figures plan delivered in full. Tier B (cheap recomputation) and Tier C (new HF Jobs sweeps) gated on user sign-off.
+
+### Outstanding from prior sessions
+
+- GitHub Release publish at https://github.com/bshepp/alcubierre/releases/new for tag `v0.1.0` to trigger Zenodo webhook.
+- HF Jobs `69e7f512ac288e522d8f06d3` (Npts=129) and `69e843fecd8c002f31e015d8` (cpu-xl variant) continue independently.

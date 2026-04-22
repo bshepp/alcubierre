@@ -138,6 +138,13 @@ This is the authoritative version. Slice notes documents that have their own tab
 |---|---|
 | [`verification.ipynb`](verification.ipynb) | Sympy/numpy verification of all symbolic results from `LINEARIZATION_CALCULATION.md` |
 
+### Generated figures
+
+| Path | Role |
+|---|---|
+| [`figures/`](figures/) | Standalone PNG renders of the quantitatively-strongest results (one subdirectory per topic). All produced by [`figures/plot_figures.py`](figures/plot_figures.py); each subcommand reads a parquet/csv from `sweeps/`, `sweeps_remote/`, or `warp_factory_repro/` and emits PNGs into the matching `figures/<topic>/` folder, mirroring into `webpage/assets/figures/<topic>/` for website deploys. Subcommands: `fh-corner`, `kappa-surface-3d`, `thickness-heatmap`, `krasnikov-collapse`, `gw-recoil-cliff`, `hybrid-wall-heatmap`, `shift-families-bars`, plus `all`. Slice scopes are recorded in each PNG's suptitle and on the website galleries (`webpage/{warp-factory,fell-heisenberg,six-slices}.html`). |
+| [`figures/plot_figures.py`](figures/plot_figures.py) | Permanent figure-generation script (lives under `figures/` rather than `agent-tools/` because the latter is gitignored throwaway). Argparse dispatch via `SUBCOMMANDS` dict; `_save()` mirrors each PNG to `webpage/assets/figures/`. |
+
 ### Historical (pre-pivot)
 
 These are preserved as record of the project's earlier hypotheses; their *symbolic* content remains valid where reused, but their *strategic recommendations* have been superseded.
