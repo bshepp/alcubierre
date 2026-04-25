@@ -72,6 +72,32 @@ if ($LASTEXITCODE -ne 0) {
 Write-Host ""
 Write-Host "Sync complete." -ForegroundColor Green
 
+# Force charset=utf-8 on text assets (S3 sync's default Content-Type omits charset,
+# which lets some browsers fall back to Windows-1252 and corrupt Greek/math glyphs).
+if (-not $DryRun) {
+    $textTypes = @(
+        @{ Pattern = "*.html"; Type = "text/html; charset=utf-8" },
+        @{ Pattern = "*.css";  Type = "text/css; charset=utf-8" },
+        @{ Pattern = "*.js";   Type = "application/javascript; charset=utf-8" }
+    )
+    foreach ($t in $textTypes) {
+        Write-Host ("Setting Content-Type for " + $t.Pattern + " ...") -ForegroundColor DarkGray
+        & aws s3 cp "s3://$Bucket/" "s3://$Bucket/" `
+            --recursive `
+            --exclude "*" `
+            --include $t.Pattern `
+            --metadata-directive REPLACE `
+            --content-type $t.Type `
+            --profile $Profile `
+            --region $Region | Out-Null
+        if ($LASTEXITCODE -ne 0) {
+            Write-Error ("aws s3 cp metadata pass failed for " + $t.Pattern)
+            exit $LASTEXITCODE
+        }
+    }
+    Write-Host "Content-Type charset pass complete." -ForegroundColor Green
+}
+
 # Optional CloudFront invalidation.
 if ($Invalidate) {
     if (-not $DistributionId) {
