@@ -1544,3 +1544,103 @@ If the gate is ever met in the future and a definitive count is needed, a re-dis
 ### Outstanding from prior sessions (rolled forward)
 
 - GitHub Release publish at https://github.com/bshepp/alcubierre/releases/new for tag `v0.1.0` to trigger Zenodo webhook.
+
+
+---
+
+## Session 22 (2026-04-27) — Task 2D.5f chunked re-dispatch (gate met by user request)
+
+### What
+
+User explicitly authorised an additional ~$10 of compute toward Task 2D.5f despite the Session 21 will-not-retry decision. This satisfies reopening criterion (a) of [hf_jobs/configs/fell_heisenberg_npts129_full.json](hf_jobs/configs/fell_heisenberg_npts129_full.json) `_comment` (`explicit publication request`) and the future-retry guidance in ROADMAP 2D.5f (`chunk into ~4 cpu-xl sub-jobs of ~2520 points each`).
+
+### Infrastructure changes
+
+- [hf_jobs/run_sweep.py](hf_jobs/run_sweep.py): added `--start` / `--stop` slice flags. The grid (from `build_grid` or `--points`) is sliced after expansion; the slice range is appended to the output parquet filename as `_chunkSSSSS-EEEEE` so chunks are non-collidable and trivially re-assemblable. Slice validation refuses out-of-range / empty slices.
+- [hf_jobs/jobs/run_fell_heisenberg.sh](hf_jobs/jobs/run_fell_heisenberg.sh): forwards two new positional args (`$4` start, `$5` stop) into the dispatcher.
+- `build_grid` for the FH sweep is deterministic in iteration order, verified locally (10080 points, indices 0/2520/7560 spot-checked).
+
+### False-start (recorded honestly per AGENTS.md)
+
+First dispatch attempt (commit 7667c9d on origin/main) launched 4 cpu-xl jobs **before pushing** the slicing commit, so the container's `git clone --depth 1` pulled the un-sliced code and the `run_sweep` log read `points=10080` instead of 2520. Cancelled all 4 within ~2 minutes (well before sweep started; only pip-install phase had run):
+
+| Job ID                       | Slice intent  | Resolution            |
+|------------------------------|---------------|-----------------------|
+| `69eee8bad2c8bd8662bd07d0` | [0,2520)      | CANCELED              |
+| `69eee8f9d70108f37ace0564` | [2520,5040)   | CANCELED              |
+| `69eee938d2c8bd8662bd07d3` | [5040,7560)   | CANCELED              |
+| `69eee93fd70108f37ace056c` | [7560,10080)  | CANCELED              |
+
+Cost: ~$0.10 total (4 jobs × ~2 min × cpu-xl). Lesson recorded for `/memories/repo/notebook_workflow.md` style future reference: **always push first when the HF Jobs entry script clones from a remote**.
+
+### Smoke test (after push)
+
+After pushing commit e9d7a4e (slicing infra + Session-21 docs), dispatched a 4-point smoke (slice [0,4), cpu-upgrade, 30m timeout) as job `69eee9a9d2c8bd8662bd07d9`. Container log confirmed:
+
+`[run_sweep] sweep=fell_heisenberg grid=build_grid slice=[0,4) of 10080 points=4 workers=64 HF_JOB=True`
+
+Wrote `fell_heisenberg_20260427T044503_chunk00000-00004.parquet` (4 rows, 5.0s), uploaded to dataset path `bshepp/alcubierre-sweeps/npts129-smoke-slice-20260426T214424Z/`. Verified post-upload: parquet has 4 rows with the expected `(V, sigma, m0, a, ell, r)` axes. The bash exit-1 on upload was a Windows-only cosmetic charmap encoding issue printing the `\u2713` checkmark (the upload itself succeeded — same issue reproduces locally on download).
+
+### Real chunk dispatch
+
+Dispatched 4 cpu-xl chunks in `--detach` mode at 2026-04-27 04:48 UTC:
+
+| Job ID                       | Slice          | Subdir                                          |
+|------------------------------|----------------|-------------------------------------------------|
+| `69eeea7fd70108f37ace0574` | [0,2520)       | `npts129-chunk00000-02520-20260426T214757Z`   |
+| `69eeea80d70108f37ace0576` | [2520,5040)    | `npts129-chunk02520-05040-20260426T214757Z`   |
+| `69eeea81d70108f37ace0578` | [5040,7560)    | `npts129-chunk05040-07560-20260426T214757Z`   |
+| `69eeea82d2c8bd8662bd07e3` | [7560,10080)   | `npts129-chunk07560-10080-20260426T214757Z`   |
+
+Per-chunk budget: 3h timeout (margin over the ~88-min wall estimate from ~150 min × (129/97)³ ÷ 4). Expected total cost: `4 × ~.50 × ~1.5 h ≈ `, plus `.10` from the false start. Within the user's `` envelope.
+
+### What this WILL and WILL NOT change
+
+WILL change (numerically):
+- A definitive Npts=129 strict-pass count (vs the §11.6 extrapolated `~5900 / 10080`).
+- A direct Npts=97→129 boundary-flip table (the Session 14b 300-point sample showed 47% pass→fail flips at the boundary; this re-runs the full grid).
+
+WILL NOT change (structurally — these were the basis for Session 21's will-not-retry decision and remain valid):
+- Single-cell passenger zone (Session 14, §9 of FELL_HEISENBERG_SWEEP_NOTES).
+- 76× mass overhead from VIQ post-processing (Session 12).
+- 98.3% CTC-sea coverage (Session 12).
+- Absent asymptotic decay envelope (Session 13).
+- Box inside its own would-be Schwarzschild horizon (Session 14).
+
+So the headline mathematical claim (`a strict-WEC+DEC FH metric exists`) is unchanged regardless of outcome; only the *count* gets a refined number. Honest framing: this is a publication-grade refinement of an existing B-grade number, not a re-evaluation of the warp-drive interpretation.
+
+### AWS
+
+User offered AWS as an alternative. Declined: this repo has zero AWS scaffolding (no IAM, AMI, S3 result-bucket, no boto3 in [
+equirements.txt](requirements.txt)). Setting that up would burn most of the `` budget and add infrastructure surface area inconsistent with AGENTS.md's `don't add casually'' discipline. HF Jobs cpu-xl chunking is the documented retry path and uses existing tooling.
+
+### Bookkeeping (Session 22)
+
+- ROADMAP 2D.5f bullet — to be updated after chunks complete with results + grade revision (currently `[~]` with failed-dispatch note).
+- FELL_HEISENBERG_SWEEP_NOTES — add §11.8 with the chunked-result analysis after parquets land in dataset.
+- TRUST_AUDIT — to be revisited only if the strict-pass count moves outside the `§11.6 ~5900 ± few-hundred` extrapolation envelope (would be a B → B+ promotion of that specific sub-claim, nothing else).
+- HF Dataset `bshepp/alcubierre-sweeps` will receive 4 `npts129-chunk*-20260426T214757Z/` subdirs.
+
+### Outstanding from prior sessions (still rolled forward)
+
+- GitHub Release publish at https://github.com/bshepp/alcubierre/releases/new for tag `v0.1.0` to trigger Zenodo webhook.
+
+
+### Session 22 closure (results landed)
+
+All 4 chunks COMPLETED; total 10080 / 10080 rows, zero pipeline errors. Concatenated parquet at `sweeps_remote/npts129_full/fell_heisenberg_npts129_full_concat.parquet`.
+
+| Quantity | Value |
+|---|---|
+| Strict WEC pass | 7941 / 10080 (78.78%) |
+| Strict DEC pass | 6240 / 10080 (61.90%) |
+| **Strict WEC ∧ DEC pass** | **6240 / 10080 (61.90%)** |
+| §11.6 extrapolation | ~5900 / 10080 |
+| Observed − extrapolated | +340 (+5.8%) |
+| `E_neg` among strict-pass | 0 (all 6240 rows) |
+
+Wrote §11.8 in [`FELL_HEISENBERG_SWEEP_NOTES.md`](FELL_HEISENBERG_SWEEP_NOTES.md) with the full breakdown including the WEC/DEC tier ladder. Updated ROADMAP 2D.5f from `[ ]` to `[x]` and Phase-2D status header from "post-Session 17" to "post-Session 22" with the 6240/10080 number. TRUST_AUDIT not changed: the §11.6 sub-claim moves from B-grade-extrapolated to B-grade-direct-measurement, but the grade letter is unchanged because it depends on the FH-ansatz B-grade scaffolding (Sessions 11–14 cumulative tempering), not on the count itself. The 2D.16 reopening criterion ("≳5% strict-pass classifications flipped") was **not** triggered: the +1759 marginal-band drop between thresholds 0.99 and 1.00 is inside the §11.4 noise-floor band, not a pipeline re-classification.
+
+Throwaway scratch scripts ([`agent-tools/_concat_npts129.py`](agent-tools/_concat_npts129.py), [`agent-tools/_analyse_npts129.py`](agent-tools/_analyse_npts129.py)) kept per AGENTS.md "throwaway" naming convention; safe to delete or leave.
+
+The headline mathematical claim ("a strict-WEC+DEC FH metric exists with $E_{\rm neg} = 0$") is reconfirmed at full-grid $N_{\rm pts}=129$ resolution. Every structural critique (single-cell passenger, 76× mass, CTC sea, no asymptotic decay, inside-horizon) is unaffected by this measurement and remains operative.
