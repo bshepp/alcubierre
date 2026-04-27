@@ -20,8 +20,18 @@ set -euo pipefail
 CONFIG_NAME="${1:-preview}"
 UPLOAD_SUBDIR="${2:-${CONFIG_NAME}-$(date -u +%Y%m%dT%H%M%S)}"
 POINTS_PATH="${3:-}"
+SLICE_START="${4:-}"
+SLICE_STOP="${5:-}"
 CONFIG_PATH="hf_jobs/configs/fell_heisenberg_${CONFIG_NAME}.json"
 RESULTS_REPO="bshepp/alcubierre-sweeps"
+
+SLICE_ARGS=()
+if [[ -n "${SLICE_START}" ]]; then
+  SLICE_ARGS+=(--start "${SLICE_START}")
+fi
+if [[ -n "${SLICE_STOP}" ]]; then
+  SLICE_ARGS+=(--stop "${SLICE_STOP}")
+fi
 
 if [[ ! -f "${CONFIG_PATH}" ]]; then
   echo "ERROR: config not found at ${CONFIG_PATH}" >&2
@@ -49,9 +59,9 @@ echo
 
 echo "=== Running sweep ==="
 if [[ -n "${POINTS_PATH}" ]]; then
-  HF_JOB=1 python -m hf_jobs.run_sweep fell_heisenberg --config "${CONFIG_PATH}" --points "${POINTS_PATH}"
+  HF_JOB=1 python -m hf_jobs.run_sweep fell_heisenberg --config "${CONFIG_PATH}" --points "${POINTS_PATH}" "${SLICE_ARGS[@]}"
 else
-  HF_JOB=1 python -m hf_jobs.run_sweep fell_heisenberg --config "${CONFIG_PATH}"
+  HF_JOB=1 python -m hf_jobs.run_sweep fell_heisenberg --config "${CONFIG_PATH}" "${SLICE_ARGS[@]}"
 fi
 echo
 

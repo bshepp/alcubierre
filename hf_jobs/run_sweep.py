@@ -136,8 +136,16 @@ def run(
     workers: int | None = None,
     limit: int | None = None,
     points_path: Path | None = None,
+    start: int | None = None,
+    stop: int | None = None,
 ) -> Path:
-    """Execute a sweep and persist results. Returns the output parquet path."""
+    """Execute a sweep and persist results. Returns the output parquet path.
+
+    ``start`` / ``stop`` slice the grid (after build_grid / --points expansion)
+    so a large grid can be chunked across several jobs while preserving the
+    original index. The output filename is suffixed with the slice range when
+    a slice is requested.
+    """
     sweep = _load_sweep(sweep_name)
     with config_path.open("r", encoding="utf-8") as fh:
         config = json.load(fh)
@@ -149,6 +157,19 @@ def run(
     else:
         grid = sweep.build_grid(config)
         source = "grid=build_grid"
+
+    full_n = len(grid)
+    slice_tag = ""
+    if start is not None or stop is not None:
+        s = start or 0
+        e = stop if stop is not None else full_n
+        if s < 0 or e > full_n or s >= e:
+            raise SystemExit(
+                f"Invalid slice [{s},{e}) for grid of size {full_n}."
+            )
+        grid = grid[s:e]
+        slice_tag = f"_chunk{s:05d}-{e:05d}"
+        source += f" slice=[{s},{e}) of {full_n}"
 
     if limit is not None:
         grid = grid[:limit]
@@ -163,8 +184,8 @@ def run(
 
     out_dir.mkdir(parents=True, exist_ok=True)
     stamp = time.strftime("%Y%m%dT%H%M%S")
-    out_parquet = out_dir / f"{sweep_name}_{stamp}.parquet"
-    out_json = out_dir / f"{sweep_name}_{stamp}.config.json"
+    out_parquet = out_dir / f"{sweep_name}_{stamp}{slice_tag}.parquet"
+    out_json = out_dir / f"{sweep_name}_{stamp}{slice_tag}.config.json"
     out_json.write_text(json.dumps(config, indent=2), encoding="utf-8")
 
     t0 = time.time()
@@ -216,6 +237,18 @@ def main(argv: list[str] | None = None) -> int:
             "(e.g. Npts, L, Pi) are merged into each row that does not already define them."
         ),
     )
+    p.add_argument(
+        "--start",
+        type=int,
+        default=None,
+        help="Start index of grid slice (inclusive). Use with --stop to chunk a large grid across multiple jobs.",
+    )
+    p.add_argument(
+        "--stop",
+        type=int,
+        default=None,
+        help="Stop index of grid slice (exclusive). Pairs with --start.",
+    )
     args = p.parse_args(argv)
     run(
         args.sweep,
@@ -224,6 +257,8 @@ def main(argv: list[str] | None = None) -> int:
         workers=args.workers,
         limit=args.limit,
         points_path=args.points,
+        start=args.start,
+        stop=args.stop,
     )
     return 0
 

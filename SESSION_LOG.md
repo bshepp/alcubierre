@@ -1505,3 +1505,42 @@ Tier A (zero new compute) of the figures plan delivered in full. Tier B (cheap r
 
 - GitHub Release publish at https://github.com/bshepp/alcubierre/releases/new for tag `v0.1.0` to trigger Zenodo webhook.
 - HF Jobs `69e7f512ac288e522d8f06d3` (Npts=129) and `69e843fecd8c002f31e015d8` (cpu-xl variant) continue independently.
+
+---
+
+## Session 21 (2026-04-26) — Task 2D.5f HF Jobs post-mortem; will-not-retry decision
+
+### What
+
+Checked the two background HF Jobs dispatched in Sessions 17 / 19 for Task 2D.5f (full Npts=129 re-sweep of the 10080-point refine grid). Both terminated in failure:
+
+| Job | Flavor | Created | Outcome |
+|---|---|---|---|
+| `69e7f512ac288e522d8f06d3` | `cpu-upgrade` | 2026-04-21 22:07 UTC | **OOMKilled** (exit 137) |
+| `69e843fecd8c002f31e015d8` | `cpu-xl` | 2026-04-22 03:43 UTC | **Job timeout** |
+
+At $N_{\rm pts}=129$ each evaluation point allocates a $129^3 \approx 2.15 \times 10^6$-cell ADM grid, and the dispatch was a 10080-point sweep (V × σ × m₀ × a × ℓ × r = 1 × 7 × 8 × 6 × 5 × 6). cpu-upgrade ran out of memory; cpu-xl ran out of wall time before completing.
+
+### Decision: do not retry
+
+The Task 2D.5f config explicitly gates dispatch on three reopening criteria (see [`hf_jobs/configs/fell_heisenberg_npts129_full.json`](hf_jobs/configs/fell_heisenberg_npts129_full.json) `_comment`): (a) external publication or claim disputing the §11.6 extrapolated count of ~5900/10080, (b) a Phase E xAct decision-gate-C result, (c) a future task surfacing a need for higher-resolution boundary classification. **None of these has been triggered as of Session 21.** The Session-17 dispatch was speculative; the Session-19 cpu-xl re-dispatch was a brute-force retry of the same un-gated work.
+
+More importantly, every structural test in Sessions 14–17 (single-cell passenger zone, 76× mass overhead, 98.3% CTC sea, no asymptotic-decay envelope, box inside its own would-be Schwarzschild horizon) is **invariant under refining the boundary count from 5900 to whatever the true Npts=129 number is**. A more precise strict-pass count would not restore the warp-drive interpretation. The §11.6 Npts=97→129 extrapolation (~5900/10080, ~50% margin in the boundary band) is sufficient for every claim the project currently makes.
+
+If the gate is ever met in the future and a definitive count is needed, a re-dispatch would need to either (i) chunk the 10080-point grid into ~4 sub-jobs of ~2520 points each on cpu-xl (~1 hr each, fits in wall-time), or (ii) reduce $N_{\rm pts}$ per-point memory by streaming the FD stencil instead of allocating the full $129^3$ grid.
+
+### Files modified
+
+- [`SESSION_LOG.md`](SESSION_LOG.md) — this entry.
+- [`ROADMAP.md`](ROADMAP.md) — Task 2D.5f line: removed "dispatched 2026-04-21" status; added "OOMKilled + timeout 2026-04-21/22; not retried — gate not met".
+- [`FELL_HEISENBERG_SWEEP_NOTES.md`](FELL_HEISENBERG_SWEEP_NOTES.md) — appended a §11.7 post-mortem note pointing to this entry.
+
+### Bookkeeping
+
+- TRUST_AUDIT not modified: no claim's grade changed; the §11.6 ~5900/10080 estimate remains the operative B-grade number.
+- NAVIGATOR not modified: the existing 2D.5f wording ("Only worth doing if a publication needs it; the §11.6 extrapolation is sufficient otherwise.") already matches reality post-failure.
+- HF Dataset `bshepp/alcubierre-sweeps` — no `npts129-full-*` subdirectory was uploaded by either failed job (sweeps did not reach completion).
+
+### Outstanding from prior sessions (rolled forward)
+
+- GitHub Release publish at https://github.com/bshepp/alcubierre/releases/new for tag `v0.1.0` to trigger Zenodo webhook.

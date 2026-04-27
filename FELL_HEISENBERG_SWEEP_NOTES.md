@@ -818,6 +818,15 @@ The Session-11/12/13 size/topology claims need adjustment:
 
 The cumulative tempering across Sessions 12–14 is: a real positive-energy WEC+DEC-respecting metric exists in the FH ansatz over a robustly-characterised parameter region of order ~50% of the band centre, but its physical realisation as a warp drive is undermined by the zero-volume passenger zone (§9), and the precise *count* of strict-pass configurations is sensitive to discretisation noise at the boundary in a way that systematically over-counts at all resolutions tested so far. The headline mathematical claim is intact; the headline numerical claims (specific counts) are subject to ongoing convergence study.
 
+### §11.7 Task 2D.5f post-mortem (Session 21, 2026-04-26)
+
+The full $N_{\rm pts}=129$ re-sweep (config [`hf_jobs/configs/fell_heisenberg_npts129_full.json`](hf_jobs/configs/fell_heisenberg_npts129_full.json)) was dispatched twice without a reopening trigger and failed both times:
+
+- HF Jobs `69e7f512ac288e522d8f06d3` (cpu-upgrade, 2026-04-21 22:07 UTC): **OOMKilled** (exit 137). At $N_{\rm pts}=129$ each evaluation point allocates a $\sim 2.15 \times 10^6$-cell ADM grid; the cpu-upgrade RAM ceiling is exceeded.
+- HF Jobs `69e843fecd8c002f31e015d8` (cpu-xl, 2026-04-22 03:43 UTC): **Job timeout**. The 10080-point grid does not complete inside the cpu-xl wall-time budget when run as a single job.
+
+Decision (Session 21): **do not retry.** The §11.6 extrapolated count (~5900/10080) is the operative number. Any future re-dispatch (only if a reopening criterion in the config `_comment` is met) must either chunk the 10080-point grid into ~4 cpu-xl sub-jobs of ~2520 points each, or stream the FD stencil rather than allocating the full $129^3$ grid per point. See [`SESSION_LOG.md`](SESSION_LOG.md) Session 21.
+
 ---
 
 ## §12 Hard Fix attempt (Task 2D.5e) — partial success
