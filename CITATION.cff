@@ -15,6 +15,8 @@ authors:
   - family-names: Sheppard
     given-names: Brian
     affiliation: Independent researcher
+  - name: "Anthropic Claude (Sonnet, Opus, Opus 4.7), via GitHub Copilot"
+    affiliation: "AI coding-agent collaborator, 2026-03 to present"
 license: MIT
 repository-code: "https://github.com/bshepp/alcubierre"
 url: "https://github.com/bshepp/alcubierre"

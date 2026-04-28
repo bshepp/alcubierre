@@ -2,6 +2,14 @@
 
 ---
 
+## Convention
+
+Every session in this log is a collaboration between **Brian Sheppard** (project owner — direction, scoping, gating decisions, compute budget) and an **AI coding agent** (Anthropic Claude — Sonnet, Opus, or Opus 4.7 — accessed via GitHub Copilot). Where individual entries say things like "Task 2D.5f closed" or "the symbolic Hessian was reproduced," the work was executed by the agent under the user's direction unless explicitly noted otherwise. Decisions, slice-scope choices, and stop conditions are the user's; derivations, notebook code, sweep modules, and prose drafts are predominantly the agent's. Wins and losses are shared. Some entries carry an explicit `**Participants:**` tag; the absence of that tag does not imply solo work — it just means the convention above applies.
+
+See [`speculation/epistemological_style_guide.md`](speculation/epistemological_style_guide.md) for the broader framing of how AI collaboration is treated in this project's documentation.
+
+---
+
 ## Session 1 — 2026-03-30
 
 **Participants:** Brian Sheppard + Claude

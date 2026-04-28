@@ -32,6 +32,10 @@ See `MATTER_SHELL_PATH.md` §6 for outcome scenarios and §9 for the static-slic
 
 **Project mode:** This is a personal landscape exploration, not a paper-driven programme. There are no concrete deliverables. Conclusions are reported with explicit slice-of-parameter-space scope so the limits of each result are visible. See [`TRUST_AUDIT.md`](TRUST_AUDIT.md) for the honest accounting of what we derived vs. what we accepted on the literature's authority.
 
+**How this was produced.** The work is a sustained collaboration between Brian Sheppard (project owner — direction, scoping, gating decisions, compute budget, domain reading) and a series of frontier AI coding agents (Anthropic Claude — including Sonnet, Opus, and Opus 4.7 — accessed via GitHub Copilot, 2026-03 onward). The agents executed essentially all of the symbolic derivations, notebook code, sweep modules, prose drafting, and HF-Jobs orchestration; the human direction set the questions, the slice scopes, the trust grading, and the stop conditions. The project started as a capability probe — "what can a current coding agent do with a speculative GR construction?" — and evolved into a genuine landscape map as the human side gained working familiarity with the literature. Wins and losses are shared. Per [`speculation/epistemological_style_guide.md`](speculation/epistemological_style_guide.md), this collaboration is part of the methodology, not a footnote. The conversation logs are not committed but are archived locally for reproducibility.
+
+For the meta-framing of this project alongside the rest of the portfolio (capability probe + research finding + methodology study), see [`speculation/epistemological_style_guide.md`](speculation/epistemological_style_guide.md).
+
 ## Documents
 
 | File | Contents |
