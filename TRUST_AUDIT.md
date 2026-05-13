@@ -209,3 +209,17 @@ The original "1 week of focused work" estimate to upgrade from "B-grade composit
 **Slice scope** (recorded in [speculation/CODIMENSION_SCALING.md](speculation/CODIMENSION_SCALING.md) �6): static thin matter shells, 3+1 GR, Israel-junction matching, small perturbative shift, classical DEC. The law is not asserted outside this slice.
 
 **No load-bearing dependency change.** This work does NOT modify the existing Path 2A composite verdict � it explores the *mathematical structure* of the obstructions rather than adding new ones. The codimension-counting law is parallel to, not part of, the warp-drive no-go programme. Grade summary unchanged: composite Path 2A verdict remains A-.
+
+
+---
+
+## Session 26 addendum � nested concentric shells (Phase 3.3 item 4)
+
+**Result.** Within the slice (axisymmetric, comoving, two constant-density concentric shells, fixed total mass $M_{tot} = 4.49\times 10^{27}$ kg, warp band fixed at outer wall $(R_1, R_2) = (10, 20)$ m, $v = 0.02c$, smoothFactor = 4000, $300\times 300\times 5$ grid at $dx = 0.2$ m), splitting ADM mass between an inner shell at $(5, 8)$ m and the outer Fuchs shell **strictly degrades the NEC margin** monotonically as the inner-shell fraction $f_{inner}$ grows: from min(NEC) = +1.24e+39 (single shell) to -1.36e+40 at $f_{inner} = 0.7$. Pass-fraction crosses 1 -> 0.999 between $f_{inner} = 0.10$ and 0.20. Full sweep table in [SESSION_LOG.md](SESSION_LOG.md) Session 26.
+
+**Grade.** A within the slice (independent NumPy pipeline, two distinct sweeps cross-validate, derived in front of the user). Slice does not cover radial-profile optimization (which is what Fuchs §6 actually proposed), non-spherical shapes, time-dependent shifts, or multiple disjoint warp bands.
+
+**No load-bearing dependency change.** This is a NEGATIVE result that *strengthens* the existing composite verdict by closing one obvious-looking loophole (mass nesting). The Path 2A composite remains A.
+
+**WarpFactory issue #4 surfaced.** `TOVconstDensity.m` applies the Schwarzschild-interior closed form for a uniform solid sphere to a *shell* geometry. The closed-form's embedded $M(r) = M_{tot}(r/R)^3$ is wrong for a shell (true partial-shell $M(r)$ is much smaller in $[R_1, R_2]$). Effect on $\alpha$ is small ($\sim 2.4\times 10^{-5}$ rel) because the TOV source is dominated by $M(r)$ + a tiny $P/c^4$ correction; effect on shell-interior $P$ is $\sim 22\%$. Recorded in `/memories/repo/warp_factory_anchor.md` issue #4. Does **not** change Fuchs Fig.10 EC verdict (single-shell pass-fractions remain 1.0 in both `wf_compat=True` and `wf_compat=False` modes), so TRUST_AUDIT #3 grade unchanged.
+

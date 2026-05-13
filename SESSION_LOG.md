@@ -1793,3 +1793,52 @@ Phase 3.3 sub-items 1-3 closed. Items 4-6 (nested concentric shells, non-spheric
 - `warp_factory_py/solvers/energy_conditions.py`, `warp_factory_py/solvers/evaluator.py`: `T_for_null_weak` plumbing.
 - `agent-tools/diag_wf_ec_chain.py`: smoking-gun for WF bug #3.
 - `SESSION_LOG.md`, `NAVIGATOR.md`, `TRUST_AUDIT.md`.
+
+---
+
+## Session 26 (2026-05-14) -- Phase 3.3 Python port: nested concentric shells (item 4) -- NEGATIVE
+
+**Participants:** Brian Sheppard + Claude (Opus 4.7).
+**Continuation of Session 25** (six-task plan: items 4-6 remain).
+
+### Item 4 closed -- NEGATIVE within slice
+
+**Plan (item 4 from Session 24).** Generalise the Python warp-shell builder to support N concentric shells with independent (R1, R2, M) and ask whether splitting the ADM mass across shells improves the EC margin at fixed v_warp.
+
+**Misattribution corrected.** Fuchs et al. 2024 §5.2 ("Positive Energy Density") does **not** prescribe nested concentric shells. It only states (a) the no-horizon constraint $R_{shell} > 2GM_{shell}/c^2$ and (b) a vague forward-looking note. The actual mass-reduction sketch is in §6 Conclusion: *"the smoothing process can be replaced by direct 1D optimization of the radial profiles for density, pressure, and shift vector, possibly reducing required mass by orders of magnitude"* -- i.e. **single-shell radial-profile optimization, not nesting**. Nested shells are an independent extension, flagged as such in the code and notes.
+
+**Implementation (`warp_factory_py/metrics/warp_shell.py`, appended).**
+- `_tov_pressure_nested(rsample, rho, M_running, shells)` -- per-shell numerical inward TOV (predictor-corrector trapezoidal). Empty intervals stay vacuum; the would-be-horizon factor `1 - 2GM/(c^2 r)` is clamped at 0.
+- `metric_nested_warp_shells(...)` -- sum-of-top-hats density, per-shell TOV, smoothing matched to `metric_warp_shell_comoving`, `_alpha_solver` with outer BC at $M_{tot}$, `compact_sigmoid` warp band (default = innermost shell, configurable). Returns same `Metric` shape as the single-shell builder.
+
+**WarpFactory issue #4 (independent finding).** In the course of validating the nested API at $N=1$ against `metric_warp_shell_comoving`, the per-shell numerical TOV agrees on $\alpha$ to **2.4e-5** but disagrees on shell-interior $P$ by **22%**. Diagnosis: WF/Fuchs's `TOVconstDensity.m` is the **Schwarzschild-interior closed form for a uniform solid sphere** (assumes $M(r) = M_{tot}(r/R)^3$, density continuous to $r=0$); they apply it to a *shell* by zeroing $P$ outside $[R_1, R_2]$, but the embedded enclosed-mass relation is wrong for a shell. Stress-energy and ECs are barely affected because $\alpha$ only depends on $P$ through a tiny $P/c^4$ correction in the TOV source; the metric is dominated by $M(r)$ which the closed form gets right by virtue of using $M_{tot}$ at the outer radius. Recorded in `/memories/repo/warp_factory_anchor.md`.
+
+### Headline result (mass-split sweep)
+
+Configuration: outer shell fixed at $(R_1, R_2) = (10, 20)$ m carrying $(1-f) M_{tot}$, inner shell at $(5, 8)$ m carrying $f M_{tot}$, warp band at the outer wall, $v = 0.02c$, $M_{tot} = 4.49\times 10^{27}$ kg, smoothFactor = 4000, grid $(1, 300, 300, 5)$ at $dx = 0.2$ m. In-shell mask $r \in [5,8] \cup [10,20]$.
+
+| $f_{inner}$ | min(NEC) [J/m^3] | pass(NEC) |
+|------------:|-----------------:|----------:|
+| 0.00        | +1.24e+39        | 1.0000    |
+| 0.05        | +9.24e+38        | 1.0000    |
+| 0.10        | +6.04e+38        | 1.0000    |
+| 0.20        | -3.86e+37        | 0.9994    |
+| 0.30        | -7.93e+38        | 0.7703    |
+| 0.50        | -6.40e+39        | 0.1367    |
+| 0.70        | -1.36e+40        | 0.1234    |
+
+**Conclusion (slice-scope).** Within the slice (axisymmetric, comoving, constant-density-per-shell, two-shell, fixed total mass and warp-band radii, $v = 0.02c$), splitting ADM mass across nested shells **strictly degrades** the NEC margin -- monotonically as $f_{inner}$ grows. The Fuchs single-shell design is locally optimal under this redistribution. Physical reading: holding $M_{tot}$ fixed, moving mass inward reduces the local $M(r)$ at the warp band, weakening the positive-energy-density support against the shift's negative-energy contribution.
+
+**Slice does NOT cover.** Radial profile optimization (Fuchs §6 sketch); non-spherical/oblate shapes (item 5); time-dependent or tilted shifts; non-comoving frames; multiple disjoint warp bands.
+
+### Status
+
+Items 1-4 closed. Items 5 (non-spherical) and 6 (final bookkeeping) on deck.
+
+### Files added/edited
+
+- `warp_factory_py/metrics/warp_shell.py` -- `_tov_pressure_nested`, `metric_nested_warp_shells` appended.
+- `agent-tools/test_nested_shell_smoke.py`, `test_nested_shell_ec.py`, `test_nested_shell_split_sweep.py` (gitignored scratch).
+- `/memories/repo/warp_factory_anchor.md` (issue #4 entry).
+- `SESSION_LOG.md`, `NAVIGATOR.md`, `TRUST_AUDIT.md`.
+

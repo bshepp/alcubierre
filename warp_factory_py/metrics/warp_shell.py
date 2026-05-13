@@ -388,3 +388,256 @@ def metric_warp_shell_comoving(
         shift=shift_radial,
     )
     return metric, params
+
+
+# ----------------------------------------------------------------------------
+# Nested concentric shells (project extension; NOT in Fuchs et al. 2024)
+# ----------------------------------------------------------------------------
+#
+# Fuchs et al. 2024 §5.2 ("Positive Energy Density") only motivates *radial
+# profile optimization* of the (rho, P, beta) triple within a single shell
+# (see also §6 conclusion). Nested concentric shells are an independent
+# project extension explored here to test whether splitting the ADM mass
+# across multiple thin shells -- with the warp shift confined to the
+# innermost cavity wall -- can sustain larger v_warp at fixed total mass
+# (or equivalently, the same v_warp at lower mass).
+#
+# Construction (see Session 25 notes):
+#   * rho'(r) = sum of top-hats over (R1_k, R2_k) with density set so each
+#     shell has integrated mass M_k.
+#   * M(r) = cumulative integral over rho' (smoothed for the metric solve).
+#   * P'(r) solved piecewise via the TOV ODE inward from r=R2_k with
+#     P(R2_k)=0 within each shell; P=0 in vacuum gaps and outside.
+#   * Outer alpha boundary uses the total enclosed mass M_total = sum_k M_k,
+#     identical to the single-shell case.
+#   * Warp shift uses an independent (warp_R1, warp_R2) band; defaults to
+#     the innermost shell's (R1_1, R2_1).
+
+
+def _tov_pressure_nested(
+    rsample: np.ndarray,
+    rho: np.ndarray,
+    M_running: np.ndarray,
+    shells: list[tuple[float, float, float]],
+) -> np.ndarray:
+    """Per-shell inward TOV integration with ``P(R2_k) = 0`` boundary.
+
+    Trapezoidal rule on the rsample grid; in vacuum (between or outside
+    shells) ``P = 0`` identically. The TOV ODE used is
+
+        dP/dr = -G (rho + P/c^2) (M(r)/r^2 + 4 pi r P / c^2) /
+                (1 - 2 G M(r) / (c^2 r))
+
+    with ``M(r)`` the *total* enclosed mass at ``r`` (i.e. the running mass
+    contributed by all shells inside ``r``). Sufficient for static stability
+    of each shell so long as no horizon forms inside any shell wall.
+    """
+    P = np.zeros_like(rsample)
+
+    def dPdr(r: float, M: float, rho_loc: float, P_loc: float) -> float:
+        if r <= 0.0:
+            return 0.0
+        den = 1.0 - 2.0 * G * M / (c**2 * r)
+        if den <= 0.0:
+            # would-be horizon inside the shell -- nothing physical to do;
+            # caller is responsible for catching this via params['horizon'].
+            return 0.0
+        num = -G * (rho_loc + P_loc / c**2) * (M / r**2 + 4.0 * np.pi * r * P_loc / c**2)
+        return num / den
+
+    for (R1k, R2k, _Mk) in shells:
+        in_shell = np.where((rsample >= R1k) & (rsample <= R2k))[0]
+        if in_shell.size < 2:
+            continue
+        # Trapezoid sweep from idx[-1] (outer, P=0) inward to idx[0]
+        Pk = 0.0
+        P[in_shell[-1]] = 0.0
+        for j in range(in_shell.size - 2, -1, -1):
+            i_hi = in_shell[j + 1]
+            i_lo = in_shell[j]
+            r_hi = rsample[i_hi]
+            r_lo = rsample[i_lo]
+            dr = r_hi - r_lo  # positive
+            slope_hi = dPdr(r_hi, M_running[i_hi], rho[i_hi], P[i_hi])
+            # Going inward: P(r_lo) = P(r_hi) - integral_{r_lo}^{r_hi} dP/dr dr
+            # Predictor (Euler):  P_lo ~= P_hi - slope_hi * dr
+            P_pred = P[i_hi] - slope_hi * dr
+            slope_lo = dPdr(r_lo, M_running[i_lo], rho[i_lo], P_pred)
+            P[i_lo] = P[i_hi] - 0.5 * (slope_hi + slope_lo) * dr
+            if P[i_lo] < 0.0:
+                # Numerical undershoot near a discontinuous rho boundary;
+                # clip to keep downstream alpha-solve well-conditioned.
+                P[i_lo] = 0.0
+    return P
+
+
+def metric_nested_warp_shells(
+    grid_size: tuple[int, int, int, int],
+    world_center: tuple[float, float, float, float],
+    *,
+    shells: list[tuple[float, float, float]],
+    warp_R1: float | None = None,
+    warp_R2: float | None = None,
+    Rbuff: float = 0.0,
+    sigma: float = 0.0,
+    smooth_factor: float = 1.0,
+    v_warp: float = 0.0,
+    do_warp: bool = False,
+    grid_scale: tuple[float, float, float, float] = (1.0, 1.0, 1.0, 1.0),
+    r_sample_res: int = 100_000,
+) -> tuple[Metric, dict]:
+    """Nested concentric warp-shell metric (project extension; see module docstring).
+
+    Parameters
+    ----------
+    shells : list of ``(R1, R2, M)`` tuples
+        Non-overlapping shells, sorted *innermost first*. Each entry gives
+        the inner radius, outer radius, and total mass in SI.
+    warp_R1, warp_R2 : float, optional
+        Sigmoid-band radii for the shift profile. Default: the innermost
+        shell's ``(R1, R2)`` (warp ramp lives in the innermost shell wall).
+    Rbuff, sigma, smooth_factor, v_warp, do_warp, grid_scale, r_sample_res
+        As in :func:`metric_warp_shell_comoving`.
+
+    Returns ``(metric, params)`` with the same diagnostic keys as the
+    single-shell builder, plus ``shells`` echoed back and ``M_total``.
+    """
+    Nt, Nx, Ny, Nz = grid_size
+    dt, dx, dy, dz = grid_scale
+    t0, x0, y0, z0 = world_center
+    if Nt != 1:
+        raise ValueError("nested warp-shell port supports static (Nt=1) grids only")
+    if not shells:
+        raise ValueError("shells list must be non-empty")
+    # Validate ordering / non-overlap
+    sorted_shells = sorted(shells, key=lambda s: s[0])
+    for k in range(len(sorted_shells)):
+        R1k, R2k, Mk = sorted_shells[k]
+        if not (R2k > R1k > 0.0):
+            raise ValueError(f"shell {k}: require 0 < R1 < R2, got ({R1k}, {R2k})")
+        if Mk < 0.0:
+            raise ValueError(f"shell {k}: mass must be non-negative, got {Mk}")
+        if k > 0 and R1k < sorted_shells[k - 1][1]:
+            raise ValueError(
+                f"shells {k-1} and {k} overlap: R2_{k-1}={sorted_shells[k-1][1]}, R1_{k}={R1k}"
+            )
+    shells = sorted_shells
+
+    if warp_R1 is None:
+        warp_R1 = shells[0][0]
+    if warp_R2 is None:
+        warp_R2 = shells[0][1]
+
+    # Radial sample grid
+    world_size = np.sqrt(
+        (Nx * dx - x0) ** 2 + (Ny * dy - y0) ** 2 + (Nz * dz - z0) ** 2
+    )
+    rsample = np.linspace(0.0, world_size * 1.2, r_sample_res)
+
+    # 1. Top-hat density: superposition of shells
+    rho = np.zeros_like(rsample)
+    for (R1k, R2k, Mk) in shells:
+        rho_k = Mk / ((4.0 / 3.0) * np.pi * (R2k**3 - R1k**3))
+        rho[(rsample > R1k) & (rsample < R2k)] += rho_k
+
+    # 2. Cumulative mass from un-smoothed rho (used by the per-shell TOV)
+    M_unsm = _cumtrapz(rsample, 4.0 * np.pi * rho * rsample**2)
+    M_total = float(M_unsm[-1])
+
+    # 3. Per-shell inward TOV integration
+    P = _tov_pressure_nested(rsample, rho, M_unsm, shells)
+
+    # 4. Smooth rho (4 passes, window = round(1.79 * smoothFactor))
+    rho_window = max(1, int(round(1.79 * smooth_factor)))
+    rho_smooth = _smooth4(rho, rho_window)
+    P_smooth = _smooth4(P, max(1, int(round(smooth_factor))))
+
+    # 5. Recompute M from smoothed rho (same idiom as single-shell builder)
+    M = _cumtrapz(rsample, 4.0 * np.pi * rho_smooth * rsample**2)
+    M_max = np.maximum.accumulate(np.maximum(M, 0.0))
+    M = np.where(M < 0.0, M_max, M)
+
+    # 6. alpha(r), A(r), B(r). Outer BC uses the *smoothed* M[-1] (matches the
+    # single-shell convention, which similarly uses the smoothed total mass).
+    alpha = _alpha_solver(M, P_smooth, rsample, M[-1], rsample[-1])
+    A = -np.exp(2.0 * alpha)
+    with np.errstate(divide="ignore", invalid="ignore"):
+        B = 1.0 / (1.0 - 2.0 * G * M / (rsample * c**2))
+    B[0] = 1.0
+    horizon_check = (1.0 - 2.0 * G * M / (rsample * c**2 + 1e-30)).min()
+
+    # Shift profile: compact sigmoid in (warp_R1, warp_R2), then 2 smoothing passes
+    shift_radial = _compact_sigmoid(rsample, warp_R1, warp_R2, sigma, Rbuff)
+    shift_radial = _smooth_ma(_smooth_ma(shift_radial, max(1, int(round(smooth_factor)))),
+                              max(1, int(round(smooth_factor))))
+
+    # 7. Sample onto Cartesian grid (identical to single-shell)
+    i_arr = (np.arange(Nx) + 1).astype(np.float64)
+    j_arr = (np.arange(Ny) + 1).astype(np.float64)
+    k_arr = (np.arange(Nz) + 1).astype(np.float64)
+    X = i_arr[:, None, None] * dx - x0
+    Y = j_arr[None, :, None] * dy - y0
+    Z = k_arr[None, None, :] * dz - z0
+    r_grid = np.sqrt(X**2 + Y**2 + Z**2)
+    theta_grid = np.arctan2(np.sqrt(X**2 + Y**2), Z)
+    phi_grid = np.arctan2(Y, X)
+
+    idx_low = np.searchsorted(rsample, r_grid.ravel(), side="right") - 1
+    idx_low = np.clip(idx_low, 0, len(rsample) - 2)
+    r_low = rsample[idx_low]
+    r_high = rsample[idx_low + 1]
+    frac = (r_grid.ravel() - r_low) / (r_high - r_low)
+    idx_frac = (idx_low + 1).astype(np.float64) + frac
+    idx_frac = idx_frac.reshape(r_grid.shape)
+
+    A_grid = _legendre_interp(A, idx_frac)
+    B_grid = _legendre_interp(B, idx_frac)
+    shift_grid = _legendre_interp(shift_radial, idx_frac)
+
+    g11, g22, g23, g24, g33, g34, g44 = _sph2cart_diag(theta_grid, phi_grid, A_grid, B_grid)
+
+    g = np.zeros((4, 4, Nt, Nx, Ny, Nz), dtype=np.float64)
+    g[0, 0, 0] = g11
+    g[1, 1, 0] = g22
+    g[2, 2, 0] = g33
+    g[3, 3, 0] = g44
+    g[1, 2, 0] = g23
+    g[2, 1, 0] = g23
+    g[1, 3, 0] = g24
+    g[3, 1, 0] = g24
+    g[2, 3, 0] = g34
+    g[3, 2, 0] = g34
+
+    if do_warp:
+        g_tx_new = -g[0, 1, 0] * shift_grid - shift_grid * v_warp
+        g[0, 1, 0] = g[1, 0, 0] = g_tx_new
+
+    t = (np.arange(Nt) + 1) * dt
+    x = (np.arange(Nx) + 1) * dx
+    y = (np.arange(Ny) + 1) * dy
+    z = (np.arange(Nz) + 1) * dz
+
+    metric = Metric(
+        g=g,
+        coords=(t, x, y, z),
+        grid_scale=grid_scale,
+        name="ComovingNestedWarpShells",
+    )
+    params = dict(
+        r=rsample,
+        rho=rho,
+        rho_smooth=rho_smooth,
+        P=P,
+        P_smooth=P_smooth,
+        M=M,
+        M_total=M_total,
+        alpha=alpha,
+        A=A,
+        B=B,
+        shift=shift_radial,
+        shells=shells,
+        warp_R1=warp_R1,
+        warp_R2=warp_R2,
+        horizon_min=float(horizon_check),
+    )
+    return metric, params
