@@ -1652,3 +1652,47 @@ Wrote §11.8 in [`FELL_HEISENBERG_SWEEP_NOTES.md`](FELL_HEISENBERG_SWEEP_NOTES.m
 Throwaway scratch scripts ([`agent-tools/_concat_npts129.py`](agent-tools/_concat_npts129.py), [`agent-tools/_analyse_npts129.py`](agent-tools/_analyse_npts129.py)) kept per AGENTS.md "throwaway" naming convention; safe to delete or leave.
 
 The headline mathematical claim ("a strict-WEC+DEC FH metric exists with $E_{\rm neg} = 0$") is reconfirmed at full-grid $N_{\rm pts}=129$ resolution. Every structural critique (single-cell passenger, 76× mass, CTC sea, no asymptotic decay, inside-horizon) is unaffected by this measurement and remains operative.
+
+
+---
+
+## Session 23 (2026-05-12) -- Slice 4b closed NEGATIVE; Phase 3.3 deferred (MATLAB)
+
+**Participants:** Brian Sheppard + Claude (Opus 4.7).
+**Plan file:** `/memories/session/plan.md` (Slice 4b execution plan + Phase 3.3 MATLAB-block pivot decision).
+
+### Pivot decision
+
+Phase 3.3 (nested + non-spherical Fuchs shells in Warp Factory) was the next active task per Session 22 NAVIGATOR; user reported MATLAB toolchain unavailable. Phase 3.3 deferred to a future session with MATLAB access (or after a hypothetical Python port of Warp Factory's TOV+EC pipeline). Pivoted to **Open Lead #6: Slice 4b** (Krasnikov 2003 hybrid quantum/classical wall) -- the only outstanding Phase-2C lead that is fully Python-resident.
+
+### Slice 4b -- reframing
+
+Original Open Lead #6 wording proposed adding a Fuchs-class spherical shell on top of Krasnikov's $10^{-3}$ g dihedral-portal + Van Den Broeck pocket. This is incompatible with the cylindrical $x$-translation invariance of the Krasnikov tube ([`KRASNIKOV_TUBE_NOTES.md`](KRASNIKOV_TUBE_NOTES.md) section 1). Reframed the slice as the more honest companion question raised by [`KRASNIKOV2003_EVALUATION.md`](KRASNIKOV2003_EVALUATION.md) "Direct implications": **could the mg-scale Krasnikov-2003 budget plausibly serve as a quantum supplement to repair pointwise DEC failures of the classical Krasnikov-tube wall?**
+
+### Method
+
+Codified in [`krasnikov_hybrid.ipynb`](krasnikov_hybrid.ipynb) and [`KRASNIKOV_HYBRID_NOTES.md`](KRASNIKOV_HYBRID_NOTES.md). Reused `hf_jobs/sweeps/krasnikov_tube.py::_T_orthonormal` (symbolic, lambdified once at import; verified vs Everett-Roman 1997 Eq. 14 in [`krasnikov_tube.ipynb`](krasnikov_tube.ipynb) Cell 5). Compute pointwise DEC deficit $\Delta_{\rm DEC}=\max(0,\max(p_{\max},|T_{tx}|)-\rho_p)$, integrate cylindrically per unit length, convert to grams via $c^2/G$, form headline ratio $r=|E_Q^-|_{\rm req}/10^{-3}\,\mathrm{g}$.
+
+### Result
+
+Within the slice ($\eta\in[10^{-2},1)$, $\epsilon\in[10^{-2},1]\,\mathrm{m}$, $n=\rho_{\max}/\epsilon\in[2,100]$, $D\ge 1\,\mathrm{m}$): across all 360 sweep points the required supplement exceeds the Krasnikov 2003 budget by $\ge 31$ orders of magnitude; minimum $r=1.10\times 10^{31}$ at $D=1\,\mathrm{m}$. **Slice 4b closed in the negative direction.**
+
+Three verification gates pass:
+- (i) Anchor inner-edge $\rho_p^{\min}=-0.067$ straddles Everett-Roman saturation $-1/(8\pi\epsilon^2)=-0.040$.
+- (ii) Universal $\epsilon^2$-collapse: $\mathcal{I}\cdot\epsilon^2$ and $\Delta_{\rm DEC}^{\max}\cdot\epsilon^2$ are $\epsilon$-independent at fixed $(\eta,n)$ -- confirms Phase 2A.13 $\rho_p\propto\eta/\epsilon^2$ scaling.
+- (iii) Everett-Roman $\alpha$-band: $\alpha=|E_{\rm class}|\cdot\epsilon/\rho_{\max}=0.133$ inside $\mathcal{O}(0.01\!-\!1)$.
+
+### Workflow gotchas (recorded)
+
+- `configure_notebook` venv-creation hung 4+ hours; pivoted to `C:\Python313\python.exe` + `agent-tools/run_nb.py`. Already noted in `/memories/repo/notebook_workflow.md`; reaffirmed.
+- Cylindrical Christoffel $1/\rho$ terms in `_T_orthonormal` produce NaN if the radial grid lower bound goes $\le 0$. Cell 4 of [`krasnikov_hybrid.ipynb`](krasnikov_hybrid.ipynb) clamps `rho_lo = max(rho_max-margin*eps, 1e-3*eps)`. Wall is exponentially localised at $\rho_{\max}\gg\epsilon$, so the clamp loses no physics (verified across all 360 sweep points).
+- PowerShell exit code 1 from `run_nb.py` is a benign zmq Proactor `RuntimeWarning`; notebook executes successfully. Inspect outputs via `nbformat.read`, not via `$LASTEXITCODE`.
+
+### Files added/edited
+
+- **NEW** [`krasnikov_hybrid.ipynb`](krasnikov_hybrid.ipynb) (11 cells: setup, anchor profile, budget integral + diagnostics, gates ii+iii, full sweep, disposition, figure).
+- **NEW** [`KRASNIKOV_HYBRID_NOTES.md`](KRASNIKOV_HYBRID_NOTES.md) (paired companion).
+- **NEW** `figures/krasnikov_hybrid_disposition.png` (anchor $\Delta_{\rm DEC}$ profile + headline-ratio scan vs $\eta$ faceted by $n$).
+- [`NAVIGATOR.md`](NAVIGATOR.md): Session 23 entry in changelog, load-bearing-assumptions table row #4 (QI bounds) updated, Open Lead #6 closed, Phase 3.3 lead annotated with MATLAB-defer note, "Closed since Session 14c" list gains Slice 4b row, notebook index gains the new pair.
+- [`ROADMAP.md`](ROADMAP.md), [`KRASNIKOV2003_EVALUATION.md`](KRASNIKOV2003_EVALUATION.md), [`KRASNIKOV_TUBE_NOTES.md`](KRASNIKOV_TUBE_NOTES.md), [`LANDSCAPE_SYNTHESIS.md`](LANDSCAPE_SYNTHESIS.md), [`TRUST_AUDIT.md`](TRUST_AUDIT.md): cross-linking and disposition updates.
+- `warp_factory_repro/` Phase 3.3 MATLAB stubs deleted (`metricGet_WarpShellNested.m`, `nested_sweep.m`).

@@ -229,6 +229,18 @@ For the full documented result, see `MATTER_SHELL_PATH.md` §9.
 
 ---
 
+## 11. Update — Slice 4b hybrid quantum/classical wall closed NEGATIVE (Task 2A.13b, 2026-05-12, Session 23)
+
+The companion question raised in [`KRASNIKOV2003_EVALUATION.md`](KRASNIKOV2003_EVALUATION.md) "Direct implications" — whether the Krasnikov 2003 §3.3 milligram budget could serve as a quantum supplement to repair the pointwise DEC failures of the §9 classical wall — was executed as Slice 4b. **Result: closed in the negative direction.** See [`krasnikov_hybrid.ipynb`](krasnikov_hybrid.ipynb) and [`KRASNIKOV_HYBRID_NOTES.md`](KRASNIKOV_HYBRID_NOTES.md).
+
+**Headline:** within the slice ($\eta \in [10^{-2}, 1)$, $\epsilon \in [10^{-2}, 1]\,\mathrm{m}$, $n=\rho_{\max}/\epsilon \in [2,100]$, $D \ge 1\,\mathrm{m}$), the required supplement exceeds the milligram budget by **$\ge 31$ orders of magnitude across all 360 sweep points** (minimum $r=|E_Q^-|_{\rm req}/10^{-3}\,\mathrm{g} = 1.10 \times 10^{31}$ at $D=1\,\mathrm{m}$). The geometrized-to-grams conversion factor $c^2/G \sim 10^{30}\,\mathrm{g/m}$ does the dominant work: the $\mathcal{O}(1)$ pointwise DEC deficit (in geometrized length$^{-2}$) integrated cylindrically over a wall-band thickness $\sim \epsilon$ at radius $\rho_{\max}$ gives a per-length budget $\sim 10^{30}\,\mathrm{g/m}$, six OoM larger than the entire milligram tail of Krasnikov 2003 §3.3 *for any tube length $D \ge 1\,\mathrm{m}$*.
+
+Three verification gates pass: (i) anchor inner-edge $\rho_p^{\min} = -0.067$ matches Everett-Roman saturation $-1/(8\pi\epsilon^2)$ within a factor of two; (ii) universal $\epsilon^2$ collapse confirms the §9 universal scaling law $\rho_p \propto \eta/\epsilon^2$ ($\mathcal{I}\cdot\epsilon^2$ depends only on $\eta$ and $n$); (iii) Everett-Roman §3 $\alpha$-band recovery at $\alpha = 0.13$.
+
+**Caveat:** Slice 4b only addresses the §3.3 *budget* loophole. The §3.1 (Weyl/Ricci ratio) and §3.2 (sub-Planckian $E_{\rm tot}^-$ extrapolation) loopholes are not directly tested by Slice 4b and remain open as separate questions inside the Krasnikov 2003 evaluation.
+
+---
+
 ## 10. Citations
 
 ```bibtex

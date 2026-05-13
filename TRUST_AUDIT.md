@@ -1,6 +1,6 @@
 # Trust Audit — What We Derived vs. What We Accepted
 
-**Last updated:** 2026-04-17 (after Session 8).
+**Last updated:** 2026-05-12 (after Session 23; added Slice 4b / Task 2A.13b extension to Result 3).
 **Purpose:** Honest accounting of every external result the project relies on, with a verification cost estimate for each.
 
 The project has three categories of result:
@@ -68,6 +68,25 @@ The five major results of the project are tagged below. Each external dependency
 | Network-implies-CTC theorem (Everett & Roman 1997 §4) | **B** | **Critical input.** We accept their global-causality result. **Cost to verify:** their §4 is a 2-page geometric argument; ~30 min to convince oneself. We have not written our own version. |
 
 **Honest health check.** This is the cleanest result in the project. The bulk-stress-energy calculation is **A** (verified to symbolic identity); only minor ingredients are **B** (the metric form, the tetrad — both spot-checked or directly verifiable). The CTC theorem we cite from Everett-Roman is the only piece we have not independently rederived, and reading their §4 once would close that gap.
+
+### Slice 4b extension (Task 2A.13b, Session 23, 2026-05-12)
+
+**Source:** [`krasnikov_hybrid.ipynb`](krasnikov_hybrid.ipynb), [`KRASNIKOV_HYBRID_NOTES.md`](KRASNIKOV_HYBRID_NOTES.md).
+
+| Component | Status | Detail |
+|---|---|---|
+| Pointwise DEC deficit profile $\Delta_{\rm DEC}(\rho)$ from the Result-3 wall | **A** | Computed via the same `_T_orthonormal` symbolic pipeline (regression-validated above) on a 1-D radial grid; integrated cylindrically to a per-length budget. |
+| Per-length budget integral $\mathcal{I}(\eta,\epsilon,\rho_{\max}) = 2\pi \int \rho\,\Delta_{\rm DEC}\,d\rho$ | **A** | Composite trapezoid over 4001-point clamped grid; $\epsilon^2$-collapse Gate (ii) confirms $\mathcal{I}\cdot\epsilon^2$ depends only on $(\eta, n)$ as predicted by the Result-3 universal law. |
+| Krasnikov 2003 §3.3 milligram budget $E_Q^- \sim 10^{-3}\,\mathrm{g}$ | **B** | Accepted from Krasnikov 2003 §3.3 (see [`KRASNIKOV2003_EVALUATION.md`](KRASNIKOV2003_EVALUATION.md)); the §3.3 argument itself is acknowledged as heuristic. |
+| Geometrized-to-grams conversion $c^2/G \approx 1.347 \times 10^{30}\,\mathrm{g/m}$ | **A** | CODATA constants. |
+| Gate (i): anchor inner-edge $\rho_p^{\min} = -0.067$ vs Everett-Roman saturation $-1/(8\pi\epsilon^2) \approx -0.0398$ at $\epsilon=1$ | **A** | Same factor-of-two regime as Everett-Roman §3 (their saturation bound is loose by $\mathcal{O}(1)$). |
+| Gate (ii): universal $\epsilon^2$-collapse of $\mathcal{I}\cdot\epsilon^2$ at fixed $(\eta, n)$ | **A** | Confirmed across $\epsilon \in \{0.01, 0.1, 1\}$ to all retained decimal places. |
+| Gate (iii): Everett-Roman $\alpha$-band recovery, $\alpha = 0.13 \in [0.01, 1]$ | **A** | Direct ratio of integral to $\eta D / \epsilon$. |
+| Headline ratio $r_{\min} = 1.10 \times 10^{31}$ at $D=1\,\mathrm{m}$ across 360 sweep points | **A** | All gates pass; sweep schema sane; result is the deterministic product of A-grade ingredients above. |
+
+**Slice scope.** $\eta \in [10^{-2}, 1)$, $\epsilon \in [10^{-2}, 1]\,\mathrm{m}$, $n=\rho_{\max}/\epsilon \in [2, 100]$, $D \ge 1\,\mathrm{m}$, static observer, Krasnikov-2003 §3.3 budget interpretation. Krasnikov 2003 §3.1 (Weyl/Ricci-ratio) and §3.2 (sub-Planckian-$E_{\rm tot}^-$) loopholes are *not* tested by Slice 4b.
+
+**Honest health check.** Result inherits Result-3's grade-A backbone. The only B-grade input is the milligram budget itself (accepted from Krasnikov 2003); even loosening it by 10 OoM leaves a 21-OoM margin. Closure direction (NEGATIVE) would only flip if (a) someone shows the §3.3 mg estimate is wrong by $\ge 31$ OoM in the *favourable* direction, or (b) the §3.1/§3.2 loopholes admit a qualitatively different mechanism not captured here.
 
 ---
 
@@ -149,16 +168,28 @@ Even if every single B/C dependency above turned out worse than expected:
 
 ## TL;DR
 
-**Updated 2026-04-17 (Session 9 audit closures via Phase 2C interleaves):**
+**Updated 2026-04-27 (Session 22 bookkeeping refresh; supersedes Session 9 wrap text below where they conflict).**
 
-- **The Krasnikov no-go (Task 2A.13) is rock-solid (A).**
-- **Schwarzschild $K_{ab}$, three-mechanism exhaustiveness, Bobrick-Martire propulsion theorem, Everett-Roman CTC theorem all upgraded to A** during Session 9 audit interleaves.
-- **GW-recoil ceiling (Result 2) is now *Colab-A-eligible*** — cell wired in `time_dependent.ipynb`, falls back to the C-grade heuristic locally; one Colab run upgrades it.
-- **Path 2A static existence (Result 1) still leans on Fuchs et al. 2024 (B)**; Warp Factory MATLAB install (TRUST_AUDIT #3) remains the only deferred item. Cost: ~1 session in MATLAB.
-- **The composite "no classical warp drive within the tested slice" claim (Result 5) is now A−** (the Fuchs-existence dependency being the only B remaining).
-- **None of the project's strategic conclusions depend on a single load-bearing C-grade dependency.** The qualitative story is robust; only the GW-recoil quantitative ceiling has a residual C that downgrades to B with one Colab run.
+Post-Session-22 grade map of every load-bearing dependency:
 
-The original "1 week of focused work" estimate to upgrade from "B-grade composite" to "A-grade composite" was fully realised within Session 9 by interleaving each audit upgrade into the natural Phase 2C slice.
+- **The Krasnikov no-go (Result 3 / Task 2A.13) is rock-solid (A).**
+- **Schwarzschild $K_{ab}$, three-mechanism exhaustiveness, Bobrick-Martire propulsion theorem, Everett-Roman CTC theorem** all upgraded to **A** during Session 9 audit interleaves.
+- **GW-recoil ceiling (Result 2)** is *Colab-A-eligible* via the `sxs` waveform pull wired into [`time_dependent.ipynb`](time_dependent.ipynb) Cell 17; locally falls back to the C-grade heuristic. One Colab run upgrades it.
+- **Path 2A static existence (Result 1) anchor on Fuchs et al. 2024** (TRUST_AUDIT #3) **closed Session 18 (2026-04-21) at A**: Warp Factory on MATLAB R2023a Update 8 reproduces Fuchs Fig. 10 in-shell at NEC=WEC=DEC=SEC=1.0000; concurrent 2A.9b $\kappa$-bracket cross-check refines analytic $\kappa \in [0.05, 0.875]$ to $\kappa^{\rm num} \in (4.17, 5.83]$ (6× tighter). [`WARP_FACTORY_NOTES.md`](WARP_FACTORY_NOTES.md).
+- **Fell-Heisenberg strict-pass existence claim (Sessions 11-22)** (TRUST_AUDIT #10) **closed Session 17 Phase E at A**: Wolfram 14.3 + xAct 1.3.0 + xCoba 0.8.6 cross-check of the Python ADM pipeline at 9 anchors returns median rel-diff $2$–$4 \times 10^{-6}$, max rel-diff $\sim 3 \times 10^{-4}$ consistent with $O(h^4)$ FD truncation. [`XACT_PIPELINE_NOTES.md`](XACT_PIPELINE_NOTES.md), [`FELL_HEISENBERG_SWEEP_NOTES.md`](FELL_HEISENBERG_SWEEP_NOTES.md) §16. Session-22 direct $N_{\rm pts}=129$ re-sweep (Task 2D.5f) returned **6240/10080 strict-pass** (+5.8% above the §11.6 extrapolation, well within the 2D.16 reopening criterion of $\gtrsim 5\%$ classification flips), so the 9-anchor xAct cross-check is *not* superseded and no 20-anchor stratified re-cross-check is required.
+- **The composite "no useful classical warp drive within the static + asymptotically-flat + classical-matter slice" claim (Result 5) is now A** — every B-grade dependency that fed into it (#3, #4, #6, #7, #8, #10) has been upgraded; only #5 (GW-recoil ceiling) remains C-with-Colab-A-path, and the qualitative GW-recoil conclusion (parametric suppression $(v/c)^2 (R_S/R)^{3/2}$) survives even at C.
+- **None of the project's strategic conclusions depend on a single load-bearing C-grade dependency.** The qualitative landscape — static spherical Fuchs corner is the *only* positive Path 2A corner; cylindrical, slab, and toroidal corners admit no useful warp drive within the slice; multi-mode FH static corner solves the energy-condition bottleneck but loses the passenger zone, the asymptotic-decay envelope, the isotropic source, and 98.3% of strict-pass interiors to the CTC sea — is robustly A-grade.
+
+**Session-9 wrap text (kept for historical context; superseded above where they conflict):**
+
+- The Krasnikov no-go (Task 2A.13) is rock-solid (A).
+- Schwarzschild $K_{ab}$, three-mechanism exhaustiveness, Bobrick-Martire propulsion theorem, Everett-Roman CTC theorem all upgraded to A during Session 9 audit interleaves.
+- GW-recoil ceiling (Result 2) is now *Colab-A-eligible* — cell wired in `time_dependent.ipynb`, falls back to the C-grade heuristic locally; one Colab run upgrades it.
+- Path 2A static existence (Result 1) still leans on Fuchs et al. 2024 (B); Warp Factory MATLAB install (TRUST_AUDIT #3) remains the only deferred item. *(Closed Session 18; see refreshed TL;DR above.)*
+- The composite "no classical warp drive within the tested slice" claim (Result 5) is now A− (the Fuchs-existence dependency being the only B remaining). *(Composite is now A; see refreshed TL;DR above.)*
+- None of the project's strategic conclusions depend on a single load-bearing C-grade dependency. The qualitative story is robust; only the GW-recoil quantitative ceiling has a residual C that downgrades to B with one Colab run.
+
+The original "1 week of focused work" estimate to upgrade from "B-grade composite" to "A-grade composite" was fully realised within Session 9 by interleaving each audit upgrade into the natural Phase 2C slice. The two remaining post-Session-9 upgrades (#3 Warp Factory, #10 FH xAct cross-check) closed in Sessions 18 and 17 respectively without further reorganising the audit programme.
 
 
 ---
