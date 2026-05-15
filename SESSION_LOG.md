@@ -1946,3 +1946,68 @@ Treated as an **unverified internal result** (not graded A) and subjected to an 
 - Optimizer: 300 evals / 762 s on the dx=0.4 coarse grid (Powell hit `maxfev` mid-descent — the apparent number was a non-converged lower bound *even before* the kill, a second independent reason not to trust it).
 - Kill-suite caught the artifact early: a 5-second pre-flight single eval on a perturbed dx=0.4 grid (N=130 vs the optimizer's N=132) already showed min(EC)=−2.6e38, predicting the Test-2 KILL before the full run.
 
+---
+
+## Session 29 (2026-05-15) — Phase 3.3+ Step 1 RADIAL-FRAME redo: NEGATIVE, and an unresolved cross-representation hurdle
+
+**Participants:** Brian Sheppard + Claude (Opus 4.7).
+**Continuation of Session 28.** Session 28's Cartesian-objective optimizer was KILLED as a discretization artifact; the prescribed fix was to score the optimizer against an exact-symbolic, symmetry-adapted (radial-frame) energy-condition evaluator and use Cartesian only as an independent end cross-check. This session built that evaluator and ran the redo. **Headline: Step 1 (isotropic radial-profile optimization) closes NEGATIVE — and the redo surfaced a genuine, unresolved methodological hurdle (two validated EC pipelines diverge by ~10 OoM on sharp profiles).**
+
+### New permanent infrastructure (KEPT)
+
+[`warp_factory_py/solvers/axisymmetric_ec.py`](warp_factory_py/solvers/axisymmetric_ec.py): exact-symbolic Einstein/stress-energy for the axisymmetric warp-shell metric in (t,r,θ,φ) with the Alcubierre shift as the ℓ=1 dipole it physically is (g_tr = −Fv cosθ, g_tθ = +Fvr sinθ; project Key Result #8). Curvature is closed-form symbolic (zero FD truncation), so there is no Cartesian staircasing for an optimizer to mine. To keep the EC *definitions* byte-identical to the Cartesian path the coordinate g and T are fed through the SAME validated `frame.eulerian_transformation` + `energy_conditions.evaluate_energy_conditions`; after orthonormalisation the EC scalars are coordinate-invariant (same Eulerian t-slicing), so baseline agreement with the Cartesian pipeline is a genuine cross-check.
+
+Three bugs found and fixed during validation (all correctness-preserving):
+1. Unsimplified symbolic G + the ~4.8e42 Einstein prefactor amplified ~1e-17 floating-point cancellation residue to ~1e28 SI in the vacuum limit → fixed with per-component `sp.cancel(sp.together(...))` (flat → exactly 0).
+2. `np.gradient` (2nd-order, compounded for 2nd derivatives) far too inaccurate for the prefactor-amplified vacuum limit → replaced with quintic `InterpolatedUnivariateSpline` analytic derivatives.
+3. Per-eval cost 8 s (giant lambdified GR expressions) → `lambdify(..., cse=True)` gave a 17× speedup (0.46 s/eval) with identical results.
+
+### Validation (Task 18) — all gates PASS
+
+- FLAT: max|T| = 6.8e-7 × matter scale (spline-on-constant floor; symbolic G exactly 0).
+- SCHWARZSCHILD: fed *analytic* derivatives the symbolic G is exactly Ricci-flat — worst |G|/term = **1.7e-15** at r∈{5,10,30} (airtight: symbolic tensor is correct); spline-derivative numerical floor 5 orders below matter scale, unstructured.
+- ALCUBIERRE: flat slice + Gaussian shift → ρ NEGATIVE in the wall, scales exactly as v² and (F')² (ratios 4.00, 4.00) — textbook gravitomagnetic signature.
+
+### Cross-validation (Task 19) — first sign of the hurdle
+
+On the **smooth constant-density Fuchs baseline** both INDEPENDENT pipelines agree it is strictly EC-feasible (all four conditions PASS, same signs). But the magnitudes differ ~3×: Cartesian overall min(EC) = +7.31e38, radial = +2.28e39 (211% relative). Read at the time as the expected signature of Cartesian staircasing depressing its worst cell (corroborating). In hindsight this was the **first quantitative symptom** of a systematic representation discrepancy that becomes decisive on sharp profiles.
+
+### Radial-objective optimization (Task 20)
+
+Same (ρ,β) 6+6-knot cubic-spline parameterization as Session 28, warp performance pinned (β≡1 for r≤R1), Powell, minimize M_tot s.t. radial min(EC) ≥ 0, warm-started from the constant-density baseline. Converged (cost plateaued at 0.7806 for ~100+ evals, unlike Session 28 which hit budget mid-descent). Optimum: **M_opt = 3.505e27 (−21.9% vs 4.49e27), radial min(EC) = +8.55e36 (PASS)**, ρ hollowed at the inner edge (knots ~[3.7e13, 3.2e22, 1.1e23, 1.3e23, 1.5e23, 1.5e23] — a near-step).
+
+### Adversarial end cross-check (Task 21) — KILL / KILL
+
+| Kill test | Verdict | Evidence |
+|---|---|---|
+| A — independent Cartesian representation + refinement | **KILL** | optimum min(EC) ≈ −6.3e39 at *every* dx∈[0.12,0.40] (stable, not converging away); const-density baseline robustly positive and rising with refinement. Not invariant across representations. |
+| B — constant-density mass floor in the *trusted radial* evaluator | **KILL (decisive, representation-internal)** | plain constant-density passes (radial) down to ≤2.70e27 — *below* the "optimized" 3.505e27 and with a healthier margin. The optimized profile is **worse than simply lowering a uniform density**. No profile-shaping benefit, established without needing to adjudicate the Cartesian conflict. |
+
+### Mechanism diagnostic — predicted H2 REFUTED
+
+Hypothesis H2 was that the radial evaluator under-resolved the optimizer's near-step ρ and would flip negative under radial refinement (converging to the Cartesian FAIL). It did **not**. Radial min(EC) of the optimum vs N_r: +8.55e36 (503) → +1.53e38 (1547) → +2.67e38 (5218) → **+2.67e38 (20872, CONVERGED)**. The radial evaluator robustly, convergently says the optimum **PASSES**. (The N_r≈50k step crashed on a 71.7 GiB SEC-einsum allocation — a diagnostic-script bug, not physics; radial had already converged by N_r≈5k.)
+
+### The hurdle (documented, OPEN)
+
+We therefore have a **genuine, converged cross-representation conflict on the non-smooth optimized profile**: the radial evaluator (exact symbolic curvature, converged) says PASS at +2.67e38; the Cartesian pipeline (converged across dx) says FAIL at −6.3e39 — ~10 orders of magnitude, opposite sign. Both pipelines are validated; both agreed on the *smooth* baseline. They diverge only on the sharp, optimizer-driven profile, which lies **outside the smooth regime where either was validated**. Three live possibilities, none yet excluded: (i) Cartesian 4th-order FD mangles the near-discontinuous staircased curvature (radial correct); (ii) the radial quintic-spline derivative smooths away a real curvature spike (Cartesian correct); (iii) neither is trustworthy on sharp profiles. **The project currently has no trustworthy energy-condition evaluator for sharp / optimized profiles.** This is the next investigation (which pipeline is trustworthy for sharp profiles), opened deliberately rather than papered over.
+
+### Disposition
+
+- **Step 1 (isotropic radial-profile optimization): NEGATIVE.** No defensible, representation-invariant profile-optimization mass reduction. Kill Test B is decisive and entirely internal to the (trusted) radial representation: the optimized profile is worse than trivial uniform mass reduction. The Cartesian cross-check independently rejects the optimum at every resolution. A non-invariant, currently-unverifiable claim is not a result — the project's standard. Fuchs §6's "orders of magnitude" is nowhere in evidence.
+- **Robust cross-representation sub-finding (real but weak):** the Fuchs canonical mass (4.49e27) is over-provisioned — plain constant-density keeps passing far below it in *both* representations (≈3.5e27 Cartesian per Session 28; ≤2.7e27 radial). This is trivial *uniform* mass reduction, not §6 profile optimization, and is not order-of-magnitude.
+- **Methodological finding (A-grade, OPEN hurdle):** two independently-validated EC pipelines agree on smooth metrics and diverge by ~10 OoM with opposite sign on sharp ones. Recorded as an explicit open limitation that bounds any future Step-2 (anisotropic) work — no sharp-profile EC claim is currently verifiable.
+- **The axisymmetric_ec evaluator is itself A-grade as a correct GR stress-energy calculator on smooth inputs** (Schwarzschild Ricci-flat to 1.7e-15, Alcubierre scaling exact) and is retained. Its trust boundary (smooth-profile regime) is now explicitly mapped.
+
+The honest meta-point, generalising Sessions 28+29: an optimizer pointed at *any* numerical EC objective will mine that objective's specific numerical slack wherever it has any; the validation gates (necessarily smooth test cases) do not certify the evaluator on the non-smooth configurations the optimizer actively hunts. Cross-representation invariance under refinement is the only reliable arbiter — and here it returns "unresolved", which is the honest answer.
+
+### Files
+
+- **NEW (KEPT)** `warp_factory_py/solvers/axisymmetric_ec.py`.
+- `agent-tools/test_axisym_validate.py`, `test_axisym_xcheck.py`, `test_profile_radial_optimize.py`, `test_radial_opt_xcheck.py`, `test_radial_opt_convergence.py`, `_radial_opt_knots.json`, `_radial_*_run.log` — gitignored scratch.
+- Bookkeeping: NAVIGATOR (Session 29 changelog + Open Lead #2 status + the open hurdle), TRUST_AUDIT (Session 29 addendum), ROADMAP (3.3+ → NEGATIVE + new sharp-profile-evaluator-trust task), LANDSCAPE_SYNTHESIS, this entry.
+
+### Workflow notes
+
+- Radial eval cost: dominated by 10 huge cse-lambdified GR expressions on the (r,θ) mesh; `cse=True` was essential (8 s → 0.46 s). The convergence diagnostic's final-resolution SEC einsum (120×12×41744×160 float64 ≈ 71.7 GiB) is an unguarded memory blowup in the scratch script — cap mesh × sphere-sampling product in any future high-res radial run.
+- r ≈ 0 is a spherical-coordinate singularity (g_θθ = r² → 0 → singular spatial 3-metric in `frame.eulerian_transformation`); all radial-evaluator calls restrict to r ≥ 0.5 m, which loses no shell physics (shell at r∈[10,20]).
+

@@ -1,6 +1,6 @@
 # Trust Audit — What We Derived vs. What We Accepted
 
-**Last updated:** 2026-05-15 (after Session 28; added Phase 3.3+ Step 1 addendum — Cartesian-objective radial-profile optimization claimed 30.7% mass reduction, KILLED by the adversarial kill-suite as a discretization artifact; methodological finding A-grade; composite Path 2A verdict A unchanged).
+**Last updated:** 2026-05-15 (after Session 29; Phase 3.3+ Step 1 closed NEGATIVE via the radial-frame redo; a new exact-symbolic EC evaluator is A-grade on smooth inputs but an unresolved ~10-OoM cross-representation conflict on sharp profiles is now an OPEN documented hurdle; composite Path 2A verdict A unchanged).
 **Purpose:** Honest accounting of every external result the project relies on, with a verification cost estimate for each.
 
 The project has three categories of result:
@@ -263,4 +263,26 @@ The **methodological finding is A-grade**: the Cartesian WarpFactory-port pipeli
 **No load-bearing dependency change.** Nothing in the composite Path 2A verdict relied on this; it was an exploratory probe of a still-open lead. Notably, **this is the verification discipline working as designed** — the same resolution-convergence + sampling-escalation tooling that tempered the Fell-Heisenberg arc (Sessions 14/22) caught a seductive false positive *before* it entered the trust ledger as a finding. The `metric_profile_warp_shell` builder is retained (sound; independently re-confirms WarpFactory issue #4 from a third code path).
 
 **Separate unverified lead (flagged, NOT claimed).** Kill Test 1 incidentally showed constant-density passing at M=3.50e27 (≈22% below Fuchs's canonical 4.49e27) — but at dx=0.2 only. Distinct question (Fuchs-mass over-provisioning) from profile optimization; requires its own convergence study before any grade.
+
+
+---
+
+## Session 29 addendum — Phase 3.3+ Step 1 radial-frame redo: NEGATIVE + an OPEN cross-representation hurdle
+
+**New evaluator graded.** [`warp_factory_py/solvers/axisymmetric_ec.py`](warp_factory_py/solvers/axisymmetric_ec.py): exact-symbolic Einstein/stress-energy for the axisymmetric warp-shell metric. **Grade A as a correct GR stress-energy calculator on smooth inputs** — Schwarzschild is exactly Ricci-flat to **1.7×10⁻¹⁵** (analytic-derivative probe), flat → 0, Alcubierre energy density negative with exact v² and (F')² scaling. Reuses the already-A-graded `frame`+`energy_conditions` so EC definitions are byte-identical to the Cartesian path. Three correctness-preserving bug fixes during validation (unsimplified-G cancellation → `sp.cancel`; `np.gradient` → quintic-spline derivatives; `cse=True` 17× speedup). **Trust boundary now explicitly mapped: validated only on smooth profiles.**
+
+**Step-1 profile-optimization claim: REJECTED (NEGATIVE).** The radial-objective optimum (M=3.505e27, −21.9%, radial min(EC)=+8.55e36 PASS) was killed two independent ways (Task 21):
+- *Kill Test A* (cross-representation + refinement): Cartesian `eval_metric` gives the same metric min(EC) ≈ −6.3×10³⁹ at every dx∈[0.12,0.40] (stable); constant-density baseline robustly positive throughout. Not representation-invariant.
+- *Kill Test B* (decisive, internal to the trusted radial evaluator): plain constant-density passes — in the radial evaluator's own *converged* judgment — down to ≤2.70×10²⁷, below the "optimized" 3.505×10²⁷ and with a healthier margin. The profile shaping is worse than trivial uniform mass reduction. No §6 profile benefit; "orders of magnitude" not in evidence.
+
+| Component | Status | Detail |
+|---|---|---|
+| `axisymmetric_ec` on smooth metrics | **A** | Schwarzschild Ricci-flat to 1.7e-15; Alcubierre scaling exact; agrees with Cartesian on baseline (sign+feasibility). |
+| Step-1 radial-frame mass-reduction claim | **C / rejected** | Killed by Test A (non-invariant) + Test B (beaten by uniform reduction within the trusted evaluator). |
+| Fuchs-mass over-provisioning sub-finding | **B (weak, cross-representation)** | Constant-density passes far below the canonical 4.49e27 in *both* representations (≈3.5e27 Cartesian, ≤2.7e27 radial). Real but trivial uniform reduction, not §6, not OoM. |
+| Sharp-profile EC evaluation | **OPEN HURDLE — ungraded** | The two validated pipelines agree on smooth metrics, diverge ~10 OoM with opposite sign on the sharp optimized profile (radial converged +2.67e38 PASS; Cartesian stable −6.3e39 FAIL). Predicted under-resolution mechanism (H2) was *refuted* — radial converges stably positive. Until resolved, **no sharp-profile EC claim is verifiable.** |
+
+**No load-bearing dependency change.** The composite Path 2A verdict (A) is untouched — Step 1 was an exploratory lead. **But a new explicit limitation is now on the books:** the project has no trustworthy energy-condition evaluator for sharp / optimizer-driven profiles, and this *blocks* Phase 3.3+ Step 2 (anisotropic) until adjudicated. Resolution requires an independent third pipeline on the sharp optimum (the Session-17 xAct/xCoba Mathematica route is the natural arbiter) or an analytic sharp test case with a known closed-form stress-energy. Recorded as NAVIGATOR Open Lead #2 (top priority).
+
+**Honest meta-finding (A-grade, generalises Sessions 28+29).** An optimizer pointed at *any* numerical EC objective mines that objective's specific numerical slack wherever it has any (Cartesian staircasing S28; on sharp profiles the two pipelines simply disagree S29). Validation gates are necessarily smooth; the optimizer hunts where the evaluator is *not* certified. Cross-representation invariance under refinement is the only reliable arbiter — and on sharp profiles it currently, honestly, returns "unresolved." This is a documented hurdle, not a failure: it sharpens exactly what must be true for any future positive sharp-profile result to be credible.
 
