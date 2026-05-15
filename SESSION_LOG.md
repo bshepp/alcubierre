@@ -1699,21 +1699,21 @@ Three verification gates pass:
 
 ---
 
-## Session 24 (2026-05-13) — Phase 3.3 Python port: WarpFactory Alcubierre anchor reproduction (A.6)
+## Session 24 (2026-05-13) ï¿½ Phase 3.3 Python port: WarpFactory Alcubierre anchor reproduction (A.6)
 
 **Participants:** Brian Sheppard + Claude (Opus 4.7).
 **Plan file:** `/memories/repo/warp_factory_anchor.md`.
 
 ### Context
 
-Session 23 deferred Phase 3.3 (nested + non-spherical Fuchs shells) for lack of MATLAB; this session pursued the alternative path noted there — an independent NumPy port of WarpFactory's TOV+EC pipeline (`warp_factory_py/`). Goal of Phase A.6: reproduce WarpFactory's published Alcubierre stress-energy anchor ([`warp_factory_repro/alcubierre_textbook.mat`](warp_factory_repro/alcubierre_textbook.mat)) at Nt=1, gridSize=(1,80,80,5), gridScale=0.2, v=1, s=8, R=5.
+Session 23 deferred Phase 3.3 (nested + non-spherical Fuchs shells) for lack of MATLAB; this session pursued the alternative path noted there ï¿½ an independent NumPy port of WarpFactory's TOV+EC pipeline (`warp_factory_py/`). Goal of Phase A.6: reproduce WarpFactory's published Alcubierre stress-energy anchor ([`warp_factory_repro/alcubierre_textbook.mat`](warp_factory_repro/alcubierre_textbook.mat)) at Nt=1, gridSize=(1,80,80,5), gridScale=0.2, v=1, s=8, R=5.
 
 ### Result: A.6 partially closed; **two real bugs in the published WarpFactory source identified**
 
-1. **`Solver/ricciT.m` ~line 62**: term reads `-(diff_1_gl{b,d,a}+diff_1_gl{b,d,a}-diff_1_gl{a,b,d})` — the second `b,d,a` is duplicated; should be `+diff_1_gl{a,d,b}` for the second Christoffel permutation. Convergence test on Alcubierre vs SymPy analytic Ricci ([`agent-tools/diag_ricci_alcubierre_convergence.py`](agent-tools/diag_ricci_alcubierre_convergence.py)) shows the WF formula plateaus at ~2.5% rel. error as dx?0 while the standard Christoffel-form Ricci converges to <0.2% at dx=0.025.
+1. **`Solver/ricciT.m` ~line 62**: term reads `-(diff_1_gl{b,d,a}+diff_1_gl{b,d,a}-diff_1_gl{a,b,d})` ï¿½ the second `b,d,a` is duplicated; should be `+diff_1_gl{a,d,b}` for the second Christoffel permutation. Convergence test on Alcubierre vs SymPy analytic Ricci ([`agent-tools/diag_ricci_alcubierre_convergence.py`](agent-tools/diag_ricci_alcubierre_convergence.py)) shows the WF formula plateaus at ~2.5% rel. error as dx?0 while the standard Christoffel-form Ricci converges to <0.2% at dx=0.025.
 2. **`getEulerianTransformationMatrix.m`**: the time-column sign of `M` is opposite of the standard future-directed-normal convention. Physically irrelevant for energy-condition eigenvalues but flips $T_{0i}$ sign in the Eulerian frame.
 
-At the anchor's coarse dx=0.2, both numerical Ricci formulas have huge truncation error (~65% for textbook, ~26% for WF) because the bubble wall scale $\sigma^{-1}=0.125$ is finer than the grid spacing — WF's accidental cancellation makes it *closer* to the analytic answer at coarse dx but genuinely wrong as $dx\to 0$.
+At the anchor's coarse dx=0.2, both numerical Ricci formulas have huge truncation error (~65% for textbook, ~26% for WF) because the bubble wall scale $\sigma^{-1}=0.125$ is finer than the grid spacing ï¿½ WF's accidental cancellation makes it *closer* to the analytic answer at coarse dx but genuinely wrong as $dx\to 0$.
 
 ### Implementation
 
@@ -1729,13 +1729,13 @@ At the anchor's coarse dx=0.2, both numerical Ricci formulas have huge truncatio
 - `passWEC`, `passDEC`: **exact match (0.0737)** to four digits.
 - `passNEC`, `passSEC`: 0.0793 vs 0.0737 (~7% off).
 - `min(DEC)`: 0.27% rel. error; `min(SEC)`: 0.80% rel. error.
-- `min(NEC)`, `min(WEC)`: 39% off — likely a null-vector angular-sampling difference between our `evaluate_energy_conditions` and WF's `getEnergyConditions.m`. Worth a follow-up but doesn't change the qualitative anchor reproduction.
+- `min(NEC)`, `min(WEC)`: 39% off ï¿½ likely a null-vector angular-sampling difference between our `evaluate_energy_conditions` and WF's `getEnergyConditions.m`. Worth a follow-up but doesn't change the qualitative anchor reproduction.
 
-**`wf_compat=False` (default convergent formula, same dx=0.2):** all pass-fractions higher and `|min(EC)|` lower than anchor — exactly as predicted by the convergence study (the textbook formula under-estimates `|R|` at coarse dx).
+**`wf_compat=False` (default convergent formula, same dx=0.2):** all pass-fractions higher and `|min(EC)|` lower than anchor ï¿½ exactly as predicted by the convergence study (the textbook formula under-estimates `|R|` at coarse dx).
 
 ### Status
 
-A.6 closed at A/B (A for the convergence study and the bug identification; B for the partial pass-fraction match — NEC sampling gap is the residual). Phase 3.3 (nested/non-spherical Fuchs shells) now unblocked by Python: next session can extend the pipeline to a TOV-shell metric and run the nested-shell sweep without MATLAB.
+A.6 closed at A/B (A for the convergence study and the bug identification; B for the partial pass-fraction match ï¿½ NEC sampling gap is the residual). Phase 3.3 (nested/non-spherical Fuchs shells) now unblocked by Python: next session can extend the pipeline to a TOV-shell metric and run the nested-shell sweep without MATLAB.
 
 ### Files added/edited
 
@@ -1748,7 +1748,7 @@ A.6 closed at A/B (A for the convergence study and the bug identification; B for
 
 ### Workflow gotchas
 
-- WF anchor `.mat` stores per-condition arrays (`nec`, `wec`, `dec`, `sec`) of shape (76,76) — sliced at the central z-plane of the 80×80×5 grid with edge-copy ghost cells trimmed (`[2:-2, 2:-2]`). Our pipeline produces 4D arrays; downstream comparison must restrict identically.
+- WF anchor `.mat` stores per-condition arrays (`nec`, `wec`, `dec`, `sec`) of shape (76,76) ï¿½ sliced at the central z-plane of the 80ï¿½80ï¿½5 grid with edge-copy ghost cells trimmed (`[2:-2, 2:-2]`). Our pipeline produces 4D arrays; downstream comparison must restrict identically.
 - SymPy Ricci on the Alcubierre metric (4D, full tanh shape function) takes ~1 min to compute; cache results when iterating.
 
 ---
@@ -1841,4 +1841,62 @@ Items 1-4 closed. Items 5 (non-spherical) and 6 (final bookkeeping) on deck.
 - `agent-tools/test_nested_shell_smoke.py`, `test_nested_shell_ec.py`, `test_nested_shell_split_sweep.py` (gitignored scratch).
 - `/memories/repo/warp_factory_anchor.md` (issue #4 entry).
 - `SESSION_LOG.md`, `NAVIGATOR.md`, `TRUST_AUDIT.md`.
+
+---
+
+## Session 27 (2026-05-14) -- Phase 3.3 item 5 closed NEGATIVE; Phase 3.3 fully closed
+
+**Participants:** Brian Sheppard + Claude (Opus 4.7).
+**Continuation of Session 26** (six-task plan: items 5-6 remaining; both closed in this session).
+**Context:** First session of resumed development inside Claude Code (migrated from VS Code). Audit pass at session start orienting on `NAVIGATOR.md` / `ROADMAP.md` / `TRUST_AUDIT.md` / `SESSION_LOG.md` Sessions 23-26 / `warp_factory_py/` code; durable user/project memory entries seeded under `~/.claude/projects/.../memory/`. Then proceeded to close the two outstanding Phase 3.3 sub-items.
+
+### Item 5 closed -- NEGATIVE within slice
+
+**Plan (item 5 from Session 24 six-task plan).** Generalise the Python warp-shell builder to a non-spherical (oblate / prolate axisymmetric) Fuchs shell and ask whether the spherical reference is locally optimal under volume-preserving shape deformation at fixed total mass and fixed warp-band radii.
+
+**Construction (`metric_oblate_warp_shell`, appended to [`warp_factory_py/metrics/warp_shell.py`](warp_factory_py/metrics/warp_shell.py)).**
+- **Volume-preserving Legendre-2 deformation** of the spherical reference shell: $r_{\rm eff}(r, \chi) = r / s(\chi)$ where $s(\chi) = (1 + \epsilon\,P_2(\cos\chi))^{1/3}$, $P_2(c) = (3c^2-1)/2$, and $\chi$ is the polar angle from a configurable symmetry axis (`'x'`, `'y'`, or `'z'`). The 1/3 exponent makes the shell volume *exactly* preserved on the unit sphere ($\int_0^\pi s^3 \sin\chi\, d\chi = 2$ since $\int P_2\sin\chi\, d\chi = 0$); the spherical reference radial profiles $\rho(r), P(r), M(r), \alpha(r), A(r), B(r), \mathrm{shift}(r)$ are sampled at $r_{\rm eff}$ rather than $r$, then projected to Cartesian via the same `_sph2cart_diag` block used by the spherical builder.
+- **Slice-scope honesty.** This is *not* a self-consistent oblate Fuchs shell in GR (no 2-D Einstein-equation solve); the constructed metric corresponds to *some* axisymmetric stress-energy distribution via $T = G/8\pi G$, and the EC test asks whether that distribution has improved energy-condition margins relative to the spherical reference. Same epistemological position as Session 26's nested-shell extension. Also clearly *not* the Â§6 Fuchs proposal of 1-D radial-profile optimization within a single shell â€” that remains untested (recorded as Open Lead #2 / Phase 3.3+ in `NAVIGATOR.md`).
+- **`axis` kwarg.** The Alcubierre warp shift in this builder is along x; choosing `axis='x'` aligns the deformation symmetry axis with the motion direction, `axis='z'` (default to match the existing `theta_grid = arctan2(sqrt(XÂ²+YÂ²), Z)` convention) puts the deformation perpendicular to the motion. Both were swept.
+
+**Smoke tests ([`agent-tools/test_oblate_shell_smoke.py`](agent-tools/test_oblate_shell_smoke.py)) all PASS:**
+- Test 1: `epsilon=0` reproduces `metric_warp_shell_comoving` byte-for-byte (`max|g_sph - g_obl(eps=0)| = 0.000e+00`).
+- Test 2: `M[-1]` is epsilon-independent to machine precision (the radial profile is the spherical reference); no horizon at any $\epsilon \in \{-0.3, -0.1, 0, 0.1, 0.3\}$ (`horizon_min = 0.7098` for all).
+- Test 3: numerical $\int s^3 \sin\chi\, d\chi$ confirms volume preservation to $\sim 2\times 10^{-7}$ (residual is trapezoid quadrature error).
+
+**Headline result (epsilon sweep, two axes; [`agent-tools/test_oblate_shell_eps_sweep.py`](agent-tools/test_oblate_shell_eps_sweep.py)).** Configuration: $(R_1, R_2) = (10, 20)$ m, $M_{\rm tot} = 4.49 \times 10^{27}$ kg, warp band = $(R_1, R_2)$, $v_{\rm warp} = 0.02c$, smoothFactor = 4000, grid $(1, 300, 300, 5)$ at $dx = 0.2$ m, in-shell mask FD-border-trimmed.
+
+| $\epsilon$ | $\Delta\,\mathrm{NEC}$ vs ref, axis=`'z'` (âŠ¥ motion) | $\Delta\,\mathrm{NEC}$ vs ref, axis=`'x'` (âˆ¥ motion) |
+|------:|---:|---:|
+| $-0.30$ | $-2.79\%$ | $\mathbf{-361.7\%}$ |
+| $-0.20$ | $+0.01\%$ | $-228.5\%$ |
+| $-0.10$ | $\mathbf{+3.09\%}$ | $-101.1\%$ |
+| $\pm 0$ | (reference: $\mathrm{min(NEC)} = +1.242\times 10^{39}$ J/mÂ³) | (same) |
+| $+0.10$ | $-51.0\%$ | $-42.0\%$ |
+| $+0.20$ | $-105.4\%$ | $-99.6\%$ |
+| $+0.30$ | $-161.7\%$ | $-164.2\%$ |
+
+Pass-fractions stay 1.0000 for axis=`'z'` at $\epsilon \in \{-0.3, -0.2, -0.1, +0.1\}$, drop to $\sim 0.999$ at $+0.2$ (57 violating cells / 70724) and $\sim 0.977$ at $+0.3$ (1612 cells); pass-fractions for axis=`'x'` drop below 1.0000 at *every* nonzero $\epsilon$ except $\{0, +0.1\}$.
+
+**Conclusion (slice-scope).** Within the slice (axisymmetric volume-preserving Legendre-2 deformation, fixed $M_{\rm tot}$ and warp-band radii, $v = 0.02c$, canonical Fuchs config, in-shell mask), **the spherical Fuchs single-shell is a local optimum (or very near one) under shape deformation aligned with the warp motion direction** â€” every nonzero $\epsilon$ along axis=`'x'` strictly degrades the NEC margin, and the most generous prolate point ($\epsilon=+0.1$) still loses 42 %. Off-axis (axis=`'z'`, perpendicular to motion) the picture is asymmetric: a small +3 % NEC improvement at oblate $\epsilon=-0.1$ exists but is washed out by $|\epsilon|=0.2$ and reversed by $\epsilon=-0.3$, and is too small to constitute a real loophole. **Combined with Session 26's nested-shell NEGATIVE, both obvious geometric relaxations of Fuchs Â§6's "1-D radial-profile optimization" sketch are now closed at A within slice; no order-of-magnitude mass-reduction loophole exists in either.**
+
+**Slice does NOT cover.** (i) Non-axisymmetric / multi-axis (e.g. ellipsoidal, three independent semi-axes) deformations; (ii) self-consistent oblate Fuchs shells via a 2-D Einstein-equation solve; (iii) radial-profile optimization of $(\rho, P, \beta)$ within a single shell (Fuchs Â§6's actual proposal â€” separate Phase 3.3+ task); (iv) substantially different canonical $(M_{\rm tot}, R_1, R_2, v)$.
+
+### Item 6 closed -- final bookkeeping
+
+- `NAVIGATOR.md`: header bumped to Session 27 with full Phase 3.3 closure entry; Open Leads renumbered (Phase 3.3 dropped from #1; Fuchs Â§6 1-D radial-profile optimization added as new Open Lead #2 / Phase 3.3+); "Closed since Session 14c" gains Phase 3.3 row with explicit reopening triggers.
+- `ROADMAP.md`: Phase 3 status header updated to "3.1, 3.2, and 3.3 all closed"; Task 3.3 marker advanced `[~]` â†’ `[x]` with full session-27 disposition appended.
+- `TRUST_AUDIT.md`: Session 27 addendum mirroring the Session 26 addendum format (per-data-point grade A within slice; composite Path 2A verdict unchanged).
+- `SESSION_LOG.md`: this entry.
+
+### Files added/edited
+
+- `warp_factory_py/metrics/warp_shell.py`: `metric_oblate_warp_shell` appended (~120 LOC).
+- `agent-tools/test_oblate_shell_smoke.py`, `test_oblate_shell_eps_sweep.py` (gitignored scratch).
+- `NAVIGATOR.md`, `ROADMAP.md`, `TRUST_AUDIT.md`, `SESSION_LOG.md` per item 6 above.
+
+### Workflow notes
+
+- The sweep at the canonical $(1, 300, 300, 5)$ grid took ~3.5 minutes total (7 epsilon points Ã— ~25â€“30 s each, two axes â€” same per-point cost as Session 26's mass-split sweep, identical pipeline). Local execution under `C:\Python313\python.exe` was fine; no HF Jobs needed for this scale.
+- Initial smoke-test grid $(1, 16, 16, 16)$ at WC$=(1.6, 1.6, 1.6)$ produced a domain too small to span the shell (world_size $\approx 3.2$ m vs $R_2 = 20$ m); fixed by widening Test 1's grid and using a single-cell-large-WC pattern (`GRID=(1,1,1,1)`, `WC=(0,30,30,30)`) for Test 2 â€” same trick already used in `test_nested_shell_smoke.py`.
 

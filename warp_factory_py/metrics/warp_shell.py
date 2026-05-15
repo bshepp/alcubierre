@@ -641,3 +641,208 @@ def metric_nested_warp_shells(
         horizon_min=float(horizon_check),
     )
     return metric, params
+
+
+# ----------------------------------------------------------------------------
+# Oblate / prolate single shell (project extension; NOT in Fuchs et al. 2024)
+# ----------------------------------------------------------------------------
+#
+# Volume-preserving Legendre-2 deformation of the spherical reference Fuchs
+# shell. Shell boundaries are mapped (R1, R2) -> (R1 s(theta), R2 s(theta)) with
+#
+#     s(theta) = (1 + epsilon * P_2(cos theta))^(1/3),
+#     P_2(c)   = (3 c^2 - 1)/2.
+#
+# The 1/3 exponent makes the shell volume preserved to first order in epsilon
+# (since int P_2 sin theta dtheta = 0). epsilon = 0 recovers the sphere
+# exactly; epsilon > 0 is prolate (stretched along z); epsilon < 0 is oblate
+# (squashed along z, bulged at equator).
+#
+# Construction is the cheap-but-honest analogue of the nested-shells extension:
+# the spherical-reference radial profiles (rho, P, M, alpha, A, B, shift) are
+# re-used, sampled at an effective radius r_eff = r / s(theta) instead of r.
+# The Cartesian sph2cart projection is the same as the spherical builder.
+# This is NOT a self-consistent oblate Fuchs shell (no 2D PDE solve); the
+# Einstein tensor of the constructed metric corresponds to *some* axisymmetric
+# stress-energy distribution, and the EC test asks whether that distribution
+# has improved energy-condition margins relative to the spherical reference at
+# the same total mass and same warp-band radii.
+
+
+def metric_oblate_warp_shell(
+    grid_size: tuple[int, int, int, int],
+    world_center: tuple[float, float, float, float],
+    *,
+    m: float,
+    R1: float,
+    R2: float,
+    epsilon: float = 0.0,
+    axis: str = "z",
+    Rbuff: float = 0.0,
+    sigma: float = 0.0,
+    smooth_factor: float = 1.0,
+    v_warp: float = 0.0,
+    do_warp: bool = False,
+    grid_scale: tuple[float, float, float, float] = (1.0, 1.0, 1.0, 1.0),
+    r_sample_res: int = 100_000,
+) -> tuple[Metric, dict]:
+    """Volume-preserving oblate/prolate Fuchs shell (project extension; see
+    module-level comment block for the construction and slice-scope caveat).
+
+    Parameters
+    ----------
+    epsilon : float, default 0.0
+        Legendre-2 deformation amplitude. ``epsilon = 0`` recovers the
+        spherical reference exactly. ``epsilon > 0`` -> prolate (stretched
+        along z). ``epsilon < 0`` -> oblate (squashed along z, bulged at
+        equator). For the deformation to remain a single-valued (no
+        self-intersection) map of the shell, require ``1 + epsilon * P_2``
+        to be positive everywhere on the sphere; ``P_2 in [-1/2, 1]`` so
+        ``epsilon in (-2, 1)`` is the analytic safe band; this routine
+        accepts that range and clips ``s`` at a small positive floor for
+        numerical safety.
+    axis : {'x', 'y', 'z'}, default 'z'
+        Symmetry axis of the Legendre-2 deformation. The Alcubierre warp
+        shift in this builder is along x; choosing ``axis='x'`` aligns the
+        shape deformation with the motion direction, ``axis='z'`` (default)
+        puts the deformation perpendicular to the motion.
+    All other parameters as in :func:`metric_warp_shell_comoving`.
+
+    Returns ``(metric, params)`` with the same diagnostic keys as the
+    spherical builder, plus ``epsilon`` and ``s_minmax`` (range of the
+    deformation factor on the sphere).
+    """
+    Nt, Nx, Ny, Nz = grid_size
+    dt, dx, dy, dz = grid_scale
+    t0, x0, y0, z0 = world_center
+    if Nt != 1:
+        raise ValueError("oblate warp-shell port supports static (Nt=1) grids only")
+    if not (-2.0 < epsilon < 1.0):
+        raise ValueError(
+            f"epsilon must lie in (-2, 1) for the deformation map to remain "
+            f"non-degenerate; got {epsilon}"
+        )
+    if axis not in ("x", "y", "z"):
+        raise ValueError(f"axis must be 'x', 'y', or 'z'; got {axis!r}")
+
+    # --- 1. Spherical reference radial profiles (identical to the spherical
+    #        builder; only the lookup radius differs at sampling time).
+    world_size = np.sqrt(
+        (Nx * dx - x0) ** 2 + (Ny * dy - y0) ** 2 + (Nz * dz - z0) ** 2
+    )
+    rsample = np.linspace(0.0, world_size * 1.2, r_sample_res)
+    rho = np.zeros_like(rsample)
+    rho_0 = m / ((4.0 / 3.0) * np.pi * (R2**3 - R1**3))
+    rho[(rsample > R1) & (rsample < R2)] = rho_0
+    _M_unsm = _cumtrapz(rsample, 4.0 * np.pi * rho * rsample**2)
+    P = _tov_const_density(R2, _M_unsm[-1], rho, rsample)
+    rho_window = max(1, int(round(1.79 * smooth_factor)))
+    rho_smooth = _smooth4(rho, rho_window)
+    P_smooth = _smooth4(P, max(1, int(round(smooth_factor))))
+    M = _cumtrapz(rsample, 4.0 * np.pi * rho_smooth * rsample**2)
+    M_max = np.maximum.accumulate(np.maximum(M, 0.0))
+    M = np.where(M < 0.0, M_max, M)
+    alpha = _alpha_solver(M, P_smooth, rsample, M[-1], rsample[-1])
+    A = -np.exp(2.0 * alpha)
+    with np.errstate(divide="ignore", invalid="ignore"):
+        B = 1.0 / (1.0 - 2.0 * G * M / (rsample * c**2))
+    B[0] = 1.0
+    shift_radial = _compact_sigmoid(rsample, R1, R2, sigma, Rbuff)
+    shift_radial = _smooth_ma(_smooth_ma(shift_radial, max(1, int(round(smooth_factor)))),
+                              max(1, int(round(smooth_factor))))
+
+    # --- 2. Cartesian grid + spherical (r, theta, phi).
+    i_arr = (np.arange(Nx) + 1).astype(np.float64)
+    j_arr = (np.arange(Ny) + 1).astype(np.float64)
+    k_arr = (np.arange(Nz) + 1).astype(np.float64)
+    X = i_arr[:, None, None] * dx - x0
+    Y = j_arr[None, :, None] * dy - y0
+    Z = k_arr[None, None, :] * dz - z0
+    r_grid = np.sqrt(X**2 + Y**2 + Z**2)
+    theta_grid = np.arctan2(np.sqrt(X**2 + Y**2), Z)
+    phi_grid = np.arctan2(Y, X)
+
+    # --- 3. Volume-preserving Legendre-2 deformation factor s.
+    # P_2 is computed against the chosen axis so that ``axis='x'`` produces
+    # an oblate/prolate body whose symmetry axis aligns with the warp motion
+    # direction. theta_grid is from +z by convention; we directly use the
+    # appropriate Cartesian direction cosine instead of going through theta
+    # to avoid coord-singularity issues at the pole.
+    if axis == "z":
+        cos_chi = np.divide(Z, r_grid, out=np.zeros_like(r_grid), where=r_grid > 0.0)
+    elif axis == "y":
+        cos_chi = np.divide(Y, r_grid, out=np.zeros_like(r_grid), where=r_grid > 0.0)
+    else:  # axis == "x"
+        cos_chi = np.divide(X, r_grid, out=np.zeros_like(r_grid), where=r_grid > 0.0)
+    P2 = 0.5 * (3.0 * cos_chi**2 - 1.0)
+    s_th = np.power(np.maximum(1.0 + epsilon * P2, 1e-9), 1.0 / 3.0)
+    # Effective radius for the spherical-reference lookup: a point at (r, chi)
+    # in the deformed body sits at r_eff = r / s(chi) in the spherical map.
+    r_eff = r_grid / s_th
+
+    # --- 4. Map r_eff back to a fractional rsample index, exactly the way
+    #        the spherical builder does for r_grid.
+    idx_low = np.searchsorted(rsample, r_eff.ravel(), side="right") - 1
+    idx_low = np.clip(idx_low, 0, len(rsample) - 2)
+    r_low = rsample[idx_low]
+    r_high = rsample[idx_low + 1]
+    frac = (r_eff.ravel() - r_low) / (r_high - r_low)
+    idx_frac = (idx_low + 1).astype(np.float64) + frac
+    idx_frac = idx_frac.reshape(r_grid.shape)
+
+    A_grid = _legendre_interp(A, idx_frac)
+    B_grid = _legendre_interp(B, idx_frac)
+    shift_grid = _legendre_interp(shift_radial, idx_frac)
+
+    # --- 5. Cartesian projection. Use the same sph2cart_diag projection as
+    #        the spherical builder (true (r,theta) coords, not the deformed
+    #        ones); the deformation lives entirely in the radial sampling.
+    g11, g22, g23, g24, g33, g34, g44 = _sph2cart_diag(theta_grid, phi_grid, A_grid, B_grid)
+
+    g = np.zeros((4, 4, Nt, Nx, Ny, Nz), dtype=np.float64)
+    g[0, 0, 0] = g11
+    g[1, 1, 0] = g22
+    g[2, 2, 0] = g33
+    g[3, 3, 0] = g44
+    g[1, 2, 0] = g23
+    g[2, 1, 0] = g23
+    g[1, 3, 0] = g24
+    g[3, 1, 0] = g24
+    g[2, 3, 0] = g34
+    g[3, 2, 0] = g34
+
+    if do_warp:
+        g_tx_new = -g[0, 1, 0] * shift_grid - shift_grid * v_warp
+        g[0, 1, 0] = g[1, 0, 0] = g_tx_new
+
+    t = (np.arange(Nt) + 1) * dt
+    x = (np.arange(Nx) + 1) * dx
+    y = (np.arange(Ny) + 1) * dy
+    z = (np.arange(Nz) + 1) * dz
+
+    metric = Metric(
+        g=g,
+        coords=(t, x, y, z),
+        grid_scale=grid_scale,
+        name="ComovingOblateWarpShell",
+    )
+    s_min = float(np.power(max(1.0 + epsilon * (-0.5), 1e-9), 1.0 / 3.0))
+    s_max = float(np.power(max(1.0 + epsilon * 1.0, 1e-9), 1.0 / 3.0))
+    horizon_min_eff = float((1.0 - 2.0 * G * M / (rsample * c**2 + 1e-30)).min())
+    params = dict(
+        r=rsample,
+        rho=rho,
+        rho_smooth=rho_smooth,
+        P=P,
+        P_smooth=P_smooth,
+        M=M,
+        alpha=alpha,
+        A=A,
+        B=B,
+        shift=shift_radial,
+        epsilon=float(epsilon),
+        axis=axis,
+        s_minmax=(s_min, s_max),
+        horizon_min=horizon_min_eff,
+    )
+    return metric, params

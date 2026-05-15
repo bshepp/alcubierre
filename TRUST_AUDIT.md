@@ -1,6 +1,6 @@
 # Trust Audit — What We Derived vs. What We Accepted
 
-**Last updated:** 2026-05-12 (after Session 23; added Slice 4b / Task 2A.13b extension to Result 3).
+**Last updated:** 2026-05-14 (after Session 27; added Phase 3.3 composite closeout addendum; nested-shell + Legendre-2 shape-deformation extensions both NEGATIVE within slice; composite Path 2A verdict A unchanged).
 **Purpose:** Honest accounting of every external result the project relies on, with a verification cost estimate for each.
 
 The project has three categories of result:
@@ -222,4 +222,22 @@ The original "1 week of focused work" estimate to upgrade from "B-grade composit
 **No load-bearing dependency change.** This is a NEGATIVE result that *strengthens* the existing composite verdict by closing one obvious-looking loophole (mass nesting). The Path 2A composite remains A.
 
 **WarpFactory issue #4 surfaced.** `TOVconstDensity.m` applies the Schwarzschild-interior closed form for a uniform solid sphere to a *shell* geometry. The closed-form's embedded $M(r) = M_{tot}(r/R)^3$ is wrong for a shell (true partial-shell $M(r)$ is much smaller in $[R_1, R_2]$). Effect on $\alpha$ is small ($\sim 2.4\times 10^{-5}$ rel) because the TOV source is dominated by $M(r)$ + a tiny $P/c^4$ correction; effect on shell-interior $P$ is $\sim 22\%$. Recorded in `/memories/repo/warp_factory_anchor.md` issue #4. Does **not** change Fuchs Fig.10 EC verdict (single-shell pass-fractions remain 1.0 in both `wf_compat=True` and `wf_compat=False` modes), so TRUST_AUDIT #3 grade unchanged.
+
+
+---
+
+## Session 27 addendum � non-spherical / oblate axisymmetric shells (Phase 3.3 item 5; Phase 3.3 fully closed)
+
+**Result.** Within the slice (axisymmetric, comoving, single-shell with volume-preserving Legendre-2 deformation $r_{\rm eff}(r,\chi) = r/s(\chi)$ where $s(\chi) = (1 + \epsilon P_2(\cos\chi))^{1/3}$, fixed $M_{tot} = 4.49\times 10^{27}$ kg, fixed shell radii $(R_1, R_2) = (10, 20)$ m, warp band = $(R_1, R_2)$, $v = 0.02c$, smoothFactor = 4000, $300\times 300\times 5$ grid at $dx = 0.2$ m), the spherical reference ($\epsilon=0$) is a **local optimum (or very near one) of min(NEC) under shape deformation**:
+
+- **Axis aligned with warp motion direction** (deformation symmetry axis = x): every nonzero $\epsilon \in \{\pm 0.1, \pm 0.2, \pm 0.3\}$ strictly degrades the NEC margin; the most generous nonzero point ($\epsilon = +0.1$, prolate along motion) still loses 42 % of the spherical NEC reference; oblate $\epsilon = -0.1$ already tips the margin negative (-101 %).
+- **Axis perpendicular to warp motion** (deformation symmetry axis = z): asymmetric. Oblate $\epsilon = -0.1$ produces a **+3.09 %** NEC-margin improvement (the only non-degrading direction tested); $\epsilon = -0.2$ is essentially flat ($+0.01\%$); $\epsilon = -0.3$ degrades ($-2.79 \%$); all positive $\epsilon$ degrade monotonically.
+
+Combined with Session 26's nested-shell NEGATIVE, both obvious geometric relaxations of Fuchs §6's "1-D radial-profile optimization" sketch are now closed. **No order-of-magnitude mass-reduction loophole exists in either slice.** Full sweep table in [SESSION_LOG.md](SESSION_LOG.md) Session 27.
+
+**Grade.** A within the slice. Independent NumPy pipeline, two-axis sweep, three smoke-test gates pass (epsilon=0 byte-equality with spherical builder; M[-1] is epsilon-independent to machine precision; volume preservation to $\sim 2\times 10^{-7}$). Slice does *not* cover non-axisymmetric / multi-axis (e.g. ellipsoidal three-semi-axis) deformations, self-consistent oblate shells via a 2-D Einstein-equation solve, intra-shell radial-profile optimization (Fuchs §6's actual proposal, separate Phase 3.3+ task), or substantially different canonical $(M_{tot}, R_1, R_2, v)$.
+
+**No load-bearing dependency change.** Like Session 26, this is a NEGATIVE result that *strengthens* the existing composite verdict by closing a second obvious-looking loophole (geometric shape variation at fixed mass). The Path 2A composite remains A. The Fuchs Fig.10 anchor (TRUST_AUDIT #3) is unaffected; the spherical builder smoke-test reproduces it exactly via `epsilon=0`.
+
+**Phase 3.3 closeout (composite, Sessions 24-27).** Sub-items 1-3 (Fuchs Fig.10 reproduction): A; sub-item 4 (nested shells): A within slice (NEGATIVE); sub-item 5 (Legendre-2 shape deformation): A within slice (NEGATIVE); sub-item 6 (final bookkeeping): closed by Session 27 doc updates. Composite Phase 3.3 verdict: A within slice (NEGATIVE on the geometric-relaxation question; UNTESTED on the radial-profile-optimization question per Fuchs §6, recorded as Phase 3.3+ in [`NAVIGATOR.md`](NAVIGATOR.md) Open Lead #2).
 
