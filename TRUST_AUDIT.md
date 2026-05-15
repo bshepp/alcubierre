@@ -1,6 +1,6 @@
 # Trust Audit — What We Derived vs. What We Accepted
 
-**Last updated:** 2026-05-14 (after Session 27; added Phase 3.3 composite closeout addendum; nested-shell + Legendre-2 shape-deformation extensions both NEGATIVE within slice; composite Path 2A verdict A unchanged).
+**Last updated:** 2026-05-15 (after Session 28; added Phase 3.3+ Step 1 addendum — Cartesian-objective radial-profile optimization claimed 30.7% mass reduction, KILLED by the adversarial kill-suite as a discretization artifact; methodological finding A-grade; composite Path 2A verdict A unchanged).
 **Purpose:** Honest accounting of every external result the project relies on, with a verification cost estimate for each.
 
 The project has three categories of result:
@@ -240,4 +240,27 @@ Combined with Session 26's nested-shell NEGATIVE, both obvious geometric relaxat
 **No load-bearing dependency change.** Like Session 26, this is a NEGATIVE result that *strengthens* the existing composite verdict by closing a second obvious-looking loophole (geometric shape variation at fixed mass). The Path 2A composite remains A. The Fuchs Fig.10 anchor (TRUST_AUDIT #3) is unaffected; the spherical builder smoke-test reproduces it exactly via `epsilon=0`.
 
 **Phase 3.3 closeout (composite, Sessions 24-27).** Sub-items 1-3 (Fuchs Fig.10 reproduction): A; sub-item 4 (nested shells): A within slice (NEGATIVE); sub-item 5 (Legendre-2 shape deformation): A within slice (NEGATIVE); sub-item 6 (final bookkeeping): closed by Session 27 doc updates. Composite Phase 3.3 verdict: A within slice (NEGATIVE on the geometric-relaxation question; UNTESTED on the radial-profile-optimization question per Fuchs §6, recorded as Phase 3.3+ in [`NAVIGATOR.md`](NAVIGATOR.md) Open Lead #2).
+
+
+---
+
+## Session 28 addendum — Phase 3.3+ Step 1 (Fuchs §6 radial-profile optimization): Cartesian-objective result KILLED
+
+**Claimed result (REJECTED).** A Powell optimizer over 6 $\rho$-knots + 6 $\beta$-knots (warp performance held fixed: $\beta\equiv1$ for $r\le R_1$, $v=0.02c$; P TOV-pinned; new builder [`metric_profile_warp_shell`](warp_factory_py/metrics/warp_shell.py)) reported a **30.7% mass reduction** (4.49→3.11e27 kg) with all four ECs passing strictly at one canonical grid (dx=0.2, N=300), baseline reproducing Session 26's min(NEC)=+1.240e39.
+
+**Adversarial verification ([`agent-tools/test_profile_kill.py`](agent-tools/test_profile_kill.py)).**
+
+| Kill test | Verdict | Evidence |
+|---|---|---|
+| 1 — const-density over-provisioning control | SURVIVES | const-density passes only to M=3.50e27, fails at 3.11e27 — the effect was not the trivial "use less mass". |
+| 2 — resolution convergence dx∈[0.12,0.40], independent grid family | **KILL** | optimized min(EC) ≈ −2.7e38 at *every* resolution; const-density baseline robustly positive and *rising* with refinement (+3.3e38→+7.5e38). |
+| 3 — EC sphere-sampling escalation 100/10→400/30 | **KILL** | optimized stably negative (−2.68→−2.75e38). |
+
+**Grade.** The 30.7% mass-reduction claim is **rejected (C / artifact)**. Mechanism: a spherically-symmetric shell evaluated by 4th-order Cartesian FD has a staircased radial structure; the optimizer, run with the *Cartesian* EC pipeline as its objective, reshaped $\rho$ so the worst staircased wall-cell went positive only on its own loop lattice and the single canonical grid first checked (a measure-near-zero set). The constant-density Fuchs baseline has no such exploit and passes grid-robustly — the clean control proving the failure is profile-specific, not pipeline-wide.
+
+The **methodological finding is A-grade**: the Cartesian WarpFactory-port pipeline must not be used as an optimizer objective for a symmetric source. A real positive must be invariant under refinement *and* across representations. The correct Step 1 evaluates the ECs in the radial / 1-D representation as the objective, with Cartesian `eval_metric` only as an independent high-resolution end cross-check (durable feedback memory `feedback-no-cartesian-optimizer-objective`). Recorded as Open Lead #2 (radial-frame redo) in [`NAVIGATOR.md`](NAVIGATOR.md).
+
+**No load-bearing dependency change.** Nothing in the composite Path 2A verdict relied on this; it was an exploratory probe of a still-open lead. Notably, **this is the verification discipline working as designed** — the same resolution-convergence + sampling-escalation tooling that tempered the Fell-Heisenberg arc (Sessions 14/22) caught a seductive false positive *before* it entered the trust ledger as a finding. The `metric_profile_warp_shell` builder is retained (sound; independently re-confirms WarpFactory issue #4 from a third code path).
+
+**Separate unverified lead (flagged, NOT claimed).** Kill Test 1 incidentally showed constant-density passing at M=3.50e27 (≈22% below Fuchs's canonical 4.49e27) — but at dx=0.2 only. Distinct question (Fuchs-mass over-provisioning) from profile optimization; requires its own convergence study before any grade.
 

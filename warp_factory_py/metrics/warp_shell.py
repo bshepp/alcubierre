@@ -846,3 +846,192 @@ def metric_oblate_warp_shell(
         horizon_min=horizon_min_eff,
     )
     return metric, params
+
+
+# ----------------------------------------------------------------------------
+# Free radial-profile single shell (Fuchs et al. 2024 Sec. 6 proposal)
+# ----------------------------------------------------------------------------
+#
+# Fuchs et al. 2024 Sec. 6 Conclusion: "the smoothing process can be replaced
+# by direct 1D optimization of the radial profiles for density, pressure, and
+# shift vector, possibly reducing required mass by orders of magnitude." This
+# is the *actual* Fuchs mass-reduction proposal -- neither the nested-shell
+# extension (Session 26) nor the Legendre-2 shape deformation (Session 27),
+# both of which were closed NEGATIVE within slice.
+#
+# This builder is the spherical single-shell metric with the constant-density
+# top-hat rho(r) and the compact-sigmoid shift form factor replaced by caller-
+# supplied radial-profile callables. Everything else is identical to
+# metric_warp_shell_comoving: P(r) is TOV-pinned (isotropic perfect fluid,
+# P(R2)=0 boundary, integrated inward via the same numerical TOV used by the
+# nested-shell builder), alpha(r) follows from the same solver, and the
+# Cartesian projection is the same sph2cart_diag block.
+#
+# The profile *parameterization* (spline knots, basis functions, bounds) is
+# deliberately NOT here -- it lives in the optimizer driver so this module
+# stays numpy-only and policy-free. Pass plain callables r_array -> array.
+
+
+def metric_profile_warp_shell(
+    grid_size: tuple[int, int, int, int],
+    world_center: tuple[float, float, float, float],
+    *,
+    rho_of_r,
+    shift_of_r,
+    R1: float,
+    R2: float,
+    smooth_factor: float = 1.0,
+    v_warp: float = 0.0,
+    do_warp: bool = False,
+    grid_scale: tuple[float, float, float, float] = (1.0, 1.0, 1.0, 1.0),
+    r_sample_res: int = 100_000,
+) -> tuple[Metric, dict]:
+    """Single warp shell with caller-supplied radial profiles (Fuchs Sec. 6).
+
+    Parameters
+    ----------
+    rho_of_r : callable
+        ``rho_of_r(r)`` -> mass density [kg/m^3] on the 1-D radial sample
+        grid ``r``. Values are clamped non-negative and zeroed outside
+        ``[R1, R2]`` (the shell support is fixed; only the profile shape and
+        the resulting total mass vary).
+    shift_of_r : callable
+        ``shift_of_r(r)`` -> Alcubierre shift form factor (dimensionless) on
+        the radial sample grid. Not clamped -- the caller's parameterization
+        owns any bound policy. The single-shell baseline is
+        :func:`_compact_sigmoid`.
+    R1, R2 : float
+        Inner / outer shell radii [m]. Profile support is ``[R1, R2]``.
+    smooth_factor, v_warp, do_warp, grid_scale, r_sample_res
+        As in :func:`metric_warp_shell_comoving`.
+
+    Returns ``(metric, params)`` with the same diagnostic keys as the
+    spherical builder, plus ``M_total`` (the integrated ADM mass of the
+    supplied density profile) and ``horizon_min``.
+    """
+    Nt, Nx, Ny, Nz = grid_size
+    dt, dx, dy, dz = grid_scale
+    t0, x0, y0, z0 = world_center
+    if Nt != 1:
+        raise ValueError("profile warp-shell port supports static (Nt=1) grids only")
+    if not (R2 > R1 > 0.0):
+        raise ValueError(f"require 0 < R1 < R2, got ({R1}, {R2})")
+
+    world_size = np.sqrt(
+        (Nx * dx - x0) ** 2 + (Ny * dy - y0) ** 2 + (Nz * dz - z0) ** 2
+    )
+    rsample = np.linspace(0.0, world_size * 1.2, r_sample_res)
+
+    # 1. Caller density profile, clamped >= 0 and supported on [R1, R2].
+    rho = np.asarray(rho_of_r(rsample), dtype=np.float64)
+    if rho.shape != rsample.shape:
+        raise ValueError(
+            f"rho_of_r must return an array shaped like r ({rsample.shape}); "
+            f"got {rho.shape}"
+        )
+    rho = np.where((rsample > R1) & (rsample < R2), np.maximum(rho, 0.0), 0.0)
+
+    # 2. Un-smoothed running mass + numerical TOV pressure (P(R2)=0 inward),
+    #    reusing the per-shell solver with a single shell.
+    M_unsm = _cumtrapz(rsample, 4.0 * np.pi * rho * rsample**2)
+    M_total = float(M_unsm[-1])
+    P = _tov_pressure_nested(rsample, rho, M_unsm, [(R1, R2, M_total)])
+
+    # 3. Smooth rho and P with the same windows as the constant-density builder.
+    rho_window = max(1, int(round(1.79 * smooth_factor)))
+    rho_smooth = _smooth4(rho, rho_window)
+    P_smooth = _smooth4(P, max(1, int(round(smooth_factor))))
+
+    # 4. Recompute M from smoothed rho (clip negatives to the running max).
+    M = _cumtrapz(rsample, 4.0 * np.pi * rho_smooth * rsample**2)
+    M_max = np.maximum.accumulate(np.maximum(M, 0.0))
+    M = np.where(M < 0.0, M_max, M)
+
+    # 5. alpha(r), A(r), B(r).
+    alpha = _alpha_solver(M, P_smooth, rsample, M[-1], rsample[-1])
+    A = -np.exp(2.0 * alpha)
+    with np.errstate(divide="ignore", invalid="ignore"):
+        B = 1.0 / (1.0 - 2.0 * G * M / (rsample * c**2))
+    B[0] = 1.0
+    horizon_min = float((1.0 - 2.0 * G * M / (rsample * c**2 + 1e-30)).min())
+
+    # 6. Shift form factor from the caller, then 2 smoothing passes (matches
+    #    the constant-density builder's treatment of the compact sigmoid).
+    shift_radial = np.asarray(shift_of_r(rsample), dtype=np.float64)
+    if shift_radial.shape != rsample.shape:
+        raise ValueError(
+            f"shift_of_r must return an array shaped like r ({rsample.shape}); "
+            f"got {shift_radial.shape}"
+        )
+    shift_radial = _smooth_ma(
+        _smooth_ma(shift_radial, max(1, int(round(smooth_factor)))),
+        max(1, int(round(smooth_factor))),
+    )
+
+    # 7. Sample onto Cartesian grid (identical to the spherical builder).
+    i_arr = (np.arange(Nx) + 1).astype(np.float64)
+    j_arr = (np.arange(Ny) + 1).astype(np.float64)
+    k_arr = (np.arange(Nz) + 1).astype(np.float64)
+    X = i_arr[:, None, None] * dx - x0
+    Y = j_arr[None, :, None] * dy - y0
+    Z = k_arr[None, None, :] * dz - z0
+    r_grid = np.sqrt(X**2 + Y**2 + Z**2)
+    theta_grid = np.arctan2(np.sqrt(X**2 + Y**2), Z)
+    phi_grid = np.arctan2(Y, X)
+
+    idx_low = np.searchsorted(rsample, r_grid.ravel(), side="right") - 1
+    idx_low = np.clip(idx_low, 0, len(rsample) - 2)
+    r_low = rsample[idx_low]
+    r_high = rsample[idx_low + 1]
+    frac = (r_grid.ravel() - r_low) / (r_high - r_low)
+    idx_frac = (idx_low + 1).astype(np.float64) + frac
+    idx_frac = idx_frac.reshape(r_grid.shape)
+
+    A_grid = _legendre_interp(A, idx_frac)
+    B_grid = _legendre_interp(B, idx_frac)
+    shift_grid = _legendre_interp(shift_radial, idx_frac)
+
+    g11, g22, g23, g24, g33, g34, g44 = _sph2cart_diag(theta_grid, phi_grid, A_grid, B_grid)
+
+    g = np.zeros((4, 4, Nt, Nx, Ny, Nz), dtype=np.float64)
+    g[0, 0, 0] = g11
+    g[1, 1, 0] = g22
+    g[2, 2, 0] = g33
+    g[3, 3, 0] = g44
+    g[1, 2, 0] = g23
+    g[2, 1, 0] = g23
+    g[1, 3, 0] = g24
+    g[3, 1, 0] = g24
+    g[2, 3, 0] = g34
+    g[3, 2, 0] = g34
+
+    if do_warp:
+        g_tx_new = -g[0, 1, 0] * shift_grid - shift_grid * v_warp
+        g[0, 1, 0] = g[1, 0, 0] = g_tx_new
+
+    t = (np.arange(Nt) + 1) * dt
+    x = (np.arange(Nx) + 1) * dx
+    y = (np.arange(Ny) + 1) * dy
+    z = (np.arange(Nz) + 1) * dz
+
+    metric = Metric(
+        g=g,
+        coords=(t, x, y, z),
+        grid_scale=grid_scale,
+        name="ComovingProfileWarpShell",
+    )
+    params = dict(
+        r=rsample,
+        rho=rho,
+        rho_smooth=rho_smooth,
+        P=P,
+        P_smooth=P_smooth,
+        M=M,
+        M_total=M_total,
+        alpha=alpha,
+        A=A,
+        B=B,
+        shift=shift_radial,
+        horizon_min=horizon_min,
+    )
+    return metric, params

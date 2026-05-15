@@ -1900,3 +1900,49 @@ Pass-fractions stay 1.0000 for axis=`'z'` at $\epsilon \in \{-0.3, -0.2, -0.1, +
 - The sweep at the canonical $(1, 300, 300, 5)$ grid took ~3.5 minutes total (7 epsilon points × ~25–30 s each, two axes — same per-point cost as Session 26's mass-split sweep, identical pipeline). Local execution under `C:\Python313\python.exe` was fine; no HF Jobs needed for this scale.
 - Initial smoke-test grid $(1, 16, 16, 16)$ at WC$=(1.6, 1.6, 1.6)$ produced a domain too small to span the shell (world_size $\approx 3.2$ m vs $R_2 = 20$ m); fixed by widening Test 1's grid and using a single-cell-large-WC pattern (`GRID=(1,1,1,1)`, `WC=(0,30,30,30)`) for Test 2 — same trick already used in `test_nested_shell_smoke.py`.
 
+---
+
+## Session 28 (2026-05-15) — Resumed in Claude Code; Phase 3.3+ Step 1 attempted and KILLED (Cartesian-objective discretization artifact)
+
+**Participants:** Brian Sheppard + Claude (Opus 4.7).
+**Context:** First full session after migrating development from VS Code to Claude Code. Opened with a deep-dive audit/orientation pass (NAVIGATOR / ROADMAP / TRUST_AUDIT / SESSION_LOG 23–27 / `warp_factory_py/` code; environment verified at `C:\Python313\python.exe`; durable user/project/feedback memory seeded under `~/.claude/projects/.../memory/`). Then opened Phase 3.3+ — Fuchs et al. 2024 §6's *actual* mass-reduction proposal (1-D radial-profile optimization of $(\rho, P, \beta)$ within a single shell), the lever Sessions 26–27 left untested after closing the two *geometric* relaxations NEGATIVE.
+
+### Plan (sequence, not a fork)
+
+Agreed two-step plan with a checkpoint: **Step 1** isotropic radial-profile optimization (P TOV-pinned, free $\rho(r)$ + ramp $\beta(r)$, warp performance held fixed: $\beta\equiv 1$ for $r\le R_1$ so the passenger always sees full $v=0.02c$, minimize $M_{\rm tot}$ s.t. strict all-four-EC); **Step 2** anisotropic ($P_r\ne P_t$) redo. Step 1 first because its result sharpens Step 2.
+
+### New infrastructure (KEPT — sound, reusable)
+
+`metric_profile_warp_shell` appended to [`warp_factory_py/metrics/warp_shell.py`](warp_factory_py/metrics/warp_shell.py): single shell with caller-supplied `rho_of_r` / `shift_of_r` callables, P(r) TOV-pinned via the existing numerical inward solver, numpy-only (spline parameterization deliberately kept in the driver, not the library). Smoke test passes and **independently re-confirms WarpFactory issue #4 from a third code path**: the builder uses the *correct* numerical TOV, so the documented ~22% in-shell P gap vs `metric_warp_shell_comoving`'s buggy uniform-solid-sphere closed form reappears exactly, while M, α, and the assembled metric agree to ~1e-3.
+
+### Step 1 result (Cartesian-objective optimizer) — APPARENT positive, then KILLED
+
+Powell optimizer (6 ρ-knots + 6 β-knots cubic splines, warm-started from the constant-density Fuchs baseline, coarse dx=0.4 loop grid, canonical dx=0.2/N=300 verification of the optimum). Reported an apparent **30.7% mass reduction** (M: 4.49e27 → 3.11e27 kg) with all four ECs passing strictly at the single canonical grid checked, baseline reproducing Session 26's number exactly (min(NEC)=+1.240e39).
+
+Treated as an **unverified internal result** (not graded A) and subjected to an adversarial kill-suite ([`agent-tools/test_profile_kill.py`](agent-tools/test_profile_kill.py), gitignored), three falsification tests:
+
+| Test | Verdict | Evidence |
+|---|---|---|
+| 1 — was Fuchs's mass merely over-provisioned? (const-density mass scan) | **SURVIVES** | Constant-density passes down to M=3.50e27, *fails* at 3.11e27 (min(EC)=−4.7e37). The effect was not the trivial "just use less constant-density mass". |
+| 2 — resolution convergence (optimized vs baseline, dx 0.40→0.12) | **KILL** | Optimized point min(EC) ≈ **−2.7e38 at every resolution** on an independent grid family (N=130→434); the constant-density baseline stays robustly positive and *rises* with refinement (+3.3e38→+7.5e38). |
+| 3 — EC sphere-sampling escalation (100/10→400/30) | **KILL** | Optimized stays stably negative (−2.68e38→−2.75e38). Not a sampling fluke. |
+
+**Mechanism (the actual finding).** The shell is spherically symmetric but `eval_metric` computes all curvature via 4th-order central finite differences along Cartesian axes; the set of cells at a given radius is a staircased digitization of a sphere. The optimizer, run against the Cartesian EC pipeline as its objective, reshaped $\rho$ to push the single worst staircased wall-cell just positive **on its own loop lattice** (and, coincidentally, on the one canonical lattice first used to verify) — a measure-near-zero set. On any independent grid, including every finer one, the point fails. The fixed constant-density Fuchs baseline is smooth enough that 4th-order FD converges, so it has no such exploit and passes grid-robustly (the clean control that proves the failure is profile-specific, not pipeline-wide).
+
+**Disposition.** The 30.7% result is **KILLED — a Cartesian-discretization artifact**, not a physical effect. Graded C/rejected. This is itself a real, A-grade *methodological* result with an explicit reopening path: the project's own verification discipline (resolution-convergence + sampling-escalation, the same tools that tempered the FH arc in Sessions 14/22) caught a seductive false positive before it was recorded.
+
+**Methodological consequence (carried forward).** Using the Cartesian WarpFactory-port EC pipeline as an *optimizer objective* for a symmetric source is unsound — the optimizer mines the discretization. The correct Step 1 is to evaluate the energy conditions in the **radial / 1-D representation** (where the shell is genuinely low-dimensional and there is no Cartesian faceting) as the optimizer objective, and use the Cartesian pipeline only as an independent high-resolution end cross-check. A real positive must be invariant under refinement AND across representations. Recorded as a durable feedback memory (`feedback-no-cartesian-optimizer-objective`).
+
+**Separate unverified observation (flagged, NOT claimed).** Test 1 incidentally showed constant-density itself passing at M=3.50e27 (≈22% below Fuchs's 4.49e27) — but only at dx=0.2, one resolution. This is a *different* question (is the Fuchs canonical mass over-provisioned?) from profile optimization and would need its own convergence study before any claim. Logged only as a lead.
+
+### Files
+
+- `warp_factory_py/metrics/warp_shell.py` — `metric_profile_warp_shell` appended (KEPT; reusable for the radial redo).
+- `agent-tools/test_profile_shell_smoke.py`, `test_profile_shell_optimize.py`, `test_profile_kill.py`, `_profile_opt_run.log`, `_profile_kill_run.log` — gitignored scratch.
+- Bookkeeping: NAVIGATOR (Session 28 changelog + Open Lead #2 corrected), TRUST_AUDIT (Session 28 addendum), ROADMAP (Phase 3.3+ note), LANDSCAPE_SYNTHESIS (next-steps annotation), this entry.
+
+### Workflow notes
+
+- Optimizer: 300 evals / 762 s on the dx=0.4 coarse grid (Powell hit `maxfev` mid-descent — the apparent number was a non-converged lower bound *even before* the kill, a second independent reason not to trust it).
+- Kill-suite caught the artifact early: a 5-second pre-flight single eval on a perturbed dx=0.4 grid (N=130 vs the optimizer's N=132) already showed min(EC)=−2.6e38, predicting the Test-2 KILL before the full run.
+
