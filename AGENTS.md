@@ -20,7 +20,8 @@ Before doing anything non-trivial, read [NAVIGATOR.md](NAVIGATOR.md). It is the 
 | `hf_jobs/sweeps/` | Pure-Python sweep modules — one per heavy parameter sweep. Each exposes `build_grid(config)` and `evaluate(point)`. Do not inline these into notebooks; notebooks call them via `hf_jobs.run_sweep`. |
 | `hf_jobs/configs/` | JSON configs paired `*_preview.json` (small grid, runs locally in seconds) and `*_full.json` (HF Jobs `cpu-upgrade`). |
 | `sweeps/`, `sweeps_remote/` | Sweep outputs (`.parquet` + sibling `.json`). Treat as artifacts, not source. |
-| `agent-tools/` | Throwaway scripts written by previous agents (`diag_*`, `fix_*`, `inspect_*`, `dump_*`, `run_nb.py`, `clear_outputs.py`). Re-use the utility scripts; do not promote `diag_*`/`fix_*` scratch into permanent infrastructure. |
+| `verification/` | **Tracked, version-controlled reusable verification/adjudication harnesses** — validation suites (`test_axisym_validate.py`), cross-checks (`test_axisym_xcheck.py`, `cross_check_xact*`), ground-truth adjudicators (`test_prongB_groundtruth.py`), adversarial kill-test batteries (`test_*_kill.py`, `test_*_xcheck.py`, `test_*_convergence.py`), optimizer drivers, and the anchor-reproduction harnesses behind committed `warp_factory_py` results. These implement the project's verification methodology and are kept (not discarded) so *how* a result was checked stays reproducible. When an investigation closes, commit its keeper harnesses alongside the SESSION_LOG/TRUST_AUDIT result they produced. |
+| `agent-tools/` | True throwaway scratch only (`diag_*`, `fix_*`, `*_scratch.py`, `inspect_*`, `dump_*`, `analyse_*`, `_*`, run logs, `*.txt`/`*.png` dumps) — gitignored. Four long-documented general utilities are tracked **in place** here (`run_nb.py`, `clear_outputs.py`, `slim_pdf.py`, `slim_papers.py`) so their AGENTS.md paths stay valid. Genuine reusable harnesses do **not** belong here — they go in `verification/`. |
 | `papers/`, `papers/extracted/`, `papers/_originals/` | Reference PDFs and slimmed text extracts. Do not commit new full-PDF originals; use `agent-tools/slim_pdf.py` / `slim_papers.py` if a paper needs to be added. |
 | `speculation/` | Long-shot ideas explicitly flagged as not-yet-derived. |
 
@@ -64,7 +65,7 @@ On Windows the dispatcher caps workers at `min(4, cpu - 1)` to avoid OpenBLAS he
 ## Things to avoid
 
 - Refactoring notebooks "for clarity" without an explicit ask.
-- Promoting `agent-tools/diag_*` or `fix_*` scratch into the main codebase.
+- Discarding genuine reusable verification/adjudication harnesses as scratch. Promote them to the tracked `verification/` directory and commit them with the result they certify. (Curate, don't blanket-commit: true one-off `diag_*`/`fix_*`/`*_scratch`/`dump_*` stay gitignored in `agent-tools/`.)
 - Adding test frameworks, CI, linters, or pre-commit hooks — none exist by design.
 - Editing `papers/_originals/` or committing new full PDFs.
 - Re-running long-finished sweeps on HF Jobs without checking whether the output already lives in `sweeps/` or `sweeps_remote/`.

@@ -69,5 +69,13 @@ papers/extracted/
 # canonical committed copies.
 papers/_originals/
 
-# Agent tool scratch
-agent-tools/
+# Agent tool scratch: one-off diagnostics, fixes, inspection, dumps, run
+# logs. Reusable verification/adjudication harnesses are NOT scratch -- they
+# live in the tracked verification/ directory. Four long-documented general
+# utilities are kept in place (negated below) so their documented paths in
+# AGENTS.md stay valid.
+agent-tools/*
+!agent-tools/run_nb.py
+!agent-tools/clear_outputs.py
+!agent-tools/slim_pdf.py
+!agent-tools/slim_papers.py
