@@ -1,0 +1,29 @@
+{
+  "label": "canonical_anchor_npts65",
+  "anchor": {
+    "V": 1.5,
+    "sigma": 10.0,
+    "m0": 3.0,
+    "a": 0.05,
+    "ell": 4.0,
+    "r": 9.0,
+    "Pi": 0.25
+  },
+  "n_points": 125,
+  "npts_python": 65,
+  "h_python": 0.1875,
+  "rho_py_range": [
+    0.14371093088181155,
+    546.1303095775452
+  ],
+  "rho_xact_range": [
+    0.14371064256896646,
+    2.1091345629240596e+90
+  ],
+  "abs_diff_median": 4.7513786494146615e-07,
+  "abs_diff_max": 2.1091345629240596e+90,
+  "rel_diff_median": 2.006157064179631e-06,
+  "rel_diff_max": 1.0,
+  "rel_diff_p95": 0.0002917189717315767,
+  "decision_grade": "B"
+}

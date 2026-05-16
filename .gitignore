@@ -79,3 +79,9 @@ agent-tools/*
 !agent-tools/clear_outputs.py
 !agent-tools/slim_pdf.py
 !agent-tools/slim_papers.py
+# Small reproducibility-critical data artifacts the tracked verification/
+# harnesses load, and evidence behind load-bearing TRUST_AUDIT anchors.
+# Negation-tracked in place so the harnesses' paths keep resolving.
+!agent-tools/_radial_opt_knots.json
+!agent-tools/cross_check_xact_result.json
+!agent-tools/cross_check_xact_sweep.json
