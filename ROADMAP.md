@@ -27,6 +27,22 @@ The two paths are not mutually exclusive — see `MATTER_SHELL_PATH.md` §6 for 
 
 ---
 
+## Documentation maintenance — deferred (recommended FIRST task of a fresh session)
+
+**[ ] DOC.1 — NAVIGATOR / ROADMAP / SESSION_LOG separation-of-concerns dedup.** Raised by the project owner (Session 31, 2026-05-16). The three front-door docs have drifted into substantial crossover (compounded by per-session bookkeeping touching all of them): NAVIGATOR currently duplicates roadmap/plan content ("Open leads (ranked)", "Closed since … + reopening criteria") and chronology content (a sprawling multi-paragraph "Last updated" narrative + "Recent-session changelog" that restate SESSION_LOG). This violates the project's own `AGENTS.md` convention ("Link, don't duplicate … cross-link rather than restate").
+
+Target separation of concerns:
+- **NAVIGATOR** = orientation only: "where to start" table, load-bearing-assumptions table, document index, and a **single tight ~4-sentence current-state paragraph that points to ROADMAP/SESSION_LOG** (no rolling narrative, no changelog, no ranked leads, no closed-ledger). A map, not a log.
+- **ROADMAP** = the plan: phase/task state, the **single** ranked "open leads / next active task", the **single** "closed + reopening criteria" ledger, decision points, risk register. (This DOC.1 entry itself is an example: the plan/todo lives here.)
+- **SESSION_LOG** = the chronology (unchanged).
+- **TRUST_AUDIT** = the grading ledger (unchanged).
+
+Net: delete NAVIGATOR's "Recent-session changelog", "Open leads (ranked)", and "Closed since …" sections → consolidate into ROADMAP; shrink the NAVIGATOR header to a disciplined headline + pointers. Thereafter per-session bookkeeping touches SESSION_LOG (always), ROADMAP (status/leads/closures), TRUST_AUDIT (grades), and NAVIGATOR only when the headline / assumptions / doc-index materially change.
+
+**Caution (treat like a code refactor):** these are load-bearing front-door docs and the reopening-criteria wording is carefully phrased — do it as a deliberate, isolated pass and **review the consolidation diff** to confirm no substantive nuance (esp. reopening triggers, slice-scope qualifiers) is silently dropped. Do NOT bolt this onto a result-bearing session. Tradeoff accepted by the owner: a returning reader gains one hop (NAVIGATOR → ROADMAP) in exchange for single-purpose, low-drift docs.
+
+---
+
 ## Phase 0 — Foundation ✓
 
 **Goal:** Assemble the theoretical context and formulate the hypothesis.
