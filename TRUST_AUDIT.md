@@ -1,6 +1,6 @@
 # Trust Audit — What We Derived vs. What We Accepted
 
-**Last updated:** 2026-05-16 (after Session 30; Prong B GR-certified analytic ground truth ADJUDICATED the Session-29 hurdle — radial `axisymmetric_ec` certified A-grade for SHARP profiles too (0.0% vs exact GT through s=32), Cartesian `eval_metric` demoted to qualitative/smooth cross-check (24%→94% error on sharp); Kill A retracted, Kill B strengthened, Step-1 NEGATIVE justification cleaned, over-provisioning upgraded to radial-certified, Step 2 un-blocked; composite Path 2A verdict A unchanged). Prior header below.
+**Last updated:** 2026-05-16 (after Session 31; **Phase 3.3+ Step 2 (anisotropic) CLOSED NEGATIVE → Phase 3.3+ fully closed**. Free α–m metric-first optimization plateaued at 3.7% whose full-res min(EC)=−3.72e39 (DEC FAIL); adversarial KILL/KILL. Fuchs §6 "orders of magnitude" unsupported in BOTH isotropic & anisotropic slices; only real radial-certified finding = Fuchs-mass over-provisioning (uniform reduction dominates profile-shaping & anisotropy). 3rd-instance methodological refinement: optimizer mines whatever discretization is in its objective — incl. the under-sampled discrete minimization grid even with an exact-certified curvature engine. Composite Path 2A verdict A unchanged. Prior (Session 30) header below.
 **Prior:** 2026-05-15 (after Session 29; Phase 3.3+ Step 1 closed NEGATIVE via the radial-frame redo; a new exact-symbolic EC evaluator is A-grade on smooth inputs but an unresolved ~10-OoM cross-representation conflict on sharp profiles is now an OPEN documented hurdle; composite Path 2A verdict A unchanged).
 **Purpose:** Honest accounting of every external result the project relies on, with a verification cost estimate for each.
 
@@ -320,4 +320,25 @@ Two independent symbolic G derivations + exact-analytic vs quintic-spline deriva
 **No load-bearing dependency change.** Composite Path 2A verdict remains **A**. The change is that a previously-OPEN limitation is now CLOSED and a trusted sharp-profile oracle exists — strengthening, not weakening, the audit.
 
 **Methodological refinement (supersedes the Sessions-28/29 meta-finding where they conflict).** Cross-representation invariance is *necessary but insufficient*: when one representation is itself untrustworthy in the regime under test, "they disagree" does not identify which is wrong. The reliable arbiter is comparison against a **certified-exact ground truth** (closed-form, exact derivatives, validated by exact-zero on known vacuum solutions). Build the ground truth; let it adjudicate. This is `feedback-exhaustive-survey-is-the-method` producing a clean answer instead of a standoff.
+
+---
+
+## Session 31 addendum — Phase 3.3+ Step 2 (anisotropic) NEGATIVE; Phase 3.3+ fully closed
+
+**Setup.** Metric-first / Bobrick–Martire formulation: anisotropy automatic via independently-free, decoupled $\alpha(r)$ and $m(r)$ (no anisotropic-TOV solver). Correctness gate PASSED — the Fuchs isotropic baseline is representable in the free-(α,m,β) family and reproduces the Step-1 isotropic in-shell min(EC) to 5.7%, sign-consistent (one global C2 spline; the initial piecewise-C0 splice's −5.9e42 kink was fixed). Optimization scored against the **Prong-B-certified radial evaluator only** (Cartesian Prong-B-demoted).
+
+**Result graded:**
+
+| Component | Grade | Detail |
+|---|---|---|
+| Step-2 anisotropic mass-reduction claim | **C / rejected (KILL/KILL)** | Optimizer plateaued at M_opt/M_ref = 0.9632 (3.7%); full-res min(EC) = −3.72e39 (DEC FAIL). *Test A:* DEC violation converges genuine under refinement (522 r coarse "+2.9e35 PASS" → 2088 r −3.43e39 → 4175 r×120θ×na160 −3.72e39 stable) — coarse-loop pass = discrete-minimization-grid under-sampling mirage. *Test B (decisive, representation-internal):* constant-density passes (certified radial) to ADM ≈ 2.79e27 while the anisotropic optimum FAILS DEC at 4.46e27 — anisotropy counterproductive. |
+| Fuchs §6 "orders of magnitude" claim | **rejected, both slices** | Unsupported in isotropic (Step 1) AND anisotropic (Step 2). |
+| Fuchs-mass over-provisioning sub-finding | **B → radial-certified, strengthened** | Constant-density passes to ADM ≈ 2.79e27 (≪ canonical 4.49e27) on the certified evaluator — but trivial *uniform* mass reduction, which DOMINATES both profile-shaping (Step 1) and anisotropy (Step 2). NOT §6 profile optimization. |
+| `verification/aniso_step2*` harnesses | **A (kept)** | Shared parameterization, gate, optimizer, adversarial battery — tracked, reusable. |
+
+**Slice scope (honest).** NEGATIVE for this parameterization family (global-C2-spline free α,m,β), this optimizer (Powell, 28-dim, 700 evals, plateaued), this canonical config (R₁,R₂,v)=(10,20,0.02c). Not a proof no anisotropic shell can do better — but the decisive kill (Test B) is representation-internal to the certified oracle; across the whole Phase-3.3+ arc nothing approached beating constant-density-at-2.79e27.
+
+**No load-bearing dependency change.** Composite Path 2A verdict remains **A** — strengthened (another exploratory loophole closed NEGATIVE; the verification discipline caught a coarse-mesh mirage before it was recorded).
+
+**Methodological refinement (A-grade, 3rd distinct instance — supersedes prior where they conflict).** An optimizer mines *whatever discretization is in its objective*: Cartesian staircasing (S28); Cartesian-untrustworthy-for-sharp (S29); **and even with an exact-certified curvature engine, the under-sampled discrete (r,θ,direction) *minimization grid* (S31).** The reliable arbiter is jointly: cross-representation invariance + a certified-exact ground truth + a converged objective sampling mesh — with the optimum-plus-adversarial-battery as the catch (it caught all three). Recorded in `feedback-no-cartesian-optimizer-objective`.
 

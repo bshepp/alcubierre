@@ -85,3 +85,4 @@ agent-tools/*
 !agent-tools/_radial_opt_knots.json
 !agent-tools/cross_check_xact_result.json
 !agent-tools/cross_check_xact_sweep.json
+!agent-tools/_aniso_step2_opt.json

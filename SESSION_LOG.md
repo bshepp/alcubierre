@@ -2070,3 +2070,46 @@ Two forensic stages localized the conflict before Prong B adjudicated it. Stage 
 
 Project owner note: Prong B was not expected to reopen anything — it was run for precision and exhaustiveness, and it delivered a clean adjudication that *resolved* the hurdle rather than reopening the verdict. The Step-1 NEGATIVE is unchanged; the verification discipline turned a two-pipeline standoff into a certified answer and a sharper methodology.
 
+---
+
+## Session 31 (2026-05-16) — Phase 3.3+ Step 2 (anisotropic) CLOSED NEGATIVE; Phase 3.3+ fully closed
+
+**Participants:** Brian Sheppard + Claude (Opus 4.7).
+**Continuation of Session 30.** Step 30 resolved the sharp-profile evaluator-trust hurdle and certified the radial `axisymmetric_ec` evaluator, un-blocking Step 2 (anisotropic $P_r\ne P_t$ radial-profile optimization) — the version of Fuchs §6 where the warp-shell literature's actual mileage lives (Bobrick–Martire; Fuchs's own construction).
+
+### Method (metric-first / Bobrick–Martire — anisotropy automatic)
+
+No new anisotropic-TOV solver. Step 1's isotropic-TOV constraint *locked* $\alpha(r)$ to $\rho(r)$ (perfect-fluid hydrostatic equilibrium). **Step 2 = drop that constraint**: $\alpha(r)$ and the mass function $m(r)$ are *independently free* in the shell; a generic static spherically-symmetric metric then sources a generically *anisotropic* fluid ($P_r\ne P_t$), automatically and in Bianchi-equilibrium. New tracked harnesses under `verification/`:
+- `aniso_step2.py` — shared parameterization: one global natural CubicSpline per quantity through a full-window knot grid (cavity + interior + exterior); cavity/exterior knots fixed to shell-appropriate values, interior knots free. **Single C2 spline → no boundary kinks** (a piecewise-splice C0 join initially produced a spurious −5.9e42; fixed).
+- `aniso_step2_gate.py` — **correctness gate (PASSED):** the Fuchs constant-density isotropic baseline is representable in the free family and reproduces the Step-1 isotropic in-shell min(EC) to **5.7%, sign-consistent** → free-α generalization sound, boundary handling correct, optimizer search space provably contains the baseline (warm-start cost ≈ 1).
+- `aniso_step2_optimize.py` — Powell over 28 free dims (1 cavity-α + 10 interior α + 9 monotone m-increments + M_tot + 7 β-ramp), objective = minimize $M_{tot}$ s.t. strict all-four-EC in-shell via the **certified radial evaluator only** (Cartesian Prong-B-demoted), no horizon, fixed warp performance; warm-started from the Fuchs baseline.
+- `aniso_step2_kill.py` — the adversarial battery.
+
+### Result
+
+Optimizer plateaued (Powell hit maxfev=700) at **M_opt = 4.463e27 vs baseline 4.634e27 = only a 3.7% reduction** — and that point's full-resolution **min(EC) = −3.72e39 (DEC FAIL)** while the coarse loop mesh reported it passing (+2.9e35). Fuchs §6's "orders of magnitude" is *not* in evidence; anisotropy unlocked no defensible reduction.
+
+**Adversarial battery — KILL / KILL:**
+- *Test A (radial-resolution convergence of the optimum):* passes only at the coarse loop mesh (522 r × 32 θ: +2.9e35, razor margin); FAILS DEC at every finer resolution and **converges there**: 2088 r → −3.43e39; 4175 r × 80 θ × na120 → −3.72e39; 4175 r × 120 θ × na160 → −3.72e39 (stable). The DEC violation is genuine; the coarse-loop "pass" was a discrete-minimization-grid under-sampling mirage.
+- *Test B (constant-density floor, certified radial — the decisive representation-internal kill):* plain constant-density passes all four ECs down to ADM ≈ 2.79e27, and at M_opt (4.46e27) passes easily (+2.48e39), **while the anisotropic optimum at the same mass FAILS DEC (−3.72e39)**. Anisotropy is strictly *counterproductive* — trivial uniform mass reduction at far lower mass passes; the elaborate anisotropic optimization at higher mass fails.
+
+### Disposition
+
+**Phase 3.3+ Step 2 (anisotropic): CLOSED NEGATIVE. Phase 3.3+ is now fully closed** (Step 1 isotropic NEGATIVE Sessions 28–30; Step 2 anisotropic NEGATIVE Session 31). Fuchs §6's "orders of magnitude" mass reduction is **unsupported in both the isotropic and anisotropic slices**. The robust, radial-certified cross-finding stands and strengthens: **the Fuchs canonical mass is over-provisioned** (constant-density passes to ADM ≈ 2.79e27 in the certified evaluator), but that is trivial *uniform* mass reduction, which **dominates** profile-shaping (Step 1) and anisotropy (Step 2) alike — both are beaten by, or worse than, simply lowering a uniform density.
+
+**Slice scope (stated honestly):** NEGATIVE for *this* parameterization family (global-C2-spline free $(\alpha,m,\beta)$), *this* optimizer (Powell, 28-dim, 700 evals, plateaued), *this* canonical config $(R_1,R_2,v)=(10,20,0.02c)$. Not a proof that no anisotropic shell can do better — but the decisive kill (Test B) is representation-internal to the now-certified-trustworthy oracle, and across the entire Phase-3.3+ arc nothing approached beating constant-density-at-2.79e27.
+
+**Methodological refinement (A-grade — 3rd distinct instance; supersedes prior where they conflict).** The optimizer mines *whatever discretization is in its objective*: Session 28 — Cartesian staircasing; Session 29 — Cartesian untrustworthy for sharp; **Session 31 — even with an *exact-certified* curvature engine (Prong B), the optimizer mined the under-sampled discrete (r,θ,direction) *minimization grid*** (coarse-loop "pass" → converged-resolution DEC fail). General rule: the loop objective must be evaluated at converged sampling, or every candidate full-res-verified; the optimum-plus-adversarial-battery is what caught it all three times. Cross-representation invariance + a certified-exact ground truth + converged objective sampling are jointly the reliable arbiter.
+
+**No load-bearing dependency change.** Composite Path 2A verdict remains **A**. This strengthens it: another exploratory loophole (anisotropic profile optimization) closed NEGATIVE with the verification discipline catching a coarse-mesh mirage before it was recorded.
+
+### Files
+
+- **NEW tracked (`verification/`):** `aniso_step2.py`, `aniso_step2_gate.py`, `aniso_step2_optimize.py`, `aniso_step2_kill.py` — reusable Step-2 parameterization, gate, optimizer, adversarial battery.
+- `agent-tools/_aniso_step2_opt.json` — the Step-2 optimum (loaded by `aniso_step2_kill.py`); negation-tracked in place (reproducibility-critical, per the Session-30 data-artifact policy). Run logs `_aniso_step2_run.log`/`_aniso_step2_kill.log` stay gitignored scratch.
+- Bookkeeping: this entry; NAVIGATOR (header + changelog + Open Lead #1 → Closed-since); TRUST_AUDIT (Session 31 addendum); ROADMAP (3.3+ Step 2 `[x]`; Phase 3 status header); LANDSCAPE_SYNTHESIS; memory (`active-task-phase-3-3`, `feedback-no-cartesian-optimizer-objective` 3rd-instance refinement).
+
+### Wrap point
+
+Phase 3.3+ fully closed. The natural next active leads (no longer blocked): Task 2D.11 Phase 3 (multi-mode FH-style $\vec A$, last FH-internal direction); Garattini–Zatrimaylov 2025 (averaged WEC/NEC in de Sitter); Path 2B (Casimir, large scope). None is a warp drive; all are honest next steps inside the structured map. Session paused here for the project owner.
+
