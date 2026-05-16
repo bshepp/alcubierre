@@ -1,6 +1,7 @@
 # Trust Audit — What We Derived vs. What We Accepted
 
-**Last updated:** 2026-05-15 (after Session 29; Phase 3.3+ Step 1 closed NEGATIVE via the radial-frame redo; a new exact-symbolic EC evaluator is A-grade on smooth inputs but an unresolved ~10-OoM cross-representation conflict on sharp profiles is now an OPEN documented hurdle; composite Path 2A verdict A unchanged).
+**Last updated:** 2026-05-16 (after Session 30; Prong B GR-certified analytic ground truth ADJUDICATED the Session-29 hurdle — radial `axisymmetric_ec` certified A-grade for SHARP profiles too (0.0% vs exact GT through s=32), Cartesian `eval_metric` demoted to qualitative/smooth cross-check (24%→94% error on sharp); Kill A retracted, Kill B strengthened, Step-1 NEGATIVE justification cleaned, over-provisioning upgraded to radial-certified, Step 2 un-blocked; composite Path 2A verdict A unchanged). Prior header below.
+**Prior:** 2026-05-15 (after Session 29; Phase 3.3+ Step 1 closed NEGATIVE via the radial-frame redo; a new exact-symbolic EC evaluator is A-grade on smooth inputs but an unresolved ~10-OoM cross-representation conflict on sharp profiles is now an OPEN documented hurdle; composite Path 2A verdict A unchanged).
 **Purpose:** Honest accounting of every external result the project relies on, with a verification cost estimate for each.
 
 The project has three categories of result:
@@ -284,5 +285,39 @@ The **methodological finding is A-grade**: the Cartesian WarpFactory-port pipeli
 
 **No load-bearing dependency change.** The composite Path 2A verdict (A) is untouched — Step 1 was an exploratory lead. **But a new explicit limitation is now on the books:** the project has no trustworthy energy-condition evaluator for sharp / optimizer-driven profiles, and this *blocks* Phase 3.3+ Step 2 (anisotropic) until adjudicated. Resolution requires an independent third pipeline on the sharp optimum (the Session-17 xAct/xCoba Mathematica route is the natural arbiter) or an analytic sharp test case with a known closed-form stress-energy. Recorded as NAVIGATOR Open Lead #2 (top priority).
 
-**Honest meta-finding (A-grade, generalises Sessions 28+29).** An optimizer pointed at *any* numerical EC objective mines that objective's specific numerical slack wherever it has any (Cartesian staircasing S28; on sharp profiles the two pipelines simply disagree S29). Validation gates are necessarily smooth; the optimizer hunts where the evaluator is *not* certified. Cross-representation invariance under refinement is the only reliable arbiter — and on sharp profiles it currently, honestly, returns "unresolved." This is a documented hurdle, not a failure: it sharpens exactly what must be true for any future positive sharp-profile result to be credible.
+**Honest meta-finding (A-grade, generalises Sessions 28+29).** An optimizer pointed at *any* numerical EC objective mines that objective's specific numerical slack wherever it has any (Cartesian staircasing S28; on sharp profiles the two pipelines simply disagree S29). Validation gates are necessarily smooth; the optimizer hunts where the evaluator is *not* certified. Cross-representation invariance under refinement is the only reliable arbiter — and on sharp profiles it currently, honestly, returns "unresolved." This is a documented hurdle, not a failure: it sharpens exactly what must be true for any future positive sharp-profile result to be credible. *(Refined Session 30 — see below: cross-rep invariance is necessary but insufficient when one representation is itself untrustworthy in-regime; the reliable arbiter is a certified-exact ground truth.)*
+
+---
+
+## Session 30 addendum — Prong B adjudicates the hurdle; trust grades resolved
+
+**Instrument.** A standalone closed-form Einstein tensor (independent of `axisymmetric_ec`), built once with abstract A,B,F + derivatives, fed **exact analytic** closed-form derivatives per sharpness. **Certified through the actual code path**: flat → `0.00e+00`, Schwarzschild → `5.55e-17` (machine-zero, Ricci-flat) — a stronger guarantee than fast-vs-slow self-consistency (matches GR exactly on a non-trivial curved vacuum). Harness retained: [`verification/test_prongB_groundtruth.py`](verification/test_prongB_groundtruth.py).
+
+**Adjudication (sharpness sweep, GT vs Cartesian-FD vs radial-spline, identical shared EC contraction):**
+
+| s | Cart vs certified GT | Radial vs certified GT |
+|---:|---:|---:|
+| 0.5–2 | 24.5% | **0.0%** |
+| 4 | 12.0% | **0.0%** |
+| 8 | 46.3% | **0.0%** |
+| 16 | 80.7% | **0.0%** |
+| 32 | 94.0% | **0.0%** |
+
+Two independent symbolic G derivations + exact-analytic vs quintic-spline derivatives agree to displayed precision — a strong non-circular cross-validation, consistent with the Prong A localization (Cartesian FD on a staircased sharp feature).
+
+**Grade changes:**
+
+| Component | Old | **New (Session 30)** | Basis |
+|---|---|---|---|
+| `axisymmetric_ec` (radial) on **sharp** profiles | OPEN/ungraded | **A** | 0.0% vs GR-certified exact GT through s=32. Now the trusted absolute-magnitude EC oracle for shell profiles. |
+| Cartesian `eval_metric` on **sharp** profiles | (implicitly trusted) | **C — unreliable; demoted** | 24% error even at low sharpness in this family, →94% at s=32, monotone, always under-estimating. Qualitative/smooth cross-check only. |
+| "Sharp-profile EC evaluation" hurdle | OPEN HURDLE | **RESOLVED** | radial trustworthy, Cartesian not. ROADMAP 3.9 closed; Step-2 un-blocked. |
+| Step-1 radial-frame mass-reduction claim | C / rejected (Kill A+B) | **C / rejected — Kill A retracted, Kill B strengthened** | Kill A used the now-untrustworthy Cartesian pipeline → retracted. Kill B is representation-internal to the now-certified radial oracle → stands; the optimized profile is *counterproductive* vs uniform mass reduction. NEGATIVE unchanged; justification rests on no open question. |
+| Fuchs-mass over-provisioning sub-finding | B (weak, cross-rep) | **B → radial-certified** | Constant-density passes ≤2.70e27 ≪ 4.49e27 per the certified radial oracle. Real, but trivial *uniform* reduction — NOT Fuchs §6 profile optimization (the optimized profile is worse than uniform; §6 "orders of magnitude" remains unsupported). |
+
+**Does NOT overturn Sessions 26–27.** The nested-shell and Legendre-2-shape NEGATIVEs were *relative/qualitative* NEC-degradation results, cross-checked, on the **smooth** Fuchs baseline where the pipelines agreed on sign. Cartesian's demotion is a magnitude-trust tightening for **sharp** profiles, not a retraction of those qualitative conclusions.
+
+**No load-bearing dependency change.** Composite Path 2A verdict remains **A**. The change is that a previously-OPEN limitation is now CLOSED and a trusted sharp-profile oracle exists — strengthening, not weakening, the audit.
+
+**Methodological refinement (supersedes the Sessions-28/29 meta-finding where they conflict).** Cross-representation invariance is *necessary but insufficient*: when one representation is itself untrustworthy in the regime under test, "they disagree" does not identify which is wrong. The reliable arbiter is comparison against a **certified-exact ground truth** (closed-form, exact derivatives, validated by exact-zero on known vacuum solutions). Build the ground truth; let it adjudicate. This is `feedback-exhaustive-survey-is-the-method` producing a clean answer instead of a standoff.
 

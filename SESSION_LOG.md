@@ -2011,3 +2011,62 @@ The honest meta-point, generalising Sessions 28+29: an optimizer pointed at *any
 - Radial eval cost: dominated by 10 huge cse-lambdified GR expressions on the (r,θ) mesh; `cse=True` was essential (8 s → 0.46 s). The convergence diagnostic's final-resolution SEC einsum (120×12×41744×160 float64 ≈ 71.7 GiB) is an unguarded memory blowup in the scratch script — cap mesh × sphere-sampling product in any future high-res radial run.
 - r ≈ 0 is a spherical-coordinate singularity (g_θθ = r² → 0 → singular spatial 3-metric in `frame.eulerian_transformation`); all radial-evaluator calls restrict to r ≥ 0.5 m, which loses no shell physics (shell at r∈[10,20]).
 
+---
+
+## Session 30 (2026-05-16) — Prong B closes the hurdle: radial evaluator is trustworthy for sharp profiles; Cartesian is not
+
+**Participants:** Brian Sheppard + Claude (Opus 4.7).
+**Continuation of Sessions 28–29.** Session 29 closed Phase 3.3+ Step 1 NEGATIVE but left an **open, documented cross-representation hurdle** (ROADMAP 3.9 / NAVIGATOR Open Lead #2): on the sharp optimized profile the Cartesian `eval_metric` (FD) and the exact-symbolic `axisymmetric_ec` gave converged but opposite EC verdicts (~10 OoM), and the project had no trustworthy EC evaluator for sharp/optimizer-driven profiles. This session built and ran the analytic ground-truth adjudicator (Prong B) that resolves it.
+
+**Housekeeping carried in this session** (committed before the Prong B run): the verification toolchain was preserved per project-owner direction ("I do not like the idea of us not keeping our tools"). New tracked `verification/` directory (22 curated reusable harnesses + README; commit `35eee27`); the 3 reproducibility-critical data artifacts the harnesses load negation-tracked in place (`8d6e1ca`); `.gitignore`/`AGENTS.md` policy codified (curate, don't blanket-commit; reusable harnesses ≠ scratch). GitHub repo description/topics refreshed (API edit, no commit) to the slice-scoped honest-accounting framing. Durable feedback memories added: `feedback-exhaustive-survey-is-the-method`, `feedback-keep-verification-tools`.
+
+### Prong A (Session 29→30 bridge) — localization, recorded for completeness
+
+Two forensic stages localized the conflict before Prong B adjudicated it. Stage 0: the builder's sample-count-based smoothing + different `world_size` per pipeline gave a 1.61× physical-smoothing-length mismatch (3.15 m vs 5.06 m) — a real builder defect — but the resulting profile divergence was <3% (inner edge <1%), far too small to explain a 10-OoM EC conflict (refuted as the cause). Stage 1: the Cartesian worst in-shell cell sits at r≈R1 (the hollowed near-step), where ρ (T₀₀) agrees ~factor-2 between pipelines but min(NEC) diverges ~10 OoM in sign — localizing the divergence to the **curvature step** (Cartesian-FD anisotropic stress on a staircased near-step), not the metric or the (shared) EC contraction. Leading hypothesis: Cartesian FD manufactures the spurious worst cell; radial likely correct. Prong A could not adjudicate (radial-over-smoothing not excluded; no ground truth). Two of my own forensic-script bugs were caught and corrected mid-Prong-A (a 1e298 relative-metric artifact from a divide-by-near-zero; a thin-Z-slab "perpendicular" probe reading the wrong cells) — recorded because it shows these cross-pipeline comparisons are subtle and self-skepticism of the diagnostics is load-bearing.
+
+### Prong B — the analytic ground-truth adjudicator
+
+**Design.** A closed-form metric with a tunable-sharpness tanh inner-edge feature; the exact Einstein tensor derived by a **standalone** symbolic route (independent of `axisymmetric_ec`), built ONCE with abstract A,B,F + derivatives, then fed **exact analytic** closed-form derivatives per sharpness. Certification (the rigor proof): exact analytic derivatives of flat and Schwarzschild fed through the **same build-once lambdas the sweep uses** must give literal machine-zero — proving the path computes the correct Einstein tensor of GR (a Ricci-flat metric → 0 is a stronger guarantee than fast-vs-slow self-consistency). GT, Cartesian-FD, and radial-spline all use the identical shared `frame`+`energy_conditions`, so the ONLY difference across the three is the curvature method.
+
+**Refactor history (recorded — it mattered).** The first Prong B build rebuilt the full symbolic Einstein tensor *per sharsness* with the tanh closed-form substituted, then `sp.cancel`'d it — that hung for >1 h at 8.4 GB on the first sharpness (combinatorial blowup of `cancel` on tanh-substituted expressions). Diagnosed via wall-clock timestamps (process start vs now; log stale 5 min at 153 MB). Refactor: build G ONCE with abstract symbols (the fast ~6–14 s `cancel` on abstract symbols — NOT the tanh-substituted one), feed exact analytic derivatives per sharpness; parallelize the 7 sharpness values over a process pool, BLAS pinned to 1 thread/worker. Result: certified build-once G in 13.8 s, full 7-point sweep in 427 s wall (20 vCPU, 7 workers).
+
+**Certification PASSED:** flat → `0.00e+00`; Schwarzschild → `5.55e-17` (machine zero, Ricci-flat) through the actual sweep code path.
+
+**Adjudication (decisive):**
+
+| s [1/m] | GT min(EC) | Cart min(EC) | Rad min(EC) | Cart vs GT | Rad vs GT |
+|---:|---:|---:|---:|---:|---:|
+| 0.5 | −1.010e42 | −1.258e42 | −1.010e42 | 24.5% | **0.0%** |
+| 1.0 | −1.010e42 | −1.258e42 | −1.010e42 | 24.5% | **0.0%** |
+| 2.0 | −1.010e42 | −1.258e42 | −1.010e42 | 24.5% | **0.0%** |
+| 4.0 | −1.487e42 | −1.309e42 | −1.487e42 | 12.0% | **0.0%** |
+| 8.0 | −5.831e42 | −3.130e42 | −5.831e42 | 46.3% | **0.0%** |
+| 16.0 | −2.306e43 | −4.440e42 | −2.306e43 | 80.7% | **0.0%** |
+| 32.0 | −9.189e43 | −5.474e42 | −9.190e43 | 94.0% | **0.0%** |
+
+**Verdict.** Against the GR-certified exact ground truth, the **radial (exact-symbolic) pipeline is correct to 0.0% at every sharpness through the near-step regime (s=32)**; the **Cartesian-FD pipeline degrades monotonically, 24% → 94% error**, always under-estimating the true curvature magnitude (~17× low at s=32). Note this is *two independent symbolic G derivations* (standalone GT `build_G` vs `axisymmetric_ec`) plus exact-analytic vs quintic-spline derivatives agreeing to displayed precision — a strong non-circular cross-validation, consistent with the Prong A mechanism (Cartesian FD on a staircased sharp feature).
+
+### Disposition — what changes, what does not (precise)
+
+**The open hurdle (ROADMAP 3.9 / NAVIGATOR Open Lead #2) is RESOLVED.** The radial exact-symbolic evaluator is trustworthy for sharp profiles; the Cartesian FD pipeline is not. The Session-29 cross-representation "conflict" was never a genuine physics ambiguity — the Cartesian FAIL on the sharp optimum was the ~94%-class artifact; the radial PASS was the correct answer.
+
+- **Kill Test A (Cartesian cross-check of the Session-29 optimum) is RETRACTED as a kill.** It rejected the optimum using the pipeline now proven untrustworthy for exactly that regime. The optimum genuinely *does* satisfy the energy conditions per the certified-trustworthy radial pipeline.
+- **Kill Test B (representation-internal, radial) STANDS and is STRENGTHENED.** It was always a radial-internal comparison; Prong B certifies that pipeline. In the trusted radial evaluator's own converged judgment, plain constant-density passes down to ≤2.70e27, beating the "optimized" 3.505e27 — profile-shaping is real but **counterproductive vs trivial uniform mass reduction**.
+- **Phase 3.3+ Step 1 (isotropic profile optimization) remains NEGATIVE — justification cleaned, not weakened.** No longer "killed by an unresolved cross-rep conflict + Kill B"; now simply "the certified-trustworthy radial pipeline says uniform mass reduction beats the optimized profile." Cleaner and stronger; rests on no open question.
+- **Fuchs-over-provisioning sub-finding UPGRADED** from weak/unverified to **radial-certified**: constant-density passes far below the canonical 4.49e27 (to ≤2.70e27). Real, but it is *trivial uniform mass reduction*, NOT Fuchs §6's "orders of magnitude" *profile-optimization* claim — which remains unsupported (the optimized profile is worse than uniform).
+- **`axisymmetric_ec` trust boundary EXTENDED:** previously A-grade on smooth inputs only; now **A-grade on sharp profiles too** (Prong B: 0.0% vs GR-certified GT through s=32). It is the project's trusted absolute-magnitude EC oracle for shell profiles.
+- **Cartesian `eval_metric` demoted** to qualitative / smooth cross-check only for shell work (~24% magnitude error vs exact GT even at low sharpness in this family; →94% at high sharpness). **Does NOT overturn Sessions 26–27** (nested/oblate NEGATIVEs were *relative/qualitative* degradations, cross-checked, on the smooth Fuchs baseline where the pipelines agreed on sign) — a methodological tightening, not a retraction.
+- **Phase 3.3+ Step 2 (anisotropic $P_r\ne P_t$) is UN-BLOCKED** — it can proceed using the radial evaluator as the trusted objective, Cartesian explicitly demoted to smooth-only cross-check.
+
+**Methodological refinement (A-grade, supersedes the Sessions-28/29 generalised lesson where they conflict).** Previously: "an optimizer mines *any* numerical objective's slack; cross-representation invariance is the only arbiter." Refined: cross-representation invariance is *necessary but insufficient* — when one representation is itself untrustworthy in the regime under test, "they disagree" does not tell you which is wrong. The reliable arbiter is comparison against a **certified-exact ground truth** (analytic closed-form, exact derivatives, validated by exact-zero on known vacuum solutions). Build the ground truth; let it adjudicate. This is the "exhaustive survey is the discriminator" principle (`feedback-exhaustive-survey-is-the-method`) producing a clean adjudication instead of a standoff.
+
+### Files
+
+- **Tracked (already committed `35eee27`):** `verification/test_prongB_groundtruth.py` (the refactored, GR-certified, parallel adjudicator), plus the Prong A forensic and kill-test harnesses.
+- `agent-tools/_prongB_run.log` — gitignored scratch run log.
+- Bookkeeping: SESSION_LOG (this entry), NAVIGATOR (header + changelog + Open Lead #2 → resolved + Open Lead #3 reclassified + Step 2 active), TRUST_AUDIT (Session 30 addendum), ROADMAP (3.9 → CLOSED; 3.3+ status; Phase 3 header), LANDSCAPE_SYNTHESIS. Memory: `active-task-phase-3-3`, `feedback-no-cartesian-optimizer-objective` (Prong B confirmation + refined arbiter principle).
+
+### For the record
+
+Project owner note: Prong B was not expected to reopen anything — it was run for precision and exhaustiveness, and it delivered a clean adjudication that *resolved* the hurdle rather than reopening the verdict. The Step-1 NEGATIVE is unchanged; the verification discipline turned a two-pipeline standoff into a certified answer and a sharper methodology.
+
