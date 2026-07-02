@@ -365,3 +365,22 @@ Two independent symbolic G derivations + exact-analytic vs quintic-spline deriva
 **No load-bearing dependency change.** Composite Path 2A verdict remains **A**. The map quantifies the static-slice Fuchs family (over-provisioning = 1.75×, NOT orders of magnitude — Fuchs §6 stays unsupported in all three tested senses: profile, anisotropy, and now uniform-mass headroom).
 
 **Methodological refinement (A-grade — the DUAL of the S28–S31 lesson).** Sessions 28–31 established that optimizers manufacture false POSITIVES by mining whatever discretization is in their objective. Session 32 adds: **search/bracketing logic manufactures false NEGATIVES through structural blind spots**, and "no result here" records need the same adversarial treatment as positive claims. Two in-session instances, both caught by kill-style spot-checks before recording: (1) a narrow passing window fell between scout-ladder rungs squeezed against the horizon wall — the cell was mis-recorded as horizon-capped while M = 7.41e27 passes cleanly; (2) the first fix still missed it because min-EC vs M is **unimodal, not monotone** — the window sits between two EC-FAIL rungs (fails low on NEC support, high on compactness). Correct pattern: search for the *peak* of the feasibility margin (golden-section maximize), and record the located peak value/location as the explicit basis of any no-pass verdict. Recorded in `feedback-exhaustive-survey-is-the-method` (refinement: the battery applies to negatives too).
+
+---
+
+## Session 33 addendum — Task 2D.11 Phase 3 (FH-form multi-mode A) NEGATIVE; Task 2D.11 fully closed
+
+**Setup.** Per-component FH-form vector potentials (gradient-normalised, independent radii; asymmetry/exponent inherited from the FH anchor), curl added to the irrotational shift, evaluated through the same `adm_stress_energy_from_N` pipeline as Phases 1-2 (bit-exact baseline regression at the canonical anchor). Two previews: perturbative (N_vort <= 0.5) and non-perturbative (N_vort 1.5-5.0), 2914 rows, 0 errors.
+
+**Results graded:**
+
+| Component | Grade | Detail |
+|---|---|---|
+| Phase-3 negative (no improvement on any gate criterion; 100% strict degradation of both slacks; passenger zone unchanged) | **A (within slice)** | 2912 augmented points; monotone collapse in total amplitude; 1184 strong-amplitude rows develop NEW WEC violations. Pipeline cross-checked by bit-exact baseline regression + Phase-1/2 comparability (identical record schema, same anchor). |
+| Task 2D.11 composite verdict (three vortical families all NEGATIVE; irrotational restriction not the driver of the all-wall-no-interior pathology) | **A (within slice)** | The three families are structurally independent (rotating-frame axisymmetric; fixed-direction Cartesian; FH-form multi-mode). Phase 3 has maximal structural overlap with the violating regions — the Phase-1/2 "unhelpful overlap" caveat is closed, not dodged. Slice: canonical anchor, static smooth-N, tested envelope/radius/amplitude ranges. |
+| Spin-2 no-cavity bridge (Task 1.11) | **C (unchanged)** | Reinforced, not proven: consistent with, but not derived from, the Costa-Natario catalog. The 2B.8 assessment is the right instrument to test it. |
+| `fell_heisenberg_vortical_multimode.py` + two preview configs | **A (kept)** | Tracked, reusable; parquets reproducible in ~2 min each. |
+
+**No load-bearing dependency change.** Assumptions-table row 1's vorticity clause tightens from "does not lift it (Session 15)" to "does not lift it (Sessions 15, 33 — three families incl. FH-form multi-mode A)". Composite Phase-2D reading unchanged: every structural test degrades the warp-drive interpretation; none restores it.
+
+**Methodological note.** The gate-driven preview discipline (decision gate stated in the config `_comment` before the run; definitive-at-anchor negative closes without dispatching the full sweep) held for the third consecutive vortical family — total Phase-3 compute cost ~4.5 min local, $0 remote.

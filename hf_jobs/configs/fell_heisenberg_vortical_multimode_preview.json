@@ -1,0 +1,21 @@
+{
+  "_comment": "Preview for Task 2D.11 Phase 3 (FH-style multi-mode Cartesian A). FH params pinned at the Session-11 canonical strict-pass anchor (V=0.5, sigma=10, m0=3, a=0.05, ell=4, r=9). Each Cartesian A-component is a full gradient-normalised FH-form potential with its own bubble radius r_Ai in {6, 9} (multi-mode: wall-interleaved vs wall-coincident) and shared structure width sigma_A in {5, 10}; amplitudes V_Ai in {-0.3, -0.15, 0, 0.15, 0.3} directly scale each component's vortical-shift contribution (negative = flipped curl orientation). Baseline row (all V_Ai=0) must reproduce the irrotational anchor bit-exactly: dec_slack_min=-7.743132e-02, wec_slack_min=+4.820419e-03, passenger_zone_radius=0.5, dec_pass_fraction=0.999881547 (Phase-1/2 regression values). ~686 deduped points, ~2-4 min locally. Decision gate (Phase-3 close-out): does ANY point (a) improve dec_slack_min over baseline beyond FD noise, (b) improve wec_slack_min, (c) achieve strict WEC+DEC pass, or (d) produce passenger_zone_radius > h = 0.5? All-negative at the anchor closes Phase 3 (and Task 2D.11) per the Phase-1/2 precedent without dispatching a full HF Jobs sweep.",
+  "L": 12.0,
+  "Npts": 49,
+  "Pi": 0.25,
+  "axes": {
+    "V":       {"lo": 0.5,  "hi": 0.5,  "n": 1, "scale": "linear"},
+    "sigma":   {"lo": 10.0, "hi": 10.0, "n": 1, "scale": "linear"},
+    "m0":      {"lo": 3.0,  "hi": 3.0,  "n": 1, "scale": "linear"},
+    "a":       {"lo": 0.05, "hi": 0.05, "n": 1, "scale": "linear"},
+    "ell":     {"lo": 4.0,  "hi": 4.0,  "n": 1, "scale": "linear"},
+    "r":       {"lo": 9.0,  "hi": 9.0,  "n": 1, "scale": "linear"},
+    "V_Ax":    {"lo": -0.3, "hi": 0.3,  "n": 5, "scale": "linear"},
+    "V_Ay":    {"lo": -0.3, "hi": 0.3,  "n": 5, "scale": "linear"},
+    "V_Az":    {"lo": -0.3, "hi": 0.3,  "n": 5, "scale": "linear"},
+    "r_Ax":    {"lo": 6.0,  "hi": 9.0,  "n": 2, "scale": "linear"},
+    "r_Ay":    {"lo": 6.0,  "hi": 9.0,  "n": 2, "scale": "linear"},
+    "r_Az":    {"lo": 6.0,  "hi": 9.0,  "n": 2, "scale": "linear"},
+    "sigma_A": {"lo": 5.0,  "hi": 10.0, "n": 2, "scale": "linear"}
+  }
+}

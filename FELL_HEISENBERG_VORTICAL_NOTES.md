@@ -118,6 +118,50 @@ Across **two structurally distinct vorticity families** at the Session-11 canoni
 - Sweep output (gitignored): `sweeps/fell_heisenberg_vortical_cartesian_*.parquet`
 - Triage analysis: [`agent-tools/analyse_vortical_cartesian_preview.py`](agent-tools/analyse_vortical_cartesian_preview.py)
 
-## §3 Phase 3 — FH-style multi-mode $\vec A$ — TBD
+## §3 Phase 3 — FH-style multi-mode $\vec A$ — NEGATIVE within the explored slice (Session 33, 2026-07-02)
 
-Not yet started. Decision gate: see §2.4 cumulative finding. The natural Phase 3 design would give each Cartesian component its own independent FH-style structure (multiple modes with sums of erf/exp factors at different scales) rather than a shared Gaussian envelope, matching the structural complexity of $\phi_{\rm FH}$ itself. This is more expensive (more parameters) and harder to interpret. Awaiting decision.
+### §3.1 Ansatz + pipeline
+
+Module [`hf_jobs/sweeps/fell_heisenberg_vortical_multimode.py`](hf_jobs/sweeps/fell_heisenberg_vortical_multimode.py). Each Cartesian component of $\vec A$ carries its **own full FH-form potential** — the same sums-of-erf/exp construction, fractional $\Pi$-power and z-asymmetry as $\phi_{\rm FH}$ itself:
+
+$$A_i(X,Y,Z) \;=\; V_{A,i}\,\cdot\,\frac{\phi_{\rm FH}(X,Y,Z;\,\Pi, r_{A,i}, V{=}1, \sigma_A, m_0, a, \ell)}{\max|\nabla \phi_{\rm FH}(\cdots)|}\,,\qquad i \in \{x,y,z\},$$
+
+gradient-normalised on the grid so $V_{A,i}$ directly sets that component's vortical-shift scale ($N_{\rm vortical,max}$ recorded exactly). The "multi-mode" element is the independent per-component bubble radii $r_{A,i}$ — the three curl-source shells need not coincide with each other or with the FH wall. The A-structure's asymmetry/exponent parameters $(m_0, a, \ell, \Pi)$ are **inherited from the FH background point** (deliberate slice restriction to keep the preview tractable). No gauge fix (curl A gauge-invariant, as in Phase 2). Same `adm_stress_energy_from_N` + inline passenger-zone pipeline, so records are directly comparable with Phases 1–2. **Baseline regression bit-exact**: the all-$V_{A,i}{=}0$ row reproduces the irrotational anchor to all recorded digits (`dec_slack_min = -7.743132e-02`, `wec_slack_min = +4.820419e-03`, `passenger_zone_radius = 0.5`, `dec_pass_fraction = 0.999881547`), with `N_vortical_max = 0` exactly.
+
+### §3.2 Two previews ran (perturbative + non-perturbative); both negative — the cleanest negative of the three phases
+
+**Preview 1 (perturbative)** — [`fell_heisenberg_vortical_multimode_preview.json`](hf_jobs/configs/fell_heisenberg_vortical_multimode_preview.json): FH pinned at the Session-11 canonical anchor; $V_{A,i} \in \{-0.3, -0.15, 0, 0.15, 0.3\}$ each, $r_{A,i} \in \{6, 9\}$ each, $\sigma_A \in \{5, 10\}$; 1457 deduped points, 128 s local, 0 errors. $N_{\rm vortical,max} \in [0.15, 0.50]$.
+
+- **0 / 1456** augmented points improve `dec_slack_min`; **0 / 1456** improve `wec_slack_min`; **0** strict passes; **0** points with `passenger_zone_radius > h`.
+- **Both slacks are STRICTLY WORSE in 100.0% of augmented rows** — no flat direction at all. This is *stronger* than Phases 1–2, where configurations whose envelope missed the violating cells left the slacks flat: the FH-form $\vec A$'s support spans the same multi-scale wall structure as the bubble itself, so every perturbation touches both violating regions — and every one degrades them.
+- Degradation is monotone in total amplitude $\sum_i |V_{A,i}|$ (best `dec_slack_min` per amplitude shell: −7.76e-2 at 0.15 → −8.06e-2 at 0.90).
+
+**Preview 2 (non-perturbative)** — [`fell_heisenberg_vortical_multimode_preview_strong.json`](hf_jobs/configs/fell_heisenberg_vortical_multimode_preview_strong.json): identical structure axes, $V_{A,i} \in \{-3, -1.5, 0, 1.5, 3\}$, pushing $N_{\rm vortical,max}$ to 1.5–5.0 (a third of the FH wall's $|\vec N| \sim 15$); 1457 points, 129 s, 0 errors.
+
+- Same four zeros across the decision gate. `dec_slack_min` collapses monotonically to −0.408 (5.3× worse than baseline); **1184 / 1456 rows develop NEW WEC violations** (`wec_slack_min < 0`, down to −0.27); `passenger_zone_radius = 0.5 = h` for every single row.
+
+This closes Phase 1's recorded caveat ("non-perturbative might find a sweet spot") within the multi-mode family: the collapse is monotone through the non-perturbative regime, with no sign of a favourable phasing anywhere in the 2912 augmented points.
+
+### §3.3 Slice scope
+
+**Establishes:** within the slice {Session-11 canonical FH anchor $(V, \sigma, m_0, a, \ell, r) = (0.5, 10, 3, 0.05, 4, 9)$; per-component FH-form $\vec A$ with inherited $(m_0, a, \ell, \Pi)$, $r_{A,i} \in \{6, 9\}$, $\sigma_A \in \{5, 10\}$, $|V_{A,i}| \le 3$ (vortical shift up to ~5); $\Pi = 0.25$, Npts = 49, L = 12}, **no FH-form multi-mode vortical augmentation improves either slack, achieves strict pass, or extends the passenger zone — and 100% of augmented points strictly degrade both slacks.**
+
+**Does not establish:** behaviour off the canonical FH anchor (joint FH+vortical variation — full config not built; the three-family cumulative negative argues against, same reasoning as §2.3); A-structures with *independently varied* asymmetry/exponent $(m_{0A}, a_A, \ell_A, \Pi_A)$; sums of several FH modes *within* one component; radii outside $\{6, 9\}$ or $\sigma_A$ outside $\{5, 10\}$. Re-open only if a downstream finding suggests one of these restrictions is uniquely binding.
+
+### §3.4 Files
+
+- New module: [`hf_jobs/sweeps/fell_heisenberg_vortical_multimode.py`](hf_jobs/sweeps/fell_heisenberg_vortical_multimode.py)
+- Configs: [`hf_jobs/configs/fell_heisenberg_vortical_multimode_preview.json`](hf_jobs/configs/fell_heisenberg_vortical_multimode_preview.json), [`hf_jobs/configs/fell_heisenberg_vortical_multimode_preview_strong.json`](hf_jobs/configs/fell_heisenberg_vortical_multimode_preview_strong.json)
+- Sweep outputs (gitignored): `sweeps/fell_heisenberg_vortical_multimode_*.parquet`
+
+## §4 Cumulative finding (Phases 1–3) — Task 2D.11 CLOSED NEGATIVE
+
+Across **three structurally distinct vorticity families** at the Session-11 canonical FH anchor, 3157 evaluations total:
+
+| family | # augmented points | best Δ(dec_slack_min) | best Δ(wec_slack_min) | strict-pass | passenger_R > h |
+|---|---|---|---|---|---|
+| Phase 1 axisymmetric $A_\phi$ (Gaussian envelope) | 135 + 81 | 0.0 (flat) | +3.8e-4 (marginal) | 0 | 0 |
+| Phase 2 Cartesian constant $\vec A$ (shared Gaussian envelope) | 27 | −1.0e-3 (worse) | 0.0 (flat) | 0 | 0 |
+| Phase 3 FH-form multi-mode $\vec A$ (per-component FH structure) | 2912 | −2.0e-4 (worse; 100% strictly worse) | −1.0e-6 (worse; 100% strictly worse) | 0 | 0 |
+
+**Task 2D.11 verdict (slice-scoped): CLOSED NEGATIVE.** Within the static smooth-N slice at the canonical anchor, spanning perturbative to non-perturbative amplitudes, vorticity never helps and generically harms; the passenger zone is `radius = h` in every one of the augmented evaluations across all three families. Phase 3 removes the escape hatch the first two negatives shared: Phases 1–2 could be read as "the envelope's support never overlapped the violating cells *helpfully*"; Phase 3's $\vec A$ has the same multi-scale FH wall structure as the bubble itself — maximal structural overlap — and the result is uniform strict degradation, not repair. Within this slice, the irrotational restriction $\vec N = \nabla\phi$ is **not** the load-bearing driver of the §9 "all wall, no interior" pathology; adding $\vec\nabla\times\vec A$ of any tested shape only spends energy-condition margin. The deferred full sweeps (joint FH+vortical variation, Phase-1/2/3 `*_full` configs) stay undispatched — three independent definitive-at-anchor negatives do not justify the spend; re-open per §1.3 / §2.3 / §3.3 criteria.

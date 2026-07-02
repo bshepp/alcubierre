@@ -2159,3 +2159,37 @@ This is the dual of the S28–S31 lesson: those caught optimizers manufacturing 
 ### Wrap point
 
 DOC.1 done and committed separately; Task 3.10 promoted, executed, and closed with the map + κ surface delivered. Next per the owner-approved sequence: **Task 2D.11 Phase 3** (multi-mode FH-style vector potential — the last genuinely-untouched FH-internal relaxation), then the **2B.8 spin-2 obstruction assessment** at the following checkpoint.
+
+---
+
+## Session 33 (2026-07-02) — Task 2D.11 Phase 3 (FH-form multi-mode $\vec A$) CLOSED NEGATIVE → Task 2D.11 fully closed
+
+**Participants:** Brian Sheppard + Claude (Fable 5).
+**Continuation of Session 32** (same day), per the owner-approved sequence: 2D.11 Phase 3 next, 2B.8 at the following checkpoint.
+
+### Method
+
+Phase 3 removes the "simple envelope" restriction shared by the Phase-1/2 negatives: each Cartesian component of $\vec A$ carries its **own full FH-form potential** — the same sums-of-erf/exp construction, fractional $\Pi$-power and z-asymmetry as $\phi_{\rm FH}$ itself — gradient-normalised on the grid so the swept amplitude directly sets that component's vortical-shift scale, with **independent per-component bubble radii** $r_{A,i}$ (the multi-mode element). The A-structure inherits the anchor's $(m_0, a, \ell, \Pi)$ (recorded slice restriction). New module [`hf_jobs/sweeps/fell_heisenberg_vortical_multimode.py`](hf_jobs/sweeps/fell_heisenberg_vortical_multimode.py), reusing `adm_stress_energy_from_N` + the inline passenger-zone diagnostic so rows are directly comparable with Phases 1–2. **Bit-exact baseline regression PASSED** (all-zero amplitudes reproduce the irrotational anchor to all recorded digits; `N_vortical_max = 0` exactly).
+
+### Result — the cleanest negative of the three phases
+
+Two previews at the Session-11 canonical anchor, 0 errors across 2914 rows:
+
+- **Perturbative** (1457 pts; $V_{A,i} \in \{-0.3 \ldots 0.3\}$, $r_{A,i} \in \{6, 9\}$, $\sigma_A \in \{5, 10\}$; $N_{\rm vort} \le 0.50$): **0/1456 augmented points improve anything** on the four-part gate (dec slack, wec slack, strict pass, passenger radius) — and **100.0% strictly degrade BOTH slacks** (no flat direction; Phases 1–2 had flat regions where the envelope missed the violating cells). Degradation monotone in $\sum_i |V_{A,i}|$.
+- **Non-perturbative** (1457 pts; $V_{A,i} \in \{-3 \ldots 3\}$; $N_{\rm vort}$ 1.5–5.0, a third of the FH wall's ~15): same four zeros; `dec_slack_min` collapses monotonically to −0.408 (5.3× worse than baseline); **1184/1456 rows develop NEW WEC violations**; `passenger_zone_radius = h` for every row. Closes Phase 1's recorded "non-perturbative might rescue it" caveat within this family.
+
+### Disposition
+
+**Task 2D.11 CLOSED NEGATIVE across all three structurally distinct vortical families** (axisymmetric $A_\phi$; Cartesian constant-amplitude $\vec A$; FH-form multi-mode $\vec A$ — 3157 evaluations total, Sessions 15 + 33). Phase 3 removes the escape hatch the first two negatives shared: its $\vec A$ has the same multi-scale wall structure as the FH bubble itself — maximal structural overlap with the violating regions — and the result is uniform strict degradation, not repair. **Within the static smooth-N slice at the canonical anchor, the irrotational restriction $\vec N = \nabla\phi$ is NOT the load-bearing driver of the §9 "all wall, no interior" pathology; vorticity of every tested shape only spends energy-condition margin.** This tightens the Session-15 wording of load-bearing-assumptions row 1 and reinforces (does not prove) the Task-1.11 speculative spin-2-no-cavity bridge. Deferred full sweeps (joint FH+vortical) stay undispatched — three definitive-at-anchor negatives do not justify the spend; reopening criteria in [`FELL_HEISENBERG_VORTICAL_NOTES.md`](FELL_HEISENBERG_VORTICAL_NOTES.md) §1.3/§2.3/§3.3 and the ROADMAP ledger.
+
+Slice scope (stated honestly): canonical FH anchor only; per-component FH-form $\vec A$ with inherited asymmetry/exponent, $r_{A,i} \in \{6,9\}$, $\sigma_A \in \{5,10\}$, $|V_{A,i}| \le 3$; $\Pi = 0.25$, Npts = 49, L = 12. Not tested: independently-varied A-asymmetry, several FH modes per component, off-anchor FH parameters.
+
+### Files
+
+- **NEW tracked:** [`hf_jobs/sweeps/fell_heisenberg_vortical_multimode.py`](hf_jobs/sweeps/fell_heisenberg_vortical_multimode.py), [`hf_jobs/configs/fell_heisenberg_vortical_multimode_preview.json`](hf_jobs/configs/fell_heisenberg_vortical_multimode_preview.json), [`hf_jobs/configs/fell_heisenberg_vortical_multimode_preview_strong.json`](hf_jobs/configs/fell_heisenberg_vortical_multimode_preview_strong.json).
+- Sweep parquets stay gitignored (reproducible from module + configs in ~2 min each).
+- Bookkeeping: this entry; [`FELL_HEISENBERG_VORTICAL_NOTES.md`](FELL_HEISENBERG_VORTICAL_NOTES.md) (§3 written, §4 cumulative added); ROADMAP (2D.11 `[x]` + ledger entry + leads re-rank: 2B.8 now #1; quick-look + update-history); TRUST_AUDIT (Session 33 addendum); NAVIGATOR (assumptions-table row 1, headline sentence, current-state paragraph); memory (`active-task` refresh).
+
+### Wrap point
+
+The FH-internal story is now closed except 2D.5e plan-B. Next active lead per the owner-approved checkpoint plan: **Task 2B.8 — the spin-2 "gravitational conductor" obstruction assessment**, the never-run gate that decides whether Path 2B (Casimir / boundary-mode QFT) opens or closes.
