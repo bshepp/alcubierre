@@ -1,0 +1,9 @@
+{
+  "_comment": "Full grid for Task 3.10 (certified minimal-mass map, constant-density Fuchs shell). 3x2x3 = 18 cells: R2 in {15, 20, 30} m, Delta/R2 in {0.25, 0.5}, v in {0.005, 0.02, 0.05}. Mirrors the Session-19 (3.2) WarpFactory sweep axes so the certified-radial kappa surface is directly comparable to the Cartesian-era 2A.9b bracket (4.17, 5.83] and the 3.2 18%-kappa-spread. High-v thin-shell cells are expected to be horizon-capped (no_pass=True, the 3.2 'null configuration' analogue) -- that is a result, not an error. Run ONLY after mmin_map_preview passes its decision gate.",
+  "rel_tol": 0.005,
+  "axes": {
+    "R2":    {"values": [15.0, 20.0, 30.0]},
+    "dfrac": {"values": [0.25, 0.5]},
+    "v":     {"values": [0.005, 0.02, 0.05]}
+  }
+}

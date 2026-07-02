@@ -1,0 +1,9 @@
+{
+  "_comment": "Preview for Task 3.10 (certified minimal-mass map, constant-density Fuchs shell). 2x2 cells around the canonical geometry: R2=20 m, Delta/R2 in {0.5, 0.25}, v in {0.02, 0.005}. Includes the canonical cell (R1,R2,v)=(10,20,0.02c) whose bisected M_min must land at or below the Session-29/31 probed floor (nominal 2.7e27 / ADM 2.786e27 passed; floor never located before). Accept/reject tier is RES_FULL=(4000x80, na=100, nt=10); scout tier proposes brackets only. Expect ~2-4 min/cell locally. Decision gate after preview: (a) canonical M_min <= 2.7e27 nominal, (b) thresholds bisect cleanly (minec_below < 0 < minec_above), (c) per-cell runtime acceptable -> run mmin_map_full locally; escalate to HF Jobs only if the full grid ETA is unreasonable.",
+  "rel_tol": 0.005,
+  "axes": {
+    "R2":    {"values": [20.0]},
+    "dfrac": {"values": [0.5, 0.25]},
+    "v":     {"values": [0.02, 0.005]}
+  }
+}

@@ -20,6 +20,10 @@ env/
 sweeps/*.parquet
 sweeps/*.config.json
 !sweeps/.gitkeep
+# Reproducibility-critical final artifact of Task 3.10 (18 rows, ~15 KB):
+# the certified minimal-mass map behind the Session-32 kappa surface.
+# Negation-tracked per the Session-30 data-artifact policy.
+!sweeps/mmin_map_full_concat.parquet
 
 # Local working copies of sweep results downloaded from HF Dataset
 # bshepp/alcubierre-sweeps. Re-fetchable via `hf download`.

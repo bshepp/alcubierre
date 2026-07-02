@@ -2113,3 +2113,49 @@ Optimizer plateaued (Powell hit maxfev=700) at **M_opt = 4.463e27 vs baseline 4.
 
 Phase 3.3+ fully closed. The natural next active leads (no longer blocked): Task 2D.11 Phase 3 (multi-mode FH-style $\vec A$, last FH-internal direction); Garattini–Zatrimaylov 2025 (averaged WEC/NEC in de Sitter); Path 2B (Casimir, large scope). None is a warp drive; all are honest next steps inside the structured map. Session paused here for the project owner.
 
+
+---
+
+## Session 32 (2026-07-02) — DOC.1 executed; NEW Task 3.10 (certified minimal-mass map) promoted, executed, and CLOSED
+
+**Participants:** Brian Sheppard + Claude (Fable 5).
+**Context:** First session after a ~7-week break. Owner directive: proceed with the queued plan (DOC.1 first, as an isolated pass), but **re-prioritize the Fuchs-mass over-provisioning follow-up** above 2D.11 Phase 3. The 2B.8 spin-2 obstruction assessment is slotted for the next checkpoint (the cheap evaluation of the Phase-2B gate, which has never been run).
+
+### Part 1 — DOC.1 (isolated docs pass; committed `af6df08` before any result-bearing work)
+
+- NAVIGATOR / ROADMAP separation-of-concerns dedup executed per the ROADMAP DOC.1 spec: NAVIGATOR shrunk to orientation only (tight current-state paragraph + where-to-start table + headline + load-bearing-assumptions table + document index). "Open leads (ranked)", "Closed since Session 14c" (retitled "Closed leads"), and "Outstanding admin" moved into ROADMAP; the multi-paragraph "Last updated" narrative and "Recent-session changelog" deleted (they restated SESSION_LOG Sessions 22–31).
+- The moves were done programmatically and **verified byte-identical against HEAD** before any touch-up edit; the only outright deletions are texts verified to be duplicated (the two closed reference entries dropped from the ranked list have verified-superset ledger entries; the one nuance found only in a dropped entry — the `feedback-no-cartesian-optimizer-objective` memory pointer — was re-attached to its ledger entry). Live cross-references fixed (CLAUDE.md orientation bullet, Phase 2D/3 status pointers, dangling "NAVIGATOR Open Lead #N" refs). CLAUDE.md (previously untracked) committed.
+- Bookkeeping convention going forward: SESSION_LOG (always), ROADMAP (status/leads/closures), TRUST_AUDIT (grades); NAVIGATOR only when the headline / assumptions / doc-index materially change.
+
+### Part 2 — Task 3.10: certified minimal-mass map for the constant-density Fuchs shell (NEW; CLOSED same session)
+
+**Motivation.** The one radial-certified *positive* finding of the Phase-3.3+ arc was Fuchs-mass over-provisioning — but the floor had never been located: nominal 2.7e27 kg was simply the lowest mass ever probed (Sessions 29–31 all passed there). First result of this session: the S29/30 "≤ 2.70e27" and S31 "≈ 2.79e27" numbers are the SAME probed point in two bookkeepings — nominal 2.7e27 has builder-ADM 2.786e27 (reproduced through the new code path to 0.01%, Gate 1).
+
+**Method.** New sweep module [`hf_jobs/sweeps/mmin_map.py`](hf_jobs/sweeps/mmin_map.py) + paired preview/full configs, reusing the S29–31 machinery end-to-end: constant-density shell via `metric_profile_warp_shell` (TOV-pinned isotropic pressure, canonical compact-sigmoid ℓ=1 dipole shift, smooth_factor 4000 at the canonical radial sample spacing dr ≈ 7.07e-4 m held fixed across cells so the *physical* smoothing length matches Sessions 25–31); pass/fail oracle = min over all four ECs from the certified radial evaluator `axisymmetric_ec` at the S31 full-res settings (4000 r × 80 θ, na=100, nt=10), in-shell mask. Per cell: scaling-law-seeded scout ladder (coarse tier **proposes brackets only** — the S28–S31 converged-objective rule), endpoint re-verification + bisection at the accept/reject tier, rel_tol 0.5%. Grid mirrors 3.2's axes: R2 ∈ {15, 20, 30} m × Δ/R2 ∈ {0.25, 0.5} × v ∈ {0.005, 0.02, 0.05}c — 18 cells, preview-first, then Session-22-style local chunked dispatch. Verification: 3-gate battery [`verification/test_mmin_map_gate.py`](verification/test_mmin_map_gate.py) (S31 anchor regression / canonical threshold consistency / FULL↔CONF mesh-escalation stability) — **ALL GATES PASS**, plus edge-cell and narrow-window convergence spot-checks (all classification-stable under escalation to 8000 r × 120 θ, na=160, nt=16).
+
+**Results (slice scope: constant-density ρ(r), TOV-pinned isotropic pressure, ℓ=1 dipole shift, canonical smoothing, in-shell EC mask, radial representation only):**
+
+- **Canonical floor located for the first time: M_min = 2.568e27 kg nominal / 2.650e27 ADM** at (R1, R2, v) = (10, 20, 0.02c) — the canonical Fuchs 4.49e27 is **over-provisioned by 1.75× (nominal) / 1.69× (ADM)**. Bisection clean (min EC −2.2e38 just below, +5.7e36 just above); classification stable under mesh escalation on both sides.
+- **Certified-radial κ surface** (κ = (Δ/R2)·C_min/β, the 2A.5/2A.7 scaling-law constant): over the 14 located thresholds κ_nominal = **4.64 ± 0.57** (range [3.61, 5.40], 12.2% relative spread, systematically increasing with R2); κ_ADM mean 4.75. Canonical-geometry κ = 4.77 sits **inside** the 2A.9b Cartesian-era bracket (4.17, 5.83]; the structured spread is consistent with (and refines) 3.2's 18% κ-variation. Caveat: the thinnest cells (Δ = 3.75 m < the ~5 m canonical smoothing length) have strongly flattened profiles; their low κ (3.61) inherits the smoothing convention.
+- **Linear-in-β scaling confirmed at 1–4%** across the map (M_min ratios 4.00–4.18 for v-ratio 4.0; 2.61 for 2.5).
+- **Binding condition at the mass floor = null (NEC) in 13/14 cells.** The exception is the near-cap cell (10, 20, 0.05c): a NARROW passing window ([~6.9e27, wall < 1.4e28]) whose floor binds on **strong (SEC)** — M_min = 6.92e27, κ = 5.14.
+- **4 null-configuration cells** — (R2, Δ/R2) ∈ {(15, 0.25), (20, 0.25), (30, 0.25), (30, 0.5)} at v = 0.05c: **no constant-density mass passes at all**; the golden-section peak of min(EC) over the entire horizon-valid mass range is robustly negative (−1.6e39 … −1.0e40). This is the certified-radial confirmation of 3.2's Cartesian-era "null configuration" phenomenon. These verdicts inherit a stated **unimodality assumption** (min-EC vs M = one rising NEC-margin curve + one falling high-compactness curve).
+
+**Two searcher-logic bugs caught in-session by adversarial spot-checks (the methodological story).** Both were in the *bracketing logic*, not the physics or the mesh, and both would have produced FALSE-NEGATIVE "no passing mass" records:
+
+1. The first bracketer declared (10, 20, 0.05c) horizon-capped; a kill-style spot-check of the ladder showed M = 7.41e27 passes cleanly — the passing window fell *between two scout rungs* (1.0× and 1.45× the seed) squeezed against the horizon wall.
+2. The first *fix* (interval-refine fail→horizon) STILL missed it, because **min-EC vs M is unimodal, not monotone** — the window sits between two EC-FAIL rungs (the shell fails low-M on NEC/mass-support and high-M on the compactness side before the horizon). Correct search: golden-section **maximization** of scout min-EC over the horizon-valid range; only a negative located peak justifies "no_pass" (and the peak value + location are now recorded per capped cell).
+
+This is the dual of the S28–S31 lesson: those caught optimizers manufacturing false POSITIVES by mining objective discretization; Session 32 caught a searcher manufacturing false NEGATIVES through a blind spot in its bracket logic. **A "no result here" record is a claim like any other and gets the same adversarial treatment.** After the fix: all previously-located thresholds reproduce (worst drift 4.3e-4), one capped cell became a genuine threshold, four remain capped with explicit diagnostics.
+
+**Disposition.** Task 3.10 CLOSED (positive quantitative deliverable). Partially addresses Task 5.2 ("minimum wall mass — tighten with numerical optimization") within the static slice. No load-bearing-assumption change: the map *quantifies* the static-slice Fuchs family; it does not open or close a loophole (the over-provisioning factor is 1.75×, not orders of magnitude — Fuchs §6 stays unsupported). Reopening triggers recorded in the ROADMAP Closed-leads ledger.
+
+### Files
+
+- **NEW tracked:** [`hf_jobs/sweeps/mmin_map.py`](hf_jobs/sweeps/mmin_map.py) (sweep module: profiles, certified-oracle threshold search, grid interface), [`hf_jobs/configs/mmin_map_preview.json`](hf_jobs/configs/mmin_map_preview.json) + [`hf_jobs/configs/mmin_map_full.json`](hf_jobs/configs/mmin_map_full.json), [`verification/test_mmin_map_gate.py`](verification/test_mmin_map_gate.py) (3-gate battery), [`sweeps/mmin_map_full_concat.parquet`](sweeps/mmin_map_full_concat.parquet) (18-row final map, negation-tracked per the Session-30 data-artifact policy).
+- Per-chunk parquets in `sweeps/` stay gitignored (reproducible from the module + configs).
+- Bookkeeping: this entry; ROADMAP (3.10 `[x]` + disposition, Open-leads re-rank, Closed-leads ledger entry, quick-look + update-history); TRUST_AUDIT (Session 32 addendum); NAVIGATOR (current-state paragraph refresh only, per the new DOC.1 convention); memory (`active-task` refresh, `doc-refactor-deferred` retired, `feedback-exhaustive-survey-is-the-method` false-negative refinement).
+
+### Wrap point
+
+DOC.1 done and committed separately; Task 3.10 promoted, executed, and closed with the map + κ surface delivered. Next per the owner-approved sequence: **Task 2D.11 Phase 3** (multi-mode FH-style vector potential — the last genuinely-untouched FH-internal relaxation), then the **2B.8 spin-2 obstruction assessment** at the following checkpoint.

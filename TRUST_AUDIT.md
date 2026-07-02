@@ -342,3 +342,26 @@ Two independent symbolic G derivations + exact-analytic vs quintic-spline deriva
 
 **Methodological refinement (A-grade, 3rd distinct instance — supersedes prior where they conflict).** An optimizer mines *whatever discretization is in its objective*: Cartesian staircasing (S28); Cartesian-untrustworthy-for-sharp (S29); **and even with an exact-certified curvature engine, the under-sampled discrete (r,θ,direction) *minimization grid* (S31).** The reliable arbiter is jointly: cross-representation invariance + a certified-exact ground truth + a converged objective sampling mesh — with the optimum-plus-adversarial-battery as the catch (it caught all three). Recorded in `feedback-no-cartesian-optimizer-objective`.
 
+
+---
+
+## Session 32 addendum — Task 3.10 certified minimal-mass map (positive quantitative closure)
+
+**Setup.** Constant-density Fuchs shells, minimal EC-passing mass bisected per (R1, R2, v) cell against the Prong-B-certified radial evaluator (`axisymmetric_ec`) at the Session-31 full-res accept/reject tier; coarse scout tier proposes brackets only (S28–S31 converged-objective rule). Grid mirrors 3.2's axes (18 cells). Gate battery: S31 anchor regression (ADM to 0.01%), canonical-threshold consistency (floor must sit at/below the mass already shown to pass), FULL↔CONF mesh-escalation stability at the threshold — ALL PASS, plus stability spot-checks at the two extreme-κ cells and the narrow-window cell.
+
+**Results graded:**
+
+| Component | Grade | Detail |
+|---|---|---|
+| Canonical floor M_min = 2.568e27 nominal / 2.650e27 ADM (over-provisioning 1.75× / 1.69×) | **A (within slice)** | Bisected on the certified oracle, rel_tol 0.5%; classification stable under mesh escalation both sides; reconciles S29/31 numbers (nominal 2.7e27 ↔ builder-ADM 2.786e27 — same probed point, two bookkeepings; both were upper bounds, not the floor). |
+| Certified-radial κ surface: 4.64 ± 0.57 over 14 thresholds (range [3.61, 5.40], rising with R2) | **A (within slice)** | Canonical κ = 4.77 inside the 2A.9b Cartesian-era bracket (4.17, 5.83]; consistent with & refining 3.2's 18% spread. Protocol note: 2A.9b bisected Δ at fixed M (MATLAB WF, Cartesian era); 3.10 bisects M at fixed Δ on the certified evaluator. Thin-cell (Δ=3.75 m) κ inherits the ~5 m canonical smoothing length — convention, flagged. |
+| Linear-in-β scaling of M_min (1–4% across map) | **A (within slice)** | Direct ratio check at fixed geometry; matches the 2A.5/2A.7 scaling-law form. |
+| Binding condition at the floor: null (NEC) 13/14; strong (SEC) at the near-cap narrow-window cell | **A (within slice)** | From min_by_cond at the bisected threshold, full-res tier. |
+| 4 null-configuration cells at v = 0.05c (no EC-passing constant-density mass) | **A (within slice, one stated structural assumption)** | Golden-section peak of min(EC) over the horizon-valid mass range robustly negative (−1.6e39 … −1.0e40) per cell. Verdict inherits the **unimodality assumption** (min-EC vs M = rising NEC-support margin ∧ falling high-compactness margin); assumption recorded in module + ledger reopening trigger (ii). Certified-radial confirmation of 3.2's "null configuration" phenomenon. |
+| `hf_jobs/sweeps/mmin_map.py` + `verification/test_mmin_map_gate.py` + `sweeps/mmin_map_full_concat.parquet` | **A (kept)** | Sweep module, 3-gate battery, negation-tracked 18-row artifact. |
+
+**Slice scope (honest).** Constant-density ρ(r) on [R1, R2]; TOV-pinned isotropic pressure; ℓ=1 dipole Alcubierre shift (canonical compact sigmoid); smooth_factor 4000 at fixed canonical radial sample spacing (physical smoothing length matched to Sessions 25–31 across cells); EC minima over the in-shell mask; radial representation only (Cartesian demoted per 3.9). Says nothing about non-constant profiles (Phase 3.3+ closed those NEGATIVE separately) or other shift/topology families.
+
+**No load-bearing dependency change.** Composite Path 2A verdict remains **A**. The map quantifies the static-slice Fuchs family (over-provisioning = 1.75×, NOT orders of magnitude — Fuchs §6 stays unsupported in all three tested senses: profile, anisotropy, and now uniform-mass headroom).
+
+**Methodological refinement (A-grade — the DUAL of the S28–S31 lesson).** Sessions 28–31 established that optimizers manufacture false POSITIVES by mining whatever discretization is in their objective. Session 32 adds: **search/bracketing logic manufactures false NEGATIVES through structural blind spots**, and "no result here" records need the same adversarial treatment as positive claims. Two in-session instances, both caught by kill-style spot-checks before recording: (1) a narrow passing window fell between scout-ladder rungs squeezed against the horizon wall — the cell was mis-recorded as horizon-capped while M = 7.41e27 passes cleanly; (2) the first fix still missed it because min-EC vs M is **unimodal, not monotone** — the window sits between two EC-FAIL rungs (fails low on NEC support, high on compactness). Correct pattern: search for the *peak* of the feasibility margin (golden-section maximize), and record the located peak value/location as the explicit basis of any no-pass verdict. Recorded in `feedback-exhaustive-survey-is-the-method` (refinement: the battery applies to negatives too).
