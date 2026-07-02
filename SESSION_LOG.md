@@ -2193,3 +2193,35 @@ Slice scope (stated honestly): canonical FH anchor only; per-component FH-form $
 ### Wrap point
 
 The FH-internal story is now closed except 2D.5e plan-B. Next active lead per the owner-approved checkpoint plan: **Task 2B.8 — the spin-2 "gravitational conductor" obstruction assessment**, the never-run gate that decides whether Path 2B (Casimir / boundary-mode QFT) opens or closes.
+
+---
+
+## Session 34 (2026-07-02) — Task 2B.8 spin-2 obstruction assessment: Path 2B CLOSED as a physical mechanism
+
+**Participants:** Brian Sheppard + Claude (Fable 5).
+**Continuation of Sessions 32–33 (same day),** per the owner-approved sequence: the never-run gate on all of Path 2B, executed at the checkpoint as planned. Literature + analysis, no new compute infrastructure; one small tracked arithmetic harness.
+
+### Method
+
+Three independent legs; the third is decisive on its own and independent of the first two. Canonical record: [`QUANTUM_CLASSICAL_BRIDGE.md`](QUANTUM_CLASSICAL_BRIDGE.md) §8 (new), with resolution pointers added at §4 and §6.
+
+### Result
+
+1. **No material "gravitational conductor" exists in known physics** *(grade B, literature)*. Unlike EM, graviton coupling is universally to stress-energy at strength $G$ — there is no conductivity dial. Impedance: the gravitational characteristic impedance of free space is $Z_G \sim 2.8\times10^{-18}$ SI and all classical matter is mismatched by dozens of OoM — "essentially completely transparent," stated plainly even in the pro-mirror school's own papers (Minter–Wegter-McNelly–Chiao 2010). Absorption: Dyson 2013 — cross-sections ~$10^{-41}$ cm²/g, graviton mean free path beyond astrophysical scales, and a detector dense enough to absorb single gravitons collapses to a black hole first. Forecloses §4's options 1 (stiff shell) and 3 (matter domain wall); option 2 (horizons) was already excluded for subluminal bubbles.
+2. **The superconductor loophole (Heisenberg-Coulomb effect) is speculative, contested, and unobserved** *(grade B, literature)*. One research programme + adopters; Quach 2015's PRL "gravitational Casimir effect" is explicitly conditional on H-C (framed as a test of it; the 2017 erratum was a units fix only); the broader superconductor-gravity literature is openly contradictory (≈18 papers / 20+ authors / 55 years per the 2022 review arXiv:2203.09417, incl. Harris–Kowitt on the non-credibility of Li–Torr); no experimental support; and the originating programme's own 2022 refinement (arXiv:2207.08062) models the Cooper-pair response as far smaller than the ionic lattice's.
+3. **The even-if magnitude bound (decisive; grade A within slice)** — harness [`verification/test_2b8_casimir_gap.py`](verification/test_2b8_casimir_gap.py). Grant a PERFECT graviton mirror and a favourable sign: boundary-confinement vacuum energy is bounded by $|\rho_C| \le \hbar c/d^4$ (coefficient 1, ~73× generous vs the EM plate value $\pi^2/720$). At $d = 1$–$10$ m this is $10^{-26}$–$10^{-30}$ J/m³, versus the project's radial-certified targets ($10^{38}$ J/m³ EC-margin scale; $3.7\times10^{39}$ S31 DEC violation; $1.4\times10^{40}$ shell $\rho c^2$): **shortfall 63.5–69.6 OoM** — about twice the Slice-4b closure standard (31 OoM) in log terms. Matching even the smallest target needs boundary spacing $\sim 1.3\times10^{-16}$ m (sub-proton, $\sim 10^{19}\,\ell_P$) sustained through a metre-scale wall. The same bound kills the acceleration-supplement role, and quantifies the §3.3 difference-QI door (a wall-scale Casimir state carries ~65-OoM-too-little negative energy).
+
+### Disposition
+
+**Path 2B is CLOSED as a physical mechanism for warp-relevant negative energy** (both the static "negative sliver" and the dynamical/acceleration-supplement roles), within 4D semiclassical gravity + standard QFT Casimir scaling at macroscopic boundary scales. The §4 "gravitational conductor" question resolves to option 4 (nothing imposes graviton boundary conditions at the wall); Claim (a) (geometric classification) and the §5 effective-boundary reading (= Path 2A physics) are untouched; the 2B.1–2B.6 mode mathematics survives as a classification tool; 2B.7 stays unfunded (it would quantify an irrelevantly small effect). Tasks 3.4–3.5 mooted as physics. Risk-register rows updated (spin-2 row: Realised; Boyer sign + convergence rows: mooted; quantum-gap row: Realised in magnitude form). **Honest landscape statement after Sessions 32–34: within 4D semiclassical GR the project has no known candidate for a vacuum+DEC+dynamical warp realisation; remaining leads are 2D.5e (symbolic fallback), Garattini–Zatrimaylov (literature reproduction), and the Phase 2E relaxations.** Reopening triggers recorded in the ledger (the only trigger touching Leg 3: a demonstrated vacuum state with $|\langle T_{00}\rangle| \gg \hbar c/d^4$ at macroscopic $d$ consistent with QIs).
+
+The Task-1.11 speculative bridge (the FH "all wall, no interior" pathology as the spin-2 no-cavity manifestation) is *consistent with* this assessment and stays grade C — 2B.8 establishes there is no cavity-forming boundary for gravitons in known physics, which is the same structural fact from the other side.
+
+### Files
+
+- **NEW tracked:** [`verification/test_2b8_casimir_gap.py`](verification/test_2b8_casimir_gap.py) (even-if bound harness, self-contained arithmetic).
+- Bookkeeping: this entry; [`QUANTUM_CLASSICAL_BRIDGE.md`](QUANTUM_CLASSICAL_BRIDGE.md) §8 (canonical record) + §4/§6 pointers; [`LITERATURE.md`](LITERATURE.md) §5 Session-34 additions (Dyson 2013; Minter et al. 2010; Inan et al. 2017/2022; Gallerati et al. 2022 review) + Quach conditionality annotation; ROADMAP (2B.8 `[x]`, Phase 2B closed, decision-point disposition, 3.4–3.5 mooted, leads re-rank → 2D.5e #1, ledger entry, risk register, quick-look + update history); TRUST_AUDIT (Session 34 addendum); NAVIGATOR (current-state paragraph); memory (`active-task` refresh).
+
+### Wrap point
+
+Sessions 32–34 (one day): DOC.1 executed; Task 3.10 closed (certified minimal-mass map); Task 2D.11 closed (three-family vortical negative); Path 2B closed (2B.8 no-go). Next active lead: **Task 2D.5e Z-axis-symmetry plan-B** (~1 session symbolic + verification), then Garattini–Zatrimaylov 2025.

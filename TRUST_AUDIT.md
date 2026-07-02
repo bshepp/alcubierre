@@ -384,3 +384,25 @@ Two independent symbolic G derivations + exact-analytic vs quintic-spline deriva
 **No load-bearing dependency change.** Assumptions-table row 1's vorticity clause tightens from "does not lift it (Session 15)" to "does not lift it (Sessions 15, 33 — three families incl. FH-form multi-mode A)". Composite Phase-2D reading unchanged: every structural test degrades the warp-drive interpretation; none restores it.
 
 **Methodological note.** The gate-driven preview discipline (decision gate stated in the config `_comment` before the run; definitive-at-anchor negative closes without dispatching the full sweep) held for the third consecutive vortical family — total Phase-3 compute cost ~4.5 min local, $0 remote.
+
+---
+
+## Session 34 addendum — Task 2B.8: Path 2B closed as a physical mechanism
+
+**Setup.** Literature assessment (web-verified primary sources + one review) + a tracked even-if arithmetic harness ([`verification/test_2b8_casimir_gap.py`](verification/test_2b8_casimir_gap.py)). Canonical record: `QUANTUM_CLASSICAL_BRIDGE.md` §8.
+
+**Results graded:**
+
+| Component | Grade | Detail |
+|---|---|---|
+| Ordinary matter cannot reflect/absorb GWs (impedance $Z_G \sim 2.8\times10^{-18}$ SI mismatch; Dyson $\sim 10^{-41}$ cm²/g absorption; single-graviton detectors collapse to BHs) | **B** | Literature, uncontested across camps (the impedance statement appears in the pro-mirror school's own papers). Spot-checkable numbers; not re-derived here. |
+| Superconductor H-C loophole: speculative, contested, unobserved | **B** | One programme + adopters; Quach 2015 explicitly conditional on H-C (erratum = units fix); 2022 review catalogs 55 years of contradictory results, no experimental support; originating programme's own 2022 refinement undercuts the mechanism. Not a refutation-theorem — a status assessment. |
+| Even-if magnitude bound: perfect mirror + favourable sign ⇒ $|\rho_C| \le \hbar c/d^4$ ⇒ **63.5–69.6 OoM short** of every radial-certified target; required spacing sub-proton ($\sim 10^{-16}$ m) through a metre-scale wall | **A (within slice)** | Arithmetic derived in the tracked harness against the project's own certified numbers (S29–S32). Slice: 4D semiclassical GR, standard Casimir envelope ($K = 1$, ~73× generous vs $\pi^2/720$), macroscopic $d$. Independent of rows 1–2: holds even if a perfect gravitational conductor existed. |
+| Composite verdict: Path 2B CLOSED as physical mechanism (static sliver + acceleration supplement) | **A (within slice)** | Decisive leg is the magnitude bound; legs 1–2 close the mirror question itself. Mode-decomposition math (2B.1–2B.6) survives as classification tool; Claim (a) and the §5 effective-boundary (Path 2A) reading untouched. |
+| Task-1.11 spin-2 no-cavity bridge | **C (unchanged)** | Consistent with 2B.8 (no cavity-forming boundary for gravitons in known physics) but still not derived from a formal catalog. |
+
+**Slice scope (honest).** The closure is within 4D semiclassical gravity ($G_{\mu\nu} = 8\pi G \langle T_{\mu\nu}\rangle$) with standard QFT Casimir scaling at macroscopic boundary scales. It does NOT exclude: modified gravity (Phase 2E.2 / Slice 6b), exotic field content or trans-QI vacuum states (Phase 2E.3), or horizon-based constructions incompatible with subluminal shells (none known). Those remain where they were — deliberately deferred with reopening criteria.
+
+**No load-bearing dependency change to Path 2A.** Composite Path 2A verdict remains **A**; 2B.8 strengthens the overall landscape statement: within 4D semiclassical GR there is now no known candidate for a vacuum+DEC+dynamical warp realisation.
+
+**Methodological note.** The decisive step deliberately repeated the Slice-4b pattern (grant the contested physics, bound the magnitude): the assessment does not need to win the contested superconductor argument — the loophole-independent bound closes the path at ~2× the 31-OoM Slice-4b standard, so the verdict is robust to any resolution of the mirror literature.

@@ -152,7 +152,7 @@ The last row is the crux. In EM, a conductor imposes Dirichlet boundary conditio
 3. **A topological boundary** (the wall as a domain wall in a field theory)
 4. **Nothing** — the bubble wall may not impose boundary conditions on graviton modes at all, in which case the Casimir analogy breaks down
 
-This is an open question that Phase 2 must address before the project can claim physical content beyond the geometric classification (Claim a).
+This is an open question that Phase 2 must address before the project can claim physical content beyond the geometric classification (Claim a). **RESOLVED (Session 34, 2026-07-02): see §8 — options 1–3 are foreclosed and option 4 ("nothing") is the answer; even granting a perfect boundary, the magnitude falls ~64–70 OoM short. Path 2B closed as a physical mechanism.**
 
 ---
 
@@ -221,7 +221,7 @@ The paths are **complementary, not mutually exclusive**. Four possible outcome c
 The refined Claim (c) from §2 of this document can therefore take two forms:
 
 - **(c-classical)** "The right boundary geometry makes ordinary matter produce warp fields." — Path 2A version. **Confirmed for static, falsified for dynamical under DEC+vacuum+no-ejecta.**
-- **(c-quantum)** "The Casimir effect on an appropriate gravitational boundary produces the exotic matter required for warp drives." — Path 2B version. **Open, and elevated in importance: it is now the sole remaining candidate for a vacuum+DEC+dynamical realisation.**
+- **(c-quantum)** "The Casimir effect on an appropriate gravitational boundary produces the exotic matter required for warp drives." — Path 2B version. ~~Open, and elevated in importance: it is now the sole remaining candidate for a vacuum+DEC+dynamical realisation.~~ **CLOSED (Session 34, Task 2B.8 — see §8): no gravitational conductor exists in known physics, and even a perfect one falls ~64–70 OoM short of the certified density targets. Within 4D semiclassical GR there is no known candidate for a vacuum+DEC+dynamical realisation; what remains are the Phase 2E relaxations (modified gravity, exotic field content).**
 
 Path 2A (c-classical) is the more conservative; its static half is done within the tested slice and its dynamical half is closed within the same slice. Path 2B (c-quantum) is *one* remaining candidate for a genuine warp drive. Phase 2C (added Session 9; see [`ROADMAP.md`](ROADMAP.md) and [`NAVIGATOR.md`](NAVIGATOR.md)) explored six adjacent slices that test whether the static-slice negative result is an artefact of a specific assumption: alternate shift families, hybrid Krasnikov+matter walls, time-dependent acceleration, Krasnikov 2003 QI loosening, cosmological exterior, and modified gravity. **Path 2B and Phase 2C are parallel candidates, not a single "only remaining route."** The honest summary is that within the static slice we tested, no useful classical positive-matter warp drive exists; outside the slice, several published constructions (Lentz 2020, Fell-Heisenberg 2021, Lobo-Oliveira f(R) wormholes, Garattini-Zatrimaylov de Sitter) face interpretation-dependent caveats and are open candidates. See [`LANDSCAPE_SYNTHESIS.md`](LANDSCAPE_SYNTHESIS.md) for the synthesis.
 
@@ -268,4 +268,58 @@ The matrix above is unchanged in row assignments, but the *content* of row 3 (no
 
 ---
 
-*This document is intended to be honest about what the project has established, what remains open, and where the analogies might break. The Casimir connection is beautiful and may be correct, but it requires substantially more work to elevate from analogy to mechanism.*
+## 8. Task 2B.8 — Spin-2 Obstruction Assessment (Session 34, 2026-07-02): Path 2B CLOSED as a physical mechanism
+
+This section is the canonical record of the Task 2B.8 assessment — the gate on Tasks 2B.1–2B.7 that §4 posed and the ROADMAP decision point anticipated ("if the spin-2 obstruction is insurmountable → document the no-go and close Path 2B"). Three independent legs; the third is decisive on its own.
+
+### 8.1 Leg 1 — no material "gravitational conductor" exists in known physics *(literature; grade B)*
+
+The reason EM conductors exist is that EM reflectivity can be engineered: the coupling is to charge, and a material's conductivity can be made effectively infinite at the relevant frequency. Gravity has no analogous dial — the graviton couples to stress-energy with the universal strength $G$, so a material's "gravitational conductivity" is bounded by its mechanical response. Quantitatively, two uncontested facts close the door for ordinary matter:
+
+- **Impedance mismatch.** The gravitational characteristic impedance of free space is $Z_G \sim 2.8 \times 10^{-18}$ SI; a material must present impedance *below* this to reflect appreciably, and all classical matter is dozens of orders of magnitude above it. This statement is made most plainly in the pro-mirror school's own papers: "all ordinary classical matter is essentially completely transparent to gravitational waves" (Minter–Wegter-McNelly–Chiao 2010, arXiv:0903.0661).
+- **Absorption bound.** Dyson 2013 ("Is a graviton detectable?", the Poincaré lecture): graviton absorption cross-sections in matter are of order $10^{-41}\,\mathrm{cm^2/g}$ (keV scale), the graviton mean free path exceeds astrophysical scales, and any detector dense enough to absorb single gravitons collapses into a black hole first. Matter — and the universe — is transparent to gravitational waves back to the Planck era (concordant with the Weinberg-era absorption estimates).
+
+Of §4's four candidate boundary types this forecloses **1 (stiff material shell)** and **3 (matter-based domain wall)**; **2 (horizons)** was already excluded for subluminal bubbles in §4 (and horizons *absorb* rather than reflect coherently).
+
+### 8.2 Leg 2 — the superconductor loophole is speculative, contested, and unobserved *(literature; grade B)*
+
+The only claimed evasion of Leg 1 is the "Heisenberg–Coulomb (H-C) effect" programme: Minter–Wegter-McNelly–Chiao 2010 (thin superconducting films specularly reflect microwave-frequency GWs via non-geodesic Cooper-pair motion), continued in Inan–Thompson–Chiao 2017 (gravitational Meissner-like DC expulsion), and adopted conditionally by **Quach 2015** (PRL 114, 081104) — whose gravitonic Casimir effect for *ordinary* matter is itself meagre, and whose observable superconductor prediction is explicitly framed as a **test of the H-C hypothesis**, not a consequence of established physics (the 2017 erratum, PRL 118, 139901, corrected a units error only). §3.2 of this document should be read with that conditionality in mind. Status of the H-C claim:
+
+- It originates from and remains confined to essentially one research programme plus adopters; the broader superconductor-gravity literature is openly contradictory (the 2022 review arXiv:2203.09417 catalogs ~18 papers by 20+ authors over 55 years with conflicting results, including the Harris–Kowitt finding that the earlier Li–Torr enhancement claims are not credible).
+- There is **no experimental support** for any anomalous superconductor–gravitational-wave interaction.
+- Later work within the same programme (Inan et al. 2022, arXiv:2207.08062) models the Cooper-pair density response to a GW as *far smaller* than the ionic lattice's — i.e. even the originating school's refined treatment does not reproduce the original enhancement mechanism as claimed.
+- Even taken at face value, the claim concerns reflection of *microwave-frequency radiation* by thin films — it is not a design for a static negative-energy cavity at metre scale.
+
+### 8.3 Leg 3 — the even-if magnitude bound *(decisive; grade A within slice; harness [`verification/test_2b8_casimir_gap.py`](verification/test_2b8_casimir_gap.py))*
+
+Grant Path 2B everything Legs 1–2 deny: a **perfect graviton mirror** (reflectivity 1) and a **favourable sign** (waive Boyer 1968). The renormalised vacuum-energy density available from boundary confinement of a massless field at separation $d$ is bounded by the dimensional Casimir envelope $|\rho_C| \le K\,\hbar c/d^4$ with $K = O(1)$ (EM parallel plates: $K = \pi^2/720 \approx 0.0137$; we take $K = 1$, generous by ~73×). Against this project's own radial-certified EC scales:
+
+| boundary separation $d$ | $|\rho_C| \le \hbar c/d^4$ | vs certified targets |
+|---|---|---|
+| 10 m (shell inner radius) | $3.2 \times 10^{-30}$ J/m³ | **67.5–69.6 OoM short** |
+| 1 m (wall sub-scale) | $3.2 \times 10^{-26}$ J/m³ | **63.5–65.6 OoM short** |
+
+Certified targets: the canonical-shell in-shell EC-margin scale ~$10^{38}$ J/m³ (Sessions 29–32), the S31 sharp-optimum DEC violation $3.7 \times 10^{39}$, and the shell rest-energy density $\rho c^2 \approx 1.4 \times 10^{40}$. Matching even the smallest of these requires boundary separation $d \approx 1.3 \times 10^{-16}$ m — **sub-proton spacing** ($\sim 10^{19}\,\ell_P$) maintained throughout a metre-scale wall, at which point the Pfenning–Ford wall-thickness constraints (§3.3) and the ordinary-matter composition of any physical mirror reassert themselves. For calibration: the project's Slice-4b closure standard was a 31-OoM shortfall; this is ~2× that in log terms, **and it is independent of how the contested mirror question resolves**. The same bound kills the §6 row-3 role (quantum supplement for *acceleration*): any dynamical supplement must act at the same densities. The §3.3 "difference-QI" door — that a Casimir-type vacuum may carry $\langle\rho\rangle < 0$ unconstrained by absolute QIs — is now quantified: at wall-scale separations the Casimir-state magnitude is what this bound says, ~65 OoM short.
+
+### 8.4 What survives, verdict, and reopening triggers
+
+**Survives:** Claim (a) (geometric classification — a classical theorem, untouched); the §5 "effective boundary" reading (that is Path 2A physics, and it already carried the load via Fuchs et al.); the mode-decomposition mathematics of Tasks 2B.1–2B.6 as a *classification tool* (the ROADMAP decision point's fallback branch), available if ever needed. Claim (b) (semiclassical consistency) remains an academically well-posed QFT question — but with no physical payoff at ~65 OoM, Task 2B.7 would quantify an irrelevantly small effect and stays unfunded.
+
+**Verdict (slice-scoped): Path 2B is CLOSED as a physical mechanism for warp-relevant negative energy — both the static "negative sliver" role and the dynamical/acceleration-supplement role — within 4D semiclassical gravity with standard QFT Casimir scaling at macroscopic boundary scales.** The spin-2 obstruction of §4 stands: no gravitational conductor exists in known physics; and even granting a perfect one, boundary-confinement vacuum energy falls ~64–70 orders of magnitude short of every certified target in this project's slices. Exotica beyond this slice (non-standard field content, modified gravity, trans-QI vacuum states) are Phase 2E.2/2E.3 territory, not Path 2B.
+
+**Reopening triggers:** (i) experimental demonstration of anomalous GW reflection or absorption by any material (e.g. a confirmed H-C effect) — reopens Leg 2 only; Leg 3 still stands; (ii) a demonstrated vacuum state with $|\langle T_{00}\rangle| \gg \hbar c/d^4$ at macroscopic $d$ consistent with quantum inequalities — the only trigger that touches Leg 3; (iii) a horizon-class boundary compatible with a subluminal shell (none known).
+
+### 8.5 References added by this assessment
+
+| Paper | Where | Relevance |
+|-------|-------|-----------|
+| Dyson 2013, "Is a Graviton Detectable?" | Int. J. Mod. Phys. A 28, 1330041 (Poincaré lecture) | Graviton absorption $\sim 10^{-41}$ cm²/g; single-graviton detectors collapse to black holes; matter transparent |
+| Minter, Wegter-McNelly, Chiao 2010 | Physica E 42, 234; [arXiv:0903.0661](https://arxiv.org/abs/0903.0661) | The H-C superconductor-mirror claim; also states the ordinary-matter impedance no-go plainly |
+| Inan, Thompson, Chiao 2017 | Fortschr. Phys. 65, 1600066 | Same programme: gravitational Meissner-like DC expulsion |
+| Inan et al. 2022 | [arXiv:2207.08062](https://arxiv.org/abs/2207.08062) | Refined same-programme treatment; Cooper-pair response ≪ ionic lattice |
+| Gallerati, Modanese, Ummarino 2022 | [arXiv:2203.09417](https://arxiv.org/abs/2203.09417) | Review: 55 years of contradictory superconductor-gravity claims; no experimental support |
+| Quach 2017 (Erratum) | PRL 118, 139901 | Units fix to Quach 2015; conclusions (incl. H-C conditionality) unchanged |
+
+---
+
+*This document is intended to be honest about what the project has established, what remains open, and where the analogies might break. The Casimir connection is beautiful and may be correct, but it requires substantially more work to elevate from analogy to mechanism.* **(Session-34 note: §8 above completed that work in the negative direction — the analogy fails as a mechanism at the magnitude level, decisively and independently of the contested mirror physics.)**
