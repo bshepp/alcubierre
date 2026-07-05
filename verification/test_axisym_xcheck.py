@@ -35,9 +35,9 @@ def cartesian_baseline():
     )
     res = eval_metric(g, num_angular=100, num_temporal=10, wf_compat=False)
     Nx, Ny, Nz = grid[1:]
-    XC = np.arange(Nx) * gs[1] - wc[1]
-    YC = np.arange(Ny) * gs[2] - wc[2]
-    ZC = np.arange(Nz) * gs[3] - wc[3]
+    XC = (np.arange(Nx) + 1) * gs[1] - wc[1]
+    YC = (np.arange(Ny) + 1) * gs[2] - wc[2]
+    ZC = (np.arange(Nz) + 1) * gs[3] - wc[3]
     Rg = np.sqrt(XC[:, None, None] ** 2 + YC[None, :, None] ** 2 + ZC[None, None, :] ** 2)
     ish = (Rg >= R1) & (Rg <= R2)
     bd = np.zeros_like(Rg, dtype=bool)

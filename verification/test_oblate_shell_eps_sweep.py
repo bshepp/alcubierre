@@ -41,9 +41,9 @@ WC = (0.0, 30.0, 30.0, 0.5)
 
 def _inshell_mask():
     Nx, Ny, Nz = GRID[1:]
-    XC = (np.arange(Nx) * GS[1] - WC[1])
-    YC = (np.arange(Ny) * GS[2] - WC[2])
-    ZC = (np.arange(Nz) * GS[3] - WC[3])
+    XC = ((np.arange(Nx) + 1) * GS[1] - WC[1])
+    YC = ((np.arange(Ny) + 1) * GS[2] - WC[2])
+    ZC = ((np.arange(Nz) + 1) * GS[3] - WC[3])
     R = np.sqrt(XC[:, None, None] ** 2 + YC[None, :, None] ** 2 + ZC[None, None, :] ** 2)
     ish = (R >= R1) & (R <= R2)
     bd = np.zeros_like(R, dtype=bool)

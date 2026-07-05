@@ -294,14 +294,33 @@ def find_mmin(R1: float, R2: float, v: float, rel_tol: float = 0.005) -> dict:
             }
         M_pass = nxt
         mn_hi, by_hi, adm_hi = full(M_pass)
-    mn_lo, by_lo, _ = full(M_fail)
+    mn_lo, by_lo, adm_lo = full(M_fail)
     while _passes(mn_lo):
         # scout-fail actually passes at full res; walk downward
-        M_pass, mn_hi, by_hi = M_fail, mn_lo, by_lo
+        # (adm_hi must track M_pass -- a stale adm_hi here would misreport
+        # M_min_adm/kappa_adm by up to one scout rung if the bisection then
+        # accepts no midpoint)
+        M_pass, mn_hi, by_hi, adm_hi = M_fail, mn_lo, by_lo, adm_lo
         M_fail *= 0.75
-        mn_lo, by_lo, _ = full(M_fail)
+        mn_lo, by_lo, adm_lo = full(M_fail)
         if not np.isfinite(mn_lo):
-            break  # horizon below -- treat current M_fail as the fail edge
+            # Defensive: horizon validity is monotone in M, so a
+            # horizon-invalid probe BELOW a full-res pass should be
+            # unreachable. Per the bracket invariant above, a horizon point
+            # must never serve as the EC-fail bisection endpoint -- return
+            # the certified pass as an upper bound with a loud anomaly flag
+            # instead of silently bisecting against a horizon wall.
+            return {
+                **base, "no_pass": False, "horizon_capped": True,
+                "horizon_below_anomaly": True,
+                "M_horizon_edge": M_horizon_edge,
+                "M_min_nominal": M_pass, "M_min_adm": adm_hi,
+                "kappa_nominal": np.nan, "kappa_adm": np.nan,
+                "binding_cond": min(by_hi, key=by_hi.get) if by_hi else "",
+                "minec_above": mn_hi, "minec_below": np.nan,
+                "n_eval_scout": n_scout, "n_eval_full": n_full,
+                "wall_s": time.time() - t0,
+            }
 
     # --- bisection at the accept/reject tier -------------------------------
     while (M_pass - M_fail) / M_pass > rel_tol:

@@ -140,9 +140,9 @@ def main():
         grid_scale=cart_gs, r_sample_res=100_000)
     resC = eval_metric(gC, num_angular=60, num_temporal=6, wf_compat=False)
     Nx, Ny, Nz = cart_grid[1:]
-    xc = np.arange(Nx) * cart_gs[1] - cart_wc[1]
-    yc = np.arange(Ny) * cart_gs[2] - cart_wc[2]
-    zc = np.arange(Nz) * cart_gs[3] - cart_wc[3]
+    xc = (np.arange(Nx) + 1) * cart_gs[1] - cart_wc[1]
+    yc = (np.arange(Ny) + 1) * cart_gs[2] - cart_wc[2]
+    zc = (np.arange(Nz) + 1) * cart_gs[3] - cart_wc[3]
     X = xc[:, None, None]; Y = yc[None, :, None]; Z = zc[None, None, :]
     Rg = np.sqrt(X**2 + Y**2 + Z**2)
     ish = (Rg >= R1) & (Rg <= R2)

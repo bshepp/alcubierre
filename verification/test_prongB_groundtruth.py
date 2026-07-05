@@ -243,9 +243,9 @@ def cartesian_min_ec(prof, dx=0.2):
     res = eval_metric(Metric(g=g, coords=(t, x, y, z), grid_scale=gs,
                              name="GTcart"),
                       num_angular=80, num_temporal=8, wf_compat=False)
-    XC = np.arange(N) * dx - wc[1]
-    YC = np.arange(N) * dx - wc[2]
-    ZC = np.arange(5) * dx - wc[3]
+    XC = (np.arange(N) + 1) * dx - wc[1]
+    YC = (np.arange(N) + 1) * dx - wc[2]
+    ZC = (np.arange(5) + 1) * dx - wc[3]
     Rr = np.sqrt(XC[:, None, None]**2 + YC[None, :, None]**2
                  + ZC[None, None, :]**2)
     ish = (Rr >= R1) & (Rr <= R2)

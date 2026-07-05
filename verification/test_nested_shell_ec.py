@@ -44,11 +44,11 @@ def _summarize(name: str, ec: dict, T_eul: np.ndarray, t_elapsed: float,
     xs = (np.arange(Nx) - (Nx - 1) / 2.0) * GS[1]
     ys = (np.arange(Ny) - (Ny - 1) / 2.0) * GS[2]
     zs = (np.arange(Nz) - (Nz - 1) / 2.0) * GS[3]
-    # WC offsets shift origin: world coords = i*ds, comparing radius from WC
-    # (ec is centered on WC by construction of the metric)
-    XC = (np.arange(Nx) * GS[1] - WC[1])
-    YC = (np.arange(Ny) * GS[2] - WC[2])
-    ZC = (np.arange(Nz) * GS[3] - WC[3])
+    # WC offsets shift origin: builder world coords = (i+1)*ds, comparing
+    # radius from WC (ec is centered on WC by construction of the metric)
+    XC = ((np.arange(Nx) + 1) * GS[1] - WC[1])
+    YC = ((np.arange(Ny) + 1) * GS[2] - WC[2])
+    ZC = ((np.arange(Nz) + 1) * GS[3] - WC[3])
     R = np.sqrt(XC[:, None, None] ** 2 + YC[None, :, None] ** 2 + ZC[None, None, :] ** 2)
     in_shell = np.zeros_like(R, dtype=bool)
     for (a, b) in shell_intervals:
@@ -123,9 +123,9 @@ def main():
     # Recompute masks per config
     def _inshell_mask(intervals):
         Nt, Nx, Ny, Nz = res1.ec['null'].shape
-        XC = (np.arange(Nx) * GS[1] - WC[1])
-        YC = (np.arange(Ny) * GS[2] - WC[2])
-        ZC = (np.arange(Nz) * GS[3] - WC[3])
+        XC = ((np.arange(Nx) + 1) * GS[1] - WC[1])
+        YC = ((np.arange(Ny) + 1) * GS[2] - WC[2])
+        ZC = ((np.arange(Nz) + 1) * GS[3] - WC[3])
         R = np.sqrt(XC[:, None, None] ** 2 + YC[None, :, None] ** 2 + ZC[None, None, :] ** 2)
         ish = np.zeros_like(R, dtype=bool)
         for (a, b) in intervals:

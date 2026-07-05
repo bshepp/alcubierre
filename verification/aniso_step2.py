@@ -55,10 +55,15 @@ INT_B = (KB_R >= R1 - 1e-9) & (KB_R <= R2 + 1e-9)
 EXT_B = KB_R > R2 + 1e-9
 
 
-def fuchs_baseline_arrays():
+def fuchs_baseline_arrays(n_r_cap=4000):
     """Constant-density isotropic Fuchs shell -> (r, Apos, B, F, alpha, m,
     M_tot) windowed to a shell-spanning range. M_tot read from g_rr in the
-    clean exterior (the builder's *smoothed* ADM mass, not nominal 4.49)."""
+    clean exterior (the builder's *smoothed* ADM mass, not nominal 4.49).
+
+    n_r_cap sets the subsampling target of the windowed radial mesh
+    (default 4000 -> ~4175 points, the historical behaviour). Callers that
+    need a genuinely finer radial mesh (e.g. the kill-test top rung) must
+    raise it explicitly -- subsampling the default return cannot exceed it."""
     _, p = metric_profile_warp_shell(
         (1, 1, 1, 1), (0.0, 35.0, 35.0, 35.0),
         rho_of_r=lambda r: np.where((r >= R1) & (r <= R2), RHO_0, 0.0),
@@ -68,7 +73,7 @@ def fuchs_baseline_arrays():
     )
     rf = p["r"]
     idx = np.where((rf >= R_LO) & (rf <= R_HI))[0]
-    sub = idx[:: max(1, idx.size // 4000)]
+    sub = idx[:: max(1, idx.size // n_r_cap)]
     r = rf[sub]
     Apos = (-p["A"])[sub]
     B = p["B"][sub]
@@ -98,7 +103,7 @@ def profiles_from_knots(r, alpha_knots, m_knots, beta_knots):
 
 
 def eval_ec(r, Apos, B, F, na=100, nt=10, theta=None):
-    """Certified radial evaluator -> (min, by_cond dict, T_eul).
+    """Certified radial evaluator -> (min, by_cond dict, T_eul, theta_used).
 
     `theta` defaults to the module THETA (80 pts, for full-res
     verification); the optimizer loop passes a coarser theta for speed.

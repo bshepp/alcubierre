@@ -17,14 +17,16 @@ envelope
 
 (EM parallel plates: K = pi^2/720 ~ 0.0137 between perfect conductors;
 graviton polarisation counting changes K by O(1); we take K = 1, generous by
-~70x). Compare against the EC-deficit scales this project has certified in
-its own slices. If the gap is tens of orders of magnitude at every relevant
-separation, Path 2B is closed as a physical negative-energy mechanism
-REGARDLESS of how the contested mirror question resolves.
+720/pi^2 ~ 73x). Compare against the EC-deficit scales this project has
+certified in its own slices. If the gap is tens of orders of magnitude at
+every relevant separation, Path 2B is closed as a physical negative-energy
+mechanism REGARDLESS of how the contested mirror question resolves.
 
 Certified targets (SI J/m^3, radial evaluator, Sessions 29-32):
   - canonical-shell in-shell EC margin scale ~1e38 (e.g. min(EC) swings
-    +1.7e38 (pass, S31 anchor) / -2.2e38 (fail just below M_min, S32));
+    +1.694e38 (pass at the S31-probed 2.70e27-nominal mass -- GATE 1 of
+    verification/test_mmin_map_gate.py) / -2.2e38 (fail just below M_min,
+    S32));
   - the S31 anisotropic sharp-optimum DEC violation -3.72e39 (full-res);
   - shell rest-energy density scale rho*c^2 = M/(V_shell) * c^2 ~ 1.38e40
     (canonical Fuchs 4.49e27 kg in the (10,20) m shell).

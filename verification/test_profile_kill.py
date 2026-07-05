@@ -74,9 +74,9 @@ def grid_for_dx(dx):
 
 def inshell_mask(grid, gs, wc):
     Nx, Ny, Nz = grid[1:]
-    XC = np.arange(Nx) * gs[1] - wc[1]
-    YC = np.arange(Ny) * gs[2] - wc[2]
-    ZC = np.arange(Nz) * gs[3] - wc[3]
+    XC = (np.arange(Nx) + 1) * gs[1] - wc[1]
+    YC = (np.arange(Ny) + 1) * gs[2] - wc[2]
+    ZC = (np.arange(Nz) + 1) * gs[3] - wc[3]
     R = np.sqrt(XC[:, None, None] ** 2 + YC[None, :, None] ** 2 + ZC[None, None, :] ** 2)
     ish = (R >= R1) & (R <= R2)
     bd = np.zeros_like(R, dtype=bool)

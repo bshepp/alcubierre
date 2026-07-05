@@ -42,7 +42,11 @@ M_REF = OPT["M_ref"]
 
 
 def opt_min_ec(n_r, n_th, na, nt):
-    r0, *_ = fuchs_baseline_arrays()           # canonical windowed r grid
+    # Escalate the source mesh cap only ABOVE the historical 4000 so the
+    # recorded lower rungs stay bit-identical; without this the (8000, ...)
+    # rung silently reused the same ~4175-point radial mesh as (4000, ...)
+    # and differed only in angular sampling.
+    r0, *_ = fuchs_baseline_arrays(n_r_cap=max(n_r, 4000))
     r = r0[:: max(1, len(r0) // n_r)]
     Ap, Bp, Fp, hmin = profiles_from_knots(r, AK, MK, BK)
     th = np.linspace(0.02, np.pi - 0.02, n_th)

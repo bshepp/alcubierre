@@ -37,10 +37,10 @@ from scipy.special import erf
 # ---------------------------------------------------------------------------
 
 def fd_grad4(arr: np.ndarray, h: float, axis: int) -> np.ndarray:
-    """4th-order centered first derivative with reflective edges.
+    """4th-order centered first derivative.
 
     Internal nodes use stencil [+1, -8, 0, +8, -1]/(12h); edges fall back to
-    np.gradient (2nd-order one-sided / centered).
+    np.gradient (2nd-order one-sided / centered) -- NOT reflective.
     """
     out = np.gradient(arr, h, axis=axis, edge_order=2).copy()
     sl = [slice(None)] * arr.ndim
