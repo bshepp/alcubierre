@@ -449,3 +449,21 @@ Two independent symbolic G derivations + exact-analytic vs quintic-spline deriva
 | Fell-Heisenberg pipelines (Sessions 10–17, 33) | **No change** | FD-based on FH's closed-form ρ_E decomposition; no shared frame code (grep + Session-35 review). |
 
 **Methodological note (fifth instance of the searcher-honesty family):** a result pipeline can manufacture plausible *positive structure* (the 0.94 ridge) inside a directionally-correct negative, and an already-proven in-repo identity (Session 15c) falsified the recorded table for 14 sessions unnoticed. When a sweep table and a symbolic identity coexist, run the cross-check at closure time — the identity is the cheaper, stronger audit.
+
+---
+
+## Session 37 addendum — TRUST_AUDIT #5 CLOSED (C → B): GW-recoil SXS anchor verified conservative
+
+**Item #5 (GW-recoil ceiling: SXS rescaling β²C^{3/2} heuristic, C-grade since Session 8; Cell 17 Colab path wired Session 9, never run).** Closed 2026-07-05 by [`verification/test_sxs_kick_pull.py`](verification/test_sxs_kick_pull.py) (4/4 gates), which pulls the SXS data over plain HTTPS — Zenodo per-record metadata for SXS:BBH:1937 cross-checked against the collaboration's `catalog.zip` (identical) — with no `sxs` package or Colab required.
+
+**Findings:**
+
+| Finding | Detail |
+|---|---|
+| Cell-17 design defect | The wired comparison targeted SXS:BBH:1937 as the "high-mass-ratio kick record per Varma 2022" and expected its remnant kick to confirm 5000 km/s within 1.5×. The simulation is actually q = 4.0 **aligned-spin non-precessing** (χ₁⊥ ≈ 9e-7) with remnant kick **93.6 km/s** — 53× below the expectation; aligned-spin systems cannot superkick. The success branch of that cell has never been correct; every recorded execution took the fallback path. Superseded by the harness. |
+| Anchor verified conservative | Catalog-wide max remnant kick over 2021 public SXS simulations = **3119.1 km/s** (SXS:BBH:0662, q = 1.33, χ₁⊥ = 0.80; top-5 all near-equal-mass precessing). The Package-3 input 5000 km/s **upper-bounds every public NR simulation (1.60× headroom)** ⟹ the recorded Mechanism-C ceiling is conservative. |
+| Full-config sweep | First `gw_recoil_full.json` dispatch (4320 pts; preview regression bit-exact on all 1200 recorded rows). Ceiling Δv/(βc) ≤ 0.58% for physical C ≤ 0.5 (1.41% only at the unphysical (0.99, 0.9) corner); canonical Fuchs point unchanged (~1e-4). Recorded "max at β=0.9, C=0.5" corrected to C=0.3 (label error; the ratio 0.25% was computed correctly). M-axis of the grid is analytically degenerate in both formulas. |
+
+**Grade: C → B** (within slice: single-bubble Fuchs-class shells, quadrupole-order rescaling). Not A: the remnant velocities are accepted from SXS collaboration metadata rather than derived by integrating waveform momentum flux ourselves. Reopening trigger: an NR result or surrogate prediction exceeding 5000 km/s for astrophysically admissible spins, or a shell-specific radiation channel outside the β²C^{3/2} rescaling class.
+
+**Methodological note:** dormant verification code (a wired-but-never-run success branch) can encode a wrong expectation while conferring an appearance of rigor. When closing long-dormant audit items, re-derive the check from the primary data source rather than finally executing the recorded button.

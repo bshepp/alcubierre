@@ -11,7 +11,7 @@
 
 **Implication for Package 3.** The three-mechanism conclusion transfers to the genuinely time-dependent setting. The "steady-state" assumption was *not* load-bearing in Package 3's negative result.
 
-**The audit interleave (TRUST_AUDIT #5) is wired for Colab**: the `sxs` waveform pull cell runs cleanly when `sxs` is installed (Colab) and falls back to Package 3's heuristic value (5000 km/s) when not available (local Windows). Locally executed: fallback. To upgrade, open in Colab and re-run the cell.
+**The audit interleave (TRUST_AUDIT #5) is CLOSED (Session 37, 2026-07-05)** — without Colab, via a plain-HTTPS pull of the SXS data in [`verification/test_sxs_kick_pull.py`](verification/test_sxs_kick_pull.py) (4/4 gates). Two findings: (i) **Cell 17's design was defective** — its target SXS:BBH:1937 is a q=4.0 *aligned-spin, non-precessing* run whose remnant kick is 93.6 km/s, 53× below the 5000 km/s the cell expected to confirm within 1.5× (aligned-spin systems cannot superkick; the record configurations are near-equal-mass precessing ones), so the planned Colab run would have printed the "differs significantly" branch; (ii) the direction is the safe one for a ceiling — the **catalog-wide maximum remnant kick across all 2021 public SXS simulations with remnant data is 3119.1 km/s** (SXS:BBH:0662, q=1.33, χ₁⊥=0.80 — the precessing hangup-kick family), so Package 3's 5000 km/s input carries 1.60× headroom over every public NR simulation and the recorded recoil ceiling is conservative. See the Session-37 correction below.
 
 ---
 
@@ -62,7 +62,7 @@ except ImportError:
     print('sxs not installed; falling back to Package 3 heuristic value 5000 km/s.')
 ```
 
-**Status**: cell present and tested for the fallback path. To upgrade to A-grade, open `time_dependent.ipynb` in Colab, run the setup cell (auto-installs `requirements.txt` + we'd need to add `sxs` separately), and re-run cell 17. The expected outcome is that the SXS:BBH:1937 remnant velocity matches Varma et al. 2022's reported 5000 km/s to within a factor of 1.5 (within the precision of the heuristic-vs-real comparison).
+**Status**: ~~cell present and tested for the fallback path. To upgrade to A-grade, open `time_dependent.ipynb` in Colab … The expected outcome is that the SXS:BBH:1937 remnant velocity matches Varma et al. 2022's reported 5000 km/s to within a factor of 1.5.~~ **Superseded (Session 37, 2026-07-05):** the expected outcome was wrong — SXS:BBH:1937 is a q=4.0 aligned-spin (χ₁ = 0.4ẑ, χ₂ ≈ 0, χ₁⊥ = 8.7e-7) non-precessing simulation with remnant kick |v| = 3.121e-4 c = **93.6 km/s**, a factor 53 below the heuristic; the "high-mass-ratio kick record" designation in the Cell-16 markdown was incorrect (record kicks come from near-equal-mass precessing configurations, and a q=4 aligned system cannot superkick). The audit item is instead closed by [`verification/test_sxs_kick_pull.py`](verification/test_sxs_kick_pull.py), which pulls the SXS metadata over plain HTTPS (Zenodo record 3310634 Lev3 + `data.black-holes.org/catalog.zip`, cross-checked identical) and certifies the useful fact: **max remnant kick over the entire public catalog = 3119.1 km/s < 5000 km/s input** (top-5 all near-equal-mass precessing, as expected physically). Grade lands at B, not A: we accept the SXS collaboration's remnant-velocity metadata rather than integrating waveform momentum flux ourselves. Cell 17 itself is left as-is in the notebook (historical record; its fallback path is what every recorded execution took).
 
 ---
 

@@ -28,6 +28,9 @@ sweeps/*.config.json
 # full-config concat and the 140-row corrected preview (the figure source).
 !sweeps/shift_families_full_concat.parquet
 !sweeps/shift_families_20260705T184353.parquet
+# Session-37 first-ever gw_recoil full-config record (4320 rows) behind the
+# TRUST_AUDIT #5 closure and the corrected Mechanism-C ceiling numbers.
+!sweeps/gw_recoil_full_concat.parquet
 
 # Local working copies of sweep results downloaded from HF Dataset
 # bshepp/alcubierre-sweeps. Re-fetchable via `hf download`.

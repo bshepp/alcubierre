@@ -22,6 +22,10 @@ Contents:
   agreement, the profile-independent identities that close all four
   shift families analytically, permanent regression of the fixed sweep
   module, and a warp_factory_py anchor cross-check.
+  `test_sxs_kick_pull.py`: plain-HTTPS pull of SXS catalog + per-record
+  metadata behind the Session-37 TRUST_AUDIT #5 closure (GW-recoil kick
+  anchor verified conservative vs every public NR simulation; offline =
+  SKIP, never a false verdict).
 - **Adversarial kill-test batteries** — `test_profile_kill.py`,
   `test_radial_opt_xcheck.py`, `test_radial_opt_convergence.py`,
   `test_prongA_forensic.py`: resolution-convergence, cross-representation

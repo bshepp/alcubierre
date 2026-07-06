@@ -2310,3 +2310,31 @@ The Session-9 recorded numbers (single-point table, per-family fractions, "best 
 Block 2(a) **CLOSED** — outcome: the kill-test *did* find a false-negative-shaped defect, but in the opposite direction than feared: the recorded evidence was broken, while the conclusion was true and is now analytic. The queued "ridge refinement" is superseded (the ridge never existed). Blocks 2(b)–(f) unchanged, pending.
 
 **Methodological note (fifth instance of the searcher-honesty family):** the Session-35 lesson was that a verification harness is code and can carry bugs; Session 36's is that a *result-producing pipeline* can carry a bug that manufactures plausible-looking *positive structure* (the 0.94 ridge) inside a correct-verdict negative — and that the repo's own analytic identities (Session 15c) had already falsified the table for 14 sessions without anyone running the cross-check. Corollary: when a sweep table and a symbolic identity coexist, the identity is the cheaper and stronger audit — check tables against identities at closure time.
+
+## Session 37 — 2026-07-05 — Block 2(b): gw_recoil full dispatch + the SXS pull; TRUST_AUDIT #5 closed C→B
+
+**Intent (Block 2(b) of the Session-35 audit queue):** dispatch `gw_recoil_full.json` for the first time and do the long-pending TRUST_AUDIT #5 "Colab Cell-17" SXS waveform pull that anchors the Mechanism-C (GW-recoil) ceiling.
+
+### gw_recoil full dispatch (first ever)
+
+- Preview re-run reproduces all 1200 recorded Session-8/9 rows **bit-exactly** (module unchanged since Session 9 — no shift_families-style surprises here; the evaluator is two closed-form formulas).
+- Full config dispatched locally: **4320 points** in ~1 s (the config's "~1e5 points, HF Jobs cpu-upgrade" description always overstated the actual grid — noted; nothing about this sweep ever needed remote compute).
+- Structure of the map (no surprises, two exact degeneracies): $\Delta v_{\rm PN}$ is analytically **M-independent** (the $M^5$ in Fitchett's numerator cancels against $a^5 \propto M^5$ at fixed $C$, and $T_{\rm orb}/M$ is $M$-free), and the SXS-rescale branch depends only on $(\beta, C)$ — so the grid's $M$ axis is redundant by construction. The PN branch exceeds the rescale branch in only 18/4320 rows (extreme $n_{\rm orbits}$).
+- Ceiling numbers: $\Delta v/(\beta c) \le$ **0.58%** within physical compactness $C \le 0.5$ (at the $\beta = 0.99$ edge); 1.41% only at the unphysical $(\beta{=}0.99, C{=}0.9)$ corner; canonical Fuchs point $(\beta{=}0.02, C{=}0.44)$: 584 m/s $\approx 10^{-4}$ of $v_{\rm warp}$, matching the recorded value. **Qualitative conclusion (negligible) unchanged; quantitative headline moves 0.25% → 0.58% at the box edge.**
+- Provenance correction: the recorded "max $10^{5.82}$ m/s at $\beta = 0.9$, $C = 0.5$" (SESSION_LOG Session 8, MATTER_SHELL_PATH §9) was mislabeled — the recorded artifacts' argmax is at $C = \mathbf{0.3}$ (the old grids never contained the $(0.9, 0.5)$ combination); the 0.25% ratio itself was computed correctly at that point. MATTER_SHELL_PATH corrected in place.
+- Artifact: `sweeps/gw_recoil_full_concat.parquet` (negation-tracked); `figures/gw_recoil/dv_cliff.png` regenerated (now 9 compactness facets).
+
+### TRUST_AUDIT #5: the SXS pull — closed without Colab, with a design-defect finding
+
+New tracked harness [`verification/test_sxs_kick_pull.py`](verification/test_sxs_kick_pull.py) (4/4 gates) pulls the SXS data over plain HTTPS (Zenodo record 3310634 Lev3 metadata + the collaboration's `catalog.zip`, cross-checked identical), no `sxs` package required:
+
+1. **Cell 17's design was defective.** Its target SXS:BBH:1937 — labeled "high-mass-ratio kick record per Varma 2022" in the notebook — is actually a $q = 4.0$, **aligned-spin, non-precessing** run ($\chi_1 = 0.4\hat z$, $\chi_{1\perp} = 8.7\times 10^{-7}$) whose remnant kick is $3.121\times 10^{-4}\,c$ = **93.6 km/s — 53× below** the 5000 km/s the cell's success branch expected to confirm within 1.5×. Aligned-spin systems cannot superkick; the record configurations are near-equal-mass precessing "hangup-kick" ones. Had the Colab run ever been done, it would have printed the "differs significantly; recompute Package 3 ceiling" branch — a false alarm in the *safe* direction.
+2. **The catalog-wide check that actually matters:** max remnant kick across all 2021 public SXS simulations with remnant data = **3119.1 km/s** (SXS:BBH:0662, $q = 1.33$, $\chi_{1\perp} = 0.80$; top-5 all near-equal-mass precessing, as physics predicts). Package 3's $V_{\rm kick}^{\rm BBH} = 5000$ km/s input therefore **upper-bounds every public NR simulation with 1.60× headroom** — the recorded recoil ceiling is conservative. (The 5000 km/s literature value is a surrogate-model extrapolation to near-extremal precessing spins beyond what the catalog contains; using the catalog's empirical max instead would *tighten* every recorded ceiling by 1.60×.)
+
+**Grade: C → B.** B, not A, because we accept the SXS collaboration's remnant-velocity metadata rather than integrating waveform momentum flux ourselves. Cell 17 is left in the notebook as the historical record (every recorded execution took its fallback path); TIME_DEPENDENT_NOTES carries the correction.
+
+### Audit-queue disposition
+
+Block 2(b) **CLOSED**. The W6 weakening (C-grade anchor, full config never run) is resolved in the strengthening direction on both prongs. Remaining queue: 2(c) 2D.11 multi-anchor, 2(d) nested-shell radial ladder, 2(e) hybrid_wall full, 2(f) Δ-ladder radial; then Block 3.
+
+**Methodological note:** second instance this week of a never-executed verification path (Colab cell) hiding a design defect — the S35 lesson ("a verification harness is itself code") extends to *dormant* verification code: an audit interleave that has never actually run in its success branch certifies nothing, and may encode a wrong expectation. When closing such items, prefer re-deriving the check from the primary data source over finally pushing the recorded button.
