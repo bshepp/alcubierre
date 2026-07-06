@@ -532,3 +532,19 @@ Two independent symbolic G derivations + exact-analytic vs quintic-spline deriva
 **Methodological note (sixth in the searcher-honesty family):** a kill-test harness manufactured its own false negatives (coarse rungs straddling a narrow window + verifying the wrong point) and was caught only by applying the S32 discipline recursively — fine-scanning the scout peak before accepting any null. Rule: null verdicts require full-resolution verification at the *most favourable* probed point, not at a boundary.
 
 **Block 2 complete (Sessions 36–41):** four strengthenings, one reversal (nested-shell, first flip of the programme), one confirmation-with-re-basing. Grade ledger net effect: Slice-1 → analytic A; #5 → B; 2D.11 → informative-A within slice; Phase-3.3 nesting leg → reversed (new candidate lead); 2C.2 → A within slice at 72× coverage; Δ-ladder/κ → certified A within slice, two-direction pinned.
+
+---
+
+## Session 42 addendum — Task 2D.5e: closed-form FH pressures; the strict-pass record re-scoped to its evaluation box
+
+**Setup.** The Session-14c Hard Fix verdict ("the FH potential is structurally too complex for closed-form principal pressures; fundamental property of the ansatz, not a SymPy limitation" — §12.4) and the entire Sessions-11–17 strict-pass record are affected. Battery: [`verification/test_fh_axisym_closed_form.py`](verification/test_fh_axisym_closed_form.py), 9/9 gates.
+
+| Item | Impact | Detail |
+|---|---|---|
+| §12.4 "no closed form exists" verdict (Session 14c) | **Corrected** | The adopted FH ansatz is exactly axisymmetric about Z; the y=0-plane block decomposition gives closed-form eigenvalues everywhere (SymPy literal zeros for the off-block components; eigenvalues ≡ eigvalsh to 4.4e-16). The det() wall was symmetry-blindness, not ansatz complexity. Grade of the closed-form pressures: **A** (symbolic certificates + machine-precision cross-checks + FD validation ≤ 2.1e-4 at certified anchors). |
+| Sessions 11–17 "strict-pass" statistics (1404/6818/6240 counts, connectivity, CTC fractions, VIQ, xAct anchors) | **Re-scoped: correct as L=12-box statements; withdrawn as global-EC statements** | Closed-form far field: every tested $a>0$ configuration violates WEC+DEC beyond finite equatorial $R^*$ (17–200 over probes; V-invariant), with diverging magnitude. FD cross-check: A1 wec_slack_min +0.0374 (L=12) → **−0.848 (L=45)** through the same pipeline that produced the record. The swept grids used $a \ge 0.05$ throughout ⟹ within the adopted $m,n$ concretization, the globally-EC-passing subset of the swept family is **empty**. $a=0$ inconclusive at the 1e-5 level. |
+| NAVIGATOR load-bearing row 1 ("single-mode axisymmetric — load-bearing AND broken") | **"Broken" withdrawn** | The multi-mode counterexample was box-scoped. Post-S36 (single-mode analytic closure) + S42: no tested shift family passes WEC+DEC globally within the explored slices. |
+| §11 boundary resolution-flakiness (47% pass→fail flips) | **Structurally explained** | Marginal cells are configurations whose $R^*$ falls near the box's corner reach; their classification depends on exactly which far-field cells the grid samples. |
+| Session-38 kill-test conclusions (2D.11) | **Differential content unaffected** | Same-box comparisons (augmented vs baseline at L=12); its "genuinely strict-pass anchors" language inherits the box scope. Vorticity's universal degradation and the passenger-zone results stand as stated within slice. |
+
+**Methodological rules recorded:** (i) inspect symmetries before declaring symbolic intractability; (ii) fixed-box pointwise-EC evaluation of a non-decaying ansatz requires an explicit far-field gate — "pass" within a window is not "pass." (Seventh and eighth entries in the searcher-honesty family.)

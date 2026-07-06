@@ -34,6 +34,12 @@ Contents:
   27-cell Delta-ladder re-run (Session-18 anchor confirmed + tightened;
   kappa = 4.93 +/- 0.44 over genuine crossings; nulls verified at the
   scout peak, never at a boundary).
+  `test_fh_axisym_closed_form.py`: the Session-42 battery behind Task
+  2D.5e -- closed-form FH principal pressures via the axisymmetric block
+  decomposition (symbolic zero certificates, machine-precision eigenvalue
+  agreement) and the far-field certificate that the FH strict-pass record
+  was L=12-box-scoped (equatorial WEC+DEC violation at finite R* for all
+  tested a > 0; FD cross-check at L=45).
 - **Adversarial kill-test batteries** — `test_profile_kill.py`,
   `test_radial_opt_xcheck.py`, `test_radial_opt_convergence.py`,
   `test_prongA_forensic.py`: resolution-convergence, cross-representation

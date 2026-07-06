@@ -1313,7 +1313,7 @@ Within the Fell-Heisenberg irrotational-shift static-slice ansatz at the canonic
 
 This is **not a new pathology** — Sessions 11-15 already established (§7 connectivity, §9 single-cell passenger, §15 CTC sea) that the FH ansatz lives in a different regime than the conventional Alcubierre bubble. §17 quantifies the L-asymptotic version of those findings: there is no $L \to \infty$ limit in which FH approaches a Schwarzschild exterior.
 
-Cumulative reading from Sessions 11-17 (L-V VIQ + B-M taxonomy + CTC + xAct-cross-check + asymptotic-matching): the Fell-Heisenberg strict-pass existence claim is mathematically real and pipeline-verified, but the physical-warp-drive interpretation is degraded by every structural test we apply: single-voxel passenger zone, 76× mass-to-passenger-volume, geometric Class III + non-isotropic + static, CTC sea outside the passenger, no asymptotic decay envelope, configuration sits inside its own would-be Schwarzschild horizon. **No further test relaxes any of these obstructions.**
+Cumulative reading from Sessions 11-17 (L-V VIQ + B-M taxonomy + CTC + xAct-cross-check + asymptotic-matching): the Fell-Heisenberg strict-pass existence claim is mathematically real and pipeline-verified, but the physical-warp-drive interpretation is degraded by every structural test we apply: single-voxel passenger zone, 76× mass-to-passenger-volume, geometric Class III + non-isotropic + static, CTC sea outside the passenger, no asymptotic decay envelope, configuration sits inside its own would-be Schwarzschild horizon. **No further test relaxes any of these obstructions.** *(⚠ Session 42 sharpened this to an energy-condition statement: the strict-pass classification itself is L=12-box-scoped — every tested configuration with $a > 0$ violates WEC+DEC beyond a finite equatorial radius $R^*$, computable in closed form; see §18.)*
 
 ### §17.6 Files
 
@@ -1326,7 +1326,42 @@ Slice-scope qualifier (per AGENTS.md): *Within the Fell-Heisenberg irrotational-
 
 
 
+## §18 Session 42 (2026-07-06) — Task 2D.5e closed: closed-form principal pressures via axisymmetry; strict-pass is box-truncation-scoped
+
+Module [`hf_jobs/analysis/fell_heisenberg_axisym.py`](hf_jobs/analysis/fell_heisenberg_axisym.py); verification battery [`verification/test_fh_axisym_closed_form.py`](verification/test_fh_axisym_closed_form.py) (9 gates).
+
+### §18.1 The observation §12 missed: the concrete FH ansatz is exactly axisymmetric
+
+The adopted potential (φ_FH_smooth) depends on $(X, Y)$ only through $X^2 + Y^2$ — the $m, n = m_0 \pm a\tanh(Z/\ell)$ asymmetry breaks *fore-aft* ($Z \to -Z$) symmetry, not axial symmetry (the "axisymmetric breaking" phrasing in earlier notes was loose). Rotation-invariance certified numerically to 5.7e-14; on the $y=0$ half-plane SymPy reduces $S_{xy}$ and $S_{yz}$ to **literal zero**, so $S_{ij}$ block-diagonalises into the azimuthal component $S_{yy}$ plus a 2×2 $(x,z)$ block. The principal pressures are therefore **closed form everywhere**:
+
+$$\lambda_\phi = S_{yy}, \qquad \lambda_\pm = \tfrac{S_{xx}+S_{zz}}{2} \pm \sqrt{\left(\tfrac{S_{xx}-S_{zz}}{2}\right)^2 + S_{xz}^2},$$
+
+with all components the validated §12.1 symbolic expressions restricted to $y=0$. **No 3×3 determinant is ever needed** — the §12.2 wall was an artifact of attempting eigenvalue extraction in full Cartesian 3D without exploiting the symmetry, not a property of the ansatz. Verification: closed-form eigenvalues match `eigvalsh` to 4.4e-16; the closed-form WEC/DEC slack minima reproduce the certified Npts=65 sweep-row values at the Session-38 anchors to ≤ 2.1e-4 relative (simultaneously certifying the FD pipeline's accuracy at those anchors). The §12.8 Z-axis reduction is the $R_{\rm cyl} \to 0$ corollary ($S_{xz} \to$ literal 0; $S_{xx} = S_{yy}$ exactly).
+
+### §18.2 The §12.8 pre-flight question — answered NO, in the strongest way
+
+The slack minima at the certified anchors (A1, B1, §12-anchor) are **not on the Z axis and not at any interior feature: they sit at the truncation-domain boundary**, with the fields still decreasing outward. The recorded "strict-pass margins" (e.g. A1's wec +0.0374) are box-edge values.
+
+### §18.3 The strict-pass classification is a box-truncation artifact
+
+Following the fields beyond the box (trivial with the closed form; impossible for the FD pipeline at fixed grids):
+
+- Along the **equator** ($Z=0$) the dec slack crosses **zero at finite $R^*$ and the violation grows with $R$** (at A1: dec < 0 from $R^* \approx 30.6$, wec from 39.1, wec(500) = −12.6). The diagonal and polar directions decay to $0^+$.
+- **Independent FD cross-check**: the same pipeline that certified A1 strict-pass at L=12 (+0.0374) returns wec_slack_min = **−0.848 at L=45**. Two evaluators agree.
+- **Universality within the adopted family**: finite $R^*_{\rm dec}$ at every structure probed — the a-ladder at the A1 structure ($R^*$: 17.2 at $a{=}0.4$ → 163.8 at $a{=}0.01$) and five diverse corners of the swept box ($R^*$ 12.7–33.8). $R^*$ is exactly V-invariant (slack signs scale as $V^2$). At $a = 0$ a marginal crossing appears near $R \approx 175$–193 at $|{\rm slack}| \sim 10^{-5}$ — near the numerical floor, direction-inconclusive.
+- **Mechanism**: the $z$-asymmetry couples $\tanh'(Z/\ell)$ to the FH potential's linearly-growing large-$R$ sensitivity, so $K_{zz}$ grows with $R$ in the equatorial band whenever $a \neq 0$.
+
+**Re-scoped statement (slice-honest):** within the adopted concretization $m, n = m_0 \pm a\tanh(Z/\ell)$ with $a > 0$ — which is the *entire* swept family (the grids used $a \ge 0.05$) — **no configuration satisfies WEC+DEC globally**: every recorded "strict-pass" cell is a configuration whose violation region lies outside the L=12 evaluation window ($R^* >$ box reach), and every recorded "strict-fail" boundary cell plausibly includes configurations whose $R^*$ falls inside the cube's corner reach (≈ 20.8) — consistent with §11's resolution-flaky boundary stratum. All Sessions 11–17 statistics (counts, connectivity, VIQ, CTC fractions) remain correct *as L=12-box-scoped statements*; their reading as global-EC statements is withdrawn. FH's original paper leaves $m, n$ unspecified, so this closes our adopted family, not every conceivable FH-type construction.
+
+### §18.4 What 2D.5e delivers
+
+1. Closed-form principal pressures and WEC/DEC slack fields on all of space (the §8/§12 goal, achieved by symmetry rather than brute-force determinants).
+2. The genuinely meaningful closed-form boundary object: $R^*({\rm params})$, the equatorial violation-onset radius, defined by the 1-D root of the exact slack expression — replacing the box-scoped parameter-space "boundary equation" the Hard Fix sought.
+3. The §12.8 pre-flight answered (assumption false), and the §11 boundary-instability phenomenon explained structurally (marginal cells = crossings near the box's reach).
+
+Slice-scope qualifier: static smooth-N irrotational FH slice, adopted $m,n$ concretization, $\Pi = 1/4$; $a > 0$ throughout the swept family; $a = 0$ inconclusive at the $10^{-5}$ level; other concretizations of FH's unspecified $m, n$ not asserted.
+
 ## Figures
 
-- `figures/fell_heisenberg/strict_pass_corner.png` — 5x5 corner plot of all 1404 strict-pass cells (WEC = 100 percent, DEC slack > 0) projected pairwise into `(sigma, m_0, a, ell, r)`. Diagonals are 1D histograms (log y); below-diagonal scatter coloured by `dec_slack_min`. Source parquet: `sweeps_remote/full-20260420T022727/fell_heisenberg_20260420T022809.parquet` (15000-cell full sweep). Generated by `python figures/plot_figures.py fh-corner`.
+- `figures/fell_heisenberg/strict_pass_corner.png` — 5x5 corner plot of all 1404 strict-pass cells (WEC = 100 percent, DEC slack > 0) projected pairwise into `(sigma, m_0, a, ell, r)`. Diagonals are 1D histograms (log y); below-diagonal scatter coloured by `dec_slack_min`. Source parquet: `sweeps_remote/full-20260420T022727/fell_heisenberg_20260420T022809.parquet` (15000-cell full sweep). Generated by `python figures/plot_figures.py fh-corner`. *(⚠ Session 42: strict-pass = L=12-box-scoped; see §18.3.)*
 - The Phase-2D structural-test PNGs in `fell_heisenberg_topology_hires/`, `fell_heisenberg_horizon/`, and `fell_heisenberg_matter/` are also surfaced on the website `fell-heisenberg.html` gallery (mirrored under `webpage/assets/figures/`).
