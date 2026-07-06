@@ -26,6 +26,10 @@ Contents:
   metadata behind the Session-37 TRUST_AUDIT #5 closure (GW-recoil kick
   anchor verified conservative vs every public NR simulation; offline =
   SKIP, never a false verdict).
+  `test_nested_shell_radial_ladder.py`: the Session-39 certified-radial
+  f_inner ladder that REVERSED the Session-26 nested-shell record
+  (improvement plateau + sign flip at f* ~ 0.63; modes full / plateau /
+  threshold for staged RES_CONF confirmation).
 - **Adversarial kill-test batteries** — `test_profile_kill.py`,
   `test_radial_opt_xcheck.py`, `test_radial_opt_convergence.py`,
   `test_prongA_forensic.py`: resolution-convergence, cross-representation

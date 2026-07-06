@@ -484,3 +484,20 @@ Two independent symbolic G derivations + exact-analytic vs quintic-spline deriva
 | Session-33 absolute numbers (dec_slack −7.74e-2 baseline etc.) | **Flagged as resolution-contaminated** | Differential (same-grid) claims unaffected; absolute Npts=49 slack values at this anchor family should not be quoted as physical. |
 
 **Methodological rule recorded:** a perturbation study's baseline must pass its decision gates *at the study's own resolution*, else those gates are vacuous — the FD sibling of the Session-30 regime-validity lesson, applied to study design.
+
+---
+
+## Session 39 addendum — nested-shell (Phase 3.3 sub-item 4) REVERSED: first verdict flip of the audit programme
+
+**Setup.** Session-35 audit item W5 (first half): the Session-26 nested-shell mass-split threshold sat inside the demoted Cartesian pipeline's error band. Block 2(d) kill-test executed 2026-07-05 (Session 39) via the new tracked harness [`verification/test_nested_shell_radial_ladder.py`](verification/test_nested_shell_radial_ladder.py) (identical physical configuration; certified `evaluate_axisym_ec`; mmin_map resolution tiers; staged RES_CONF confirmation).
+
+**Disclosures and grade impacts:**
+
+| Item | Impact | Detail |
+|---|---|---|
+| Session-26 recorded ladder (monotone degradation, flip in (0.10, 0.20)) | **SUPERSEDED — verdict reversed** | Certified radial: min(NEC) rises from +2.8764e38 (f=0) to +2.3299e39 (f=0.10) — an **8.1× improvement** — before declining; certified sign flip $f^* \in [0.6234, 0.6312]$ (RES_CONF, df ≤ 0.01; RES_FULL↔RES_CONF plateau agreement ≤1%). The recorded numbers came from the near-equatorial thin-slab Cartesian convention (1, 300, 300, 5); the certified evaluator minimises over the full (r, θ) mesh. GATE 1: nested builder at f=0 ≡ single-shell profile builder to 0.0 relative. |
+| "Fuchs single-shell locally optimal under mass redistribution" (Phase 3.3 composite verdict, was A within slice) | **Refuted within slice; composite verdict revised** | The nesting leg of the composite is reversed; the corrected statement (improvement plateau + $f^* \approx 0.63$) is **A (within slice: two-shell constant-density, fixed radii (5,8)/(10,20), outer-wall warp band, v = 0.02c, fixed $M_{tot}$ = 4.49e27)**. Session-26's physical reading inverted the enclosed-mass argument (inward mass-splits *increase* $M(r)$ throughout the band at fixed $M_{tot}$). |
+| Session-27 oblate +3.09% (W5's other half) | **Still unpinned** | Same thin-slab Cartesian provenance; NOT re-tested this session. Until re-run radially, treat the oblate numbers as direction-unknown (the nested reversal demonstrates the band can hide sign *and* structure errors, not just magnitude). |
+| New candidate lead | **Recorded (unranked)** | Nested-variant minimal-mass map: does the ~8× margin improvement translate into a lower certified $M_{\min}$ than 3.10's 2.568e27? ROADMAP "Unranked candidate (Session 39)". |
+
+**Methodological note:** first demonstration in this programme that the demoted pipeline's error band hid a *wrong-shape* record (non-monotone → recorded as monotone) and a *wrong-window* threshold (0.63 → recorded as 0.1–0.2), not merely imprecise magnitudes. "Kill-test the negatives" is not ceremonial: three strengthenings and one reversal in four items.
