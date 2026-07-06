@@ -2487,3 +2487,19 @@ The slack minima at the certified anchors are **not on the Z axis and not interi
 1. Rule-built pentagon (per Lentz §3): rhomboids with edges between the characteristic slope (±1/v_h) and z-constant planes; per-chord charge profiles solved to give a level plateau and satisfy the same-sign rule exactly; validate Eulerian positivity emerges (implementation check against his design), then run the full-WEC/DEC scan (the actual kill-test) + the S42 far-field/wake gate (our march already covers z to +6, where the a=1 member shows a non-decaying wake, N_z/N_z(0,0) ≈ +0.2–0.6 at z = 3–5 — to be re-examined on the rule-built member).
 2. ℓ¹-kink surface-layer analysis (distributional stress on coordinate planes — grid-offset comparison).
 3. Docs + closure per the outcome.
+
+## Session 44 — 2026-07-06 — Block 3(b): the Π-exponent axis (2E.4's first axis) closed NEGATIVE
+
+**Intent (Session-35 audit queue Block 3, second item):** the FH radial-power exponent Π = 1/4 — long flagged as the knob behind the §9 "all wall, no interior" pathology (its non-smooth point) — was never varied anywhere in the Phase-2D arc. Sweep it.
+
+**Design.** Π ∈ {0.125, 0.2, 0.25, 0.3, 0.375, 0.5, 0.75, 1.0} × three certified anchor structures (§18's A1, B1, S12), Npts = 65, **dual-box protocol** per the Session-42 rule: L = 12 (box ECs, passenger zone via the 2D.11 diagnostic, central |N|) + L = 45 (far-field gate). Π = 0.25 rows regress exactly against the certified values (A1: wec +0.037405 / dec +0.018705 / L=45 −0.848).
+
+**Results (24 cells, all three anchors concur):**
+
+1. **The passenger-zone pathology is Π-independent.** Radius = h and volume = h³ (single voxel) at every Π ∈ [0.125, 1]; central |N| stays 13–22 throughout. The Π = 1/4 non-smooth point is **not** the driver of "all wall, no interior" — that hypothesis, recorded since Session 14, is closed.
+2. **Box strict-pass survives only on a narrow shelf Π ≲ 0.3.** DEC fails first (Π = 0.3: −0.19); both slacks collapse for Π ≥ 0.375, reaching −52 at Π = 1. Below 1/4 the box margins mildly *improve* (wec +0.0396 at Π = 0.125 vs +0.0374) — a box-scoped observation only, because:
+3. **The far-field gate is negative at every Π** (−0.43 … −48 at L = 45, both asymmetry amplitudes). Structural reason, verified against the asymptotics: the far-field R-linear growth of φ comes from the (m+n)·R·erf₀ term, which carries no Π — so the §18 global-EC failure extends across the entire Π axis. **No exponent choice rescues the family.**
+
+**Disposition:** the anisotropic-Π exponent axis of 2E.4 is **closed NEGATIVE** (slice: adopted m,n concretization; three anchor structures; Π ∈ [0.125, 1]; Npts = 65 dual-box). 2E.4's remaining sub-axes (non-trivial topology; joint vortical+Π with independently varied A-structure exponents) stay open with their recorded criteria. Record: FELL_HEISENBERG_SWEEP_NOTES §19; ROADMAP 2E.4 flipped to [~] with the axis marked closed; audit-queue Block-3 item struck.
+
+**Note on efficiency:** the whole closure cost 24 FD evaluations (~50 s) because the dual-box far-field gate (S42) and the certified anchors (S38) already existed — the audit programme's tooling is compounding.

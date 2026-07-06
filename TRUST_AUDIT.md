@@ -548,3 +548,12 @@ Two independent symbolic G derivations + exact-analytic vs quintic-spline deriva
 | Session-38 kill-test conclusions (2D.11) | **Differential content unaffected** | Same-box comparisons (augmented vs baseline at L=12); its "genuinely strict-pass anchors" language inherits the box scope. Vorticity's universal degradation and the passenger-zone results stand as stated within slice. |
 
 **Methodological rules recorded:** (i) inspect symmetries before declaring symbolic intractability; (ii) fixed-box pointwise-EC evaluation of a non-decaying ansatz requires an explicit far-field gate — "pass" within a window is not "pass." (Seventh and eighth entries in the searcher-honesty family.)
+
+---
+
+## Session 44 addendum — 2E.4 Π-exponent axis closed NEGATIVE (A within slice)
+
+| Item | Impact | Detail |
+|---|---|---|
+| "Π = 1/4 non-smoothness drives the passenger-zone pathology" (standing hypothesis since Session 14) | **Refuted** | Passenger zone = single voxel at every Π ∈ [0.125, 1] across three certified anchors; central \|N\| 13–22 throughout. |
+| 2E.4 first axis (exponent variation) | **Closed NEGATIVE; A within slice** | Dual-box protocol (L=12 + L=45 far-field gate), Npts=65, Π=0.25 baselines regress exactly. Box strict-pass only on Π ≲ 0.3; far-field violation at every Π (the R-linear φ growth carries no Π — same mechanism as the §18/S42 closure). Slice: adopted m,n concretization, anchors A1/B1/S12, Π ∈ [0.125, 1]. Remaining 2E.4 sub-axes (topology; joint vortical+Π) open. |
