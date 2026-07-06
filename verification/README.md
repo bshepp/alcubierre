@@ -40,6 +40,11 @@ Contents:
   agreement) and the far-field certificate that the FH strict-pass record
   was L=12-box-scoped (equatorial WEC+DEC violation at finite R* for all
   tested a > 0; FD cross-check at L=45).
+  `test_lentz_full_wec.py`: the Session-45 battery behind Task 3.7 --
+  Lentz 2020 closed NEGATIVE at class level (inline 1+1 PDE residual,
+  plane-evaluator == Eq.-17 det-Hess identity, unidirectional-front
+  certificates: rho_E = 0 marginal while full WEC/DEC strictly violated
+  on 100% of the front core, exact quadratic amplitude scaling).
 - **Adversarial kill-test batteries** — `test_profile_kill.py`,
   `test_radial_opt_xcheck.py`, `test_radial_opt_convergence.py`,
   `test_prongA_forensic.py`: resolution-convergence, cross-representation

@@ -160,16 +160,16 @@ Bobrick-Martire's specific objection (their §1 and §5.2 last paragraph) is tha
 
 ---
 
-## Open Phase-2A.11 follow-up (~0.5 session)
+## ~~Open~~ Phase-2A.11 follow-up — EXECUTED Sessions 43 + 45 (2026-07-06): CLOSED NEGATIVE AT CLASS LEVEL
 
-Bit-exact full-WEC scan of Lentz's pentagonal $\phi$:
+The scan was executed (module [`hf_jobs/analysis/lentz_soliton.py`](hf_jobs/analysis/lentz_soliton.py); battery [`verification/test_lentz_full_wec.py`](verification/test_lentz_full_wec.py), 5/5 gates) with an outcome **stronger than the prediction**:
 
-1. Parameterize the 5-rhomboid source $\rho(x,y,z)$ from Lentz Fig. 1 (estimate the rhomboid corners from the paper's figure axes).
-2. Solve Eq. 18 (retarded-Green's-function integral) numerically for $\phi(x,y,z)$ on a 64³ grid covering the soliton.
-3. Compute $N_i = \partial_i \phi$ and the implied Einstein-tensor components; extract principal pressures of the Type-I stress-energy via the same Lorentz-invariant eigendecomposition as in Slice 5.
-4. Report fraction of cells with $\rho + p_i < 0$ for each $i$. Predicted to be in the 1–5% range based on the Slice 5 / Fell-Heisenberg 2021 analog.
+1. **Reconstruction**: the Fig.-1 source was digitised from the paper (vector-colormap inversion; $v_h = 1$ read off Fig. 2's 45° compartment edges — never stated in the text). Key correction en route: the published construction is the ℓ¹ ansatz $\phi(z, |x|+|y|)$ under **1+1** propagation (Eq. 18 is the 1+1 retarded kernel), *not* the isotropic 2D-transverse solve. Under the correct propagation the reconstruction reproduces Fig. 2's signatures (N range $[-1.94, +1.04]$ vs the paper's $[-1.8, +1]$; central plateau level to 4%; **decaying** wake).
+2. **The paper's Eulerian-positivity is not reproducible from the paper**: the digitised member has ~37% $E < 0$, not recoverable by any per-station rescaling (343-member scan) — the per-chord fine structure the positivity depends on is not in the figure. This converts Bobrick–Martire's "without providing means to reproduce the study" from a process complaint into a structural fact.
+3. **Class-level theorem (numerically certified, analytically transparent)**: on the $y=0$ plane $16\pi E = 4\det\mathrm{Hess}_{(z,s)}\phi$, and in the open quadrants the field is plane-symmetric so the stress block-diagonalises with closed-form principal pressures. A locally unidirectional front $\phi = F(z \mp s/v_h)$ has $\det\mathrm{Hess} \equiv 0$ ($E = 0$, marginal) while the $(u,z)$ stress block carries a traceless $\pm\lambda$ pressure pair, $\lambda \propto (F'')^2 \ne 0$: **the full WEC and DEC are strictly violated on 100% of the front, at every amplitude** (exact quadratic scaling). Every *compact* member of the class has a purely unidirectional **outermost** front (nothing outside it to superpose) — so **every nontrivial compact ℓ¹ Lentz-class soliton violates the full WEC and DEC on its own wavefronts, and no source fine-tuning can remove them.** Eulerian positivity — the design target — is achieved exactly by making $E$ marginal on the fronts, which is precisely where the pressures bite; the same-sign rule optimises the wrong functional. (His own Fig. 3 shows the $E \approx 0$ wavefront skirts.)
+4. Empirical complement: within the digitised member's *Eulerian-positive* set, **46% of cells violate the full WEC** — the predicted "1–5% violation cells" confirmed in kind and understated by an order of magnitude.
 
-If the prediction holds, Lentz 2020 is closed as "Eulerian-positive but full-WEC-failing on compact regions, in the same way as Fell-Heisenberg 2021." If the prediction fails (Lentz has 0% full-WEC failure), it would be the first genuine counterexample to our static no-go and would warrant an in-depth Phase-2 reopening.
+**Disposition**: Lentz 2020 is closed as *Eulerian-positive-by-marginality, full-WEC-failing structurally on its wavefronts* — a sharper death than the FH analog (where the violations at least required locating). Slice scope: the published ℓ¹ ansatz class (any $v_h$, any source); non-ℓ¹ hyperbolic variants not asserted. The ℓ¹ kink sheets (stress layers on the $x=0$/$y=0$ planes, since $N$ is discontinuous across them) are an additional unaddressed pathology of the published class.
 
 
 ---

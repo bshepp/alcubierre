@@ -2503,3 +2503,31 @@ The slack minima at the certified anchors are **not on the Z axis and not interi
 **Disposition:** the anisotropic-Π exponent axis of 2E.4 is **closed NEGATIVE** (slice: adopted m,n concretization; three anchor structures; Π ∈ [0.125, 1]; Npts = 65 dual-box). 2E.4's remaining sub-axes (non-trivial topology; joint vortical+Π with independently varied A-structure exponents) stay open with their recorded criteria. Record: FELL_HEISENBERG_SWEEP_NOTES §19; ROADMAP 2E.4 flipped to [~] with the axis marked closed; audit-queue Block-3 item struck.
 
 **Note on efficiency:** the whole closure cost 24 FD evaluations (~50 s) because the dual-box far-field gate (S42) and the certified anchors (S38) already existed — the audit programme's tooling is compounding.
+
+## Session 45 — 2026-07-06 — Block 3(a) completed: Lentz 2020 closed NEGATIVE at class level
+
+**Intent:** finish the Session-43 kill-test (Task 3.7 / audit-queue Block-3 first item). Session 43 ended at the reconstruction-fidelity barrier with a rule-built pentagon planned; Session 45 dissolved the barrier from the other side — the verdict is provable for the *entire class*, making the rule-built member moot.
+
+### Correction of Session 43's propagation (self-caught)
+
+Lentz's Eq. 18 Green's function is the **1+1 retarded kernel** — the construction is the ℓ¹ ansatz φ(z, s = |x|+|y|) solving a 1+1 wave equation along each diamond ray, *not* the isotropic 2D-transverse propagation Session 43's 3D march implemented. (The paper's own Fig.-2 45° compartment edges encode this; v_h = 1.) Consequences of the fix:
+
+- The S43 "non-decaying wake" was an artifact of the wrong propagator — **withdrawn**. Under the correct 1+1 march the wake decays.
+- The corrected reconstruction is Fig.-2-faithful: N range [−1.94, +1.04] vs the paper's [−1.8, +1]; central plateau level to 4%; compartment geometry reproduced.
+- Both propagators satisfy "a" wave equation to ~1e-13 inline residual — the residual gate cannot distinguish them. Methodological rule: **verify which equation the paper's kernel actually is before building the solver**; a machine-exact solve of the wrong PDE passes every internal gate.
+
+### The quadrant reduction (new, tracked in [`hf_jobs/analysis/lentz_soliton.py`](hf_jobs/analysis/lentz_soliton.py) `plane_wec_dec`)
+
+In the open quadrants the ℓ¹ field is plane-symmetric (K_uu = −2∂²ₛφ, K_zz = −∂²_zφ, K_uz = −√2∂_z∂_sφ, K_ww = 0), so the spatial stress **block-diagonalises** and the full principal pressures are closed form from the 2D solution; the Eulerian density reduces to 16πE = 4·det Hess₍z,s₎φ — exactly Lentz's Eq. 17, verified to 9e-16. Cross-validation against the 3D ADM pipeline on the same field: median |Δρ_E|/scale = 4e-5, verdict fractions agree.
+
+### Findings
+
+1. **Empirical (digitised Fig.-1 member, correct propagation):** Eulerian positivity does **not** survive digitisation (~37% ρ_E < 0; no per-station rescaling of 343 tested recovers it — the per-chord fine structure is not in the figure). This makes Bobrick–Martire's "without providing means to reproduce the study" structural, not procedural. Within the member's Eulerian-**positive** set, **46% of cells violate the full WEC** — Eulerian positivity does not protect the full WEC even where it holds.
+2. **Class-level theorem (the closure):** a locally unidirectional front φ = F(z ∓ s/v_h) has det Hess ≡ 0 — ρ_E ≡ 0, *marginal* — while the (u,z) stress block carries a traceless ±λ pressure pair with λ ∝ (F″)² ≠ 0. So wec_slack = ρ_E + λ_min < 0 and dec_slack < 0 **strictly on 100% of the front, at every amplitude** (slacks scale exactly quadratically; ratio 4.00000000 under amplitude doubling). Every *compact* member of the class has a purely unidirectional **outermost** front (nothing outside it to superpose) ⟹ **every nontrivial compact ℓ¹ Lentz-class soliton violates the full WEC and DEC on its own wavefronts** — no source fine-tuning can remove them. Eulerian positivity, the paper's design target and only checked condition, is achieved precisely by making ρ_E marginal on the fronts — exactly where the pressures bite (his own Fig. 3 shows the ρ_E ≈ 0 wavefront skirts). The Session-43 "rule-built pentagon" step is therefore moot for the verdict.
+3. The LENTZ2020_EVALUATION prediction ("1–5% violation cells, FH-analog") is confirmed in kind and strengthened: not a percentage but a structural property of the class.
+
+### Battery: [`verification/test_lentz_full_wec.py`](verification/test_lentz_full_wec.py) — 5/5 gates PASS
+
+Inline 1+1 residual 1.15e-12; plane evaluator ≡ Eq.-17 det-Hess to 9.07e-16; two unidirectional-front certificates (max|ρ_E| ~1e-13 with wec/dec strictly negative on 100% of the front core; min wec −2.79e-01 and −2.85e+00); exact quadratic amplitude scaling.
+
+**Disposition:** Task 3.7 **closed NEGATIVE at class level** (slice: the published ℓ¹ ansatz class, any v_h, any source; non-ℓ¹ hyperbolic variants not asserted). ROADMAP Q9 answered (same mechanism as FH, sharper form — not a distinct positive-energy route). Audit-queue Block-3 item (a) struck — **Block 3 is now (a) ✓ (b) ✓ (c) pending (G–Z reproduction)**. LENTZ2020_EVALUATION follow-up section marked EXECUTED. Optional residue recorded: ℓ¹ kink sheets (surface stress layers on the x=0/y=0 planes, N discontinuous — unremarked in the literature).

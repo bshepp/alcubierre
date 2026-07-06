@@ -557,3 +557,16 @@ Two independent symbolic G derivations + exact-analytic vs quintic-spline deriva
 |---|---|---|
 | "Π = 1/4 non-smoothness drives the passenger-zone pathology" (standing hypothesis since Session 14) | **Refuted** | Passenger zone = single voxel at every Π ∈ [0.125, 1] across three certified anchors; central \|N\| 13–22 throughout. |
 | 2E.4 first axis (exponent variation) | **Closed NEGATIVE; A within slice** | Dual-box protocol (L=12 + L=45 far-field gate), Npts=65, Π=0.25 baselines regress exactly. Box strict-pass only on Π ≲ 0.3; far-field violation at every Π (the R-linear φ growth carries no Π — same mechanism as the §18/S42 closure). Slice: adopted m,n concretization, anchors A1/B1/S12, Π ∈ [0.125, 1]. Remaining 2E.4 sub-axes (topology; joint vortical+Π) open. |
+
+---
+
+## Session 45 addendum — Lentz 2020 closure upgraded from analogy (C) to class-level certification (A within slice)
+
+**Battery:** [`verification/test_lentz_full_wec.py`](verification/test_lentz_full_wec.py), 5/5 gates.
+
+| Item | Impact | Detail |
+|---|---|---|
+| Lentz 2020 closure basis ("special case of the FH irrotational family" — analogy, effectively C) | **Upgraded to A within slice** | Class-level theorem: every compact ℓ¹ member has a purely unidirectional outermost wavefront on which ρ_E ≡ 0 (marginal) while the (u,z) stress block carries a traceless ±λ pair, λ ∝ (front curvature)² — full WEC and DEC strictly violated at every amplitude (exact quadratic scaling certified). Closed-form quadrant reduction cross-validated against the 3D ADM pipeline (median 4e-5). Slice: published ℓ¹ ansatz class, any v_h, any source. |
+| Lentz 2020's own Eulerian-positivity claim (B — accepted from the paper) | **Re-graded: unverifiable from the published record** | The digitised Fig.-1 source under the correct 1+1 propagation gives ~37% ρ_E < 0; no per-station rescaling (343 tested) recovers positivity. The property lives in per-chord fine structure the figure does not carry. Not asserted false — asserted *not reproducible*, upgrading Bobrick–Martire's process complaint to a structural fact. Moot for our verdict: even exact Eulerian positivity is marginality on the fronts, where the class-level violation lives. |
+| Session-43 "non-decaying wake" observation | **Withdrawn (artifact)** | The S43 3D march solved the isotropic 2D-transverse equation; Eq. 18 is the 1+1 kernel. Correct propagation: wake decays, Fig.-2 signatures reproduced. |
+| Methodological rule (ninth in the searcher-honesty family) | **Recorded** | A machine-exact residual on the *wrong* PDE passes every internal gate — identify which equation the paper's kernel actually is (here: from the figure's characteristic slopes) before trusting a reconstruction. |

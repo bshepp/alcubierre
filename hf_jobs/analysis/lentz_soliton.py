@@ -196,6 +196,91 @@ def phi_on_cube(xs, zs_stored, phi_stack, *, L, Npts, z_center=0.5):
     return np.transpose(phi_cube_zxy, (1, 2, 0)), g
 
 
+def plane_wec_dec(phis, dz, hs, *, amp=1.0):
+    """Full WEC/DEC from the 1+1 (z, s) solution via the quadrant reduction.
+
+    In the open quadrant x, y > 0 the l1 field phi(z, x+y) is
+    plane-symmetric: with u = (x+y)/sqrt(2) (so s = sqrt(2) u) and w the
+    orthogonal transverse direction, N = (N_u, 0, N_z), all fields
+    w-independent. The extrinsic curvature block-diagonalises
+
+        K_uu = -2 d_s^2 phi,  K_zz = -d_z^2 phi,  K_uz = -sqrt(2) d_z d_s phi,
+        K_ww = K_uw = K_zw = 0,
+
+    and the spatial stress S_ij inherits the (u, z) block + S_ww structure,
+    so the principal pressures are closed form (quadratic formula) -- the
+    same symmetry-block trick as the Session-42 FH axisymmetric reduction.
+    The Eulerian density reduces to 16 pi rho_E = 4 det Hess_{(z,s)} phi,
+    which reproduces Lentz Eq. 17 exactly on the y=0 plane (verified
+    symbolically via his PDE).
+
+    Valid off the l1 kink planes (x = 0 or y = 0), where the construction
+    carries genuine surface layers (documented separately).
+
+    Parameters: phis[z, s] on a uniform (dz, hs) grid; amp rescales N.
+    Returns dict of (z, s)-plane fields: rho_E, wec_slack, dec_slack, lams.
+    """
+    phi = amp * phis
+    # derivatives (2nd-order interior)
+    d_z = np.gradient(phi, dz, axis=0)
+    d_s = np.gradient(phi, hs, axis=1)
+    d_zz = np.gradient(d_z, dz, axis=0)
+    d_ss = np.gradient(d_s, hs, axis=1)
+    d_zs = np.gradient(d_z, hs, axis=1)
+
+    N_u = np.sqrt(2.0) * d_s
+    N_z = d_z
+    K_uu = -2.0 * d_ss
+    K_zz = -d_zz
+    K_uz = -np.sqrt(2.0) * d_zs
+    trK = K_uu + K_zz
+
+    rho_E = (trK ** 2 - (K_uu ** 2 + K_zz ** 2 + 2 * K_uz ** 2)) / (16 * np.pi)
+
+    def du(F):   # d/du = sqrt(2) d/ds
+        return np.sqrt(2.0) * np.gradient(F, hs, axis=1)
+
+    def dzf(F):
+        return np.gradient(F, dz, axis=0)
+
+    LN_uu = (N_u * du(K_uu) + N_z * dzf(K_uu)
+             + 2 * K_uu * du(N_u) + 2 * K_uz * du(N_z))
+    LN_zz = (N_u * du(K_zz) + N_z * dzf(K_zz)
+             + 2 * K_zz * dzf(N_z) + 2 * K_uz * dzf(N_u))
+    LN_uz = (N_u * du(K_uz) + N_z * dzf(K_uz)
+             + K_uz * du(N_u) + K_zz * du(N_z)
+             + K_uu * dzf(N_u) + K_uz * dzf(N_z))
+
+    KK_uu = K_uu ** 2 + K_uz ** 2
+    KK_zz = K_zz ** 2 + K_uz ** 2
+    KK_uz = K_uz * (K_uu + K_zz)
+
+    A_uu = -LN_uu + trK * K_uu - 2 * KK_uu
+    A_zz = -LN_zz + trK * K_zz - 2 * KK_zz
+    A_uz = -LN_uz + trK * K_uz - 2 * KK_uz
+    trA = A_uu + A_zz            # A_ww = 0 identically
+
+    S_uu = (A_uu - 0.5 * trA) / (16 * np.pi) + 0.5 * rho_E
+    S_zz = (A_zz - 0.5 * trA) / (16 * np.pi) + 0.5 * rho_E
+    S_uz = A_uz / (16 * np.pi)
+    S_ww = (-0.5 * trA) / (16 * np.pi) + 0.5 * rho_E
+
+    half = 0.5 * (S_uu + S_zz)
+    disc = np.sqrt(0.25 * (S_uu - S_zz) ** 2 + S_uz ** 2)
+    lam_p = half + disc
+    lam_m = half - disc
+    lam_min = np.minimum(S_ww, lam_m)
+    lam_absmax = np.maximum(np.abs(S_ww), np.maximum(np.abs(lam_p), np.abs(lam_m)))
+
+    return {
+        'rho_E': rho_E,
+        'wec_slack': rho_E + lam_min,
+        'dec_slack': rho_E - lam_absmax,
+        'lams': (S_ww, lam_p, lam_m),
+        'N_u': N_u, 'N_z': N_z,
+    }
+
+
 def lentz_ec_scan(phi_cube, h, *, amp=1.0):
     """N = amp * grad(phi); full ADM stress-energy; WEC/DEC slack fields.
 
