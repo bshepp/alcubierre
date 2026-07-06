@@ -12,6 +12,20 @@ beta^{hat r}(r, theta) and beta^{hat theta}(r, theta) differs.
 Implementation: builds the symbolic Einstein tensor + Eulerian-frame transform
 once per family at module import time (slow, ~1 minute total), then lambdifies
 to NumPy. Sweep evaluation is fast (<1s per point).
+
+Session-36 corrections (adjudicated by
+verification/test_shift_families_frame_adjudication.py):
+
+* The frame projection contracted the tetrad matrix TRANSPOSED (rows as legs
+  where the legs are stored in columns), so the recorded pre-fix observable
+  was coordinate -T_tt, not the Eulerian rho_E (max rel deviation 2.0-8.6x
+  at the Session-9 single-point). All artifacts produced before 2026-07-05
+  (sweeps/shift_families_20260416T235319.parquet) carry the defective
+  observable.
+* The irrotational antiderivative used sympy's log(1 +- tanh) form, which
+  overflows once tanh saturates (|r - R0| >~ 19/sigma); pre-fix irrotational
+  fractions were computed on a silently truncated domain. Replaced by the
+  equal-constant log-cosh form with a float64-safe lambdify mapping.
 """
 
 from __future__ import annotations
@@ -104,15 +118,34 @@ def _build_eulerian_T(br_hat_expr, bt_hat_expr):
         [0,                 0, 0,         1/(r * sp.sin(theta))],
     ])
 
+    # T_{hat a hat b} = e_{hat a}^mu e_{hat b}^nu T_{mu nu}. The legs are the
+    # COLUMNS of `tetrad` (column 0 = Eulerian 4-velocity), so the coordinate
+    # indices contract along the row axis.
     T_o = sp.zeros(4, 4)
     for mu in range(4):
         for nu in range(4):
             s = sp.S.Zero
             for a in range(4):
                 for b in range(4):
-                    s += tetrad[mu, a] * tetrad[nu, b] * T[a, b]
+                    s += tetrad[a, mu] * tetrad[b, nu] * T[a, b]
             T_o[mu, nu] = s
     return T_o, (t, r, theta, phi)
+
+
+class _LogCosh(sp.Function):
+    """log(cosh(x)) with a float64-safe lambdify mapping (see below)."""
+    nargs = 1
+
+    def fdiff(self, argindex=1):
+        return sp.tanh(self.args[0])
+
+
+def _np_logcosh(x):
+    ax = np.abs(np.asarray(x, dtype=float))
+    return ax + np.log1p(np.exp(-2.0 * ax)) - np.log(2.0)
+
+
+_LAMBDIFY_MODULES = [{"_LogCosh": _np_logcosh}, "numpy"]
 
 
 def _build_family_lambdas(family_name: str):
@@ -137,7 +170,13 @@ def _build_family_lambdas(family_name: str):
         bt = v * (f_nat + (r / 2) * f_nat_prime) * sp.sin(theta)
         params = (v, R0, sig)
     elif family_name == "irrotational":
-        g_irr = (1 / r) * sp.integrate(f_nat, r)
+        # (1/r) * Integral(f_nat, r) in closed form. Identity
+        # log(1 + tanh(y)) = y - log(cosh(y)) shows this equals sympy's
+        # integrate() result with the SAME integration constant, but
+        # _LogCosh lambdifies stably for all arguments (the log(1+-tanh)
+        # form overflows once tanh saturates, |r - R0| >~ 19/sigma).
+        antider = r - (_LogCosh(sig * (r + R0)) - _LogCosh(sig * (r - R0))) / (2 * sig * sp.tanh(sig * R0))
+        g_irr = antider / r
         br = -v * f_nat * sp.cos(theta)
         bt = v * g_irr * sp.sin(theta)
         params = (v, R0, sig)
@@ -153,12 +192,12 @@ def _build_family_lambdas(family_name: str):
 
     args = (r, theta) + params
     return {
-        "Ttt": sp.lambdify(args, T_o[0, 0], 'numpy'),
-        "Ttr": sp.lambdify(args, T_o[0, 1], 'numpy'),
-        "Ttth": sp.lambdify(args, T_o[0, 2], 'numpy'),
-        "Trr": sp.lambdify(args, T_o[1, 1], 'numpy'),
-        "Tthth": sp.lambdify(args, T_o[2, 2], 'numpy'),
-        "Tphph": sp.lambdify(args, T_o[3, 3], 'numpy'),
+        "Ttt": sp.lambdify(args, T_o[0, 0], _LAMBDIFY_MODULES),
+        "Ttr": sp.lambdify(args, T_o[0, 1], _LAMBDIFY_MODULES),
+        "Ttth": sp.lambdify(args, T_o[0, 2], _LAMBDIFY_MODULES),
+        "Trr": sp.lambdify(args, T_o[1, 1], _LAMBDIFY_MODULES),
+        "Tthth": sp.lambdify(args, T_o[2, 2], _LAMBDIFY_MODULES),
+        "Tphph": sp.lambdify(args, T_o[3, 3], _LAMBDIFY_MODULES),
         "param_names": [p.name for p in params],
     }
 
@@ -268,7 +307,7 @@ def evaluate(point: dict) -> dict:
             "error": f"{type(exc).__name__}: {exc}",
         }
 
-    rho_p = -Ttt
+    rho_p = Ttt          # T_o[0,0] = T(n,n) = Eulerian energy density
     flux = np.maximum(np.abs(Ttr), np.abs(Ttth))
     p_max = np.maximum.reduce([np.abs(Trr), np.abs(Tthth), np.abs(Tphph)])
     dec_slack = rho_p - np.maximum(flux, p_max)

@@ -59,7 +59,7 @@
       <tbody>
         <tr>
           <td>1</td><td>Alternate single-mode shifts (Alcubierre · Natário · Rodal-irrotational · free-form j₁)</td>
-          <td class="num">140 pts</td><td class="num warm">0.94</td><td class="num neg">0 / 140</td>
+          <td class="num">140 + 2496 pts</td><td class="num warm">analytic ≤ 0</td><td class="num neg">0 (identity)</td>
           <td><a href="https://github.com/bshepp/alcubierre/blob/main/shift_families.ipynb" target="_blank" rel="noopener">shift_families</a></td>
         </tr>
         <tr>
@@ -94,23 +94,22 @@
 
   <div class="block">
     <div class="block-eyebrow">Slice 1 — alternate single-mode shifts</div>
-    <div class="block-title">The Path-2A negative result transfers across four shift families</div>
+    <div class="block-title">The Path-2A negative result is an identity across four shift families (Session-36 correction)</div>
     <div class="prose">
-      <p>Single-ADM-pipeline evaluation of $T_{\hat\mu\hat\nu}$ for four shift families at fixed Fuchs-class spherical-shell source. At a single-point benchmark ($v=0.1$, $R_0=5$, $\sigma=4$):</p>
+      <p><strong>Session-36 correction:</strong> the original Session-9 evaluator carried a frame-projection bug (its recorded observable was coordinate −T<sub>tt</sub>, not the Eulerian ρ<sub>E</sub>), so the numeric table originally published here was superseded. The corrected result is stronger — analytic, profile-independent closures for all four families:</p>
     </div>
     <table class="data-table">
-      <thead><tr><th>Family</th><th>WEC fraction</th><th>DEC fraction</th><th>min ρ<sub>p</sub></th><th>min DEC slack</th></tr></thead>
+      <thead><tr><th>Family</th><th>Closure</th><th>Identity</th></tr></thead>
       <tbody>
-        <tr><td>Alcubierre</td><td class="num">0.479</td><td class="num neg">0.003</td><td class="num">−4.9 × 10⁻²</td><td class="num">−3.3 × 10⁻³</td></tr>
-        <tr><td>Natário (zero-expansion)</td><td class="num">0.696</td><td class="num neg">0.020</td><td class="num">−2.5 × 10⁻¹</td><td class="num">−1.0 × 10⁻¹</td></tr>
-        <tr><td>Irrotational (Rodal 2025)</td><td class="num">0.282</td><td class="num neg">0.019</td><td class="num accent">−1.6 × 10⁻³</td><td class="num">−1.4 × 10⁻²</td></tr>
-        <tr><td>Free-form j₁ (A₁=1, k=π/2R₀)</td><td class="num">0.473</td><td class="num neg">0.000</td><td class="num">−4.1 × 10⁻⁶</td><td class="num">−4.2 × 10⁻³</td></tr>
+        <tr><td>Alcubierre &amp; free-form j₁ (any z-shift β = b(r)ẑ, incl. radial multi-mode)</td><td class="num neg">never WEC</td><td class="num">ρ<sub>E</sub> = −b′²sin²θ/32π ≤ 0</td></tr>
+        <tr><td>Natário (zero-expansion, any profile)</td><td class="num neg">never WEC</td><td class="num">∇·β ≡ 0 ⟹ ρ<sub>E</sub> = −K<sub>ij</sub>K<sup>ij</sup>/16π ≤ 0</td></tr>
+        <tr><td>Irrotational (Rodal 2025; any potential)</td><td class="num neg">only trivially</td><td class="num">∫ρ<sub>E</sub> dV = 0 ⟹ WEC-everywhere ⟹ ρ<sub>E</sub> ≡ 0</td></tr>
       </tbody>
     </table>
     <div class="prose">
-      <p>Across a 140-point preview sweep over $(v, R_0, \sigma)$ for the closed-form families and $(v, A_1, k)$ for free-form, <strong>0/140 points achieve WEC ≥ 0.999</strong>. The best-performing point reaches 0.94 in the free-form family — still 6% in violation. The Path-2A no-go therefore narrows from "Alcubierre shift" to <strong>"single-mode axisymmetric shift + spherical fluid-shell source + asymptotically flat vacuum exterior + steady-state metric"</strong>.</p>
-      <p>This narrowing is what drove Phase 2D: the Fell–Heisenberg ansatz violates the "single-mode axisymmetric" assumption, and is the only place in the project where strict-pass solutions exist.</p>
-      <p><strong>Sources:</strong> <a href="https://github.com/bshepp/alcubierre/blob/main/shift_families.ipynb" target="_blank" rel="noopener">shift_families.ipynb</a>, <a href="https://github.com/bshepp/alcubierre/blob/main/SHIFT_FAMILIES_NOTES.md" target="_blank" rel="noopener">SHIFT_FAMILIES_NOTES.md</a>, sweep parquet <a href="https://github.com/bshepp/alcubierre/blob/main/sweeps/shift_families_20260416T235319.parquet" target="_blank" rel="noopener"><code>sweeps/shift_families_20260416T235319.parquet</code></a>.</p>
+      <p>Corrected sweeps concur: <strong>0/140 preview points and 0/2496 full-config points achieve WEC ≥ 0.999</strong> on the true ρ<sub>E</sub>. The Path-2A no-go therefore narrows from "Alcubierre shift" to <strong>"single-mode axisymmetric shift + spherical fluid-shell source + asymptotically flat vacuum exterior + steady-state metric"</strong> — at identity level within the slice.</p>
+      <p>This narrowing is what drove Phase 2D: the Fell–Heisenberg ansatz violates the "single-mode axisymmetric" assumption (it is genuinely three-dimensional multi-mode), and is the only place in the project where strict-pass solutions exist.</p>
+      <p><strong>Sources:</strong> <a href="https://github.com/bshepp/alcubierre/blob/main/shift_families.ipynb" target="_blank" rel="noopener">shift_families.ipynb</a>, <a href="https://github.com/bshepp/alcubierre/blob/main/SHIFT_FAMILIES_NOTES.md" target="_blank" rel="noopener">SHIFT_FAMILIES_NOTES.md</a> (§Session-36 correction), adjudication harness <a href="https://github.com/bshepp/alcubierre/blob/main/verification/test_shift_families_frame_adjudication.py" target="_blank" rel="noopener"><code>verification/test_shift_families_frame_adjudication.py</code></a>, corrected sweep parquets <code>sweeps/shift_families_20260705T*.parquet</code>.</p>
     </div>
   </div>
 
@@ -181,7 +180,7 @@
     <section class="image-gallery gallery-wide">
       <figure>
         <a href="assets/figures/shift_families/family_comparison.png" target="_blank" rel="noopener"><img src="assets/figures/shift_families/family_comparison.png" alt="Shift-family comparison bar chart"></a>
-        <figcaption><strong>Slice 1 — shift families.</strong> WEC / DEC pass fractions and DEC-slack medians for four single-mode shift families. None reach strict-pass; Slice 1 closes negative.<span class="scope">slice: <code>shift_families.ipynb</code> 140-cell sweep</span></figcaption>
+        <figcaption><strong>Slice 1 — shift families.</strong> WEC / DEC pass fractions and DEC-slack medians for four single-mode shift families (Session-36 corrected observable). None reach strict-pass; Slice 1 closes negative — analytically since Session 36.<span class="scope">slice: 140-cell corrected preview; see SHIFT_FAMILIES_NOTES §Session-36 correction</span></figcaption>
       </figure>
       <figure>
         <a href="assets/figures/hybrid_wall/pass_fraction.png" target="_blank" rel="noopener"><img src="assets/figures/hybrid_wall/pass_fraction.png" alt="Hybrid Fuchs+Krasnikov wall pass fractions"></a>

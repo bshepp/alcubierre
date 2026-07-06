@@ -171,7 +171,7 @@ A demonstration that **within the Fell-Heisenberg multi-mode irrotational ansatz
 
 This **falsifies Fell & Heisenberg's §3.3 claim** that "no amount of modification could get rid of these regions" — within their own potential family, a wide neighbourhood of WEC+DEC-respecting solutions exists.
 
-This **strictly subsumes the Slice-1 negative result** ([`SHIFT_FAMILIES_NOTES.md`](SHIFT_FAMILIES_NOTES.md)): the Slice-1 0/140 result was for *single-mode axisymmetric* shifts. The FH potential is multi-mode non-axisymmetric, and the load-bearing assumption flagged in [`NAVIGATOR.md`](NAVIGATOR.md) §"Load-bearing assumptions" is now explicitly broken.
+This **strictly subsumes the Slice-1 negative result** ([`SHIFT_FAMILIES_NOTES.md`](SHIFT_FAMILIES_NOTES.md)): the Slice-1 result (analytic since Session 36; originally the "0/140" sweep, whose numbers were later superseded by the Session-36 frame-projection correction) was for *single-mode axisymmetric* shifts. The FH potential is multi-mode non-axisymmetric, and the load-bearing assumption flagged in [`NAVIGATOR.md`](NAVIGATOR.md) §"Load-bearing assumptions" is now explicitly broken.
 
 ### §4.2 What this is NOT (open questions)
 

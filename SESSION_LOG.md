@@ -2257,3 +2257,56 @@ Four parallel review threads over the whole closure record: (1) closure-basis cl
 ### Wrap point
 
 The audit's bottom line for the Phase-2E decision: every headline closure survives (the Session 32–34 arc is arithmetically and logically sound; Krasnikov/toroidal/slab/4b closures are symbolic or margin-protected), but **before 2E the record supports a short kill-test block** (Slice-1 ridge refinement + first full run; hybrid-wall full; 2D.11 multi-anchor incl. a strict-pass baseline; nested-shell radial ladder; gw_recoil full + Colab; Δ-ladder radial re-run) **and three cheap never-explored closures** (Lentz scan, Π-exponent sweep — which is itself the first axis of 2E.4 — and G–Z). Queue recorded in ROADMAP; owner go/no-go at next checkpoint.
+
+## Session 36 — 2026-07-05 — Block 2(a) kill-test escalates: Slice-1 frame-projection bug found, fixed, and the negative rebuilt as an analytic closure
+
+**Intent (Block 2(a) of the Session-35 audit queue):** refine the free-form $j_1$ "0.94 ridge" and dispatch `shift_families_full.json` for the first time, kill-testing the most-quoted negative in the repo (Slice 1's "0/140").
+
+**What actually happened:** the pre-run diagnostic contradicted an exact identity, and the kill-test escalated into a full adjudication of the Slice-1 evaluator.
+
+### The bug (frame-projection transpose, Session 9 → Session 36)
+
+`shift_families.ipynb` Cell 3 and `hf_jobs/sweeps/shift_families.py` store the Eulerian tetrad legs as the **columns** of the `tetrad` matrix (the notebook's own comment says "column j = e_{hat j}^mu"; column 0 is the correct Eulerian 4-velocity $(1, -\beta^r, -\beta^\theta, 0)$), but the projection loop contracts **rows**: it computes $M T M^T$ where the frame projection is $M^T T M$. Row 0 of the matrix is $(1,0,0,0)$, so the recorded scalar collapses to coordinate $T_{tt}$, and the sweep's `rho_p = -Ttt` is **not** the Eulerian energy density — at leading order in the shift amplitude it is $-\rho_E$ (sign-inverted), with O(1) $\beta\cdot$flux / $\beta^2\cdot$stress contamination. Measured deviation from true $\rho_E$ at the recorded single-point parameters: 3.27× (alcubierre), 2.57× (natario), 2.00× (irrotational), 8.57× (freeform).
+
+Subsidiary defect: the irrotational antiderivative used sympy's `log(1±tanh)` form, which overflows once tanh saturates ($|r-R_0| \gtrsim 19/\sigma$); the recorded irrotational fractions were silently computed on a truncated domain (the harness's finite-mask absorbed the infs).
+
+**How it surfaced:** a scaling diagnostic ahead of the ridge refinement showed `wec_fraction` → 1.0000 at $k \le 0.05$ with min "ρ" strictly positive over the whole grid — impossible, because the freeform family is exactly a z-directed shift $\beta = b(r)\hat z$, for which the Hamiltonian constraint gives $\rho_E = -b'(r)^2\sin^2\theta/32\pi \le 0$ identically. The recorded natario `wec_fraction = 0.696` had likewise always contradicted the repo's own Session-15c symbolic proof that zero-expansion shifts have $8\pi\rho_E = -\tfrac12 K_{ij}K^{ij} \le 0$ pointwise (fell_heisenberg.ipynb Phase 3b) — the Slice-1 table was the outlier and nobody cross-checked.
+
+### Adjudication (new tracked harness)
+
+`verification/test_shift_families_frame_adjudication.py` — **20/20 gates PASS** (certification mode, post-fix; the pre-fix indictment run is recorded in the harness docstring):
+
+- GATE 1: matrix **columns** are an orthonormal tetrad (symbolic, generic shift); rows are not ($g(\text{row}_0,\text{row}_0) = -1 + \beta^2$).
+- GATE 2: Route A (3+1 Hamiltonian/momentum constraints — exact for unit lapse + flat slices + stationarity) ≡ Route B (independent 4D Einstein tensor + column projection) to ≤ 2.6e-12 rel on all four families; irrotational momentum density vanishes identically (flat-space Ricci identity), both routes < 1e-14 of the ρ scale.
+- GATE 3 (permanent regression): the **fixed** module's `rho_p` ≡ ρ_E to ≤ 2.6e-10 rel, finite everywhere.
+- GATE 4 (the analytic closures, profile-independent — see below).
+- GATE 5: Route A matches `warp_factory_py`'s anchored Eulerian `T_eul[0,0]` (Cartesian FD, smooth Alcubierre, SI→geometric via G/c⁴) to **median 1.6e-07 rel**, corr 0.996 — closing the chain to the WarpFactory MATLAB anchor.
+
+### The corrected result — Slice-1's negative is now analytic (stronger than the original claim)
+
+All four families are closed by identity, for **every** parameter value and radial profile:
+
+1. **z-shift identity** (alcubierre + freeform_j1 + any radial multi-mode superposition $\sum_n a_n j_1(k_n r)$, any $b(r)$): $\rho_E = -b'(r)^2 \sin^2\theta / 32\pi \le 0$, with equality only where $b'\sin\theta = 0$. Symbolic residual: literal 0.
+2. **Natário zero-expansion** (any profile $F(r)$): $\nabla\cdot\beta \equiv 0$ (proven for generic $F$) ⟹ $\rho_E = -K_{ij}K^{ij}/16\pi \le 0$.
+3. **Irrotational** (any potential with uniform-flow/decaying asymptotics): $16\pi\rho_E = (\Delta\phi)^2 - |\mathrm{Hess}\,\phi|^2$ integrates to **zero** ($K$ is invariant under adding a uniform shift ⟹ WLOG decaying representative ⟹ boundary terms vanish; the dipole part $vC\cos\theta$, $C = R_0/\tanh(\sigma R_0)$, gives a $1/r^4$ tail with $\int_{r>R} \rho\, dV = -v^2C^2/6R$). Verified numerically: interior $+0.16667$ + analytic tail $-0.16667$ = 0 to ratio 1.1e-08. ⟹ $\rho_E \ge 0$ everywhere forces $\rho_E \equiv 0$: **no nontrivial WEC-everywhere member exists.**
+
+Corrected sweeps (supporting evidence, corrected observable, artifacts 2026-07-05):
+
+- Preview (140 pts, same grid as Session 9): **0/140** at wec ≥ 0.999, **0/140** at DEC. alcubierre/natario/freeform max $\rho_E$ over all rows ≈ 1e-13 (float noise; empirically $\rho_E \le 0$ everywhere). The recorded "0.94 free-form ridge" is **gone** (corrected freeform max fraction 0.0027) — it was an artifact of the defective observable (and of the fixed-domain fraction measure: the k→0 limit just pushes the bubble wall off-grid).
+- First-ever full-config run (2496 pts; $R_0 \in [1,50]$ unfrozen, $v$ to 0.5, $\sigma$ to 16, freeform box widened; six local chunks): **0/2496** at wec ≥ 0.999, **0/2496** at DEC; z-shift/Natário families' max $\rho_E$ ~1e-13 (noise) across the whole box.
+- Irrotational is the only family with indefinite $\rho_E$: full-run best wec_fraction 0.7408 at the ($R_0{=}1, \sigma{=}0.5$) box corner, exactly $v$-degenerate (quadratic amplitude scaling); best DEC fraction 0.1217 at the same corner. The zero-integral identity caps it below 1 on any domain covering the forced-negative region; the corner trend is partly the domain-dependence of the fraction measure ($r \in [0.1, 3R_0]$).
+
+The Session-9 recorded numbers (single-point table, per-family fractions, "best 0.94", and the $Q_{zz}$ quadrupole proxy table, which selected "WEC-respecting regions" of the defective observable) are superseded as wrong-observable; SHIFT_FAMILIES_NOTES.md carries the correction section, and the ROADMAP 2C.1 / decision-point / downstream quotes are corrected in place. The Session-9 *verdict* (no WEC-satisfying member in these families) **stands and strengthens** — from a 140-point grid negative to a four-identity analytic closure. Lentz/Fell-Heisenberg remain outside the slice (genuinely 3D multi-mode $\beta$; the z-shift identity newly closes the *radial-profile multi-mode axisymmetric l=1* corner too).
+
+### Fixes landed
+
+- `hf_jobs/sweeps/shift_families.py`: projection contraction corrected (columns as legs); `rho_p = +T_o[0,0]` (= $T(n,n) = \rho_E$); irrotational antiderivative replaced by the equal-constant log-cosh form with a float64-safe `_LogCosh` lambdify mapping (identity $\log(1+\tanh y) = y - \log\cosh y$ ⟹ same integration constant as the recorded family). Docstring carries the correction record.
+- `shift_families.ipynb` **not re-executed** (Cell 3 carries the same bug): the notebook is the historical record; its committed outputs are marked superseded in SHIFT_FAMILIES_NOTES.md with pointers to the adjudication harness. (Owner may prefer an appended correction cell — flagged at checkpoint.)
+- `figures/plot_figures.py` shift-families-bars repointed at the corrected artifact; figure regenerated.
+- Old artifact `sweeps/shift_families_20260416T235319.parquet` retained (negation-tracked historical record of the defective observable; the fresh pre-fix rerun reproduced it bit-exactly, so the defect is deterministic, not environment drift).
+
+### Audit-queue disposition
+
+Block 2(a) **CLOSED** — outcome: the kill-test *did* find a false-negative-shaped defect, but in the opposite direction than feared: the recorded evidence was broken, while the conclusion was true and is now analytic. The queued "ridge refinement" is superseded (the ridge never existed). Blocks 2(b)–(f) unchanged, pending.
+
+**Methodological note (fifth instance of the searcher-honesty family):** the Session-35 lesson was that a verification harness is code and can carry bugs; Session 36's is that a *result-producing pipeline* can carry a bug that manufactures plausible-looking *positive structure* (the 0.94 ridge) inside a correct-verdict negative — and that the repo's own analytic identities (Session 15c) had already falsified the table for 14 sessions without anyone running the cross-check. Corollary: when a sweep table and a symbolic identity coexist, the identity is the cheaper and stronger audit — check tables against identities at closure time.

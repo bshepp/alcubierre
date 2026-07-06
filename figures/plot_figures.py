@@ -450,7 +450,10 @@ def hybrid_wall_heatmap() -> None:
 
 
 def shift_families_bars() -> None:
-    parquet = SWEEPS / "shift_families_20260416T235319.parquet"
+    # Session 36: read the corrected-observable preview (the 20260416 artifact
+    # was produced by the pre-fix frame projection -- see SHIFT_FAMILIES_NOTES
+    # Session-36 correction)
+    parquet = SWEEPS / "shift_families_20260705T184353.parquet"
     df = pd.read_parquet(parquet)
     print(f"shift_families: {len(df)} rows, families = {sorted(df['family'].unique())}")
 
@@ -478,8 +481,8 @@ def shift_families_bars() -> None:
     fig.suptitle(
         "Shift-vector families — median pass fractions and DEC slack min "
         "(error bars: 25-75 percentile)\n"
-        "Slice: 140 sweep cells across (v, R₀, σ); see "
-        "SHIFT_FAMILIES_NOTES.md for parametric scope",
+        "Slice: 140 sweep cells across (v, R₀, σ), Session-36 corrected "
+        "observable; see SHIFT_FAMILIES_NOTES.md §Session-36 correction",
         fontsize=11,
     )
     _save(fig, FIG / "shift_families" / "family_comparison.png")

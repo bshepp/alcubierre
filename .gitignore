@@ -24,6 +24,10 @@ sweeps/*.config.json
 # the certified minimal-mass map behind the Session-32 kappa surface.
 # Negation-tracked per the Session-30 data-artifact policy.
 !sweeps/mmin_map_full_concat.parquet
+# Session-36 corrected Slice-1 record (frame-projection fix): the 2496-row
+# full-config concat and the 140-row corrected preview (the figure source).
+!sweeps/shift_families_full_concat.parquet
+!sweeps/shift_families_20260705T184353.parquet
 
 # Local working copies of sweep results downloaded from HF Dataset
 # bshepp/alcubierre-sweeps. Re-fetchable via `hf download`.

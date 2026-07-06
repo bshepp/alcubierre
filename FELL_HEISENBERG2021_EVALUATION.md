@@ -165,11 +165,13 @@ Implemented in [`fell_heisenberg.ipynb`](fell_heisenberg.ipynb). Pipeline summar
 
 | Test | Slice 1 (single-mode axisym., full WEC) | Fell-Heisenberg smooth (multi-mode, our reproduction) |
 |---|---|---|
-| Eulerian $\rho_E > 0$ anywhere on interior? | No (0/140 sweep points) | **Yes (99.8% of interior cells)** |
-| Full WEC ($\rho_E + p_{\min} \ge 0$) anywhere? | No (0/140 sweep points) | **Yes (98.7% of interior cells); 1.3% violate** |
-| Full DEC ($\rho_E \ge |p|_{\max}$) anywhere? | No (0/480 sweep points) | **Yes (94.7% of interior cells); 5.3% violate** |
+| Eulerian $\rho_E > 0$ anywhere on interior? | z-shift & Natário families: never (identity, Session 36); irrotational: locally yes (≤ ~0.6 of cells) but never everywhere ($\int\rho_E dV = 0$) | **Yes (99.8% of interior cells)** |
+| Full WEC ($\rho_E + p_{\min} \ge 0$) anywhere? | No — analytic closure of all four families (Session 36; corrected sweeps 0/140 + 0/2496 concur) | **Yes (98.7% of interior cells); 1.3% violate** |
+| Full DEC ($\rho_E \ge |p|_{\max}$) anywhere? | No (DEC ⊆ WEC; same closure) | **Yes (94.7% of interior cells); 5.3% violate** |
 | Superluminal central shift? | N/A (DEC-focused) | **Yes (peak $|\vec{N}| = 1.92$ in central cube)** |
-| Total positive energy on grid | $\rho_E < 0$ everywhere; integral undefined | **$E_{\rm net} \approx +1.1 \times 10^{-3} M_\odot c^2$** (1 m unit; order-of-magnitude match to FH) |
+| Total positive energy on grid | $\rho_E \le 0$ everywhere (z-shift/Natário identities); integral undefined | **$E_{\rm net} \approx +1.1 \times 10^{-3} M_\odot c^2$** (1 m unit; order-of-magnitude match to FH) |
+
+*(Session-36 note: the Slice-1 column originally quoted the Session-9 sweep's "0/140" / "0/480" — numbers measured with a defective frame projection, superseded by the analytic closure; see [`SHIFT_FAMILIES_NOTES.md`](SHIFT_FAMILIES_NOTES.md). This table's qualitative contrast — single-mode axisymmetric fails everywhere, genuinely 3D multi-mode achieves near-total pass fractions — is unchanged and now rests on identities on the Slice-1 side.)*
 
 ### What this verifies and what it qualifies
 

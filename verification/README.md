@@ -16,7 +16,12 @@ Contents:
 - **Ground-truth adjudicators** — `test_prongB_groundtruth.py`: a
   certified-exact (GR-validated) closed-form Einstein-tensor reference
   used to adjudicate which numerical pipeline is trustworthy for a given
-  regime.
+  regime. `test_shift_families_frame_adjudication.py`: 20-gate battery
+  behind the Session-36 Slice-1 frame-projection correction — symbolic
+  tetrad-orthonormality certificate, 3+1-constraint vs 4D-Einstein route
+  agreement, the profile-independent identities that close all four
+  shift families analytically, permanent regression of the fixed sweep
+  module, and a warp_factory_py anchor cross-check.
 - **Adversarial kill-test batteries** — `test_profile_kill.py`,
   `test_radial_opt_xcheck.py`, `test_radial_opt_convergence.py`,
   `test_prongA_forensic.py`: resolution-convergence, cross-representation

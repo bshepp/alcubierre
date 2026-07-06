@@ -430,3 +430,22 @@ Two independent symbolic G derivations + exact-analytic vs quintic-spline deriva
 | Stale doc numbers | **Corrected in place** | Four stale [0.05, 0.75] brackets → [0.05, 0.875] w/ supersession notes; README Path-2B/Phase-2C statuses; LANDSCAPE_SYNTHESIS §6/§8 stale + self-contradictory items; phantom task 2D.16 retroactively defined (ROADMAP Phase 2D). |
 
 **Methodological note (fourth instance of the searcher-honesty family):** a verification *harness* is itself code and can carry a systematic bug (R1) for five sessions while every verdict it reports remains directionally correct — because the battery's verdicts were sign/trend-based with large margins. The discipline that caught it was auditing the *evidence* (masks, grids, provenance) rather than the *conclusions*. Corollary recorded in the ROADMAP audit queue: negative results whose grids froze axes or whose full configs never ran (W1/W2) are now flagged in place in the claims record, not just in session logs.
+
+---
+
+## Session 36 addendum — Slice-1 (2C.1) frame-projection bug: grade corrections
+
+**Setup.** Block 2(a) of the Session-35 audit queue (kill-test of the Slice-1 "0/140") escalated: the pre-run diagnostic violated an exact identity, and adjudication found the Slice-1 evaluator itself defective. Full chronology in SESSION_LOG Session 36; adjudication harness `verification/test_shift_families_frame_adjudication.py` (20/20 gates, certification mode).
+
+**Disclosures and grade impacts:**
+
+| Item | Impact | Detail |
+|---|---|---|
+| Slice-1 evaluator frame projection (`shift_families.ipynb` Cell 3 + sweep module, Sessions 9→36) | **All recorded Slice-1 numbers superseded as wrong-observable; verdict unchanged and upgraded** | Tetrad legs stored as matrix columns but contracted as rows (M T Mᵀ for Mᵀ T M); recorded scalar = coordinate −T_tt, not ρ_E (deviation 2.0–8.6× at the recorded single-point). Affects: single-point table, 140-pt fractions, "best 0.94 free-form ridge" (does not exist on the corrected observable: max 0.0027), Q_zz quadrupole-proxy table (regions selected by the defective observable). |
+| Slice-1 corrected result | **Upgraded to A (analytic, within slice)** | Four profile-independent identities close all four families for every parameter value: (i) z-shift ρ_E = −b′²sin²θ/32π ≤ 0 (alcubierre, freeform, any radial multi-mode); (ii) Natário ∇·β ≡ 0 ⟹ ρ_E ≤ 0 (concordant with the Session-15c FH Phase-3b proof, which the recorded table had contradicted since Session 9); (iii) irrotational ∫ρ_E dV = 0 (with analytic 1/r⁴ dipole tail −v²C²/6R, verified to 1.1e-08) ⟹ WEC-everywhere forces ρ_E ≡ 0. Corrected sweeps: 0/140 preview, 0/2496 full config (first dispatch), corrected observable certified against warp_factory_py anchor chain (median 1.6e-07). |
+| Irrotational domain truncation | **Provenance corrected** | sympy `log(1±tanh)` antiderivative overflowed for \|r−R₀\| ≳ 19/σ; recorded irrotational fractions were computed on the silently truncated finite subset. Fixed via equal-constant log-cosh form (`_LogCosh`, float64-safe). |
+| Session-15c / LITERATURE / MATTER_SHELL_PATH "dismissed as special case of Slice 1" chains | **No grade change; consistency restored** | Those dispositions rested on the FH Phase-3b identity (independent pipeline, unaffected). The Slice-1 table was the outlier; corrected numbers now agree with the identity chain. |
+| Krasnikov-class frames (`krasnikov_tube.py`, `hybrid_wall.py`) | **No change** | Audited: their metric has g_tt = −1 and their tetrad rows ARE orthonormal legs consistent with the row-wise contraction (algebra closes: g(u,u)=1, g(∂t,u)=0). The transpose defect is confined to shift_families. 2C.2's kill-test (Block 2(e)) remains a coverage question only. |
+| Fell-Heisenberg pipelines (Sessions 10–17, 33) | **No change** | FD-based on FH's closed-form ρ_E decomposition; no shared frame code (grep + Session-35 review). |
+
+**Methodological note (fifth instance of the searcher-honesty family):** a result pipeline can manufacture plausible *positive structure* (the 0.94 ridge) inside a directionally-correct negative, and an already-proven in-repo identity (Session 15c) falsified the recorded table for 14 sessions unnoticed. When a sweep table and a symbolic identity coexist, run the cross-check at closure time — the identity is the cheaper, stronger audit.
