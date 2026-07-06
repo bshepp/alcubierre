@@ -1,0 +1,21 @@
+{
+  "_comment": "Session-38 kill-test anchor B1 (structurally diverse): row (V=1.5, sigma=6, m0=3, a=0.2236, ell=6, r=7.75) of the Session-11 Npts=65 sweep -- different wall width AND bubble radius from the A-series -- certified wec_slack_min=+0.022501 / dec_slack_min=+0.011256 / dec_pass_fraction=1.0. Vortical radii scaled to this anchor's bubble: r_Ai in {5.1667, 7.75} (interleaved 2/3 vs wall-coincident, mirroring the recorded {6, 9} design at r=9). See _kill_a1.json for the design rationale.",
+  "L": 12.0,
+  "Npts": 65,
+  "Pi": 0.25,
+  "axes": {
+    "V":       {"lo": 1.5,  "hi": 1.5,  "n": 1, "scale": "linear"},
+    "sigma":   {"lo": 6.0,  "hi": 6.0,  "n": 1, "scale": "linear"},
+    "m0":      {"lo": 3.0,  "hi": 3.0,  "n": 1, "scale": "linear"},
+    "a":       {"lo": 0.223606797749979, "hi": 0.223606797749979, "n": 1, "scale": "linear"},
+    "ell":     {"lo": 6.0,  "hi": 6.0,  "n": 1, "scale": "linear"},
+    "r":       {"lo": 7.75, "hi": 7.75, "n": 1, "scale": "linear"},
+    "V_Ax":    {"lo": -0.3, "hi": 0.3,  "n": 5, "scale": "linear"},
+    "V_Ay":    {"lo": -0.3, "hi": 0.3,  "n": 5, "scale": "linear"},
+    "V_Az":    {"lo": -0.3, "hi": 0.3,  "n": 5, "scale": "linear"},
+    "r_Ax":    {"lo": 5.1667, "hi": 7.75, "n": 2, "scale": "linear"},
+    "r_Ay":    {"lo": 5.1667, "hi": 7.75, "n": 2, "scale": "linear"},
+    "r_Az":    {"lo": 5.1667, "hi": 7.75, "n": 2, "scale": "linear"},
+    "sigma_A": {"lo": 5.0,  "hi": 10.0, "n": 2, "scale": "linear"}
+  }
+}

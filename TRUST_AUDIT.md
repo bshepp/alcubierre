@@ -467,3 +467,20 @@ Two independent symbolic G derivations + exact-analytic vs quintic-spline deriva
 **Grade: C → B** (within slice: single-bubble Fuchs-class shells, quadrupole-order rescaling). Not A: the remnant velocities are accepted from SXS collaboration metadata rather than derived by integrating waveform momentum flux ourselves. Reopening trigger: an NR result or surrogate prediction exceeding 5000 km/s for astrophysically admissible spins, or a shell-specific radiation channel outside the β²C^{3/2} rescaling class.
 
 **Methodological note:** dormant verification code (a wired-but-never-run success branch) can encode a wrong expectation while conferring an appearance of rigor. When closing long-dormant audit items, re-derive the check from the primary data source rather than finally executing the recorded button.
+
+---
+
+## Session 38 addendum — 2D.11 evidence re-based (W3 kill-test): verdict upheld; Session-33 strict-pass gate superseded
+
+**Setup.** Session-35 audit item W3: the 2D.11 Phase-3 closure augmented one anchor whose baseline was DEC-violating at the run's Npts=49 (gate vacuous) with an off-grid V=0.5. Block 2(c) kill-test executed 2026-07-05 (Session 38).
+
+**Disclosures and grade impacts:**
+
+| Item | Impact | Detail |
+|---|---|---|
+| Session-33 anchor baseline | **Diagnosis corrected: resolution artifact, not anchor choice** | The anchor structure (σ=10, m₀=3, a=0.05, ℓ=4, r=9) is certified strict-pass at Npts=65 for every V on the Session-11 grid; the recorded dec_slack −7.74e-2 was an Npts=49 under-resolution effect. V-choice immaterial: slacks scale exactly as V² (strict-pass signs V-invariant; hence the sweep's exactly-234-per-V strict-pass split). |
+| Session-33 "0 strict passes among 2912 augmented points" | **Superseded (baseline-inherited)** | At four certified strict-pass anchors × the same vortical grid at Npts=65 (7280 augmented points), **100% retain strict-pass** at preview amplitudes — including a +8.3e-5-margin anchor under vortical fields 3× the FH amplitude. |
+| 2D.11 verdict (vorticity not the driver of "all wall, no interior") | **UPHELD; evidence upgraded to informative gates** | 0/7280 improve either slack (universal degradation confirmed, ∝ V·V_A, ≤0.26% of margin at $\|V_A\| \le 0.3$); passenger_zone_radius = h for all 7285 rows including baselines. Baseline regression vs certified sweep rows ≤4.2e-5 rel (A3: ~1.3e-7 absolute). Within slice: static smooth-N, FH-form multi-mode $\vec A$ with inherited exponents, $\|V_{A,i}\| \le 0.3$ at Npts=65. |
+| Session-33 absolute numbers (dec_slack −7.74e-2 baseline etc.) | **Flagged as resolution-contaminated** | Differential (same-grid) claims unaffected; absolute Npts=49 slack values at this anchor family should not be quoted as physical. |
+
+**Methodological rule recorded:** a perturbation study's baseline must pass its decision gates *at the study's own resolution*, else those gates are vacuous — the FD sibling of the Session-30 regime-validity lesson, applied to study design.

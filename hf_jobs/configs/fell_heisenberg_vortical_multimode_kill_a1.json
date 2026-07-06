@@ -1,0 +1,21 @@
+{
+  "_comment": "Session-38 kill-test of the 2D.11 Phase-3 closure (Session-35 audit queue item (c)): re-run the Phase-3 multimode preview at a GENUINELY strict-pass FH anchor. Anchor A1 (deep pass, V=1.5): row (V=1.5, sigma=10, m0=3, a=0.2236, ell=6, r=9) of the Session-11 Npts=65 full sweep (sweeps_remote/full-20260420T022727), certified wec_slack_min=+0.037405 / dec_slack_min=+0.018705 / dec_pass_fraction=1.0 AT Npts=65 -- so the strict-pass gate is informative at the augmentation's own resolution (the Session-33 anchor's baseline was DEC-violating at its Npts=49, making that gate vacuous). Vortical axes identical to the recorded Phase-3 preview. Decision gate per anchor: does ANY augmented point (a) improve dec_slack_min, (b) improve wec_slack_min, (c) RETAIN strict pass, or (d) produce passenger_zone_radius > h? Baseline row (all V_Ai=0) must reproduce the certified sweep row.",
+  "L": 12.0,
+  "Npts": 65,
+  "Pi": 0.25,
+  "axes": {
+    "V":       {"lo": 1.5,  "hi": 1.5,  "n": 1, "scale": "linear"},
+    "sigma":   {"lo": 10.0, "hi": 10.0, "n": 1, "scale": "linear"},
+    "m0":      {"lo": 3.0,  "hi": 3.0,  "n": 1, "scale": "linear"},
+    "a":       {"lo": 0.223606797749979, "hi": 0.223606797749979, "n": 1, "scale": "linear"},
+    "ell":     {"lo": 6.0,  "hi": 6.0,  "n": 1, "scale": "linear"},
+    "r":       {"lo": 9.0,  "hi": 9.0,  "n": 1, "scale": "linear"},
+    "V_Ax":    {"lo": -0.3, "hi": 0.3,  "n": 5, "scale": "linear"},
+    "V_Ay":    {"lo": -0.3, "hi": 0.3,  "n": 5, "scale": "linear"},
+    "V_Az":    {"lo": -0.3, "hi": 0.3,  "n": 5, "scale": "linear"},
+    "r_Ax":    {"lo": 6.0,  "hi": 9.0,  "n": 2, "scale": "linear"},
+    "r_Ay":    {"lo": 6.0,  "hi": 9.0,  "n": 2, "scale": "linear"},
+    "r_Az":    {"lo": 6.0,  "hi": 9.0,  "n": 2, "scale": "linear"},
+    "sigma_A": {"lo": 5.0,  "hi": 10.0, "n": 2, "scale": "linear"}
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "_comment": "Session-38 kill-test anchor A3 (thin-margin / CTC-free-tail class, V=0.10): same winning structure (sigma=10, m0=3, a=0.2236, ell=6, r=9), certified at Npts=65 with wec_slack_min=+1.66e-4 / dec_slack_min=+8.3e-5 / dec_pass_fraction=1.0. The recorded absolute vortical amplitudes |V_Ai| <= 0.3 are 1.5-3x the FH amplitude here (relatively non-perturbative); the companion _kill_a3s.json covers the V-scaled (relative ~20%) amplitudes. See _kill_a1.json for the design rationale.",
+  "L": 12.0,
+  "Npts": 65,
+  "Pi": 0.25,
+  "axes": {
+    "V":       {"lo": 0.1,  "hi": 0.1,  "n": 1, "scale": "linear"},
+    "sigma":   {"lo": 10.0, "hi": 10.0, "n": 1, "scale": "linear"},
+    "m0":      {"lo": 3.0,  "hi": 3.0,  "n": 1, "scale": "linear"},
+    "a":       {"lo": 0.223606797749979, "hi": 0.223606797749979, "n": 1, "scale": "linear"},
+    "ell":     {"lo": 6.0,  "hi": 6.0,  "n": 1, "scale": "linear"},
+    "r":       {"lo": 9.0,  "hi": 9.0,  "n": 1, "scale": "linear"},
+    "V_Ax":    {"lo": -0.3, "hi": 0.3,  "n": 5, "scale": "linear"},
+    "V_Ay":    {"lo": -0.3, "hi": 0.3,  "n": 5, "scale": "linear"},
+    "V_Az":    {"lo": -0.3, "hi": 0.3,  "n": 5, "scale": "linear"},
+    "r_Ax":    {"lo": 6.0,  "hi": 9.0,  "n": 2, "scale": "linear"},
+    "r_Ay":    {"lo": 6.0,  "hi": 9.0,  "n": 2, "scale": "linear"},
+    "r_Az":    {"lo": 6.0,  "hi": 9.0,  "n": 2, "scale": "linear"},
+    "sigma_A": {"lo": 5.0,  "hi": 10.0, "n": 2, "scale": "linear"}
+  }
+}

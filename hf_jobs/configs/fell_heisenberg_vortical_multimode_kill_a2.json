@@ -1,0 +1,21 @@
+{
+  "_comment": "Session-38 kill-test anchor A2 (mid-amplitude, V=0.94): same winning structure as A1 (sigma=10, m0=3, a=0.2236, ell=6, r=9), certified at Npts=65 with wec_slack_min=+0.014689 / dec_slack_min=+0.007346 / dec_pass_fraction=1.0. Slacks scale ~V^2 across the V-stratified anchors (strict-pass signs are V-invariant in the recorded sweep -- 234 passes at every V), so this stratifies the RELATIVE vortical amplitude V_Ai/V. See _kill_a1.json for the full design rationale.",
+  "L": 12.0,
+  "Npts": 65,
+  "Pi": 0.25,
+  "axes": {
+    "V":       {"lo": 0.94, "hi": 0.94, "n": 1, "scale": "linear"},
+    "sigma":   {"lo": 10.0, "hi": 10.0, "n": 1, "scale": "linear"},
+    "m0":      {"lo": 3.0,  "hi": 3.0,  "n": 1, "scale": "linear"},
+    "a":       {"lo": 0.223606797749979, "hi": 0.223606797749979, "n": 1, "scale": "linear"},
+    "ell":     {"lo": 6.0,  "hi": 6.0,  "n": 1, "scale": "linear"},
+    "r":       {"lo": 9.0,  "hi": 9.0,  "n": 1, "scale": "linear"},
+    "V_Ax":    {"lo": -0.3, "hi": 0.3,  "n": 5, "scale": "linear"},
+    "V_Ay":    {"lo": -0.3, "hi": 0.3,  "n": 5, "scale": "linear"},
+    "V_Az":    {"lo": -0.3, "hi": 0.3,  "n": 5, "scale": "linear"},
+    "r_Ax":    {"lo": 6.0,  "hi": 9.0,  "n": 2, "scale": "linear"},
+    "r_Ay":    {"lo": 6.0,  "hi": 9.0,  "n": 2, "scale": "linear"},
+    "r_Az":    {"lo": 6.0,  "hi": 9.0,  "n": 2, "scale": "linear"},
+    "sigma_A": {"lo": 5.0,  "hi": 10.0, "n": 2, "scale": "linear"}
+  }
+}

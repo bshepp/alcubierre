@@ -31,6 +31,9 @@ sweeps/*.config.json
 # Session-37 first-ever gw_recoil full-config record (4320 rows) behind the
 # TRUST_AUDIT #5 closure and the corrected Mechanism-C ceiling numbers.
 !sweeps/gw_recoil_full_concat.parquet
+# Session-38 2D.11 multi-anchor kill-test record (7285 rows, 4 certified
+# strict-pass anchors + scaled supplement) behind the re-based 2D.11 verdict.
+!sweeps/fell_heisenberg_vortical_multimode_kill_concat.parquet
 
 # Local working copies of sweep results downloaded from HF Dataset
 # bshepp/alcubierre-sweeps. Re-fetchable via `hf download`.

@@ -1,0 +1,21 @@
+{
+  "_comment": "Session-38 kill-test anchor A3 supplement: V=0.10 anchor with V-SCALED vortical amplitudes |V_Ai| <= 0.04 (relative scale ~20-40% of V, matching the relative scale the recorded Phase-3 preview probed at its V=0.5 anchor). Tests whether a thin-margin strict-pass baseline (dec_slack_min=+8.3e-5) survives proportionally small vortical perturbations. See _kill_a1.json for the design rationale.",
+  "L": 12.0,
+  "Npts": 65,
+  "Pi": 0.25,
+  "axes": {
+    "V":       {"lo": 0.1,  "hi": 0.1,  "n": 1, "scale": "linear"},
+    "sigma":   {"lo": 10.0, "hi": 10.0, "n": 1, "scale": "linear"},
+    "m0":      {"lo": 3.0,  "hi": 3.0,  "n": 1, "scale": "linear"},
+    "a":       {"lo": 0.223606797749979, "hi": 0.223606797749979, "n": 1, "scale": "linear"},
+    "ell":     {"lo": 6.0,  "hi": 6.0,  "n": 1, "scale": "linear"},
+    "r":       {"lo": 9.0,  "hi": 9.0,  "n": 1, "scale": "linear"},
+    "V_Ax":    {"lo": -0.04, "hi": 0.04, "n": 5, "scale": "linear"},
+    "V_Ay":    {"lo": -0.04, "hi": 0.04, "n": 5, "scale": "linear"},
+    "V_Az":    {"lo": -0.04, "hi": 0.04, "n": 5, "scale": "linear"},
+    "r_Ax":    {"lo": 6.0,  "hi": 9.0,  "n": 2, "scale": "linear"},
+    "r_Ay":    {"lo": 6.0,  "hi": 9.0,  "n": 2, "scale": "linear"},
+    "r_Az":    {"lo": 6.0,  "hi": 9.0,  "n": 2, "scale": "linear"},
+    "sigma_A": {"lo": 5.0,  "hi": 10.0, "n": 2, "scale": "linear"}
+  }
+}

@@ -2338,3 +2338,38 @@ New tracked harness [`verification/test_sxs_kick_pull.py`](verification/test_sxs
 Block 2(b) **CLOSED**. The W6 weakening (C-grade anchor, full config never run) is resolved in the strengthening direction on both prongs. Remaining queue: 2(c) 2D.11 multi-anchor, 2(d) nested-shell radial ladder, 2(e) hybrid_wall full, 2(f) Δ-ladder radial; then Block 3.
 
 **Methodological note:** second instance this week of a never-executed verification path (Colab cell) hiding a design defect — the S35 lesson ("a verification harness is itself code") extends to *dormant* verification code: an audit interleave that has never actually run in its success branch certifies nothing, and may encode a wrong expectation. When closing such items, prefer re-deriving the check from the primary data source over finally pushing the recorded button.
+
+## Session 38 — 2026-07-05 — Block 2(c): 2D.11 multi-anchor kill-test — verdict re-based on informative gates and UPHELD
+
+**Intent (Block 2(c) of the Session-35 audit queue):** the Session-33 closure of Task 2D.11 (vorticity-augmented FH) ran its Phase-3 preview at a single anchor whose baseline was itself DEC-violating at the run's Npts=49, so the strict-pass gate carried no information (W3); the anchor's V=0.5 also matched no certified sweep row. Re-run at 3–4 stratified anchors including genuinely strict-pass baselines.
+
+### Provenance diagnosis (resolved before running anything)
+
+- **The "DEC-violating baseline" was an Npts=49 resolution artifact, not a bad anchor.** The canonical anchor's structure (σ=10, m₀=3, a=0.05, ℓ=4, r=9) is certified **strict-pass at Npts=65 for every V on the Session-11 grid** (dec_slack from +8.2e-5 at V=0.1 to +1.86e-2 at V=1.5). At Npts=49 the FH wall under-resolves and the same structure reports dec_slack −7.74e-2.
+- **The V=0.5 puzzle dissolves:** both slacks scale exactly as $V^2$ across the certified sweep (A2/A1 margin ratio = $0.94^2/1.5^2$ to 3 digits), so strict-pass *signs* are V-invariant — which is also why the Session-11 sweep's 1404 strict-pass rows split as exactly 234 at each of its six V values. The V=0.5 choice was immaterial; only the resolution was defective.
+- Corollary recorded: Session 33's *differential* claims (augmented vs baseline, same grid) were unaffected; its absolute numbers and the "0 strict passes" gate line carried the artifact.
+
+### Design
+
+Identical Phase-3 vortical grid (V_Ai 5³ × r_Ai 2³ × σ_A 2, 1457 deduped points) at **Npts=65** (the certification resolution; h = 0.375) at four stratified anchors that are actual certified rows of the Session-11 sweep, plus one amplitude-scaled supplement — configs `hf_jobs/configs/fell_heisenberg_vortical_multimode_kill_{a1,a2,a3,a3s,b1}.json`, 7285 evaluations, ~100 min local in 15 chunks:
+
+- **A1** deep-pass (V=1.5, σ=10, m₀=3, a=0.2236, ℓ=6, r=9): wec +0.0374 / dec +0.0187
+- **A2** mid (V=0.94, same structure): wec +0.0147 / dec +0.0073
+- **A3** thin-margin, CTC-free-tail amplitude class (V=0.10, same structure): wec +1.66e-4 / dec **+8.3e-5**, with the absolute vortical amplitudes up to **3× the FH amplitude**
+- **A3s** = A3 with V-scaled amplitudes ($|V_{A,i}| \le 0.04$)
+- **B1** structurally diverse (V=1.5, σ=6, ℓ=6, r=7.75): wec +0.0225 / dec +0.0113
+
+Baseline regression gate: every anchor's V_A=0 row reproduces its certified sweep row (rel dev ≤ 4.2e-5 for A1/A2/B1; A3 1.6e-3 relative = ~1.3e-7 absolute on the tiny margin — same absolute scale). Every baseline genuinely strict-passes at the run's own resolution: **the gates are informative for the first time.**
+
+### Result — same verdict, real evidence
+
+Every anchor, all 7280 augmented points:
+
+- **(a)/(b) 0 points improve either slack** — Session 33's universal-degradation claim confirmed at four genuine anchors (now 0 improvements in 10,192 augmented evaluations across five anchors and two resolutions).
+- **100% strictly degrade both slacks**, worst-case dec degradation −3.5e-5 (A1), −2.5e-5 (A2), −1.1e-5 (A3), −2.9e-5 (B1) — ≈ ∝ V·V_A (cross-term dominated). The catastrophic collapse Session 33 measured (dec → −0.408) is a non-perturbative ($|V_A|$ to 3) phenomenon; at $|V_A| \le 0.3$ degradation is ≤0.26% of the margin.
+- **(c) 100% RETAIN strict-pass** — including A3, whose +8.3e-5 margin survives vortical fields 3× the FH amplitude. The recorded Session-33 "0 strict passes among 2912 points" was entirely baseline-inherited and is superseded.
+- **(d) passenger_zone_radius = h for all 7285 rows including baselines** — the "all wall, no interior" pathology is present at every certified strict-pass anchor and vorticity never opens it.
+
+**Disposition: Task 2D.11's CLOSED NEGATIVE verdict is UPHELD and strengthened** — its correct statement is sharpened: vorticity is a strictly lossy perturbation (never improves EC margins) that leaves the zero-volume passenger zone untouched; it does *not* (at perturbative amplitudes) destroy strict-pass configurations. The failure mode 2D.11 probed — "is irrotationality the driver of the pathology?" — remains answered NO, now at anchors where the question is well-posed. Record: FELL_HEISENBERG_VORTICAL_NOTES §5 (new), §3.2/§3.3/§4 amended in place; NAVIGATOR row 1 updated; ROADMAP 2D.11 ledger + audit-queue (c) closed. Artifact: `sweeps/fell_heisenberg_vortical_multimode_kill_concat.parquet` (7285 rows, negation-tracked).
+
+**Methodological note (resolution edition):** W3's framing ("bad anchor") was itself slightly off — the defect was running the augmentation *below the resolution at which the baseline is certified*. Rule recorded: an augmentation/perturbation study's baseline must pass its gates at the study's own resolution, or the gates are vacuous. This is the FD-flavoured sibling of the Session-30 lesson (evaluator validity is regime-dependent) applied to study design rather than evaluator choice.
