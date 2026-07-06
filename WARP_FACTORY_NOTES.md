@@ -67,6 +67,8 @@ Numerical sweep:
 
 **Numerical bracket:** $\Delta_{\min}^{\rm num} \in (5, 7]$ m, i.e. $\kappa^{\rm num} \in (4.17, 5.83]$.
 
+*(Session-41 certified-radial confirmation: the anchor cell re-run through `evaluate_axisym_ec` via [`verification/test_delta_ladder_radial.py`](verification/test_delta_ladder_radial.py) gives $\Delta_{\min} \in (5.375, 5.500]$ m ⇒ **κ ∈ (4.479, 4.583]** — inside this bracket, NEC-binding. The §3 27-cell surface's certified re-basing is recorded at ROADMAP Task 3.2: 12 genuine crossings κ = 4.93 ± 0.44 rising with $R_2$; the MATLAB sweep-resolution values ran ~13–20% high; the three β=0.05/C=1/6 nulls are confirmed; the β=0.005 rows have no thickness bound above a 0.5 m floor in the fixed-smoothing convention — the recorded MATLAB thin-wall failures there are pipeline-discrepant. The §3 "κ ∈ (3, 7]" honest-replacement statement is superseded by the certified κ = 4.93 ± 0.44 over genuine crossings.)*
+
 **Discrepancy with analytic prediction:** $\kappa^{\rm num}$ exceeds the analytic upper $\kappa = 0.875$ by a factor of $\sim 6$.
 
 ## Disposition: scaling-law form holds; numerical bound is ~6× tighter

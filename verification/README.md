@@ -30,6 +30,10 @@ Contents:
   f_inner ladder that REVERSED the Session-26 nested-shell record
   (improvement plateau + sign flip at f* ~ 0.63; modes full / plateau /
   threshold for staged RES_CONF confirmation).
+  `test_delta_ladder_radial.py`: the Session-41 certified-radial
+  27-cell Delta-ladder re-run (Session-18 anchor confirmed + tightened;
+  kappa = 4.93 +/- 0.44 over genuine crossings; nulls verified at the
+  scout peak, never at a boundary).
 - **Adversarial kill-test batteries** — `test_profile_kill.py`,
   `test_radial_opt_xcheck.py`, `test_radial_opt_convergence.py`,
   `test_prongA_forensic.py`: resolution-convergence, cross-representation

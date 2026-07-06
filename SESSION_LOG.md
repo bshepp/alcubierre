@@ -2411,3 +2411,28 @@ New tracked harness [`verification/test_nested_shell_radial_ladder.py`](verifica
 - ⚠ **Artifact-reading caveat (recorded so the raw parquet is not misread):** the full box does contain 236 rows with `wec_fraction ≥ 0.999` (best `rho_p_min` = +4.2e-3) — all at $\eta \le 0.004$, where $k = 1 - \eta\,\theta_\epsilon \approx 1$ everywhere and the Krasnikov tube is effectively OFF: those rows are near-flat space plus a small matter bump, which trivially satisfies WEC and has nothing to do with rescuing a tube. Positive margins die by $\eta = 0.008$; best `rho_p_min` decays monotonically with $\eta$ and is negative from the fourth rung on.
 
 **Disposition: W2 CLOSED, negative strengthened** — "single-bump matter cannot rescue the Krasnikov wall" now rests on the full 5-axis box at 72× the recorded coverage, with a monotone-in-$\eta$ structure (no isolated pockets across $\epsilon$ or $n$; per-($\epsilon$, n$)$ best-fraction table is flat at each $\eta$ plateau). Docs: ROADMAP 2C.2 + audit-queue (e); NAVIGATOR load-bearing row 2; LANDSCAPE_SYNTHESIS §4.2; webpage (six-slices Slice-2 + roadmap). Remaining in the queue: (f) Session-18 Δ-ladder radial re-run — the last Block-2 item.
+
+## Session 41 — 2026-07-06 — Block 2(f): Δ-ladder certified radially — Session-18 anchor CONFIRMED and tightened; the S19 surface re-based; BLOCK 2 COMPLETE
+
+**Intent (Session-35 audit queue item (f), W4's outstanding half):** the Session-18 anchor κ bracket (4.17, 5.83] and the Session-19 27-cell κ surface (MATLAB WarpFactory, Cartesian) were the last thickness-direction numbers never re-run through the certified radial evaluator (3.10 covered the mass direction).
+
+### Run
+
+New tracked harness [`verification/test_delta_ladder_radial.py`](verification/test_delta_ladder_radial.py): all 27 (C, R₂, β) cells of the Session-19 grid through `mmin_map.min_ec` (the certified path), scout ladder → RES_FULL endpoint verification → RES_FULL bisection to rel(Δ) ≤ 3%; ~2 min/cell, batched.
+
+### Results
+
+- **Anchor cell (C=1/3, R₂=20, β=0.02): Δ_min ∈ (5.375, 5.500] m ⇒ κ ∈ (4.479, 4.583]** — inside the Session-18 MATLAB bracket (4.17, 5.83], NEC-binding, ~20% below the Session-19 sweep-resolution reading of (5, 7].
+- **12 genuine crossings: κ = 4.93 ± 0.44** (range [4.36, 5.87]), rising with R₂ (the trend S19 flagged as possibly resolution-driven is real and matches 3.10's certified mass-direction trend), only mildly β-dependent. Cross-direction consistency with 3.10's κ = 4.64 ± 0.57 within joint spread. Binding: NEC in 19 cells, SEC in 3.
+- **The 3 recorded nulls (β=0.05, C=1/6) are genuine** — RES_FULL at the scout-ladder peak: −6.4e39 / −6.8e39 / −4.7e39.
+- **Two cells the record listed as viable brackets — (1/3, 15, 0.05) and (1/3, 20, 0.05) — are narrow WINDOWS**: EC-pass only for Δ ∈ (10.0, ~13) and (14.5, ~19) m respectively; lower crossings κ ∈ (4.44, 4.67] and (4.67, 4.83].
+- **12 no-bound cells** (all nine β=0.005 rows + β=0.02 at (1/3, 15), (1/2, 15), (1/2, 20)): EC-pass persists down to a 0.5 m floor with healthy margins (e.g. +1.8e39 at Δ = 0.51 where the MATLAB sweep recorded *failure* at Δ = 2.4) — the recorded MATLAB thin-wall failures there are pipeline-discrepant. Convention caveat recorded: at smooth_factor 4000 the profile smoothing width (~5 m) exceeds these Δ values, so nominal thin walls are wide low-amplitude bumps — Δ is not a physical wall thickness below ~5 m in this construction.
+- **Net re-basing of the record:** the S19 statistics (mean 5.3, std 1.0, "18% spread") mixed genuine crossings with floor/cap artifacts; the honest certified statement is κ = 4.93 ± 0.44 over genuine crossings, with the no-bound and null structure stated separately. WARP_FACTORY_NOTES §2 "κ ∈ (3, 7]" replacement statement superseded.
+
+### The kill-test's own false nulls (methodological)
+
+The harness's first run declared cells (1/3, 15, 0.05) and (1/3, 20, 0.05) NULL from a coarse scout ladder whose rungs straddled their narrow passing windows, and verified the null at the *cap* rather than the scout maximum — a wrong-point verification. Fine RES_FULL scans around the scout peaks caught both (windows with margins up to +1.9e39). The harness's null path is fixed (verify at the scout peak ± inter-rung probes) and the no-bound path now reports an upper limit instead of a fake bracket. **The S32 false-negative lesson applies recursively to kill-tests themselves**; both incidents (this and the first run's cap-check) are preserved in the harness docstring.
+
+### Block 2 disposition — COMPLETE
+
+Six kill-tests, six sessions (36–41): **(a)** Slice-1 → evaluator frame bug found; negative rebuilt analytic. **(b)** GW-recoil → TRUST_AUDIT #5 closed C→B; anchor NR-verified conservative 1.60×. **(c)** 2D.11 → upheld on informative gates; Npts=49 resolution artifact diagnosed. **(d)** nested-shell → **REVERSED** (first flip); new mass-reduction candidate lead. **(e)** hybrid-wall → strengthened 72×. **(f)** Δ-ladder → anchor confirmed + tightened; surface re-based; two pipeline-discrepancy classes documented. Score: four strengthenings, one reversal, one confirmation-with-re-basing — the queue was demonstrably non-ceremonial in both directions. Next checkpoint decision: Block 3 (Lentz pentagonal scan; anisotropic-Π exponent = 2E.4's first axis; G–Z reproduction), the S39 nested-mmin candidate, or the standing ranked leads (2D.5e first).

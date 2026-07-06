@@ -514,3 +514,21 @@ Two independent symbolic G derivations + exact-analytic vs quintic-spline deriva
 | Raw-artifact caveat | **Recorded** | 236 rows with wec_fraction ≥ 0.999 exist at η ≤ 0.004 — the tube-off trivial limit (near-flat + matter bump). Not a loophole; flagged in ROADMAP/NOTES so the parquet is not quote-mined. |
 | Krasnikov-class frame | **Hand-check upgraded to scripted certificate** | The Session-36 audit's algebra (tetrad rows orthonormal for the $g_{tt}=-1$, $g_{tx}=(1-k)/2$, $g_{xx}=k$ metric class) verified symbolically for generic $k(\rho)$: all 16 components of $e_a^\mu e_b^\nu g_{\mu\nu} - \eta_{ab}$ simplify to 0. The hybrid_wall/krasnikov_tube observables are genuine static-frame components. |
 | Config description | **Provenance note** | `hybrid_wall_full.json`'s "~25000 points" comment undercounts the actual 82,944-point grid 3.3× (the gw_recoil config had the mirror-image defect — overcounting; config `_comment` size estimates are evidently unmaintained — treat as non-authoritative). |
+
+---
+
+## Session 41 addendum — Δ-ladder certified (W4 closed); Session-19 κ statistics re-based; Block 2 complete
+
+**Item (W4, thickness direction).** Closed 2026-07-06 by [`verification/test_delta_ladder_radial.py`](verification/test_delta_ladder_radial.py) (all 27 Session-19 cells through the certified `mmin_map.min_ec` path).
+
+| Item | Impact | Detail |
+|---|---|---|
+| Session-18 anchor κ ∈ (4.17, 5.83] | **CONFIRMED and tightened; A within slice** | Certified: κ ∈ (4.479, 4.583] (Δ_min ∈ (5.375, 5.500] m), NEC-binding. The 6× gap to the analytic 2A.7/2A.9a upper (0.875) stands. |
+| Session-19 surface statistics (mean 5.3, std 1.0, "κ ∈ (3, 7]") | **Superseded — mixed populations** | The recorded stats pooled genuine crossings with floor artifacts ("NaN-lower" rows) and cap artifacts. Certified re-basing: **κ = 4.93 ± 0.44 over the 12 genuine crossings** (range [4.36, 5.87]); rising-with-R₂ trend is real (not wall-resolution, as S19 suspected) and matches 3.10's mass-direction trend; MATLAB sweep-resolution values ran ~13–20% high. Grade: certified cells A within slice. |
+| Recorded MATLAB thin-wall failures (β=0.005 rows etc.) | **Pipeline-discrepant** | 12 cells pass down to a 0.5 m floor radially (margins to +1.8e39) where MATLAB recorded failures at Δ ≈ 2–3 m. Convention caveat: at SF=4000 the ~5 m smoothing width exceeds these Δ — nominal thin walls are wide low bumps; Δ < ~5 m is not a physical thickness in this construction (both pipelines share the convention; only the radial one evaluates it correctly). |
+| Nulls | **3 confirmed; 2 candidate new nulls REFUTED (harness's own artifact)** | β=0.05/C=1/6 nulls verified at the scout peak (−4.7e39…−6.8e39). The harness's first run declared (1/3,15,0.05) and (1/3,20,0.05) null via a coarse ladder + wrong-point (cap) verification; fine scans found genuine narrow windows (κ lower crossings (4.44,4.67] and (4.67,4.83]). Null path fixed. |
+| 3.10 cross-check | **Cross-direction consistency** | Δ-direction κ = 4.93 ± 0.44 vs mass-direction 4.64 ± 0.57 — overlapping, same R₂ trend, same NEC-dominant binding. The certified κ surface is now pinned from two independent directions. |
+
+**Methodological note (sixth in the searcher-honesty family):** a kill-test harness manufactured its own false negatives (coarse rungs straddling a narrow window + verifying the wrong point) and was caught only by applying the S32 discipline recursively — fine-scanning the scout peak before accepting any null. Rule: null verdicts require full-resolution verification at the *most favourable* probed point, not at a boundary.
+
+**Block 2 complete (Sessions 36–41):** four strengthenings, one reversal (nested-shell, first flip of the programme), one confirmation-with-re-basing. Grade ledger net effect: Slice-1 → analytic A; #5 → B; 2D.11 → informative-A within slice; Phase-3.3 nesting leg → reversed (new candidate lead); 2C.2 → A within slice at 72× coverage; Δ-ladder/κ → certified A within slice, two-direction pinned.
