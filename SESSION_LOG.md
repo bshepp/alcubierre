@@ -2394,3 +2394,20 @@ New tracked harness [`verification/test_nested_shell_radial_ladder.py`](verifica
 - Docs: ROADMAP 3.3 entry + closed-ledger + audit-queue (d); LANDSCAPE_SYNTHESIS Phase-3.3 paragraph; TRUST_AUDIT Session-39 addendum (grade impact). The oblate +3.09% (Session 27, same W5 band) remains un-re-tested — it was the *other* half of W5; noted as still open in the queue disposition.
 
 **Methodological note:** this is the audit programme's demonstration case for "kill-test the negatives": three strengthenings in a row might have suggested the queue was ceremonial; item (d) flips a seven-week-old closure outright and surfaces a new positive lead. The Cartesian thin-slab convention (inherited from the WF anchor reproductions) is now implicated in a concrete wrong-shape, wrong-window record; any remaining thin-slab-derived numbers should be treated as W5-class until re-run radially (the Session-27 oblate +3.09% explicitly so; the Session-18 Δ-ladder, queue item (f), is next).
+
+## Session 40 — 2026-07-06 — Block 2(e): first hybrid_wall full dispatch — 2C.2 negative strengthened 72×
+
+**Intent (Session-35 audit queue item (e), W2):** the recorded 2C.2 "0/480" varied only $(\eta, \delta_M, w_M)$ — $\epsilon$ and $n$ were frozen at 1.0 and 100 — and `hybrid_wall_full.json` was never dispatched. Coverage kill-test only: the Session-36 frame audit had already cleared this module's tetrad (and this session turned that hand-check into a scripted symbolic certificate — the Krasnikov-class tetrad rows are exactly orthonormal under the module metric for generic $k(\rho)$, all 16 components; no shift_families-style contamination).
+
+### Run
+
+- Preview regression: **bit-exact on all 480 recorded rows** (`rho_p_min`, `dec_slack_min` max rel diff = 0).
+- First full dispatch: **82,944 points** (the config's "~25000" comment undercounted 3.3× — noted), all five axes swept: $\eta \in [10^{-3}, 1.99]$ (12 log rungs), $\epsilon \in [0.3, 5]$ (6), $n \in [10, 200]$ (6), $\delta_M \in [-1.5, 3]$ (16), $w_M \in [0.1, 5]$ (12); $n_\rho = 2001$. ~19 min local, 0 errors, 0 non-finite rows. Artifact negation-tracked: `sweeps/hybrid_wall_full_concat.parquet`.
+
+### Result — the negative strengthens; one artifact-reading caveat recorded
+
+- **0 / 34,560 points achieve `wec_fraction ≥ 0.999` for $\eta \ge 0.1$** (the recorded preview window — now with $\epsilon$ and $n$ unfrozen across the full 6×6 log grid: the frozen axes were hiding nothing). Best in-window `wec_fraction` = 0.9415; for k<0-capable tubes ($\eta \ge 0.5$): 0/20,736, best 0.938; for functional tubes ($\eta \approx 1$–2, wall $k \to -1$): 0/6,912, best 0.891.
+- **0 / 82,944 points achieve `dec_fraction ≥ 0.999` anywhere** — including the tube-off corner (best `dec_slack_min` = −6.6e-6 at $\eta = 10^{-3}$, approaching zero from below as the tube vanishes but never crossing).
+- ⚠ **Artifact-reading caveat (recorded so the raw parquet is not misread):** the full box does contain 236 rows with `wec_fraction ≥ 0.999` (best `rho_p_min` = +4.2e-3) — all at $\eta \le 0.004$, where $k = 1 - \eta\,\theta_\epsilon \approx 1$ everywhere and the Krasnikov tube is effectively OFF: those rows are near-flat space plus a small matter bump, which trivially satisfies WEC and has nothing to do with rescuing a tube. Positive margins die by $\eta = 0.008$; best `rho_p_min` decays monotonically with $\eta$ and is negative from the fourth rung on.
+
+**Disposition: W2 CLOSED, negative strengthened** — "single-bump matter cannot rescue the Krasnikov wall" now rests on the full 5-axis box at 72× the recorded coverage, with a monotone-in-$\eta$ structure (no isolated pockets across $\epsilon$ or $n$; per-($\epsilon$, n$)$ best-fraction table is flat at each $\eta$ plateau). Docs: ROADMAP 2C.2 + audit-queue (e); NAVIGATOR load-bearing row 2; LANDSCAPE_SYNTHESIS §4.2; webpage (six-slices Slice-2 + roadmap). Remaining in the queue: (f) Session-18 Δ-ladder radial re-run — the last Block-2 item.

@@ -64,7 +64,7 @@
         </tr>
         <tr>
           <td>2</td><td>Hybrid Fuchs + Krasnikov wall (Krasnikov tube wrapped in matter perturbation)</td>
-          <td class="num">480 pts</td><td class="num warm">&lt; 0.999</td><td class="num neg">0 / 480</td>
+          <td class="num">480 + 82,944 pts</td><td class="num warm">0.94 (η ≥ 0.1)</td><td class="num neg">0 / 34,560</td>
           <td><a href="https://github.com/bshepp/alcubierre/blob/main/hybrid_wall.ipynb" target="_blank" rel="noopener">hybrid_wall</a></td>
         </tr>
         <tr>
@@ -118,8 +118,8 @@
     <div class="block-title">Adding matter to the Krasnikov wall does not cancel the negative spike</div>
     <div class="prose">
       <p>Embed the Krasnikov-tube wall inside a single Gaussian matter perturbation parameterised by amplitude $A$, location $\rho_0$, and width $\sigma$. Sweep 480 $(A, \rho_0, \sigma, \eta, \epsilon)$ points; record the in-wall WEC pass fraction.</p>
-      <p>Result: <strong>0/480 strict-pass</strong>. The matter perturbation shifts where the negative-energy spike sits but never cancels it. Single-bump matter is not enough; multi-bump and off-wall configurations remain untested but the linear scaling of the negative-energy density with the η lightcone-opening parameter (Slice 4 below) is suggestive that no cancellation is generic.</p>
-      <p><strong>Sources:</strong> <a href="https://github.com/bshepp/alcubierre/blob/main/hybrid_wall.ipynb" target="_blank" rel="noopener">hybrid_wall.ipynb</a>, sweep parquet <a href="https://github.com/bshepp/alcubierre/blob/main/sweeps/hybrid_wall_20260417T002249.parquet" target="_blank" rel="noopener"><code>sweeps/hybrid_wall_20260417T002249.parquet</code></a>.</p>
+      <p>Result: <strong>0/480 strict-pass</strong> in the original preview, strengthened by the Session-40 first full dispatch (82,944 points, all five axes swept including the previously-frozen ε and n): <strong>0/34,560 WEC passes for any tube with η ≥ 0.1, and 0/82,944 DEC passes anywhere</strong> (the artifact's only WEC passes sit at η ≤ 0.004, the tube-off trivial limit). The matter perturbation shifts where the negative-energy spike sits but never cancels it. Single-bump matter is not enough; multi-bump and off-wall configurations remain untested but the linear scaling of the negative-energy density with the η lightcone-opening parameter (Slice 4 below) is suggestive that no cancellation is generic.</p>
+      <p><strong>Sources:</strong> <a href="https://github.com/bshepp/alcubierre/blob/main/hybrid_wall.ipynb" target="_blank" rel="noopener">hybrid_wall.ipynb</a>, full-sweep parquet <a href="https://github.com/bshepp/alcubierre/blob/main/sweeps/hybrid_wall_full_concat.parquet" target="_blank" rel="noopener"><code>sweeps/hybrid_wall_full_concat.parquet</code></a>.</p>
     </div>
   </div>
 

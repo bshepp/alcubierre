@@ -501,3 +501,16 @@ Two independent symbolic G derivations + exact-analytic vs quintic-spline deriva
 | New candidate lead | **Recorded (unranked)** | Nested-variant minimal-mass map: does the ~8× margin improvement translate into a lower certified $M_{\min}$ than 3.10's 2.568e27? ROADMAP "Unranked candidate (Session 39)". |
 
 **Methodological note:** first demonstration in this programme that the demoted pipeline's error band hid a *wrong-shape* record (non-monotone → recorded as monotone) and a *wrong-window* threshold (0.63 → recorded as 0.1–0.2), not merely imprecise magnitudes. "Kill-test the negatives" is not ceremonial: three strengthenings and one reversal in four items.
+
+---
+
+## Session 40 addendum — 2C.2 hybrid-wall coverage kill-test (W2): negative strengthened
+
+**Item (W2).** The 2C.2 "0/480" had frozen axes ($\epsilon$, $n$) and an undispatched full config. Closed 2026-07-06 (Session 40) by the first `hybrid_wall_full.json` dispatch: 82,944 points, all five axes swept, preview regression bit-exact on all 480 recorded rows.
+
+| Item | Impact | Detail |
+|---|---|---|
+| 2C.2 "0/480" | **Strengthened to 0/34,560 (WEC, η ≥ 0.1) and 0/82,944 (DEC, anywhere); grade A within slice** | The unfrozen $\epsilon \in [0.3,5]$ × $n \in [10,200]$ axes hide nothing (per-cell best-fraction flat at each η plateau); best functional-tube wec_fraction 0.891. Slice: single-bump $\delta_M B_{w_M}$ perturbation of $k(\rho)$, static, 1-D radial evaluation in the static orthonormal frame. |
+| Raw-artifact caveat | **Recorded** | 236 rows with wec_fraction ≥ 0.999 exist at η ≤ 0.004 — the tube-off trivial limit (near-flat + matter bump). Not a loophole; flagged in ROADMAP/NOTES so the parquet is not quote-mined. |
+| Krasnikov-class frame | **Hand-check upgraded to scripted certificate** | The Session-36 audit's algebra (tetrad rows orthonormal for the $g_{tt}=-1$, $g_{tx}=(1-k)/2$, $g_{xx}=k$ metric class) verified symbolically for generic $k(\rho)$: all 16 components of $e_a^\mu e_b^\nu g_{\mu\nu} - \eta_{ab}$ simplify to 0. The hybrid_wall/krasnikov_tube observables are genuine static-frame components. |
+| Config description | **Provenance note** | `hybrid_wall_full.json`'s "~25000 points" comment undercounts the actual 82,944-point grid 3.3× (the gw_recoil config had the mirror-image defect — overcounting; config `_comment` size estimates are evidently unmaintained — treat as non-authoritative). |
