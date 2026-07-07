@@ -89,12 +89,12 @@
             <li><span class="pos">[✓]</span> 2A.0 Path doc + verification notebook scaffolding</li>
             <li><span class="pos">[✓]</span> 2A.1-2A.5 Fuchs reproduction, dipole structure, OOM bound</li>
             <li><span class="pos">[✓]</span> 2A.6 Full Israel junction (static + boosted), λ<sub>*</sub> ≈ 0.55</li>
-            <li><span class="pos">[✓]</span> 2A.7 Δ<sub>min</sub>/R = κβ/C, κ ∈ [0.05, 0.75]</li>
+            <li><span class="pos">[✓]</span> 2A.7 Δ<sub>min</sub>/R = κβ/C, analytic κ ∈ [0.05, 0.875]; certified-radial κ = 4.93 ± 0.44 (Session 41)</li>
             <li><span class="pos">[✓]</span> 2A.8 VSH decomposition — Fuchs is a 98.65% two-mode doublet</li>
             <li><span class="pos">[✓]</span> 2A.9a Anisotropic-tangential analytic refinement</li>
             <li><span class="pos">[✓]</span> 2A.9b Warp Factory cross-check — κ<sup>num</sup> ∈ (4.17, 5.83]</li>
             <li><span class="pos">[✓]</span> 2A.10 Acceleration — ADM 4-momentum forbids self-acc.; GW recoil ≲0.25%</li>
-            <li><span class="pos">[✓]</span> 2A.11 Lentz 2020 comparison — different mechanisms, not interpolable</li>
+            <li><span class="pos">[✓]</span> 2A.11 Lentz 2020 comparison — different mechanisms, not interpolable; <strong>closed negative at class level Sessions 43–45</strong> (every compact ℓ¹ soliton violates full WEC/DEC on its outermost wavefront, at every amplitude)</li>
             <li><span class="pos">[✓]</span> 2A.12 Natário 2002 — special case of Slice 1, dismissed</li>
             <li><span class="pos">[✓]</span> 2A.13 Krasnikov tube — universal scaling, WEC pass = 0.0000</li>
             <li><span class="pos">[✓]</span> 2A.14 Toroidal Fuchs — strictly worse than spherical (≥2π thicker)</li>
@@ -107,21 +107,17 @@
       </details>
 
       <details class="phase-row">
-        <summary><span class="chev">▶</span><span class="pid">Phase 2B</span><span class="desc">Casimir / boundary-mode QFT (parallel track)</span><span class="badge gated">◎ Gated on 2B.8</span></summary>
+        <summary><span class="chev">▶</span><span class="pid">Phase 2B</span><span class="desc">Casimir / boundary-mode QFT (parallel track)</span><span class="badge done">✓ Closed (no-go, Session 34)</span></summary>
         <div class="phase-detail">
-          <p>The QFT / boundary-mode-decomposition path remains scientifically interesting independent of Phase 2A's outcome and becomes <em>necessary</em> if Path 2A cannot reach useful velocities with classical matter alone. Conceptual foundation: <a href="https://github.com/bshepp/alcubierre/blob/main/QUANTUM_CLASSICAL_BRIDGE.md" target="_blank" rel="noopener">QUANTUM_CLASSICAL_BRIDGE.md</a>.</p>
-          <p><strong class="quant">Gated on Task 2B.8</strong>: the spin-2 obstruction. EM has well-defined "conducting plate" boundaries; spin-2 has no analog of a gravitational conductor. Until that gap is closed, Phase 2B does not have a well-posed entry point.</p>
-          <h4>Open (0/8)</h4>
+          <p><strong>Closed as a physical mechanism for warp-relevant negative energy (Task 2B.8, Session 34).</strong> Three legs, recorded in <a href="https://github.com/bshepp/alcubierre/blob/main/QUANTUM_CLASSICAL_BRIDGE.md" target="_blank" rel="noopener">QUANTUM_CLASSICAL_BRIDGE.md §8</a>: (1) no material gravitational conductor exists in known physics (impedance Z<sub>G</sub> ~ 2.8 × 10⁻¹⁸ SI + Dyson absorption bounds); (2) the sole claimed loophole (Heisenberg–Coulomb superconductor effect) is speculative, experimentally unsupported, and contradicted in the literature; (3) the loophole-independent even-if bound: a <em>perfect</em> graviton mirror at favourable sign yields |ρ<sub>C</sub>| ≤ ħc/d⁴ — <strong>63.5–69.6 orders of magnitude short</strong> of every radially-certified density target (harness <code>verification/test_2b8_casimir_gap.py</code>).</p>
+          <h4>Disposition</h4>
           <ul>
-            <li><span class="dim">[ ]</span> 2B.1 Vector-Laplacian eigenmode setup on spherical domain</li>
-            <li><span class="dim">[ ]</span> 2B.2 Spherical Bessel × VSH expansion of β<sup>x</sup></li>
-            <li><span class="dim">[ ]</span> 2B.3 Identify dominant radial mode</li>
-            <li><span class="dim">[ ]</span> 2B.4 Mode-by-mode contribution to energy density</li>
-            <li><span class="dim">[ ]</span> 2B.5 Compare to Boyer 1968 concentric-spheres Casimir</li>
-            <li><span class="dim">[ ]</span> 2B.6 Express ρ as Casimir-like mode sum</li>
-            <li><span class="dim">[ ]</span> 2B.7 Semiclassical scalar T<sub>μν</sub> on Alcubierre background</li>
-            <li><span class="quant">[ ]</span> 2B.8 Spin-2 obstruction assessment <strong>(blocking)</strong></li>
+            <li><span class="pos">[✓]</span> 2B.8 Spin-2 obstruction assessment — executed Session 34; <strong>closes the phase</strong></li>
+            <li><span class="dim">[—]</span> 2B.1–2B.7 mode-decomposition tasks — mooted as physics; the math survives as a possible classification tool only</li>
           </ul>
+          <div class="reopening">
+            <strong>Reopening triggers:</strong> (i) experimental demonstration of anomalous GW reflection/absorption by any material (reopens Leg 2 only — Leg 3 still stands); (ii) a demonstrated vacuum state with |⟨T₀₀⟩| ≫ ħc/d⁴ at macroscopic d consistent with quantum inequalities; (iii) a horizon-class boundary compatible with a subluminal shell.
+          </div>
         </div>
       </details>
 
@@ -145,10 +141,10 @@
       </details>
 
       <details class="phase-row" open>
-        <summary><span class="chev">▶</span><span class="pid">Phase 2D</span><span class="desc">Fell–Heisenberg multi-mode follow-up</span><span class="badge partial">◐ In progress</span></summary>
+        <summary><span class="chev">▶</span><span class="pid">Phase 2D</span><span class="desc">Fell–Heisenberg multi-mode follow-up</span><span class="badge done">✓ Closed (Session 42 re-scope)</span></summary>
         <div class="phase-detail">
-          <p><strong>Strict-pass FH existence is mathematically real, pipeline-verified at A-grade, triple-anchored against external no-go literatures, and — at every structural test applied — degraded as a warp-drive interpretation; never restored.</strong> The single largest source of new positive-leaning physics in the project, kept honest by Sessions 14-17's structural tests (single-cell passenger, CTC sea, 76× mass overhead, no asymptotic decay envelope).</p>
-          <h4>Closed (10/13)</h4>
+          <p><strong>Strict-pass FH existence is mathematically real <em>as a statement about the L = 12 evaluation box</em>, pipeline-verified at A-grade, triple-anchored against external no-go literatures, and — at every structural test applied — degraded as a warp-drive interpretation; never restored.</strong> The Session-42 closed-form far-field analysis completes the arc: every tested a &gt; 0 configuration violates WEC + DEC beyond a finite equatorial radius R* <em>outside</em> the box, so no swept FH configuration satisfies the energy conditions globally within the adopted concretization. Kept honest along the way by Sessions 14-17's structural tests (single-cell passenger, CTC sea, 76× mass overhead, no asymptotic decay envelope).</p>
+          <h4>Closed (13/13)</h4>
           <ul>
             <li><span class="pos">[✓]</span> 2D.1-2D.4 Pull, evaluate, reproduce, and sweep the FH 2021 ansatz — 1404/15000 strict-pass at Npts=65</li>
             <li><span class="pos">[✓]</span> 2D.5 Connectivity &amp; topology — single connected 5-D manifold, smooth boundary</li>
@@ -161,46 +157,48 @@
             <li><span class="pos">[✓]</span> 2D.10 Asymptotic matching residual + double-bubble destruction</li>
             <li><span class="pos">[✓]</span> 2D.12 VIQ post-processing — 76× mass overhead at the passenger zone</li>
           </ul>
-          <h4>Open / partial (3)</h4>
           <ul>
-            <li><span class="warm">[~]</span> 2D.5e Symbolic boundary extraction — definitive SymPy wall hit; Z-axis fallback unattempted</li>
-            <li><span class="warm">[~]</span> 2D.5f Full Npts=129 sweep — <strong>dispatched 2026-04-21 on cpu-xl</strong> (~$3.50, ~3.5h)</li>
-            <li><span class="warm">[~]</span> 2D.11 Vorticity-augmented FH — Phases 1 &amp; 2 negative; multi-mode <span style="font-family:var(--mono);">A⃗</span> Phase 3 not started</li>
+            <li><span class="pos">[✓]</span> 2D.5e Symbolic boundary extraction — <strong>closed Session 42, beyond plan</strong>: the ansatz is exactly axisymmetric about z, giving closed-form principal pressures everywhere (the earlier SymPy det() wall was symmetry-blindness) and the far-field certificate that re-scoped the whole phase</li>
+            <li><span class="pos">[✓]</span> 2D.5f Full Npts=129 sweep — closed Session 22: 6240/10080 strict-pass (box-scoped), +5.8% above extrapolation, no reopening trigger</li>
+            <li><span class="pos">[✓]</span> 2D.11 Vorticity-augmented FH — all three phases negative (Sessions 15, 33); kill-tested at four certified strict-pass anchors and upheld (Session 38): vorticity never improves either slack and never opens the passenger zone</li>
           </ul>
         </div>
       </details>
 
       <details class="phase-row">
-        <summary><span class="chev">▶</span><span class="pid">Phase 2E</span><span class="desc">Unenumerated landscape gaps (5 items, dormant)</span><span class="badge idle">○ Map only</span></summary>
+        <summary><span class="chev">▶</span><span class="pid">Phase 2E</span><span class="desc">Deliberately-deferred relaxations (5 items)</span><span class="badge partial">◐ First axis probed</span></summary>
         <div class="phase-detail">
-          <p>Five categories of slices that live <em>outside</em> the explicitly-enumerated 2A/2B/2C/2D structure and are recorded with reopening criteria so the project's "no useful warp drive in the slice" claim is honest about what it does and does not cover.</p>
-          <h4>Mapped (not active)</h4>
+          <p>Five deliberately-deferred relaxations that live <em>outside</em> the explicitly-enumerated 2A/2B/2C/2D structure, each recorded with explicit reopening criteria so the project's "no useful warp drive in the slice" claim is honest about what it does and does not cover. With Phases 2A–2D closed, these (plus the nested-shell minimal-mass candidate) are the remaining open directions.</p>
+          <h4>Status</h4>
           <ul>
-            <li><span class="dim">[○]</span> 2E.1 <strong>Higher-dimensional extensions</strong> — Kaluza-Klein, brane-world, RS warp factors</li>
-            <li><span class="dim">[○]</span> 2E.2 <strong>Quantum-gravity corrections</strong> beyond semiclassical — LQG, asymptotic safety</li>
-            <li><span class="dim">[○]</span> 2E.3 <strong>Non-minimal matter couplings</strong> — disformal, scalar-tensor, vector-tensor</li>
-            <li><span class="dim">[○]</span> 2E.4 <strong>Truly novel shift functionals</strong> — beyond Alcubierre/Natário/FH/Lentz family</li>
-            <li><span class="dim">[○]</span> 2E.5 <strong>Engineering-side simplifications</strong> — passive structures, repeating cycles</li>
+            <li><span class="dim">[○]</span> 2E.1 <strong>Genuinely time-dependent inflate-then-coast constructions</strong> — needs a 3+1 evolution code or quasi-static TOV re-solve sequence</li>
+            <li><span class="dim">[○]</span> 2E.2 <strong>Modified-gravity computational follow-through</strong> (Slice 6b) — 4th-order f(R) solver; pick a specific theory before opening</li>
+            <li><span class="dim">[○]</span> 2E.3 <strong>Quantum / semiclassical sources beyond classical AECs</strong> — scalar-field warm-up, then spin-2 follow-up</li>
+            <li><span class="warm">[~]</span> 2E.4 <strong>Multi-mode vortical A⃗ + anisotropic Π + non-trivial topology</strong> — the anisotropic-Π exponent axis <strong>closed negative Session 44</strong> (passenger-zone pathology is Π-independent; far-field violation at every tested exponent); topology and joint-vortical sub-axes remain open</li>
+            <li><span class="dim">[○]</span> 2E.5 <strong>Higher-dimensional / active-matter Krasnikov variants</strong></li>
           </ul>
           <div class="reopening">
-            <strong>Activation criterion:</strong> any specific quantitative construction in the published literature; otherwise these stay dormant.
+            <strong>Activation criterion:</strong> per-item reopening criteria in <a href="https://github.com/bshepp/alcubierre/blob/main/ROADMAP.md" target="_blank" rel="noopener">ROADMAP.md</a> (external publications, specific quantitative constructions, or a downstream finding that a recorded slice restriction was binding).
           </div>
         </div>
       </details>
 
       <details class="phase-row" open>
-        <summary><span class="chev">▶</span><span class="pid">Phase 3</span><span class="desc">Numerical verification — Warp Factory</span><span class="badge partial">◐ 3.1, 3.2 closed</span></summary>
+        <summary><span class="chev">▶</span><span class="pid">Phase 3</span><span class="desc">Numerical verification — Warp Factory → certified Python port</span><span class="badge done">✓ Closed through 3.10</span></summary>
         <div class="phase-detail">
-          <p>Independent numerical confirmation of analytic Path-2A results using the public <a href="https://github.com/NerdsWithAttitudes/WarpFactory" target="_blank" rel="noopener">Warp Factory v1.0</a> MATLAB toolkit. Pipeline tested on a known EC-violator (textbook Alcubierre) before being trusted on the positive Fuchs result.</p>
-          <h4>Closed (2)</h4>
+          <p>Independent numerical confirmation of analytic Path-2A results — first via the public <a href="https://github.com/NerdsWithAttitudes/WarpFactory" target="_blank" rel="noopener">Warp Factory v1.0</a> MATLAB toolkit, then via the clean-room Python port <code>warp_factory_py</code> whose exact-symbolic radial evaluator is now the project's <strong>certified EC oracle</strong> for sharp shell profiles (ground-truth adjudicated, Session 30; Cartesian FD demoted to smooth-only cross-check).</p>
+          <h4>Closed</h4>
           <ul>
-            <li><span class="pos">[✓]</span> <strong>3.1</strong> Standard-Alcubierre EC sanity (Pfenning-Ford 1997 params) — 92.6% in-mask EC violation, min(NEC) = −9.6×10<sup>43</sup>. Tooling confirmed (Session 19).</li>
-            <li><span class="pos">[✓]</span> <strong>3.2</strong> κ-surface sweep across (M, R<sub>2</sub>, β) — 27 cells × 6 inner Δ = 162 builds; mean κ = 5.33, decision-gate-B; new geometrical-cap-saturation null finding (Session 19).</li>
+            <li><span class="pos">[✓]</span> <strong>3.1</strong> Standard-Alcubierre EC sanity (Pfenning-Ford 1997 params) — 92.6% in-mask EC violation. Tooling confirmed (Session 19).</li>
+            <li><span class="pos">[✓]</span> <strong>3.2</strong> κ-surface sweep — re-based on the certified radial evaluator (Session 41): 12 genuine crossings, κ = 4.93 ± 0.44; spurious MATLAB thin-wall failures identified.</li>
+            <li><span class="pos">[✓]</span> <strong>3.3</strong> Nested + non-spherical Fuchs shells (Session 27) — <em>nested half REVERSED by the Session-39 certified kill-test</em>: small mass-splits improve the NEC margin ~8×; new minimal-mass candidate lead.</li>
+            <li><span class="pos">[✓]</span> <strong>3.3+</strong> Fuchs §6 radial-profile optimization, both steps — closed negative (Sessions 28–31); Fuchs's "orders of magnitude" claim unsupported in both slices.</li>
+            <li><span class="pos">[✓]</span> <strong>3.10</strong> Certified minimal-mass map (Session 32) — canonical floor M<sub>min</sub> = 2.568 × 10²⁷ kg; the canonical Fuchs mass is over-provisioned 1.75×.</li>
+            <li><span class="pos">[✓]</span> <strong>3.7</strong> Lentz 2020 kill-test (Sessions 43–45) — closed negative at class level; see Phase 2A.11 line.</li>
           </ul>
-          <h4>Next</h4>
+          <h4>Residue / candidate</h4>
           <ul>
-            <li><span class="warm">[ ]</span> <strong>3.3</strong> Nested concentric Fuchs shells + non-spherical (oblate/prolate) Fuchs constructions</li>
-            <li><span class="dim">[ ]</span> <strong>3.4+</strong> Gated on 2B and on Phase-2D results convergence</li>
+            <li><span class="warm">[ ]</span> Nested-variant minimal-mass map (from the Session-39 reversal) — could undercut the certified single-shell floor</li>
           </ul>
         </div>
       </details>
@@ -217,7 +215,7 @@
             <li><span class="dim">[ ]</span> 4.4 Hawking 1992 chronology protection — relevant to 2D.7 CTC-sea finding</li>
           </ul>
           <div class="reopening">
-            <strong>Activation:</strong> unblocked by Phase-2D convergence (when 2D.5f and 2D.11-Phase-3 close).
+            <strong>Activation:</strong> Phase 2D has closed, so the formal gate is lifted. Informal coverage now includes 2A.10 (SSV-2023 acceleration theorem), 2D.7 (Everett-Roman / CTC), 2D.9 (Bobrick-Martire), and the Session-46 ANEC probe of the Garattini-Zatrimaylov bubble (4.3-adjacent). The Phase-4.1 formal SSV-2021 assumption-table enumeration remains the open item (audit-noted).
           </div>
         </div>
       </details>
@@ -246,8 +244,7 @@
     <div class="block-eyebrow">Trust audit</div>
     <div class="block-title">Honest accounting</div>
     <p style="font-family:var(--serif);font-size:0.95rem;color:var(--text-secondary);line-height:1.7;margin-bottom:1rem;">
-      The project distinguishes results we derived ourselves from results we accepted on the literature's authority.
-      <strong style="color:var(--text-primary);">All ten audit rows are A-grade</strong> as of Session 18. Row #3 (Fuchs existence anchor) was upgraded B → A by independent Warp Factory reproduction; row #5 (NR rescaling pipeline) is A with a documented Colab-rerun caveat; row #9 (Rodal 2025 numerical comparison) is B by explicit choice (formal QFT calculation deferred to Phase 2B).
+      The project distinguishes results we derived ourselves (A) from results accepted from a specific paper (B) and heuristics (C), and maintains the grades as dated addenda — including downgrades, corrections, and withdrawals. Recent movements: the GW-recoil NR anchor closed C → B against the full public SXS catalog (Session 37); the Session-36 frame-projection bug and the Session-42 FH box-artifact re-scoping are recorded in place; the Lentz 2020 closure was upgraded from analogy to class-level A-within-slice certification (Session 45); and the Garattini–Zatrimaylov 2025 equations were upgraded B → A-within-slice by exact reproduction (Session 46) — with the paper's headline sharpened to "comoving vacuum void; ANEC violated; no useful-warp loophole."
     </p>
     <p style="font-family:var(--serif);font-size:0.95rem;color:var(--text-secondary);line-height:1.7;">
       Full table in <a href="https://github.com/bshepp/alcubierre/blob/main/TRUST_AUDIT.md" target="_blank" rel="noopener" style="color:var(--accent);text-decoration:none;">TRUST_AUDIT.md</a>.

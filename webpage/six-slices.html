@@ -78,8 +78,8 @@
           <td><a href="https://github.com/bshepp/alcubierre/blob/main/krasnikov_tube.ipynb" target="_blank" rel="noopener">krasnikov_tube</a></td>
         </tr>
         <tr>
-          <td>5</td><td>Cosmological exterior (drop asymptotic flatness — McVittie embedding)</td>
-          <td class="num">analytic</td><td class="num">—</td><td class="num neg">Δv ≤ 5.7 × 10⁻³⁶ m/s</td>
+          <td>5</td><td>Cosmological exterior (drop asymptotic flatness — McVittie embedding; + Garattini–Zatrimaylov 2025 EC qualifier, reproduced S46)</td>
+          <td class="num">analytic</td><td class="num">—</td><td class="num neg">Δv ≤ 5.7 × 10⁻³⁶ m/s; G–Z bubble = comoving void</td>
           <td><a href="https://github.com/bshepp/alcubierre/blob/main/cosmological_exterior.ipynb" target="_blank" rel="noopener">cosmological_exterior</a></td>
         </tr>
         <tr>
@@ -151,7 +151,8 @@
       <p>Result: the maximum velocity gain <strong>over a Hubble time</strong> is</p>
       <div class="formula-block">Δv ≤ 5.7 × 10⁻³⁶ m/s</div>
       <p>which is <em>74 orders of magnitude smaller</em> than any useful warp velocity. The cosmological-exterior loophole is technically real but quantitatively negligible.</p>
-      <p><strong>Sources:</strong> <a href="https://github.com/bshepp/alcubierre/blob/main/cosmological_exterior.ipynb" target="_blank" rel="noopener">cosmological_exterior.ipynb</a>, <a href="https://github.com/bshepp/alcubierre/blob/main/COSMOLOGICAL_EXTERIOR_NOTES.md" target="_blank" rel="noopener">COSMOLOGICAL_EXTERIOR_NOTES.md</a>.</p>
+      <p><strong>The slice's second half — energy-condition obligations (Garattini–Zatrimaylov 2025, reproduced Session 46).</strong> Garattini &amp; Zatrimaylov (<a href="https://arxiv.org/abs/2502.13153" target="_blank" rel="noopener">arXiv:2502.13153</a>) show a warp bubble moving <em>radially at the Hubble velocity</em> in de Sitter background has non-negative Eulerian energy density and satisfies volume-averaged WEC/NEC — a genuine modification of the energy-condition obligations when asymptotic flatness is dropped. Session 46 reproduced the construction <strong>exactly</strong> (every checked equation at machine precision, including against the full 4D Einstein tensor of the exact time-dependent moving-bubble metric; 9-gate battery <a href="https://github.com/bshepp/alcubierre/blob/main/verification/test_gz_desitter_reproduction.py" target="_blank" rel="noopener"><code>verification/test_gz_desitter_reproduction.py</code></a>) — the first external construction in the project to survive reproduction. The sharpenings: the Hubble-matched bubble is <em>exactly comoving</em> (its interior is a Minkowski patch riding the expansion — zero transport content); the "averaged" conditions are fixed-time volume averages inherited from the background, while <strong>ANEC along every wall-crossing null geodesic tested is strictly violated</strong>; and the local NEC/WEC/DEC violations are a wall-shape-set multiple of the background vacuum density. The qualifier is real (A-grade within slice) but describes a comoving vacuum void, not a vehicle — <span class="warm">no useful-warp loophole</span>.</p>
+      <p><strong>Sources:</strong> <a href="https://github.com/bshepp/alcubierre/blob/main/cosmological_exterior.ipynb" target="_blank" rel="noopener">cosmological_exterior.ipynb</a>, <a href="https://github.com/bshepp/alcubierre/blob/main/COSMOLOGICAL_EXTERIOR_NOTES.md" target="_blank" rel="noopener">COSMOLOGICAL_EXTERIOR_NOTES.md</a>, <a href="https://github.com/bshepp/alcubierre/blob/main/GARATTINI_ZATRIMAYLOV2025_EVALUATION.md" target="_blank" rel="noopener">GARATTINI_ZATRIMAYLOV2025_EVALUATION.md</a>.</p>
     </div>
   </div>
 
@@ -168,7 +169,7 @@
     <div class="block-eyebrow">Outcome</div>
     <div class="block-title">Where the six slices leave the project</div>
     <div class="prose">
-      <p>Slice 1's negative result narrows the load-bearing assumption from "Alcubierre shift" to "single-mode axisymmetric shift" — and that narrowing is the seed of <a href="fell-heisenberg.html">Phase 2D</a>, the only place in the project where strict-pass solutions exist. Slices 2-5 close the obvious classical escape routes (hybrid wall, time-dependence, QI loosening, cosmological coupling). Slice 6 is genuinely undetermined and is logged with reopening criteria (a specific f(R) construction with quantitative warp velocity). Phase 2C is therefore <strong>closed</strong> as a phase but contributes the framing for everything downstream.</p>
+      <p>Slice 1's negative result narrows the load-bearing assumption from "Alcubierre shift" to "single-mode axisymmetric shift" — and that narrowing is the seed of <a href="fell-heisenberg.html">Phase 2D</a>, the only place in the project where strict-pass solutions existed (until the Session-42 far-field re-scope). Slices 2-5 close the obvious classical escape routes (hybrid wall, time-dependence, QI loosening, cosmological coupling) — with Slice 5's one genuine qualifier, the Garattini–Zatrimaylov de Sitter bubble, reproduced exactly in Session 46 and found to be a comoving vacuum void with zero transport content. Slice 6 is genuinely undetermined and is logged with reopening criteria (a specific f(R) construction with quantitative warp velocity). Phase 2C is therefore <strong>closed</strong> as a phase but contributes the framing for everything downstream.</p>
     </div>
   </div>
 
