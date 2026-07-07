@@ -64,6 +64,8 @@ $$ T^{\rm eff}_{\mu\nu} = T^{\rm matter}_{\mu\nu} + T^{\rm curv}_{\mu\nu}, \qqua
 
 **Caveats on Garattini-Zatrimaylov**: (i) requires bubble velocity to match Hubble flow exactly — not arbitrary; (ii) only *averaged* energy conditions are satisfied, not local; (iii) it's still standard GR, not modified gravity per se.
 
+**Reproduction EXECUTED — Session 46 (2026-07-06), audit-queue Block 3(c): CONFIRMED EXACTLY, sharpened against usefulness.** Full record in [`GARATTINI_ZATRIMAYLOV2025_EVALUATION.md`](GARATTINI_ZATRIMAYLOV2025_EVALUATION.md); battery [`verification/test_gz_desitter_reproduction.py`](verification/test_gz_desitter_reproduction.py) (9/9). Every checked equation verified at machine precision (including against the full 4D Einstein tensor of the exact time-dependent moving-bubble metric) — the first external construction in the programme to survive reproduction. The sharpenings: the Hubble-matched bubble is *exactly comoving* (zero transport content); the "averaged" conditions are fixed-$t$ volume averages inherited from the background; **ANEC along every wall-crossing null geodesic tested is strictly violated**; the local violations are a wall-shape-set multiple of the background vacuum density. Caveats (i)–(ii) above are thereby confirmed and strengthened: assumption 5b's qualifier is real (now A-grade within slice) but opens no useful-warp loophole.
+
 ### Other authors and constructions briefly noted
 
 - **Capozziello, Luongo, Mauro 2021**: f(R) traversable wormholes with stable conditions and "no exotic matter" (in Jordan frame). Same frame-dependence caveat as Lobo-Oliveira.

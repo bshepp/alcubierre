@@ -45,6 +45,18 @@ Contents:
   plane-evaluator == Eq.-17 det-Hess identity, unidirectional-front
   certificates: rho_E = 0 marginal while full WEC/DEC strictly violated
   on 100% of the front core, exact quadratic amplitude scaling).
+  `test_gz_desitter_reproduction.py`: the Session-46 battery behind
+  audit-queue Block 3(c) -- Garattini-Zatrimaylov 2025 reproduced
+  EXACTLY (Eq. 6 == Hamiltonian constraint; Eqs. 14/17/18/23
+  symbolic-exact for generic profiles; full-4D Einstein-tensor
+  cross-checks of the exact moving-bubble metric at machine precision;
+  exact mass-conserving rearrangement; the paper's K-convention pinned)
+  plus the sharpenings: unmatched-trajectory control (Hubble matching
+  is load-bearing), local-violation quantification (wall-shape-set
+  multiple of rho_hat with an exact 1/L^2 scale lock), and the ANEC
+  probe (strictly violated on every wall-crossing null geodesic;
+  miss-ray control identically zero; compact-support profile required
+  by the flat-patch past-incompleteness).
 - **Adversarial kill-test batteries** — `test_profile_kill.py`,
   `test_radial_opt_xcheck.py`, `test_radial_opt_convergence.py`,
   `test_prongA_forensic.py`: resolution-convergence, cross-representation
