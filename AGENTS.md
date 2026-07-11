@@ -70,3 +70,13 @@ On Windows the dispatcher caps workers at `min(4, cpu - 1)` to avoid OpenBLAS he
 - Editing `papers/_originals/` or committing new full PDFs.
 - Re-running long-finished sweeps on HF Jobs without checking whether the output already lives in `sweeps/` or `sweeps_remote/`.
 - Dropping the slice-scope qualifier from a result when summarising it.
+
+## Compute resources
+
+Heavy **full-grid** sweeps can run on **jaga** — a 44C/88T, 256 GiB dual-Xeon box
+on the home LAN, **free** vs HuggingFace Jobs. Catalog:
+`F:\utility-projects\machines\COMPUTE.md`; how-to: `machines\jaga\USING-JAGA.md`.
+**Before dispatching:** run `machines\docs\tools\nodeprobe\nodeprobe.py` on jaga
+(or read `machines\jaga\status\jaga-latest.json`) to confirm it's healthy + idle,
+and log the run in `machines\jaga\cookbook\usage-log.md`. Keep the `*_preview`
+config discipline; jaga replaces the HF Jobs *full*-grid step.
