@@ -2555,3 +2555,37 @@ Three ways this session's *own probe* nearly manufactured wrong answers, each ca
 ### Disposition
 
 ROADMAP open-lead #2 **closed** (reopening triggers recorded there: a non-comoving transport-relevant extension with $\rho_E \ge 0$; an achronal-ANEC demonstration with no-go weight). **Block 3 complete — the Session-35 audit queue is fully executed** (Block 2: Sessions 36–41; Block 3: Sessions 43–46). NAVIGATOR assumption-5b row re-based from literature-B to **A within slice** with the four sharpenings; current-state paragraph updated. New docs/edits: [`GARATTINI_ZATRIMAYLOV2025_EVALUATION.md`](GARATTINI_ZATRIMAYLOV2025_EVALUATION.md) (new), MODIFIED_GRAVITY_LIT §Construction 3 (executed block), COSMOLOGICAL_EXTERIOR_NOTES (update note), verification/README. Remaining open directions after this session: the Phase-2E relaxations and the unranked nested-variant minimal-mass candidate (S39).
+
+## Session 47 (2026-07-11) — Nested minimal-mass map: the Session-39 reversal IS a mass-reduction lever (canonical floor −13.3%, RES_CONF-certified); first science runs on jaga
+
+**Objective (ROADMAP unranked candidate, Session 39):** does the certified ~8× NEC-margin improvement from small nested mass-splits convert into a LOWER certified minimal mass than the Session-32 single-shell floors? Executed as a 100-point certified map: 4 pass-cells of the 3.10 grid × f_inner ∈ {0.02…0.30} × 4 inner geometries (as fractions of R₂) + one f=0 baseline per cell.
+
+**Infrastructure (all verified before use):**
+- `find_mmin` made oracle-pluggable (`min_ec_fn` parameter; default unchanged) so the certified bracketing / horizon-wall / golden-section logic stays single-sourced; regression: the refactored code reproduces the S32 canonical cell **bit-exactly** (rel diff 0.00e+00 on nominal, ADM, κ).
+- New sweep `hf_jobs/sweeps/mmin_map_nested.py` (+ paired preview/full configs): nested two-shell EC oracle via `metric_nested_warp_shells` (warp band at the OUTER wall, per-shell inward TOV, Session-26/39 conventions); in-matter mask = outer shell ∪ (inner shell iff f>0).
+- Preview decision gate (local, 3 points): the f=0 baseline through the *nested* builder lands on the S32 floor **exactly** (2.567991e27; identical accept/reject path), brackets clean, ~690 s/point.
+- **First science dispatch to jaga** (post-validation): two OOM crashes taught the real constraint — one point peaks at **7.6 GB RSS** (RES_FULL `evaluate_axisym_ec` observer arrays) and a wave of workers peaks together, so RAM caps the pool at ~28 workers, not 84 cores. Third attempt: **100 points in 39.3 min** (would have been ~19 h serial). Lessons recorded in the machines-repo cookbook (usage-log, TIPS, alcubierre notes).
+- Verification harness `verification/test_mmin_nested_map.py`: audit gates (baselines vs S32; bracket honesty on all 96 pass rows; no_pass discipline) + certify mode (RES_CONF escalation of chosen rows, walk-up correction, improvement-survival gate).
+
+**Results (audit 4/4 PASS; certify 9/9 gate lines PASS across 3 rows):**
+
+| Cell (R₁,R₂,v) | S32 single-shell floor | Best nested floor (RES_FULL) | Reduction | Optimum |
+|---|---|---|---|---|
+| (10, 20, 0.02c) canonical | 2.5680e27 | 2.2145e27 → **2.2256e27 RES_CONF-corrected** | **−13.3% certified** | f=0.10, inner (7, 9.5) |
+| (7.5, 15, 0.02c) | 1.7713e27 | **1.4565e27 (RES_CONF exact, 0 walk-up)** | **−17.8% certified** | f=0.10, inner (5.25, 7.125) |
+| (10, 20, 0.005c) | 6.2911e26 | 5.5915e26 | −11.1% (RES_FULL) | f=0.10, inner (7, 9.5) |
+| (15, 20, 0.25-wall, 0.02c) | 4.7825e27 | none — **every split degrades** | 0% (f=0 optimal) | monotone worsening in f |
+
+- The optimum sits at **f ≈ 0.10** wherever improvement exists (consistent with the Session-39 margin plateau at 0.05–0.10); by f = 0.30 every cell is worse than single-shell.
+- The winning inner geometry is always the **near-wall** pair (0.35, 0.475)·R₂ — and at these radii *every* tested inner geometry sits within the ~5 m canonical smoothing length of the outer wall, so the certified winner is effectively a **graded (inward-thickened) outer wall**, not two separated shells. Genuinely deeper splits still help (canonical (5,8): −9.2% at f=0.15) but less.
+- κ bookkeeping (outer-geometry convention, directly comparable to 3.10): canonical κ_nominal 4.77 → **4.13** (graded); R₂=15 cell 4.38 → **3.61**. The Fuchs-class mass-efficiency constant is not geometry-independent once the wall is graded.
+- Canonical over-provisioning vs the canonical 4.49e27 configuration: 1.75× (S32) → **2.02×**.
+- The thin-wall (Δ/R₂ = 0.25) negative is structural, not noise: degradation is monotone in f across all 24 rows (+0.6% → +16.6%), all with honest converged brackets and an exact f=0 baseline through the same machinery that found improvements elsewhere.
+
+**Physical reading (extends Session 39's):** moving a small mass fraction inward raises enclosed M(r) at the warp band's inner edge, strengthening positive-energy support where the shift gradient bites — and the certified optimum keeps that mass *adjacent* to the wall (grading) rather than deep inside. But the support is load-bearing for the outer wall itself: with a thin outer wall (Δ/R₂ = 0.25) any starvation loses more than the inner support gains, at every f and geometry tested.
+
+**Slice scope (accompanies every claim above):** constant-density components; TOV-pinned isotropic pressure per shell (P=0 at each shell's outer surface); l=1 dipole shift via the canonical compact sigmoid at the outer wall only; smooth_factor 4000 with canonical physical spacing — the ~5 m ρ-smoothing length exceeds all tested inner-to-outer gaps, so "nested" here means partially merged/graded, NOT well-separated shells; EC minima over the in-matter mask; radial representation (Cartesian demoted per 3.9); f-grid resolution 0.05 near the optimum; 4 geometry pairs per cell; rel_tol 0.005 on M.
+
+**Follow-on candidate (unranked, owner to place):** the graded-wall reading suggests optimizing a *continuous* monotone density ramp ρ(r) on the wall (the two-component split is the crudest grading; the certified optimum sits at the parameterization's near-wall boundary, i.e. the grid wants to be a profile family). Existing machinery suffices (profile-parameterized `min_ec_fn` + `find_mmin`). NOTE per the S30 lesson: any such profile optimization must run in the RADIAL representation (this map already does).
+
+**Compute provenance:** grid on jaga (Debian 13, Python 3.13.5, repo-pinned stack, `~/venvs/alcubierre`), certify on jaga single-process; local preview + bit-exact refactor regression on the canonical Windows/Py3.13.5 stack; pipeline itself validated earlier the same day (thickness_bound preview bitwise-identical local vs jaga). Artifacts: `sweeps/mmin_map_nested_full_concat.parquet` (tracked), raw in `sweeps_remote/mmin_map_nested_20260711T191940.*`, battery `verification/test_mmin_nested_map.py`.

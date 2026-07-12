@@ -134,9 +134,22 @@ def _passes(mn: float) -> bool:
     return np.isfinite(mn) and mn >= 0.0
 
 
-def find_mmin(R1: float, R2: float, v: float, rel_tol: float = 0.005) -> dict:
-    """Bisect the minimal EC-passing nominal mass for one (R1, R2, v) cell."""
+def find_mmin(R1: float, R2: float, v: float, rel_tol: float = 0.005,
+              min_ec_fn=None) -> dict:
+    """Bisect the minimal EC-passing nominal mass for one (R1, R2, v) cell.
+
+    ``min_ec_fn`` (Session 47): optional EC oracle with the same signature
+    and return contract as :func:`min_ec` -- ``(min_ec, min_by_cond, M_adm,
+    horizon_min)`` for ``(R1, R2, M_nominal, v, res)``. Defaults to the
+    single-shell :func:`min_ec`; the nested-shell sweep
+    (:mod:`hf_jobs.sweeps.mmin_map_nested`) injects its own so the certified
+    bracketing / horizon-wall / golden-section logic here stays
+    single-sourced. ``R1``/``R2`` remain the *outer* shell geometry (they
+    seed the scan and define kappa bookkeeping).
+    """
     t0 = time.time()
+    if min_ec_fn is None:
+        min_ec_fn = min_ec
     Delta = R2 - R1
     M_pred = KAPPA_SEED * v * R2**2 * c**2 / (2.0 * G * Delta)
     n_scout = n_full = 0
@@ -145,7 +158,7 @@ def find_mmin(R1: float, R2: float, v: float, rel_tol: float = 0.005) -> dict:
     def scout(M):
         nonlocal n_scout, horizon_seen
         n_scout += 1
-        mn, _, _, hmin = min_ec(R1, R2, M, v, RES_SCOUT)
+        mn, _, _, hmin = min_ec_fn(R1, R2, M, v, RES_SCOUT)
         if not np.isfinite(mn):
             horizon_seen = True
         return mn
@@ -153,7 +166,7 @@ def find_mmin(R1: float, R2: float, v: float, rel_tol: float = 0.005) -> dict:
     def full(M):
         nonlocal n_full, horizon_seen
         n_full += 1
-        mn, by, M_adm, hmin = min_ec(R1, R2, M, v, RES_FULL)
+        mn, by, M_adm, hmin = min_ec_fn(R1, R2, M, v, RES_FULL)
         if not np.isfinite(mn):
             horizon_seen = True
         return mn, by, M_adm

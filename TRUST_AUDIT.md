@@ -584,3 +584,16 @@ Two independent symbolic G derivations + exact-analytic vs quintic-spline deriva
 | Session-46 sharpenings (ours): comoving lock; ANEC violated on every wall-crossing ray tested; local violations scale-locked to $\hat\rho$ ($1/L^2$, shape-set multiple) | **A within the stated probe scope** | Plain (not achronal-restricted) ANEC; meridional-plane ray family at one parameter set; compact-support wall required (flat-patch past-incompleteness makes ANEC ill-defined for non-compact tails). |
 | NAVIGATOR 5b row basis | **Re-based lit-B → reproduction-A; "no useful-warp loophole"** | The 5b qualifier is real but describes a comoving vacuum void with zero transport content; pointwise WEC/DEC still violated in the wall; ANEC violated. |
 | Probe-integrity instances (S32 "search logic can manufacture false no-results" family) | **Recorded** | (i) fixed-point launch = probe that cannot reach its target silently reads as a null result; (ii) integrating past a finite-affine patch boundary manufactures signal; (iii) non-compact profile tails amplified by horizon blueshift make an averaged quantity formally divergent. All three baked into the battery as asserted integrity gates. |
+
+---
+
+## Session 47 addendum — nested minimal-mass map: canonical floor re-based; S39 reversal quantified as a mass lever
+
+**Battery:** [`verification/test_mmin_nested_map.py`](verification/test_mmin_nested_map.py) (audit 4/4; RES_CONF certify on 3 rows, all gates PASS). **Map:** [`sweeps/mmin_map_nested_full_concat.parquet`](sweeps/mmin_map_nested_full_concat.parquet).
+
+| Item | Impact | Detail |
+|---|---|---|
+| Nested/graded-wall minimal-mass map (100 points, 4 cells) | **New, A within slice** | Derived end-to-end in our harness through the certified radial oracle; the certified `find_mmin` search logic reused unchanged (oracle injection; refactor regression bit-exact); f=0 baselines EXACT vs the S32 map at all 4 cells; bracket honesty on all 96 pass rows; RES_CONF escalation on the three headline rows (walk-up ≤ 1 step of rel_tol). |
+| Canonical-cell certified floor (Task 3.10 headline number) | **Re-based 2.568e27 → 2.2256e27 nominal (−13.3%)** | Two-component graded wall, f=0.10, inner (7, 9.5) m; κ_nominal 4.77 → 4.13; over-provisioning vs the canonical 4.49e27 configuration: 1.75× → 2.02×. The single-shell 2.568e27 remains the correct *single-shell* floor; cite the pair with their wall classes. |
+| Session-39 reversal (margin ~8× at fixed M) | **Quantified as a mass lever: real but strongly sublinear** | ~8× margin surplus converts to −13.3% (canonical) / −17.8% (R₂=15) certified mass reduction; margin collapses steeply as M drops. Thin-wall Δ/R₂=0.25 cell: NO improvement at any (f, geometry) — monotone degradation, structural negative. |
+| jaga as compute provenance | **Accepted (validated pipeline + exact cross-checks)** | Same code path as local (PYTHONPATH dispatch of repo modules); pipeline validated bitwise on thickness_bound the same day; S47's own f=0 baselines reproduce S32 local results exactly through the full nested code path. OOM-sizing lesson (7.6 GB/point peak, 28-worker cap) recorded in the machines cookbook. |

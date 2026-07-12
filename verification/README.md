@@ -57,6 +57,12 @@ Contents:
   probe (strictly violated on every wall-crossing null geodesic;
   miss-ray control identically zero; compact-support profile required
   by the flat-patch past-incompleteness).
+  `test_mmin_nested_map.py`: the Session-47 adjudicator for the nested
+  (graded-wall) minimal-mass map -- audit gates (f=0 baselines EXACT vs
+  the S32 single-shell map; bracket honesty on every pass row; no_pass
+  basis explicit) + certify mode (RES_CONF escalation with walk-up
+  correction and an improvement-survival gate; canonical-cell floor
+  re-based 2.568e27 -> 2.2256e27 nominal, -13.3%).
 - **Adversarial kill-test batteries** — `test_profile_kill.py`,
   `test_radial_opt_xcheck.py`, `test_radial_opt_convergence.py`,
   `test_prongA_forensic.py`: resolution-convergence, cross-representation

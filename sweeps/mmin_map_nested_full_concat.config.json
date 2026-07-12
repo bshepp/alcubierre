@@ -1,0 +1,57 @@
+{
+  "_comment": "Full grid for the Session-47 nested-variant minimal-mass map. 4 pass-cells from the Session-32 (3.10) map x 6 f_inner x 4 inner geometries + 4 f=0 baselines = 100 points. Cells: canonical (10,20,0.02c) [S32 floor 2.568e27], v-variation (10,20,0.005c) [6.291e26], R2-variation (7.5,15,0.02c) [1.771e27], thin-wall (15,20,0.02c) [4.783e27]. Inner geometries as (a_in, b_in) fractions of R2_out: (0.25,0.40) = Session-39's (5,8) at R2=20; thinner/deeper (0.15,0.30); near-wall (0.35,0.475) -- NOTE partially merged with the outer wall under the ~5 m canonical smoothing; thick (0.10,0.45). All satisfy b_in*R2 < R1_out for dfrac=0.5; all trivially fit for dfrac=0.25. Run ONLY after mmin_map_nested_preview passes its decision gate; dispatch to jaga (free), not HF Jobs.",
+  "rel_tol": 0.005,
+  "cells": [
+    {
+      "R2": 20.0,
+      "dfrac": 0.5,
+      "v": 0.02
+    },
+    {
+      "R2": 20.0,
+      "dfrac": 0.5,
+      "v": 0.005
+    },
+    {
+      "R2": 15.0,
+      "dfrac": 0.5,
+      "v": 0.02
+    },
+    {
+      "R2": 20.0,
+      "dfrac": 0.25,
+      "v": 0.02
+    }
+  ],
+  "f_inner": {
+    "values": [
+      0.02,
+      0.05,
+      0.1,
+      0.15,
+      0.2,
+      0.3
+    ]
+  },
+  "inner_geometries": {
+    "values": [
+      [
+        0.25,
+        0.4
+      ],
+      [
+        0.15,
+        0.3
+      ],
+      [
+        0.35,
+        0.475
+      ],
+      [
+        0.1,
+        0.45
+      ]
+    ]
+  },
+  "include_f0_baseline": true
+}

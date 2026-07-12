@@ -1,0 +1,10 @@
+{
+  "_comment": "Preview for the Session-47 nested-variant minimal-mass map (ROADMAP unranked candidate; Session-39 reversal follow-up). Canonical 3.10 cell only (R1,R2,v)=(10,20,0.02c), Session-39 inner geometry (5,8) = fractions (0.25,0.40), f_inner in {0.05, 0.15} + the f=0 baseline. Decision gate before dispatching the full grid to jaga: (a) the f=0 baseline M_min through the NESTED builder matches the Session-32 single-shell floor 2.568e27 nominal within ~1% (degenerate-limit consistency at the floor, not just at fixed mass); (b) nested thresholds bisect cleanly (minec_below < 0 <= minec_above); (c) per-point runtime acceptable (expect ~4-8 min/point locally).",
+  "rel_tol": 0.005,
+  "cells": [
+    {"R2": 20.0, "dfrac": 0.5, "v": 0.02}
+  ],
+  "f_inner": {"values": [0.05, 0.15]},
+  "inner_geometries": {"values": [[0.25, 0.40]]},
+  "include_f0_baseline": true
+}
