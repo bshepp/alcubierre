@@ -610,3 +610,17 @@ Two independent symbolic G derivations + exact-analytic vs quintic-spline deriva
 | S47 "graded wall" interpretation | **CORRECTED (verdict and numbers unchanged)** | Cross-builder discriminator at identical nominal ρ: per-shell-TOV floor 0.8824× ref vs single-TOV floor 1.1409× ref. The S47 lever is the two-body pressure ansatz (per-component P=0 surfaces shaping the lapse), not density grading. Both families honestly evaluated (T_μν from G_μν); S47's 2.2256e27 EC-passing configuration stands. |
 | S47 mask robustness | **Kill-tested, PASS** | Union vs contiguous mask min(EC) identical to 0.00e+00 rel at the corrected floor; worst point mid-wall (r≈12.5 m), nowhere near the standoff sliver. |
 | jaga NUMA dispatch | **Measured: pinning no-op; policy recorded** | 680.1 s vs 681 s A/B on identical points; bandwidth ceiling is intra-node; default dispatch stays unpinned with RAM-sized pools (machines cookbook). |
+
+---
+
+## Session 49 addendum — spin-up margin surface (2E.1 first leg): A within slice
+
+**Battery:** [`verification/test_spinup_margin.py`](verification/test_spinup_margin.py) (audit 4/4, exact 2/2). **Surface:** [`sweeps/spinup_margin_full_concat.parquet`](sweeps/spinup_margin_full_concat.parquet).
+
+| Item | Impact | Detail |
+|---|---|---|
+| Time-dependent axisymmetric evaluator (`evaluate_axisym_ec_timedep`) | **New solver capability, A** | Exact symbolic Einstein tensor of the rigid-profile v(t) family; static limit exact (9.5e-14 lambda-level, ≤6e-14 per-row); structure facts exact in symbolic arithmetic (no v̈ anywhere; vd in diagonal + flux rows only). |
+| Quasi-static corridor (three certified configs) | **A within slice — CLEAN** | min-EC(v, vd=0) ≥ 0 for every intermediate v; corridor minimum at v_target. The S32 M_min(v) monotonicity assumption kill-tested and upheld on an 8-point ladder. |
+| Spin-up rate bound τ* | **A within slice, order-of-magnitude precision** | 24.5/50.4/47.9 ns (0.37/0.76/0.72 R₂/c) for canonical/floor/two-body; every v-row caps (bounds real); DEC binds near the floor; log-grid interpolated crossings (not bisected) — stated. |
+| S32 cross-anchor drift 7.2e-6 | **Explained, within the S35 band** | The S32 parquet predates the Session-35 behaviour-preserving mmin_map fixes (≤1e-4 band); masses matched exactly in S47, values drift inside the band. Battery GATE 3 tolerance documents this. |
+| 2E.1 status | **First leg closed POSITIVE-within-slice** | EC bookkeeping does not obstruct rigid-profile inflate-then-coast; remaining 2E.1 content (dynamical restructuring, worldline acceleration, superluminal transitions) stays deferred with original criteria. |

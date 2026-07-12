@@ -1,0 +1,10 @@
+{
+  "_comment": "Full grid for the Session-49 spin-up margin surface (Task 2E.1). 3 configurations (canonical 4.49e27 vessel; the S32 certified single-shell floor 2.568e27; the S47 two-body winner at its RES_CONF-corrected floor 2.22558e27) x 8 v values spanning the spin-up corridor x (0 + 9 vd magnitudes both signs) = 3 x 8 x 19 = 456 snapshots at RES_FULL. The vd=0 rows are the quasi-static corridor kill-test; the vd grid brackets the margin zero crossing for the floor configs (probe slope ~ -5.7e40 x vd on the canonical vessel implies floor-config vd_max ~ 1e-4 /m). Dispatch to jaga at 28 workers (RAM cap; ~80 s/snapshot; ETA ~25 min).",
+  "configs": [
+    {"name": "canonical", "kind": "single", "R1": 10.0, "R2": 20.0, "M": 4.49e27, "v_build": 0.02},
+    {"name": "floor",     "kind": "single", "R1": 10.0, "R2": 20.0, "M": 2.567991e27, "v_build": 0.02},
+    {"name": "twobody",   "kind": "nested", "R1": 10.0, "R2": 20.0, "R1_in": 7.0, "R2_in": 9.5, "f_inner": 0.10, "M": 2.22558e27, "v_build": 0.02}
+  ],
+  "v": {"values": [0.0025, 0.005, 0.0075, 0.01, 0.0125, 0.015, 0.0175, 0.02]},
+  "vd_mag": {"values": [1e-6, 3e-6, 1e-5, 3e-5, 1e-4, 3e-4, 1e-3, 3e-3, 1e-2]}
+}

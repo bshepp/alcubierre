@@ -1,0 +1,8 @@
+{
+  "_comment": "Preview for the Session-49 spin-up margin surface (Task 2E.1). Canonical vessel only, 2 v x {0, +/-1e-4} vd = 6 points. Decision gate: (a) vd=0 points match the static evaluator (the battery re-checks exactly); (b) inflate/deflate sign asymmetry visible (margin(+vd) < margin(0) < margin(-vd)); (c) runtime acceptable. Scout-tier numbers from the Session-49 probe: margin moves ~-2.2% at vd=1e-3 on the canonical vessel.",
+  "configs": [
+    {"name": "canonical", "kind": "single", "R1": 10.0, "R2": 20.0, "M": 4.49e27, "v_build": 0.02}
+  ],
+  "v": {"values": [0.01, 0.02]},
+  "vd_mag": {"values": [1e-4]}
+}

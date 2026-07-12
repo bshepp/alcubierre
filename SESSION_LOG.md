@@ -2614,3 +2614,25 @@ ROADMAP open-lead #2 **closed** (reopening triggers recorded there: a non-comovi
 **Follow-on residue (optional, unranked):** standoff-size dependence of the two-body configuration — g=0 (contact) gives −11.8% vs g=0.5 m −13.8% at matched shapes, suggesting a mild gap benefit worth one axis if the two-body lever is ever pursued further.
 
 **Compute provenance:** grid + certify on jaga (82 pts / 33.5 min at 28 workers; RES_CONF certify 343 s), adjudicate + preview local; artifacts `sweeps/mmin_map_graded_full_concat.parquet` (tracked), raw `sweeps_remote/mmin_map_graded_20260711T210644.*`, module `hf_jobs/sweeps/mmin_map_graded.py`, battery `verification/test_mmin_graded_map.py`.
+
+## Session 49 (2026-07-11) — Phase 2E opened; 2E.1 first leg: spin-up EC bookkeeping is unobstructive — τ* sits at the causality scale (~R₂/c)
+
+**Owner decision:** Phase 2E opened; working order 2E.1 (time-dependence scoping) → 2E.4 residual axes → 2E.2/6b (f(R) build); 2E.3/2E.5 stay externally gated.
+
+**The move that made 2E.1's first leg cheap:** in the Fuchs class the TOV parts (A, B) and shift form factor F are exactly v-independent, so the comoving-form metric with v → v(t) and rigid radial profiles is an *exact* time-dependent spacetime — the S46 full-4D pattern, no evolution code needed. Its symbolic Einstein tensor (new cached builder `_build_lambdas_timedep` + evaluator `evaluate_axisym_ec_timedep` in `warp_factory_py/solvers/axisymmetric_ec.py`) yields two exact structure facts:
+
+- **v̈ never appears** — the spin-up stress is first-order in the ramp rate, so the ENTIRE inflate-coast-deflate lifecycle reduces to one margin surface min-EC(v, vd), vd = dv/d(ct); any ramp is a curve on it.
+- vd enters the diagonal components and the (tr, tθ) flux rows only.
+
+Static-limit gates: lambda-level 9.5e-14 on random meshes; full-pipeline 1.2e-16; per-row parquet re-check ≤ 6.0e-14 (battery GATE 1).
+
+**The margin surface (456 snapshots at RES_FULL on jaga, 19.6 min: 3 configs × 8 v × {0, ±9 vd magnitudes}; battery `verification/test_spinup_margin.py`, audit 4/4 + exact 2/2):**
+
+- **GATE 2 — quasi-static corridor CLEAN for all three configurations** (canonical 4.49e27 vessel; certified single-shell floor 2.568e27; S47 two-body winner 2.22558e27): a shell provisioned for v_target = 0.02c passes all four pointwise ECs at every intermediate v; the corridor minimum sits at v_target (margin monotone in v).
+- **GATE 5 — the fastest EC-clean quintic-smoothstep spin-up:** τ* = 24.5 ns (canonical, 0.37 R₂/c), 50.4 ns (floor, 0.76 R₂/c), 47.9 ns (two-body, 0.72 R₂/c). Every v-row genuinely caps within the vd grid — the bounds are real, not vacuous — and they sit at the light-crossing scale of the shell itself. **Any spin-up slower than ~one light-crossing of the wall is EC-clean in this family.** Precision caveat: crossings are log-grid interpolations (vd spacing ×3), so τ* is order-of-magnitude-tight, not bisected.
+- **Asymmetry + binding structure:** at small rates (|vd| ≈ 1e-4) the response is linear — inflating costs margin, deflating GAINS it (+4.1e35…+4.7e35 at v_target) — while at |vd| ≳ 1e-3 the quadratic term dominates and both directions cost (deflation caps at similar rates). Near the floor the **dominant energy condition binds first** (the spin-up's momentum flux outrunning the local energy density — 3e-4 /m for the floor config); the fat canonical vessel survives to vd = 1e-2 where the strong condition breaks.
+- GATE 3 cross-anchor note: the floor config's static margin matches the S32 recorded minec_above at rel 7.2e-6 — inside the Session-35 behaviour-preserving band (≤1e-4; the S32 parquet predates the S35 mmin_map fixes); bisected masses were exact matches (S47 GATE 1), values drift within the band. The battery tolerance cites this explicitly.
+
+**Verdict (slice-scoped):** within the rigid-profile comoving-form spin-up family — exact time-dependence, subluminal v, canonical smoothing, radial representation, EC minima over the in-matter mask — **energy-condition bookkeeping does not obstruct inflate-then-coast**: the static-slice restriction was not load-bearing at the lifecycle level for this family, and the only rate limit is causality-scale. What this leg does NOT cover (2E.1 remainder, deferred with original criteria): genuinely dynamical shell assembly/restructuring outside the rigid family (needs ADM evolution), the bubble's worldline-acceleration terms (this family ramps the shift amplitude in place), and the superluminal-transition horizon obstruction (Schuster–Santiago–Visser) — v stays at 0.02c here.
+
+**Compute provenance:** grid on jaga (456 pts / 19.6 min at 28 workers; per-config profile cache ~2.3× throughput), gates local; artifacts `sweeps/spinup_margin_full_concat.parquet` (tracked), raw `sweeps_remote/spinup_margin_20260711T222209.*`, module `hf_jobs/sweeps/spinup_margin.py`, solver extension in `warp_factory_py/solvers/axisymmetric_ec.py`.

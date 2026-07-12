@@ -70,6 +70,13 @@ Contents:
   winner, rel diff 0) and GATE D (cross-builder discriminator at
   identical nominal rho -- per-shell-TOV 0.8824x vs single-TOV 1.1409x
   of the S32 floor; the S47 lever is the two-body pressure ansatz).
+  `test_spinup_margin.py`: the Session-49 adjudicator for the 2E.1
+  spin-up margin surface -- static-limit row re-checks (<= 6e-14),
+  quasi-static corridor gate (clean for all three certified configs),
+  surface sanity, and tau* extraction (fastest EC-clean spin-up
+  ~0.4-0.8 R2/c; DEC binds near the floor; log-grid precision stated);
+  the S32 cross-anchor gate documents the Session-35
+  behaviour-preserving value band (7.2e-6 observed vs <= 1e-4).
 - **Adversarial kill-test batteries** — `test_profile_kill.py`,
   `test_radial_opt_xcheck.py`, `test_radial_opt_convergence.py`,
   `test_prongA_forensic.py`: resolution-convergence, cross-representation

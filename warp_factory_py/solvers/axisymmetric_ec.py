@@ -276,3 +276,182 @@ def evaluate_axisym_ec(
         "min_by_cond": summary, "min": float(overall),
         "g": g_cov, "T_eul": T_eul,
     }
+
+
+# ---------------------------------------------------------------------------
+# Time-dependent extension (Session 49, Task 2E.1): v -> v(t)
+# ---------------------------------------------------------------------------
+
+@lru_cache(maxsize=1)
+def _build_lambdas_timedep():
+    """Symbolic Einstein tensor for the SAME ansatz with v -> v(t) (cached).
+
+    The rigid-profile spin-up family: Apos(r), B(r), F(r) held fixed (they
+    are v-independent in the Fuchs class), shift amplitude promoted to
+    v(t). The metric is an exact spacetime; G_munu gains time-derivative
+    terms through ``vd = dv/d(ct)`` (units 1/m). Structure facts, exact in
+    symbolic arithmetic (Session 49 GATE B): ``vdd`` NEVER appears -- the
+    stress is first-order in the ramp rate -- and vd enters the diagonal
+    components and the (tr, tth) flux rows only. At vd = 0 every component
+    reduces to the static :func:`_build_lambdas` output (GATE A, 9.5e-14).
+
+    Returns ``(args, idx, T_components)`` where args ends with
+    ``(..., v, vd, vdd)``; g components are the static ones evaluated at
+    the instantaneous v (the metric itself carries no vd).
+    """
+    t, r, th, ph = sp.symbols("t r theta phi", real=True)
+    Apos, Apos_r, Apos_rr = sp.symbols("Apos Apos_r Apos_rr", positive=True)
+    B, B_r, B_rr = sp.symbols("B B_r B_rr", positive=True)
+    F, F_r, F_rr = sp.symbols("F F_r F_rr", real=True)
+    v, vd, vdd = sp.symbols("v vd vdd", real=True)
+
+    Af = sp.Function("Af")(r)
+    Bf = sp.Function("Bf")(r)
+    Ff = sp.Function("Ff")(r)
+    vf = sp.Function("vf")(t)
+
+    g = sp.Matrix([
+        [-Af,                      -Ff * vf * sp.cos(th),  Ff * vf * r * sp.sin(th), 0],
+        [-Ff * vf * sp.cos(th),     Bf,                    0,                        0],
+        [ Ff * vf * r * sp.sin(th), 0,                     r**2,                     0],
+        [0,                         0,                     0,       r**2 * sp.sin(th)**2],
+    ])
+    coords = (t, r, th, ph)
+    gi = g.inv()
+
+    N = 4
+    Gamma = [[[sp.S.Zero] * N for _ in range(N)] for _ in range(N)]
+    for a in range(N):
+        for b in range(N):
+            for cc in range(N):
+                s = sp.S.Zero
+                for d in range(N):
+                    s += gi[a, d] * (sp.diff(g[d, b], coords[cc])
+                                     + sp.diff(g[d, cc], coords[b])
+                                     - sp.diff(g[b, cc], coords[d]))
+                Gamma[a][b][cc] = s / 2
+
+    Ric = sp.zeros(N, N)
+    for a in range(N):
+        for b in range(N):
+            s = sp.S.Zero
+            for cc in range(N):
+                s += sp.diff(Gamma[cc][a][b], coords[cc]) \
+                    - sp.diff(Gamma[cc][a][cc], coords[b])
+                for d in range(N):
+                    s += Gamma[cc][cc][d] * Gamma[d][a][b] \
+                        - Gamma[cc][b][d] * Gamma[d][a][cc]
+            Ric[a, b] = s
+
+    Rs = sum(gi[a, b] * Ric[a, b] for a in range(N) for b in range(N))
+    idx = [(0, 0), (0, 1), (0, 2), (0, 3), (1, 1), (1, 2),
+           (1, 3), (2, 2), (2, 3), (3, 3)]
+    G = {}
+    for i, j in idx:
+        G[(i, j)] = sp.cancel(sp.together(
+            Ric[i, j] - sp.Rational(1, 2) * g[i, j] * Rs))
+
+    subs = [
+        (sp.Derivative(Af, r, r), Apos_rr), (sp.Derivative(Af, r), Apos_r),
+        (Af, Apos),
+        (sp.Derivative(Bf, r, r), B_rr), (sp.Derivative(Bf, r), B_r),
+        (Bf, B),
+        (sp.Derivative(Ff, r, r), F_rr), (sp.Derivative(Ff, r), F_r),
+        (Ff, F),
+        (sp.Derivative(vf, t, t), vdd), (sp.Derivative(vf, t), vd), (vf, v),
+    ]
+    args = (Apos, Apos_r, Apos_rr, B, B_r, B_rr, F, F_r, F_rr, r, th,
+            v, vd, vdd)
+    T_components = [
+        sp.lambdify(args, G[(i, j)].subs(subs), "numpy", cse=True)
+        for i, j in idx
+    ]
+    return args, idx, T_components
+
+
+def evaluate_axisym_ec_timedep(
+    r_1d: np.ndarray,
+    Apos_1d: np.ndarray,
+    B_1d: np.ndarray,
+    F_1d: np.ndarray,
+    *,
+    v: float,
+    vd: float,
+    theta: np.ndarray,
+    in_shell_mask_1d: np.ndarray | None = None,
+    num_angular: int = 100,
+    num_temporal: int = 10,
+):
+    """Energy conditions for one spin-up snapshot (v, vd = dv/d(ct)).
+
+    Identical contract to :func:`evaluate_axisym_ec` plus ``vd`` in 1/m
+    (``vd = (dv/dtau_seconds) / c``). At vd = 0 this reproduces the static
+    evaluator exactly. The metric fed to the Eulerian transformation is the
+    instantaneous static-form metric at v; only T carries vd terms (the
+    metric components themselves have no time-derivative dependence).
+    """
+    args_syms, idx, g_comps, _ = _build_lambdas()
+    _, _, T_comps_td = _build_lambdas_timedep()
+
+    r_1d = np.asarray(r_1d, dtype=np.float64)
+    theta = np.asarray(theta, dtype=np.float64)
+    Nr, Nth = r_1d.size, theta.size
+
+    def d12(y):
+        sp5 = InterpolatedUnivariateSpline(r_1d, y, k=5)
+        return sp5.derivative(1)(r_1d), sp5.derivative(2)(r_1d)
+
+    Apos_r, Apos_rr = d12(Apos_1d)
+    B_r, B_rr = d12(B_1d)
+    F_r, F_rr = d12(F_1d)
+
+    R = r_1d[:, None]
+    TH = theta[None, :]
+
+    def b(a1):
+        return np.broadcast_to(a1[:, None], (Nr, Nth))
+
+    mesh_static = (
+        b(Apos_1d), b(Apos_r), b(Apos_rr), b(B_1d), b(B_r), b(B_rr),
+        b(F_1d), b(F_r), b(F_rr),
+        np.broadcast_to(R, (Nr, Nth)), np.broadcast_to(TH, (Nr, Nth)),
+        float(v),
+    )
+    mesh_td = mesh_static + (float(vd), 0.0)
+    grid_shape = (Nr, Nth)
+
+    g_cov = _assemble(g_comps, mesh_static, grid_shape)
+    G_cov = np.zeros((4, 4) + grid_shape, dtype=np.float64)
+    for (i, j), comp in zip(idx, T_comps_td):
+        val = comp(*mesh_td)
+        val = np.broadcast_to(np.asarray(val, dtype=np.float64), grid_shape)
+        G_cov[i, j] = val
+        if i != j:
+            G_cov[j, i] = val
+    T_cov = EINSTEIN_PREFACTOR * G_cov
+
+    M = eulerian_transformation(g_cov, wf_compat=False)
+    T_eul = to_eulerian(T_cov, M)
+    ec = evaluate_energy_conditions(
+        T_eul, num_angular=num_angular, num_temporal=num_temporal
+    )
+
+    if in_shell_mask_1d is not None:
+        m2 = np.broadcast_to(
+            np.asarray(in_shell_mask_1d, dtype=bool)[:, None], (Nr, Nth)
+        )
+    else:
+        m2 = np.ones((Nr, Nth), dtype=bool)
+
+    overall = np.inf
+    summary = {}
+    for cond in ("null", "weak", "dominant", "strong"):
+        vals = ec[cond][m2]
+        mn = float(vals.min()) if vals.size else np.nan
+        summary[cond] = mn
+        overall = min(overall, mn)
+    return {
+        "null": ec["null"], "weak": ec["weak"],
+        "dominant": ec["dominant"], "strong": ec["strong"],
+        "min_by_cond": summary, "min": float(overall),
+    }
