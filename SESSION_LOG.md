@@ -2589,3 +2589,28 @@ ROADMAP open-lead #2 **closed** (reopening triggers recorded there: a non-comovi
 **Follow-on candidate (unranked, owner to place):** the graded-wall reading suggests optimizing a *continuous* monotone density ramp ρ(r) on the wall (the two-component split is the crudest grading; the certified optimum sits at the parameterization's near-wall boundary, i.e. the grid wants to be a profile family). Existing machinery suffices (profile-parameterized `min_ec_fn` + `find_mmin`). NOTE per the S30 lesson: any such profile optimization must run in the RADIAL representation (this map already does).
 
 **Compute provenance:** grid on jaga (Debian 13, Python 3.13.5, repo-pinned stack, `~/venvs/alcubierre`), certify on jaga single-process; local preview + bit-exact refactor regression on the canonical Windows/Py3.13.5 stack; pipeline itself validated earlier the same day (thickness_bound preview bitwise-identical local vs jaga). Artifacts: `sweeps/mmin_map_nested_full_concat.parquet` (tracked), raw in `sweeps_remote/mmin_map_nested_20260711T191940.*`, battery `verification/test_mmin_nested_map.py`.
+
+## Session 48 (2026-07-11) — Graded-wall map closed NEGATIVE; S47's mechanism corrected: the two-body pressure ansatz, not density grading, is the lever
+
+**Objective (ROADMAP unranked follow-on from S47 + owner instruction):** map the continuous graded-wall family the S47 optimum appeared to point at, NUMA-aware on jaga from now on.
+
+**The preview alarm that became the finding.** The graded family (wall [R₁,R₂] + contiguous inward extension on [R₁−d, R₁] at density q·ρ_w, flat/linear taper, through the SINGLE-shell builder's arbitrary rho_of_r) put the S47-winner analogue (d=0.3R₁, q=1.5, flat) at **+14.1% ABOVE** the single-shell floor — while its d=0 baseline reproduced S32 exactly. Two kill-tests resolved the contradiction (both now reproducible gates in `verification/test_mmin_graded_map.py adjudicate`):
+
+- **GATE M — mask kill-test (S47 robustness): PASS.** The S47 winner's min(EC) is IDENTICAL (rel diff 0.00e+00) under the S47 union mask and the contiguous mask including the 0.5 m standoff sliver; the worst point sits mid-wall (r ≈ 12.5 m, equator). The S47 −13.3% does NOT rest on a mask blind spot.
+- **GATE D — cross-builder discriminator (the mechanism): PASS.** At the IDENTICAL nominal density shape (extension [7,10] at 1.5×ρ_w, canonical cell), the per-shell-TOV nested builder's floor is **2.26606e27 (0.8824× the S32 floor)** while the single-TOV graded builder's floor is **2.92989e27 (1.1409×)** — a 26-point swing from the pressure ansatz alone.
+
+**Corrected S47 interpretation (supersedes S47's "effectively a graded wall" reading):** the certified mass reduction comes from the **two-body pressure structure** — the inner component having its own P=0 outer surface, which shapes the lapse via the alpha solver — not from density grading. A contiguous graded wall, whose pressure must accumulate inward through the whole wall (the physically forced TOV path for continuous matter), does not merely fail to help: **every member tested makes the floor worse.** Both ansatz families are honestly evaluated (the EC verdict derives T_μν from the metric via the Einstein tensor; TOV only shapes the ansatz), so S47's EC-passing configuration at 2.2256e27 stands — reattributed, not revised.
+
+**The graded map (82 points: 2 cells × 4 depths × 5 ratios × 2 tapers + exact d=0 baselines; battery audit 4/4, certify 3/3, adjudicate 2/2):**
+
+- **0/80 graded rows beat the S32 single-shell floor** at either cell (canonical + R₂=15).
+- The best member is the one closest to no extension at all (d/R₁=0.15, q=0.5, linear taper): −1.2%/−1.4% ABOVE ref — the family converges to the single-shell limit from above, monotone in every tested direction of grading.
+- The negative is RES_CONF-certified (best row stable under escalation, 0 walk-up steps, stays +1.25% above the floor).
+
+**NUMA A/B (owner-requested, measured before adopting):** pinning is a **no-op** for this workload class — 28 unpinned workers 680.1 s vs 2×14 under `numactl --cpunodebind=N --localalloc` 681 s on identical points (all 56 runs bit-identical floors, a free determinism check). First-touch allocation + scheduler affinity already give node locality; the ~3.4× parallel slowdown is intra-node DDR4 bandwidth saturation, which pinning cannot address. "NUMA-aware" policy going forward: default dispatch unpinned, pools sized by RAM, re-A/B for threaded/BLAS or short-lived-worker workloads; never strict `--membind`. Recorded in the machines cookbook (TIPS + alcubierre notes + usage log).
+
+**Slice scope:** constant-density wall + one graded-extension family (flat/linear taper, d ≤ 0.6R₁, q ∈ [0.5, 3]); canonical smoothing (~5 m) partially smears taper shapes; TOV-pinned isotropic pressure — single accumulated integration for the graded family (the physically forced path for contiguous matter), per-shell resets for the nested family; radial representation; canonical warp band at [R₁,R₂]; 2 cells (the S47-improving ones; the thin-wall cell was excluded as structurally negative per S47).
+
+**Follow-on residue (optional, unranked):** standoff-size dependence of the two-body configuration — g=0 (contact) gives −11.8% vs g=0.5 m −13.8% at matched shapes, suggesting a mild gap benefit worth one axis if the two-body lever is ever pursued further.
+
+**Compute provenance:** grid + certify on jaga (82 pts / 33.5 min at 28 workers; RES_CONF certify 343 s), adjudicate + preview local; artifacts `sweeps/mmin_map_graded_full_concat.parquet` (tracked), raw `sweeps_remote/mmin_map_graded_20260711T210644.*`, module `hf_jobs/sweeps/mmin_map_graded.py`, battery `verification/test_mmin_graded_map.py`.

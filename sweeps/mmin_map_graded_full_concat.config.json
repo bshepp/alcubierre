@@ -1,0 +1,40 @@
+{
+  "_comment": "Full grid for the Session-48 graded-wall minimal-mass map. 2 improving cells from S47 x 4 extension depths (delta_frac = d/R1) x 5 density ratios q x 2 taper shapes + 2 d=0 baselines = 82 points. The S47 nested winner corresponds to ~(delta_frac 0.3, q 1.5, flat) at both cells; the grid asks whether deeper/denser/tapered grading beats it and where the continuous optimum sits. The thin-wall dfrac=0.25 cell is excluded (S47: structural negative -- splitting/extending strictly degrades it). NOTE the ~5 m canonical rho-smoothing partially smears taper shapes at these depths (d = 1.1-6 m); that is the canonical convention. Dispatch to jaga NUMA-aware (2 x numactl --cpunodebind=N --localalloc half-grids via --start/--stop; workers per the measured RAM cap and A/B result in machines cookbook).",
+  "rel_tol": 0.005,
+  "cells": [
+    {
+      "R2": 20.0,
+      "dfrac": 0.5,
+      "v": 0.02
+    },
+    {
+      "R2": 15.0,
+      "dfrac": 0.5,
+      "v": 0.02
+    }
+  ],
+  "delta_frac": {
+    "values": [
+      0.15,
+      0.3,
+      0.45,
+      0.6
+    ]
+  },
+  "q": {
+    "values": [
+      0.5,
+      1.0,
+      1.5,
+      2.0,
+      3.0
+    ]
+  },
+  "taper": {
+    "values": [
+      "flat",
+      "linear"
+    ]
+  },
+  "include_baseline": true
+}

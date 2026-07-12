@@ -597,3 +597,16 @@ Two independent symbolic G derivations + exact-analytic vs quintic-spline deriva
 | Canonical-cell certified floor (Task 3.10 headline number) | **Re-based 2.568e27 → 2.2256e27 nominal (−13.3%)** | Two-component graded wall, f=0.10, inner (7, 9.5) m; κ_nominal 4.77 → 4.13; over-provisioning vs the canonical 4.49e27 configuration: 1.75× → 2.02×. The single-shell 2.568e27 remains the correct *single-shell* floor; cite the pair with their wall classes. |
 | Session-39 reversal (margin ~8× at fixed M) | **Quantified as a mass lever: real but strongly sublinear** | ~8× margin surplus converts to −13.3% (canonical) / −17.8% (R₂=15) certified mass reduction; margin collapses steeply as M drops. Thin-wall Δ/R₂=0.25 cell: NO improvement at any (f, geometry) — monotone degradation, structural negative. |
 | jaga as compute provenance | **Accepted (validated pipeline + exact cross-checks)** | Same code path as local (PYTHONPATH dispatch of repo modules); pipeline validated bitwise on thickness_bound the same day; S47's own f=0 baselines reproduce S32 local results exactly through the full nested code path. OOM-sizing lesson (7.6 GB/point peak, 28-worker cap) recorded in the machines cookbook. |
+
+---
+
+## Session 48 addendum — graded-wall map NEGATIVE (A within slice); S47 mechanism reattributed
+
+**Battery:** [`verification/test_mmin_graded_map.py`](verification/test_mmin_graded_map.py) (audit 4/4, certify 3/3, adjudicate 2/2). **Map:** [`sweeps/mmin_map_graded_full_concat.parquet`](sweeps/mmin_map_graded_full_concat.parquet).
+
+| Item | Impact | Detail |
+|---|---|---|
+| Continuous graded-wall family (82 points, 2 cells) | **New, A within slice — bounded NEGATIVE** | 0/80 members beat the S32 single-shell floor; best member (minimal extension) +1.2% above ref; negative RES_CONF-certified; d=0 baselines EXACT vs S32 through the graded rho_of_r path. |
+| S47 "graded wall" interpretation | **CORRECTED (verdict and numbers unchanged)** | Cross-builder discriminator at identical nominal ρ: per-shell-TOV floor 0.8824× ref vs single-TOV floor 1.1409× ref. The S47 lever is the two-body pressure ansatz (per-component P=0 surfaces shaping the lapse), not density grading. Both families honestly evaluated (T_μν from G_μν); S47's 2.2256e27 EC-passing configuration stands. |
+| S47 mask robustness | **Kill-tested, PASS** | Union vs contiguous mask min(EC) identical to 0.00e+00 rel at the corrected floor; worst point mid-wall (r≈12.5 m), nowhere near the standoff sliver. |
+| jaga NUMA dispatch | **Measured: pinning no-op; policy recorded** | 680.1 s vs 681 s A/B on identical points; bandwidth ceiling is intra-node; default dispatch stays unpinned with RAM-sized pools (machines cookbook). |

@@ -1,0 +1,11 @@
+{
+  "_comment": "Preview for the Session-48 graded-wall minimal-mass map (S47 follow-on). Canonical cell only: the d=0 baseline (must land EXACTLY on the S32 single-shell floor 2.567991e27 -- the graded module's rho_of_r at d=0 is literally the S32 top-hat) + the continuous analogue of the S47 winner (delta_frac=0.3 i.e. d=3 m, q=1.5, flat), which should land near the S47 nested optimum ~2.21e27 (-13.8% RES_FULL). Decision gate: (a) baseline exact; (b) graded point within a few % of the S47 optimum; (c) clean brackets. Then dispatch the full grid to jaga (NUMA-aware per owner instruction).",
+  "rel_tol": 0.005,
+  "cells": [
+    {"R2": 20.0, "dfrac": 0.5, "v": 0.02}
+  ],
+  "delta_frac": {"values": [0.3]},
+  "q": {"values": [1.5]},
+  "taper": {"values": ["flat"]},
+  "include_baseline": true
+}
