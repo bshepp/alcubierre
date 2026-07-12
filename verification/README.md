@@ -85,6 +85,13 @@ Contents:
   dual-box sweep: far-field gate negative everywhere, passenger zone
   single-voxel everywhere, zero box-slack improvements, S44 baseline
   regression exact).
+  `test_fr_matter.py`: the Session-51 battery for the f(R) = R + alpha R^2
+  Jordan-frame matter evaluator (Task 2E.2/6b) -- alpha->0 == certified GR
+  exactly; Schwarzschild vacuum persistence (6.8e-16) and de Sitter
+  Einstein-space (R = 12/L^2 exact) anchors; machine-precision small-alpha
+  linearity; generated-module regeneration cross-check (5.6e-7); resolution
+  robustness of the alpha R ~ 1 collapse (5.8%). Run `fast` (~30 s) for
+  routine regression; `full` (~46 min) re-derives the symbolics.
 - **Adversarial kill-test batteries** — `test_profile_kill.py`,
   `test_radial_opt_xcheck.py`, `test_radial_opt_convergence.py`,
   `test_prongA_forensic.py`: resolution-convergence, cross-representation

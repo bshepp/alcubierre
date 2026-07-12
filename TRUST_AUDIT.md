@@ -637,3 +637,16 @@ Two independent symbolic G derivations + exact-analytic vs quintic-spline deriva
 | Topology sub-axis of 2E.4 | **CLOSED NEGATIVE, A within slice (analytic)** | Compact quotients admit no family member (linear term ⟹ no closed-manifold potential; T³ harmonic freedom = constant boost; lens spaces none); interior surgeries leave the finite-R\* exterior violation untouched. Slice: the adopted flat-space family; novel compact-topology ansätze outside it not asserted. |
 | Joint vortical+Π sub-axis of 2E.4 | **CLOSED NEGATIVE, A within slice (180/180)** | Far-field gate negative at every cell incl. per-component exponent splits; passenger zone single-voxel everywhere; 0/168 box-slack improvements; baseline regression exact vs S44. Normalisation subtlety handled: A-fields normalised once on the L=12 grid and reused at L=45 (a per-grid renormalisation would have silently changed the ansatz between boxes). |
 | Task 2E.4 | **CLOSED in full** | All three sub-axes negative (S44 + S50). Reopening criteria unchanged. |
+
+---
+
+## Session 51 addendum — f(R) matter evaluator certified; quadratic-f(R) first physics
+
+**Battery:** [`verification/test_fr_matter.py`](verification/test_fr_matter.py) (6/6). **Evaluator:** [`warp_factory_py/solvers/fr_matter.py`](warp_factory_py/solvers/fr_matter.py) + generated [`fr_correction_generated.py`](warp_factory_py/solvers/fr_correction_generated.py). **Design record:** MODIFIED_GRAVITY_LIT.md §6b.
+
+| Item | Impact | Detail |
+|---|---|---|
+| f(R) = R + αR² Jordan-frame matter evaluator | **New solver capability, A** | Split form T = G_certified + αC (GR part byte-identical to the certified pipeline); C exact-cancelled and code-generated; anchors: Schwarzschild vacuum persistence 6.8e-16, de Sitter Einstein-space 6.0e-15 with R = 12/L² exact, α→0 rel 0.0, machine-precision small-α linearity, regeneration cross-check 5.6e-7. |
+| Alcubierre non-rescue | **A within slice** | Best improvement over α ∈ ±[1e-2, 1e5] m² is 0.036%; violation amplified ~linearly beyond |α| ~ 1; large α non-viable (f′ < 0). Resolution-robust (5.8% scout-vs-full at the collapse point). |
+| Fuchs-floor degradation | **A within slice** | Viable direction strictly shrinks margins (slope −6.47e37/m²); EC window αR ≲ 1e-3 (dynamically negligible); helpful direction tachyonic + destructive beyond α ~ −10. |
+| Slice caveat (standing) | **Recorded** | Jordan-frame test on the loophole's own terms; Einstein-frame conformal reading dissolves the loophole; quadratic f only — designer-f leg (with the single-function/non-monotonic-R overdetermination question) still open for S52. |

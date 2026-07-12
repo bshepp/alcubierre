@@ -73,11 +73,34 @@ $$ T^{\rm eff}_{\mu\nu} = T^{\rm matter}_{\mu\nu} + T^{\rm curv}_{\mu\nu}, \qqua
 
 ---
 
-## Slice 6b (computational follow-up): NOT done
+## Slice 6b (computational follow-up): OPENED Session 51 (2026-07-12) — target selected, slice declared
 
-A natural Slice 6b would be: take f(R) = R + αR², compute the Einstein/Jordan-frame split for the Alcubierre metric, and ask whether the matter-side stress-energy can be made DEC-respecting for some α > 0.
+**Superseding the deferral note below:** the "4th-order PDE solver" framing overestimated the cost. The project's method never solves field equations — it evaluates the *required* stress-energy on a metric ansatz. In f(R) the Jordan-frame matter tensor is **algebraic** in the metric and its derivatives:
 
-This requires building a 4th-order field-equation solver and is significantly more involved than our standard pipeline. **Deferred** as outside the scope of the surfing-mode landscape mapping. The literature note above is sufficient for Phase 2C.
+$$8\pi T^{\rm matter}_{\mu\nu} = f'(R)\,R_{\mu\nu} - \tfrac12 f(R)\,g_{\mu\nu} - (\nabla_\mu\nabla_\nu - g_{\mu\nu}\Box)f'(R),$$
+
+4th-order in metric derivatives (the $\nabla\nabla f'(R)$ term adds two derivatives to $R$), but for the axisymmetric warp-shell ansatz this is the same symbolic-build-then-lambdify pattern as the certified GR radial evaluator (and its Session-49 time-dependent extension) — plus the existing Eulerian orthonormalisation and EC machinery applied to $T^{\rm matter}$ unchanged.
+
+**Deliberate theory target (the ROADMAP-required choice): $f(R) = R + \alpha R^2$** (quadratic/Starobinsky form), $\alpha$ swept. Rationale: (i) it is this document's own natural-6b proposal; (ii) one parameter, well-posed scalaron, the cleanest member of the class the Lobo–Oliveira loophole lives in; (iii) fixing the theory FIRST is methodologically essential — Lobo–Oliveira *reconstruct* $f$ from a chosen geometry, and allowing a designer $f$ makes "success" nearly tautological. The designer-$f$ question is kept as a separate second leg with real teeth: the reconstruction is **overdetermined** when $R(x)$ is non-monotonic (a warp shell takes the same $R$ value at many points, and $f$ must be a single function of $R$ globally) — a potential class-level obstruction worth deriving.
+
+**Geometry targets:** (a) the canonical Alcubierre metric (literature-facing; our axisymmetric ansatz covers it exactly with $A_{\rm pos} = B = 1$, $F$ = Alcubierre profile); (b) the certified Fuchs-class configurations (programme-facing: the S32 floor and the canonical vessel).
+
+**Slice declaration (accompanies every 6b claim):** the question tested is the Jordan-frame loophole *on its own terms* — "do the pointwise WEC/DEC hold for $T^{\rm matter}$ in the Jordan frame, with the theory viability conditions $f'(R) > 0$ (no graviton ghost) and $f''(R) \ge 0$ (non-tachyonic scalaron) holding pointwise on the configuration". The Einstein-frame reading, in which the conformal transformation moves any violation into the scalaron sector and the loophole dissolves, is recorded as the standing interpretive caveat (headline take above) — this slice does not adjudicate the frame question, it tests the claimed loophole inside its own frame. Static configurations; radial representation; quadratic $f$; $\alpha$ swept over decades around $1/R_{\rm shell}$; observational bounds on $\alpha$ recorded as context, not imposed (landscape mapping, not phenomenology).
+
+**Build plan:** Session 51 — symbolic $T^{\rm matter}$ for the axisymmetric ansatz with $\alpha$ symbolic; the decisive regression gate is $\alpha \to 0$ reproducing the certified GR evaluator exactly; numerics need radial profile derivatives to 4th order (quintic-spline; convergence gates mandatory — the S42-era prefactor-amplification lesson applies doubly here). Then the $\alpha$-ladder at the geometry targets, the designer-$f$ overdetermination leg, and closure.
+
+### Session-51 results (2026-07-12): infrastructure certified; first physics is strongly negative
+
+**Infrastructure** (battery [`verification/test_fr_matter.py`](verification/test_fr_matter.py), 6/6): evaluator [`warp_factory_py/solvers/fr_matter.py`](warp_factory_py/solvers/fr_matter.py) with the split form $T = G_{\rm certified} + \alpha C$; the correction tensor $C$ per-component exact-cancelled once (~48 min) and emitted as the generated module `fr_correction_generated.py` (4,409 shared subexpressions; regeneration cross-checked at 5.6e-7, the uncancelled noise floor). Anchors: $\alpha \to 0$ ≡ GR **exactly** (rel 0.0, full pipeline); Schwarzschild stays vacuum at any $\alpha$ (max|C| 6.8e-16); de Sitter's $C \equiv 0$ with $R = 12/L^2$ exact; small-$\alpha$ response linear/antisymmetric to machine precision (slope $-6.47\times10^{37}$ per m² at the floor config); the $\alpha R \sim 1$ collapse is resolution-robust (RES_SCOUT vs RES_FULL 5.8%). Derivative inventory: $A_{\rm pos}, F$ to 4th order, $B$ to 3rd.
+
+**First physics (two geometry targets, quadratic $f$, Jordan frame):**
+
+1. **Bare Alcubierre (the loophole's home turf — can $T^{\rm curv}$ absorb a GR EC violation?): NO.** Over $\alpha \in \pm[10^{-2}, 10^{5}]$ m² (8 decades, both signs), the best improvement to the WEC-violating minimum ($-9.121\times10^{39}$ in GR) is **0.036%** (at $\alpha = 0.1$); beyond $|\alpha| \sim 1$ the correction *amplifies* the violation linearly in $\alpha$ (300× worse by $\alpha R \sim 1$), and large $\alpha$ additionally breaks viability ($f' < 0$ — the Alcubierre wall has both signs of $R$).
+2. **Certified Fuchs floor configuration (EC-passing in GR): the viable direction strictly degrades.** $\alpha > 0$ (the only $f'' \ge 0$ direction) monotonically shrinks the margin; the EC-preserving window is $\alpha \lesssim 0.76$ m², i.e. $\alpha R \lesssim 10^{-3}$ — the modification must stay dynamically negligible. The marginally helpful direction ($\alpha < 0$, small) is theory-non-viable (tachyonic scalaron) and turns destructive by $\alpha = -10$ anyway.
+
+**Reading (slice-scoped):** within the quadratic-$f(R)$, Jordan-frame, static, radial slice at these two geometry classes, the "curvature absorbs the energy-condition obligation" mechanism does not materialize — the $\nabla\nabla f'(R)$ terms at a warp wall *add* EC obligations rather than absorbing them, in both $\alpha$ signs. Remaining before closing 2E.2: the full $\alpha \times$ geometry map (S52) and the designer-$f$ overdetermination leg (can *any* viable $f$ do better, given that $f$ must be a single function of $R$ on a geometry where $R(x)$ is highly non-monotonic).
+
+*(Original deferral note, retained for the record:)* A natural Slice 6b would be: take f(R) = R + αR², compute the Einstein/Jordan-frame split for the Alcubierre metric, and ask whether the matter-side stress-energy can be made DEC-respecting for some α > 0. ~~This requires building a 4th-order field-equation solver and is significantly more involved than our standard pipeline. **Deferred** as outside the scope of the surfing-mode landscape mapping.~~
 
 ---
 
