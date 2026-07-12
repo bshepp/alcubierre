@@ -91,7 +91,16 @@ Contents:
   Einstein-space (R = 12/L^2 exact) anchors; machine-precision small-alpha
   linearity; generated-module regeneration cross-check (5.6e-7); resolution
   robustness of the alpha R ~ 1 collapse (5.8%). Run `fast` (~30 s) for
-  routine regression; `full` (~46 min) re-derives the symbolics.
+  routine regression; `full` (~46 min) re-derives the symbolics; `map
+  <parquet>` audits the Session-52 alpha x geometry map (no rescue at any
+  alpha; best viable alpha = 0 for every EC-passing config).
+  `test_fr_designer_lp.py`: the Session-52 designer-f(R) NEC feasibility
+  adjudicator -- row machinery certified vs the quadratic evaluator
+  (1.15e-10); per-level-set LPs (Alcubierre wall: 24/24 bins infeasible
+  in both modes) and the pointwise form (23.4% of wall points
+  individually admit NO (f', f'', f''')): no f(R) with f' > 0 yields
+  NEC-respecting Jordan matter on the Alcubierre class; the EC-passing
+  Fuchs floor is feasible everywhere (control).
 - **Adversarial kill-test batteries** — `test_profile_kill.py`,
   `test_radial_opt_xcheck.py`, `test_radial_opt_convergence.py`,
   `test_prongA_forensic.py`: resolution-convergence, cross-representation

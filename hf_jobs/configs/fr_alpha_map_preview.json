@@ -1,0 +1,8 @@
+{
+  "_comment": "Preview for the Session-52 alpha x geometry map (2E.2/6b Leg 1). Two configs x {0, +/-1e-1, +/-1e3} = 10 points. Decision gates: (a) the alpha=0 rows regress against the S51 probes (Alcubierre GR min -9.121e39 at the w=1.5 wall; floor config's certified margin at RES_FULL); (b) the S51 ladder values reproduce; (c) runtime/RAM per point acceptable for the full dispatch.",
+  "configs": [
+    {"name": "alcubierre_w15", "kind": "alcubierre", "r0": 15.0, "w": 1.5, "v": 0.02},
+    {"name": "fuchs_floor", "kind": "single", "R1": 10.0, "R2": 20.0, "M": 2.567991e27, "v_build": 0.02, "v": 0.02}
+  ],
+  "alpha_mag": {"values": [0.1, 1000.0]}
+}

@@ -2676,3 +2676,23 @@ Corollaries (FELL_HEISENBERG_SWEEP_NOTES §20.2): (i) **compact quotients (T³, 
 **Reading (slice-scoped: quadratic f, Jordan frame, static, radial representation, these two geometry classes):** the "curvature absorbs the energy-condition obligation" mechanism does not materialize for warp geometry — the ∇∇f′(R) terms at a warp wall *add* EC obligations in both α signs. An EC-passing GR configuration keeps its ECs only while the modification is dynamically negligible; an EC-violating one is not rescued at any α.
 
 **Remaining before closing 2E.2 (→ Session 52):** the full α × geometry map (bounded-negative survey; more wall shapes/velocities), and the designer-f overdetermination leg (can ANY viable f(R) do better given the single-function constraint on non-monotonic R(x)). Battery full-mode runtime note: GATE R costs ~45 min (fresh uncancelled lambdify) — run `fast` mode (~30 s) for routine regression.
+
+## Session 52 (2026-07-12) — 2E.2 CLOSED NEGATIVE: the α × geometry map is uniformly negative, and a pointwise LP theorem kills EVERY f(R) on the Alcubierre wall
+
+**Leg 1 — the α × geometry map** (new sweep `hf_jobs/sweeps/fr_alpha_map.py`; 161 points = 7 configs × 23 α at RES_FULL; jaga 20 workers / 9.7 min; battery `test_fr_matter.py map` 4/4):
+
+- **No EC-violating configuration is rescued at any α** — across four Alcubierre walls (widths 0.75–3 m, v ∈ {0.02, 0.1}) the best improvement is 0.002–0.2%, at a small α that tracks the wall-curvature scale, before monotone ~linear degradation.
+- **Every EC-passing configuration's best VIABLE α is exactly 0** (floor, canonical vessel, S47 two-body): any α > 0 strictly degrades. RES_FULL EC windows: floor < 0.01 m² (αR < 1.4e-5 — tighter than S51's scout-resolution estimate, noted), vessel < 3 m². The α < 0 boosts (up to 40× margin at the floor, α = −3) all require the tachyonic scalaron — theory-non-viable.
+- Baseline regressions: floor α=0 equals the certified RES_FULL margin at rel 3.8e-8; cross-machine determinism spot-check (jaga vs local, α=1e3) to all printed digits.
+
+**Leg 2 — the designer-f NEC feasibility theorem** (new analysis module `hf_jobs/analysis/fr_designer_lp.py`; battery `verification/test_fr_designer_lp.py` 4/4). The structure that decides the Lobo–Oliveira reconstruction question: on null k the g-terms drop, so 8πT_mat(k,k) = f′·Ric_kk − f″·HessR_kk − f‴·(k·∂R)² — **linear in (f′, f″, f‴) at each R value**. Tensor recovery needed zero new symbolic builds: Ric = G_certified + ½Rg; HessR exactly from the generated correction (D = HessR − g□R = (2R·Ric − ½R²g − C)/2; □R = −tr(D)/3); only ∂R is numerical (per-column quintic splines; FD cross-check 3.8e-4). Machinery certified against the quadratic evaluator at **1.15e-10** (GATE Q).
+
+- **Alcubierre wall: 24/24 R-level-set bins LP-INFEASIBLE in both modes** (f″ free; f″ ≥ 0).
+- **The obstruction is POINTWISE**: 23.4% of sampled wall points individually admit no (f′, f″, f‴) across their own 48-direction null fan (GATE P) — the strongest possible form: no f(R) with a ghost-free graviton yields NEC-respecting Jordan matter on this geometry, with level sets and global integrability of f never entering.
+- Fuchs floor: 0/24 infeasible — the built-in control (GR itself, u = w = 0, is feasible there). The loophole is dead in both directions: it cannot rescue violating geometry and can only degrade passing geometry.
+
+**Disposition: Task 2E.2 / Slice 6b is CLOSED NEGATIVE** within slice (Jordan-frame ECs on the loophole's own terms; static; radial representation; tested geometry classes; quadratic f for the map, arbitrary f′>0 f(R) for the LP theorem; NEC = weakest condition). Other modified-gravity families (Horndeski, f(R,T), EGB, …) untested — the "4D Einstein gravity" assumption is narrowed, not fully closed; MODIFIED_GRAVITY_LIT.md §6b + the canonical Slice-6 table row updated. Reopening criteria unchanged.
+
+**PHASE 2E FULLY DISPOSITIONED** (Sessions 49–52): 2E.1 first leg POSITIVE-within-slice (spin-up EC-unobstructed at τ* ~ R₂/c; dynamical-restructuring/superluminal legs deferred); 2E.2 CLOSED NEGATIVE (this session); 2E.4 CLOSED NEGATIVE in full (S44+S50); 2E.3/2E.5 externally gated as designed. The Phase-2E decision-point question — "what is the next most-likely-fruitful relaxation?" — now has a checked answer: none of the computationally accessible relaxations opens a useful-warp loophole; what remains are the externally-gated items and the deferred deep-dynamical legs.
+
+**Ops note:** the fr-evaluator sweep family peaks at **11.2 GB/point** (vs 7.6 GB mmin-class) — the first 28-worker dispatch OOM'd; measured per the standing rule (belatedly) and relaunched at 20 workers. Recorded in the machines cookbook.

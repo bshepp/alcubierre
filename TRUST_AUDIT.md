@@ -650,3 +650,16 @@ Two independent symbolic G derivations + exact-analytic vs quintic-spline deriva
 | Alcubierre non-rescue | **A within slice** | Best improvement over α ∈ ±[1e-2, 1e5] m² is 0.036%; violation amplified ~linearly beyond |α| ~ 1; large α non-viable (f′ < 0). Resolution-robust (5.8% scout-vs-full at the collapse point). |
 | Fuchs-floor degradation | **A within slice** | Viable direction strictly shrinks margins (slope −6.47e37/m²); EC window αR ≲ 1e-3 (dynamically negligible); helpful direction tachyonic + destructive beyond α ~ −10. |
 | Slice caveat (standing) | **Recorded** | Jordan-frame test on the loophole's own terms; Einstein-frame conformal reading dissolves the loophole; quadratic f only — designer-f leg (with the single-function/non-monotonic-R overdetermination question) still open for S52. |
+
+---
+
+## Session 52 addendum — 2E.2 closed: α-map uniform negative; designer-f pointwise LP theorem
+
+**Batteries:** [`verification/test_fr_matter.py`](verification/test_fr_matter.py) `map` (4/4); [`verification/test_fr_designer_lp.py`](verification/test_fr_designer_lp.py) (4/4). **Artifacts:** `sweeps/fr_alpha_map_full_concat.parquet`; modules `hf_jobs/sweeps/fr_alpha_map.py`, `hf_jobs/analysis/fr_designer_lp.py`.
+
+| Item | Impact | Detail |
+|---|---|---|
+| α × geometry map (161 pts, 7 configs) | **A within slice — uniform negative** | No rescue of any EC-violating config at any α (best 0.2%); best viable α = 0 for every EC-passing config; floor EC window αR < 1.4e-5 at RES_FULL; α=0 baseline rel 3.8e-8 vs certified; jaga/local cross-determinism exact. |
+| Designer-f NEC feasibility LP | **A within slice — theorem-grade negative on the Alcubierre class** | NEC linear in (f′,f″,f‴) per R value; 24/24 level-set bins infeasible both modes; **pointwise form: 23.4% of wall points individually infeasible** (kills every f(R) with f′>0, no global structure needed). Row machinery certified vs the quadratic evaluator at 1.15e-10; HessR recovered exactly from the generated correction; ∂R spline vs FD cross-check 3.8e-4. Control: Fuchs floor 0/24 (GR feasible there, as required). |
+| Slice-6 canonical table row | **Narrowed: f(R) corner closed** | "4D Einstein gravity" assumption: the f(R) family (any f, f′>0) is closed for the tested warp-wall classes; Horndeski/f(R,T)/EGB untested — recorded in MODIFIED_GRAVITY_LIT.md. |
+| fr-evaluator compute class | **Ops: 11.2 GB/point** | New sweep-family peak measured (rule followed belatedly after one OOM); jaga cap 20 workers; cookbook updated. |

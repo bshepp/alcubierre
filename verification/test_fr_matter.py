@@ -230,14 +230,45 @@ def gates_full(profs):
          bool(rel < 0.15), f"{m_scout:+.3e} vs {m_full:+.3e} (rel {rel:.2%})")
 
 
+def gates_map(parquet_path):
+    """Audit the Session-52 alpha x geometry map parquet (seconds)."""
+    import pandas as pd
+    df = pd.read_parquet(parquet_path)
+    gate("MAP: no evaluate() errors",
+         bool((df.error.astype(str) == "").all()), f"{len(df)} rows")
+    fl0 = df[(df.name == "fuchs_floor") & (df.alpha == 0.0)]
+    rel = abs(float(fl0.iloc[0].min_ec) - 5.689346e36) / 5.689346e36
+    gate("MAP: floor alpha=0 row equals the certified RES_FULL margin",
+         bool(rel < 1e-6), f"rel = {rel:.2e}")
+    rescued = []
+    viable_best_nonzero = []
+    for name, sub in df.groupby("name"):
+        base = float(sub[sub.alpha == 0].min_ec.iloc[0])
+        best = float(sub.min_ec.max())
+        if base < 0 and best >= 0:
+            rescued.append(name)
+        vsub = sub[sub.viable == True]  # noqa: E712
+        if base >= 0 and float(vsub.loc[vsub.min_ec.idxmax()].alpha) != 0.0:
+            viable_best_nonzero.append(name)
+    gate("MAP: no EC-violating configuration is rescued at any alpha",
+         len(rescued) == 0, f"rescued: {rescued}")
+    gate("MAP: every EC-passing configuration's best VIABLE alpha is 0 "
+         "(any alpha > 0 strictly degrades)",
+         len(viable_best_nonzero) == 0,
+         f"exceptions: {viable_best_nonzero}")
+
+
 if __name__ == "__main__":
     mode = sys.argv[1] if len(sys.argv) > 1 else "full"
     print("=" * 78)
     print(f"f(R) MATTER EVALUATOR BATTERY ({mode})")
     print("=" * 78)
-    profs = gates_fast()
-    if mode == "full":
-        gates_full(profs)
+    if mode == "map":
+        gates_map(sys.argv[2])
+    else:
+        profs = gates_fast()
+        if mode == "full":
+            gates_full(profs)
     n_pass = sum(GATES.values())
     print(f"BATTERY: {n_pass}/{len(GATES)} gates PASS ({time.time()-T0:.0f}s)")
     raise SystemExit(0 if n_pass == len(GATES) else 1)

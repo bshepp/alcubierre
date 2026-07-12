@@ -1,0 +1,13 @@
+{
+  "_comment": "Full grid for the Session-52 alpha x geometry map (2E.2/6b Leg 1). 7 configs x (0 + 11 alpha magnitudes both signs) = 161 points at RES_FULL. Alcubierre family: three wall widths at v=0.02 + one v=0.1 variant (slack signs scale ~v^2 in GR; the f(R) correction's v-structure is checked rather than assumed). Fuchs family: S32 floor, canonical vessel, S47 two-body winner. Expectation from S51: no rescue anywhere, viable direction strictly degrades; this map is the bounded-negative record. Dispatch: jaga 28 workers (mmin-class RAM).",
+  "configs": [
+    {"name": "alcubierre_w075", "kind": "alcubierre", "r0": 15.0, "w": 0.75, "v": 0.02},
+    {"name": "alcubierre_w15",  "kind": "alcubierre", "r0": 15.0, "w": 1.5,  "v": 0.02},
+    {"name": "alcubierre_w30",  "kind": "alcubierre", "r0": 15.0, "w": 3.0,  "v": 0.02},
+    {"name": "alcubierre_v01",  "kind": "alcubierre", "r0": 15.0, "w": 1.5,  "v": 0.1},
+    {"name": "fuchs_floor",     "kind": "single", "R1": 10.0, "R2": 20.0, "M": 2.567991e27, "v_build": 0.02, "v": 0.02},
+    {"name": "fuchs_canonical", "kind": "single", "R1": 10.0, "R2": 20.0, "M": 4.49e27,     "v_build": 0.02, "v": 0.02},
+    {"name": "twobody",         "kind": "nested", "R1": 10.0, "R2": 20.0, "R1_in": 7.0, "R2_in": 9.5, "f_inner": 0.10, "M": 2.22558e27, "v_build": 0.02, "v": 0.02}
+  ],
+  "alpha_mag": {"values": [0.01, 0.03, 0.1, 0.3, 1.0, 3.0, 10.0, 30.0, 100.0, 1000.0, 10000.0]}
+}
