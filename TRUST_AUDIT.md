@@ -624,3 +624,16 @@ Two independent symbolic G derivations + exact-analytic vs quintic-spline deriva
 | Spin-up rate bound τ* | **A within slice, order-of-magnitude precision** | 24.5/50.4/47.9 ns (0.37/0.76/0.72 R₂/c) for canonical/floor/two-body; every v-row caps (bounds real); DEC binds near the floor; log-grid interpolated crossings (not bisected) — stated. |
 | S32 cross-anchor drift 7.2e-6 | **Explained, within the S35 band** | The S32 parquet predates the Session-35 behaviour-preserving mmin_map fixes (≤1e-4 band); masses matched exactly in S47, values drift inside the band. Battery GATE 3 tolerance documents this. |
 | 2E.1 status | **First leg closed POSITIVE-within-slice** | EC bookkeeping does not obstruct rigid-profile inflate-then-coast; remaining 2E.1 content (dynamical restructuring, worldline acceleration, superluminal transitions) stays deferred with original criteria. |
+
+---
+
+## Session 50 addendum — 2E.4 closed: far-field coefficients exact; topology + joint axes negative
+
+**Battery:** [`verification/test_2e4_residual_axes.py`](verification/test_2e4_residual_axes.py) (topology 4/4; joint 5/5). **Map:** [`sweeps/fell_heisenberg_joint_2e4_full_concat.parquet`](sweeps/fell_heisenberg_joint_2e4_full_concat.parquet). **Record:** FELL_HEISENBERG_SWEEP_NOTES §20.
+
+| Item | Impact | Detail |
+|---|---|---|
+| Far-field saturation φ_sat with Π symbolic | **A (exact)** | GATE T1 residual literal 0; saturation certified vs exact φ to 6.3e-15 at Π-scaled radii (T4); R-linear coefficient −V√(σπ) independent of every family parameter (T2); anisotropic growth ∝ a·tanh(Z/ℓ) (T3). Upgrades the §18.3/§19 mechanism statements from derived-numerics (B) to symbolic-exact (A). |
+| Topology sub-axis of 2E.4 | **CLOSED NEGATIVE, A within slice (analytic)** | Compact quotients admit no family member (linear term ⟹ no closed-manifold potential; T³ harmonic freedom = constant boost; lens spaces none); interior surgeries leave the finite-R\* exterior violation untouched. Slice: the adopted flat-space family; novel compact-topology ansätze outside it not asserted. |
+| Joint vortical+Π sub-axis of 2E.4 | **CLOSED NEGATIVE, A within slice (180/180)** | Far-field gate negative at every cell incl. per-component exponent splits; passenger zone single-voxel everywhere; 0/168 box-slack improvements; baseline regression exact vs S44. Normalisation subtlety handled: A-fields normalised once on the L=12 grid and reused at L=45 (a per-grid renormalisation would have silently changed the ansatz between boxes). |
+| Task 2E.4 | **CLOSED in full** | All three sub-axes negative (S44 + S50). Reopening criteria unchanged. |

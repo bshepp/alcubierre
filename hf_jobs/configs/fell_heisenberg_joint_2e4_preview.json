@@ -1,0 +1,11 @@
+{
+  "_comment": "Preview for the Session-50 joint vortical+Pi sweep (2E.4 last computational sub-axis). A1 anchor only, background Pi=0.25: the all-zero baseline must reproduce the certified S44 row (wec +0.037405 / dec +0.018705 / far-field -0.848) and two strong-amplitude cells probe Pi_A in {0.25, 1.0}. Decision gate: baseline regression exact-ish (FD determinism), runtime acceptable, far-field gate responding.",
+  "Npts": 65,
+  "L_box": 12.0,
+  "L_far": 45.0,
+  "anchors": ["A1"],
+  "Pi": {"values": [0.25]},
+  "Pi_A": {"values": [0.25, 1.0]},
+  "amp_patterns": [[0.0, 0.0, 0.0], [0.3, 0.3, 0.3]],
+  "split_exponent_cells": false
+}

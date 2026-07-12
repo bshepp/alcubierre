@@ -77,6 +77,14 @@ Contents:
   ~0.4-0.8 R2/c; DEC binds near the floor; log-grid precision stated);
   the S32 cross-anchor gate documents the Session-35
   behaviour-preserving value band (7.2e-6 observed vs <= 1e-4).
+  `test_2e4_residual_axes.py`: the Session-50 adjudicator closing 2E.4
+  -- topology leg (exact far-field saturation with Pi symbolic:
+  R-linear coefficient -V sqrt(sigma pi) parameter-independent;
+  saturation certified to 6.3e-15 at Pi-scaled radii; compact-quotient
+  and interior-surgery corollaries) + joint vortical+Pi leg (180-cell
+  dual-box sweep: far-field gate negative everywhere, passenger zone
+  single-voxel everywhere, zero box-slack improvements, S44 baseline
+  regression exact).
 - **Adversarial kill-test batteries** — `test_profile_kill.py`,
   `test_radial_opt_xcheck.py`, `test_radial_opt_convergence.py`,
   `test_prongA_forensic.py`: resolution-convergence, cross-representation

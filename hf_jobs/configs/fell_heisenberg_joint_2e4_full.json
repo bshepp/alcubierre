@@ -1,0 +1,11 @@
+{
+  "_comment": "Full grid for the Session-50 joint vortical+Pi sweep (2E.4's last computational sub-axis). 3 certified anchors (A1, B1, S12) x background Pi in {0.125, 0.25, 0.5, 1.0} x {baseline + 3 amplitude patterns x 4 A-exponents Pi_A + 2 per-component exponent-split spot cells} = 180 cells, dual-box protocol (L=12 box ECs + passenger zone; L=45 far-field gate; A-fields normalised on the L=12 grid and REUSED for L=45 -- one physical field, two windows). Question: does ANY joint (Pi, Pi_A, amplitude) combination cancel the far-field violation or open the passenger zone? The S42/S44 structural expectation is NO (the R-linear phi term driving the non-decaying N carries neither Pi nor A). Runs locally (~12 min at 4 workers); no jaga needed.",
+  "Npts": 65,
+  "L_box": 12.0,
+  "L_far": 45.0,
+  "anchors": ["A1", "B1", "S12"],
+  "Pi": {"values": [0.125, 0.25, 0.5, 1.0]},
+  "Pi_A": {"values": [0.125, 0.25, 0.5, 1.0]},
+  "amp_patterns": [[0.0, 0.0, 0.0], [0.1, 0.1, 0.1], [0.3, 0.3, 0.3], [0.0, 0.0, 0.3]],
+  "split_exponent_cells": true
+}

@@ -2636,3 +2636,24 @@ Static-limit gates: lambda-level 9.5e-14 on random meshes; full-pipeline 1.2e-16
 **Verdict (slice-scoped):** within the rigid-profile comoving-form spin-up family — exact time-dependence, subluminal v, canonical smoothing, radial representation, EC minima over the in-matter mask — **energy-condition bookkeeping does not obstruct inflate-then-coast**: the static-slice restriction was not load-bearing at the lifecycle level for this family, and the only rate limit is causality-scale. What this leg does NOT cover (2E.1 remainder, deferred with original criteria): genuinely dynamical shell assembly/restructuring outside the rigid family (needs ADM evolution), the bubble's worldline-acceleration terms (this family ramps the shift amplitude in place), and the superluminal-transition horizon obstruction (Schuster–Santiago–Visser) — v stays at 0.02c here.
 
 **Compute provenance:** grid on jaga (456 pts / 19.6 min at 28 workers; per-config profile cache ~2.3× throughput), gates local; artifacts `sweeps/spinup_margin_full_concat.parquet` (tracked), raw `sweeps_remote/spinup_margin_20260711T222209.*`, module `hf_jobs/sweeps/spinup_margin.py`, solver extension in `warp_factory_py/solvers/axisymmetric_ec.py`.
+
+## Session 50 (2026-07-12) — 2E.4 CLOSED in full: topology falls analytically; the joint vortical+Π space is negative at 180/180 cells
+
+**Intent (2E working order, second item):** close 2E.4's two residual sub-axes — non-trivial spatial topology and the joint vortical+Π variant with independently varied A-structure exponents.
+
+**Topology — closed NEGATIVE analytically, from two exact coefficient facts** (battery `verification/test_2e4_residual_axes.py` topology mode, 4/4; Π symbolic throughout):
+
+- At R → ∞ the adopted FH potential saturates *exactly* to φ_sat = −V√(σπ)·R − V√(σπ)(a/m₀)tanh(Z/ℓ)·R^{2Π} (GATE T1 symbolic; GATE T4 certifies against the exact φ to 6.3e-15 at Π-scaled radii — the asymptotic regime starts at R ~ ((m₀+a)(r+8√σ))^{1/2Π}, i.e. ~10⁸ at Π = 0.125, which is why naive fixed-radius probes mislead).
+- The **R-linear coefficient −V√(σπ) is independent of Π, a, m₀, ℓ, r, Z** (GATE T2) — no parameter choice removes it except V = 0; the growing anisotropic coefficient ∝ a·tanh(Z/ℓ) vanishes iff a = 0 (GATE T3).
+
+Corollaries (FELL_HEISENBERG_SWEEP_NOTES §20.2): (i) **compact quotients (T³, lens spaces) admit no member of the adopted family** — the linear term is incompatible with any closed 3-manifold (compact-space "no net charge"); the only T³ freedom is a constant shift (global boost), and lens spaces carry no harmonic 1-forms; (ii) **interior-only surgeries (handlebody / lens-space interiors) cannot rescue global EC** — the §18 violation sits at finite exterior R\*, untouched by interior topology.
+
+**Joint vortical+Π — closed NEGATIVE at 180/180 cells** (new sweep `hf_jobs/sweeps/fell_heisenberg_joint_2e4.py`; battery joint mode 5/5; 3 certified anchors × Π ∈ {0.125…1} × {baseline + 3 amplitude patterns × 4 independent Π_A + per-component exponent splits}; dual-box protocol with the A-normalisers measured on the L=12 grid and REUSED at L=45 — one physical field, two windows):
+
+- **Far-field gate negative at every joint cell** (max far slack −0.431; collapsing to −48 at Π = 1) — no (Π, Π_A, amplitude, split) combination cancels the isotropic R-linear term, which carries neither Π nor A.
+- **Passenger zone stays a single voxel at every cell** — independently-varied A-exponents do not open it (extends S44's Π-independence and S38's vorticity verdict to the joint space).
+- **0/168 augmented cells improve either box slack** over their (anchor, Π) baseline; the A1 Π = 0.25 baseline regresses exactly against the certified S44 row (wec +0.037405 / dec +0.018705 / far −0.848).
+
+**Disposition: Task 2E.4 is CLOSED** (all three sub-axes: Π exponent S44; topology S50 analytic; joint vortical+Π S50 sweep). Slice: adopted m,n concretization (a > 0), three certified anchors, Π, Π_A ∈ [0.125, 1], FH-form gradient-normalised A components, Npts=65 FD (validated for smooth FH fields). Reopening criteria unchanged in ROADMAP. Record: FELL_HEISENBERG_SWEEP_NOTES §20.
+
+**Compute note:** the entire computational leg ran locally in ~4 min (180 dual-box cells, ~2.4 s each) — the S42 closed-form/dual-box tooling keeps compounding; no jaga dispatch needed. **NEXT: 2E.2/6b — f(R) target selection + slice declaration (the deliberate-target question ROADMAP requires answered before opening), then the solver build.**
