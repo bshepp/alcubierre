@@ -673,3 +673,14 @@ Two independent symbolic G derivations + exact-analytic vs quintic-spline deriva
 | Item | Impact | Detail |
 |---|---|---|
 | Two-body standoff axis (9 gaps × 3 f, canonical cell) | **Retired — no floor change** | g ≲ 0.5 m is a bit-identical plateau at the S47 winner (2.21451e27 RES_FULL); monotone degradation beyond; worse than single-shell by g = 5 m. The S48 contact-vs-gap hint was a thickness confound (d = 3 vs 2.5 m). Certified floor 2.22558e27 unchanged. |
+
+---
+
+## Sessions 54–55 addendum — final optional residues retired
+
+**Batteries:** [`verification/test_oblate_full3d_retest.py`](verification/test_oblate_full3d_retest.py); [`verification/test_lentz_kink_sheets.py`](verification/test_lentz_kink_sheets.py) (5/5).
+
+| Item | Impact | Detail |
+|---|---|---|
+| Session-27 oblate +3.09% (last thin-slab-provenance number; W5 second half) | **REVERSED — the oblate ε=−0.1 'improvement' never existed: the full-3D re-test gives Δ = −0.92% (N=97) / −1.26% (N=129), sign-consistent and resolution-stable (spread 0.34 pp), agreeing in sign with the thin-slab reconstruction (−3.1%); the recorded +3.09% was a sign error in the lost scratch. Session 27's headline conclusion (spherical local optimality under shape deformation) is thereby STRENGTHENED — the full-3D ε<0 ladder is monotone with no improvement pocket (−0.3: −5.0%, −0.2: −2.7%, −0.1: −1.3%, +0.1: −15.3% at N=129).** | Provenance probe: four driver reconstructions incl. an exact mask-count match all give Δ ≈ −3.1 to −3.4% — recorded magnitude, opposite sign (sign error in the lost scratch). Full-3D re-test at three resolutions with certified ε=0 calibration renders the standing verdict. W5 fully discharged. |
+| Lentz ℓ¹ kink sheets | **Characterized: finite Israel-type layers, strictly violating (A within slice)** | Peak ~ ε⁻¹ (smeared δ), integrated stress converges to ≈1.06 A²-units, negative at every ε; the a-priori dipole-layer hypothesis REFUTED by the measured scaling and recorded. Third independent EC failure of the class; S45 verdict unchanged and sharpened. |

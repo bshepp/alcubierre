@@ -101,6 +101,19 @@ Contents:
   individually admit NO (f', f'', f''')): no f(R) with f' > 0 yields
   NEC-respecting Jordan matter on the Alcubierre class; the EC-passing
   Fuchs floor is feasible everywhere (control).
+  `test_oblate_full3d_retest.py`: the Session-54 adjudicator of the last
+  thin-slab-provenance number (S27 oblate +3.09%; audit item W5 second
+  half) -- provenance mode (four driver reconstructions incl. an exact
+  mask-count match all give Delta ~ -3.1..-3.4%: recorded magnitude,
+  OPPOSITE sign) + full-3D mode (resolution ladder with certified eps=0
+  calibration): REVERSED; spherical local optimality strengthened.
+  `test_lentz_kink_sheets.py`: the Session-55 adjudicator of the l1
+  kink sheets (5/5) -- self-similar eps-regularization ladder on the
+  analytic front member: peak ~ eps^-1 (smeared delta; a-priori dipole
+  hypothesis REFUTED and recorded), x-integrated stress converges to a
+  finite strictly-negative surface density (~1.06 A^2 units) -- an
+  admissible Israel-type layer that is EC-violating at every scale
+  (a third independent EC failure of the Lentz class).
 - **Adversarial kill-test batteries** — `test_profile_kill.py`,
   `test_radial_opt_xcheck.py`, `test_radial_opt_convergence.py`,
   `test_prongA_forensic.py`: resolution-convergence, cross-representation
