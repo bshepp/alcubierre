@@ -1,5 +1,9 @@
 # Alcubierre Warp Drive — Boundary-Mode Reformulation
 
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.19689587.svg)](https://doi.org/10.5281/zenodo.19689587)
+
+**Citable archive:** every tagged release is archived on Zenodo. Cite the concept DOI [10.5281/zenodo.19689587](https://doi.org/10.5281/zenodo.19689587) (resolves to the latest version), or a version DOI for a frozen snapshot ([v0.2.0](https://doi.org/10.5281/zenodo.21333096) · [v0.1.0](https://doi.org/10.5281/zenodo.19689588)). Citation metadata: [`CITATION.cff`](CITATION.cff).
+
 ## Project Overview
 
 This project investigates whether the exotic matter required by the Alcubierre warp drive metric can be reinterpreted as a **boundary effect** rather than an independent material source. The original hypothesis proposed a "method of images" reformulation in linearized gravity; the mathematics has since refined this into a **boundary-mode decomposition** approach grounded in the Casimir analog.
