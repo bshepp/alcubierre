@@ -2696,3 +2696,25 @@ Corollaries (FELL_HEISENBERG_SWEEP_NOTES §20.2): (i) **compact quotients (T³, 
 **PHASE 2E FULLY DISPOSITIONED** (Sessions 49–52): 2E.1 first leg POSITIVE-within-slice (spin-up EC-unobstructed at τ* ~ R₂/c; dynamical-restructuring/superluminal legs deferred); 2E.2 CLOSED NEGATIVE (this session); 2E.4 CLOSED NEGATIVE in full (S44+S50); 2E.3/2E.5 externally gated as designed. The Phase-2E decision-point question — "what is the next most-likely-fruitful relaxation?" — now has a checked answer: none of the computationally accessible relaxations opens a useful-warp loophole; what remains are the externally-gated items and the deferred deep-dynamical legs.
 
 **Ops note:** the fr-evaluator sweep family peaks at **11.2 GB/point** (vs 7.6 GB mmin-class) — the first 28-worker dispatch OOM'd; measured per the standing rule (belatedly) and relaunched at 20 workers. Recorded in the machines cookbook.
+
+## Session 53 (2026-07-12) — Standoff-axis residue closed: the two-body gap is a plateau, not a knob; the floor stands
+
+**Objective (S48 optional residue, owner go):** is the standoff gap g between the inner component and the wall a real lever on the two-body pressure mechanism? (S48's hint: contact −11.8% vs g = 0.5 m −13.8% at "matched" shapes.)
+
+**Design:** the unchanged S47 `mmin_map_nested` machinery; canonical cell; inner thickness FIXED at d = 2.5 m (the S47-winner thickness — S48's contact comparison had used d = 3 m, a confound); gap ladder g ∈ {≈0 (contact), 0.25, 0.5, 1, 1.5, 2, 3, 4, 5} m × f ∈ {0.05, 0.10, 0.15} + the exact f = 0 baseline (28 points, jaga 28 workers / 11.3 min; audit battery 4/4, f = 0 baseline rel 0.0).
+
+**Result — a small-gap plateau, then monotone degradation:**
+
+| g (m) | M_min/floor at f = 0.10 |
+|---|---|
+| ≈0, 0.25, 0.5 | **0.8624 — bit-identical bisections** (= the S47 winner 2.21451e27 exactly) |
+| 1.0 | 0.8796 |
+| 2.0 | 0.9168 |
+| 4.0 | 0.9971 |
+| 5.0 | 1.0258 (worse than single-shell) |
+
+- **The gap is not a knob**: anything within ~a smoothing length of the wall (g ≲ 0.5 m ≪ the ~5 m ρ-smoothing) gives the identical certified floor; the S48 "gap benefit" hint was entirely the d = 3 vs d = 2.5 thickness confound.
+- **No new floor**: best over the ladder = the S47 winner exactly; the RES_CONF-certified canonical floor **2.22558e27 kg stands unchanged**.
+- Same plateau-then-degrade shape at f = 0.05 and 0.15; f = 0.10 optimal throughout, consistent with S47.
+
+**Disposition:** the standoff-axis residue is **retired** (negative for further mass reduction; positive for understanding — the two-body lever needs only *proximity*, not a tuned gap). Slice: canonical cell, d = 2.5 m, per-shell-TOV ansatz throughout, canonical smoothing. Artifact: `sweeps/mmin_map_nested_standoff_concat.parquet`.

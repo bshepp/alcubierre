@@ -663,3 +663,13 @@ Two independent symbolic G derivations + exact-analytic vs quintic-spline deriva
 | Designer-f NEC feasibility LP | **A within slice — theorem-grade negative on the Alcubierre class** | NEC linear in (f′,f″,f‴) per R value; 24/24 level-set bins infeasible both modes; **pointwise form: 23.4% of wall points individually infeasible** (kills every f(R) with f′>0, no global structure needed). Row machinery certified vs the quadratic evaluator at 1.15e-10; HessR recovered exactly from the generated correction; ∂R spline vs FD cross-check 3.8e-4. Control: Fuchs floor 0/24 (GR feasible there, as required). |
 | Slice-6 canonical table row | **Narrowed: f(R) corner closed** | "4D Einstein gravity" assumption: the f(R) family (any f, f′>0) is closed for the tested warp-wall classes; Horndeski/f(R,T)/EGB untested — recorded in MODIFIED_GRAVITY_LIT.md. |
 | fr-evaluator compute class | **Ops: 11.2 GB/point** | New sweep-family peak measured (rule followed belatedly after one OOM); jaga cap 20 workers; cookbook updated. |
+
+---
+
+## Session 53 addendum — standoff axis retired (A within slice)
+
+**Battery:** [`verification/test_mmin_nested_map.py`](verification/test_mmin_nested_map.py) audit 4/4 on `sweeps/mmin_map_nested_standoff_concat.parquet`.
+
+| Item | Impact | Detail |
+|---|---|---|
+| Two-body standoff axis (9 gaps × 3 f, canonical cell) | **Retired — no floor change** | g ≲ 0.5 m is a bit-identical plateau at the S47 winner (2.21451e27 RES_FULL); monotone degradation beyond; worse than single-shell by g = 5 m. The S48 contact-vs-gap hint was a thickness confound (d = 3 vs 2.5 m). Certified floor 2.22558e27 unchanged. |

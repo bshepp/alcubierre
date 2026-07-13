@@ -1,0 +1,20 @@
+{
+  "_comment": "Session-53 standoff-size axis (S48 optional residue) through the UNCHANGED S47 mmin_map_nested machinery. Canonical cell only; inner component thickness FIXED at d = 2.5 m (the S47-winner thickness); the geometry list is a gap ladder g = R1_out - R2_in in {~0 (contact, 0.001 to satisfy the strict non-overlap check; physically identical under the ~5 m smoothing), 0.25, 0.5 (= the S47 winner (7, 9.5)), 1, 1.5, 2, 3, 4, 5} m, expressed as (a_in, b_in) = ((7.5-g)/20, (10-g)/20). Crossed with f_inner in {0.05, 0.10, 0.15} + the exact f=0 baseline = 28 points. Question: is the gap size a real knob on the two-body pressure lever (S48 hint: g=0 contact -11.8% vs g=0.5 -13.8% at matched shapes), and where is g*? NOTE the entire ladder runs through the per-shell-TOV (two-body) ansatz -- the g -> 0 limit stays two-body by construction; the single-TOV contact case is the S48 graded map's, already closed negative. Dispatch: jaga 28 workers (mmin-class RAM).",
+  "rel_tol": 0.005,
+  "cells": [
+    {"R2": 20.0, "dfrac": 0.5, "v": 0.02}
+  ],
+  "f_inner": {"values": [0.05, 0.10, 0.15]},
+  "inner_geometries": {"values": [
+    [0.374950, 0.499950],
+    [0.362500, 0.487500],
+    [0.350000, 0.475000],
+    [0.325000, 0.450000],
+    [0.300000, 0.425000],
+    [0.275000, 0.400000],
+    [0.225000, 0.350000],
+    [0.175000, 0.300000],
+    [0.125000, 0.250000]
+  ]},
+  "include_f0_baseline": true
+}
