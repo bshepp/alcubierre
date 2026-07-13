@@ -11,11 +11,13 @@ abstract: >-
   rendering the results. All claims are reported with explicit slice-scope
   qualifiers; see NAVIGATOR.md and TRUST_AUDIT.md in the archive.
 type: dataset
+version: 0.2.0
+date-released: 2026-07-13
 authors:
   - family-names: Sheppard
     given-names: Brian
     affiliation: Independent researcher
-  - name: "Anthropic Claude (Sonnet, Opus, Opus 4.7), via GitHub Copilot"
+  - name: "Anthropic Claude (Sonnet, Opus 4.7, Fable 5), via GitHub Copilot and Claude Code"
     affiliation: "AI coding-agent collaborator, 2026-03 to present"
 license: MIT
 repository-code: "https://github.com/bshepp/alcubierre"
