@@ -28,6 +28,7 @@ After 9 sessions, the project has produced (i) a *static-slice* classical no-go 
 | **Literature catalog with abstracts and our take on each paper** | [`LITERATURE.md`](LITERATURE.md) |
 | **To extend a slice** | The slice's notebook + its `_NOTES.md` companion |
 | **Critical evaluations of specific external papers** | The `*_EVALUATION.md` files (Rodal 2025, Krasnikov 2003, Fell-Heisenberg 2021 when present) |
+| **The wider program this project is one branch of** | `..\exotic-transport\00-fence\` — the exotic-transport program umbrella (no-go lattice, branch index, methodology/epistemology). Local sister repo, not on GitHub; this project is its continuum-GR branch (lattice row G5). |
 
 ---
 
