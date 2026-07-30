@@ -684,3 +684,16 @@ Two independent symbolic G derivations + exact-analytic vs quintic-spline deriva
 |---|---|---|
 | Session-27 oblate +3.09% (last thin-slab-provenance number; W5 second half) | **REVERSED — the oblate ε=−0.1 'improvement' never existed: the full-3D re-test gives Δ = −0.92% (N=97) / −1.26% (N=129), sign-consistent and resolution-stable (spread 0.34 pp), agreeing in sign with the thin-slab reconstruction (−3.1%); the recorded +3.09% was a sign error in the lost scratch. Session 27's headline conclusion (spherical local optimality under shape deformation) is thereby STRENGTHENED — the full-3D ε<0 ladder is monotone with no improvement pocket (−0.3: −5.0%, −0.2: −2.7%, −0.1: −1.3%, +0.1: −15.3% at N=129).** | Provenance probe: four driver reconstructions incl. an exact mask-count match all give Δ ≈ −3.1 to −3.4% — recorded magnitude, opposite sign (sign error in the lost scratch). Full-3D re-test at three resolutions with certified ε=0 calibration renders the standing verdict. W5 fully discharged. |
 | Lentz ℓ¹ kink sheets | **Characterized: finite Israel-type layers, strictly violating (A within slice)** | Peak ~ ε⁻¹ (smeared δ), integrated stress converges to ≈1.06 A²-units, negative at every ε; the a-priori dipole-layer hypothesis REFUTED by the measured scaling and recorded. Third independent EC failure of the class; S45 verdict unchanged and sharpened. |
+
+---
+
+## Session 56 addendum — Natário 2002 reproduced exactly (Task 3.8)
+
+**Battery:** [`verification/test_natario2002_reproduction.py`](verification/test_natario2002_reproduction.py) (10/10, 73 s); record [`NATARIO2002_EVALUATION.md`](NATARIO2002_EVALUATION.md).
+
+| Item | Impact | Detail |
+|---|---|---|
+| Natário 2002 Sections 1–2 (class formalism, Theorem 1.7, zero-expansion construction, ρ formula) | **B → A within slice — reproduced exactly** | Symbolic-exact for arbitrary profile f (construction, six K_ij, tr K = 0, Hamiltonian-constraint ρ); full 4D Einstein tensor with time-dependent v(t) at 40-digit precision (worst 7e-44); Prop 1.3 geodesics (6e-42). ρ carries no v̇ — instantaneous law (S49-parallel), so ρ_E ≤ 0 along any rigid spin-up. |
+| Zero-expansion wall characterization (new; not in the paper) | **A within slice** | WEC violated at 100% of wall points incl. axis (no marginal directions); Hawking–Ellis Type IV at 98.4% of wall (v=0.1) / 77.4% (v=1) — flux ∝ v dominates density ∝ v² as v→0; exact v² scaling of ρ_E (4.000000000000); wall ergo-band sup‖X‖/v = 5.53 at (R₀,σ)=(5,4) ⟹ v* ≈ 0.181, v* ~ 4/(R₀σ). |
+| Rodal 2025 Table-2 Natário/Alcubierre comparison ratios | **B — externally anchored two-sidedly** | Our exact pipeline reproduces his plot-derived ratios at matched (5,4): ρ ratio 64.9 (his ≈67), NEC ratio 65.7 (his ≈60); Type IV pockets confirmed for both families. Anchors our machinery against an external computation AND upgrades confidence in RODAL2025_EVALUATION's "Natário is unusually bad" reading. |
+| Natário 2002 Section 3 (superluminal optics: horizon, refraction, infinite blueshift) | **Not graded — not reproduced** | Outside the subluminal slice; noted as geometric-optics precursor of FLB 2009 (fence crack #1). Reopens with the 2E.1 superluminal-transition leg. |
