@@ -697,3 +697,20 @@ Two independent symbolic G derivations + exact-analytic vs quintic-spline deriva
 | Zero-expansion wall characterization (new; not in the paper) | **A within slice** | WEC violated at 100% of wall points incl. axis (no marginal directions); Hawking–Ellis Type IV at 98.4% of wall (v=0.1) / 77.4% (v=1) — flux ∝ v dominates density ∝ v² as v→0; exact v² scaling of ρ_E (4.000000000000); wall ergo-band sup‖X‖/v = 5.53 at (R₀,σ)=(5,4) ⟹ v* ≈ 0.181, v* ~ 4/(R₀σ). |
 | Rodal 2025 Table-2 Natário/Alcubierre comparison ratios | **B — externally anchored two-sidedly** | Our exact pipeline reproduces his plot-derived ratios at matched (5,4): ρ ratio 64.9 (his ≈67), NEC ratio 65.7 (his ≈60); Type IV pockets confirmed for both families. Anchors our machinery against an external computation AND upgrades confidence in RODAL2025_EVALUATION's "Natário is unusually bad" reading. |
 | Natário 2002 Section 3 (superluminal optics: horizon, refraction, infinite blueshift) | **Not graded — not reproduced** | Outside the subluminal slice; noted as geometric-optics precursor of FLB 2009 (fence crack #1). Reopens with the 2E.1 superluminal-transition leg. |
+
+---
+
+## Session 57 addendum — Phase 4 no-go confrontation (overnight autonomous)
+
+**Battery:** [`verification/test_nogo_confrontation.py`](verification/test_nogo_confrontation.py) (12/12, 92 s); record [`NOGO_CONFRONTATION.md`](NOGO_CONFRONTATION.md).
+
+| Item | Impact | Detail |
+|---|---|---|
+| SSV 2021 algebraic spine (Eqs 4.3–4.5, 4.7, 4.12/4.13) | **A within slice — verified exact** | Generic-flow symbolic + two concrete-flow full-4D Einstein cross-checks (residuals ~1e-18). Their Eq 4.8 curl-curl flux form is opposite-signed vs their own Eq 4.7 (sign slip recorded; 4.7 is what the argument uses). |
+| Alcubierre–Lobo NEC identity G_zz = 3 G_nn | **B → A, and UPGRADED to a class identity** | Published as an explicit computation for the Alcubierre drive with "no obvious geometrical reason"; certified here symbolically exact for ANY z-directed flow including time-dependent. Consequence ρ + T_zz = 4ρ ≤ 0 is identity-level for the whole family. |
+| SSV NEC/SEC global theorems | **Remain B (premises + instance A)** | Not re-proven in generality; the §7.4 restoration argument instantiated end-to-end on the canonical profile — NEC obligation violated on both wall crossings (+6.98e-2), SEC +2.76e-2; PF passage phenomenology reproduced to 1e-6. |
+| PF 1997 classical chain (Eqs 5, 7, 8, 16, 26, 28) | **A within slice — verified exact** | Eq 8 == repo identity 1; Δ–σ relation certified at 30 digits (tanh double-angle defeats CAS simplify); magnitudes at stated OoM (their g-vs-L_P conversion carries ~2× rounding). |
+| Ford–Roman QI premise (PF Eq 9) | **Remains B — external, scope contested** | Krasnikov 2003 loosening stands (Slice 4); our classical no-gos are QI-independent. |
+| Everett–Roman 1997 Krasnikov algebra + causality bookkeeping | **A within slice — verified exact** | Single structure: no CTC (t_E = Dδ > 0). Two opposite superluminal structures: loop closes (antitelephone pattern). Everett 1996 itself stays B (no local copy; mechanism-carried). |
+| Hiscock 1997 2D chain | **A within slice — verified exact** | Static form, R_2D = −A″, anomaly+conservation RSET, profile-independent near-horizon divergence, T_H. Subluminal gating is an identity: A ≥ 1−v₀² > 0. The 2D trace-anomaly METHOD is standard external (B); his flagged 4D question remains open. |
+| Natário off-axis ergo-band vs axis reductions | **New observation: geometry A; semiclassical implication C (flagged)** | Axis sup‖X‖/v = 1.000 exactly vs equator 5.53 at (5,4) ⟹ first stationary-limit surface off-axis at v* ≈ 0.181 — invisible to Hiscock-style 2D reductions; a concrete sub-luminal target for 2E.3 / fence crack #1. |

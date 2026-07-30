@@ -150,10 +150,13 @@ This catalog covers all papers referenced in the project seed documents, organiz
 - **arXiv:** [gr-qc/9702026](https://arxiv.org/abs/gr-qc/9702026)
 - **Journal:** Class. Quant. Grav. 14, 1743–1751 (1997)
 - **Authors:** Michael J. Pfenning, L. H. Ford
+- **Local copy:** `papers/pfenning_ford1997_warp_qi_9702026.pdf`
 
 > We will apply the quantum inequality type restrictions to Alcubierre's warp drive metric on a scale in which a local region of spacetime can be considered "flat". It will be shown that the bubble wall thickness is on the order of only a few hundred Planck lengths. Then we will show that the total integrated energy density needed to maintain the warp metric with such thin walls is physically unattainable.
 
 **Relevance:** Constrains bubble wall thickness to Planck scale and energy to universe-scale. The boundary-mode picture reframes this: the $1/\Delta$ divergence in energy is the gravitational analog of the Casimir divergence for infinitesimally close plates. The question is whether the mode picture changes the thickness/energy trade-off, or whether it merely restates the same constraint in new language.
+
+**Confronted Session 57 (Task 4.2, gates 5–8 of [`verification/test_nogo_confrontation.py`](verification/test_nogo_confrontation.py)):** the entire classical chain verified exact (Eq 7 passage geodesics; Eq 8 == our identity 1; Eqs 26/28 total energy; Eq 5 Δ–σ relation; Eq 16 contour integral); magnitudes reproduced at their stated OoM. QI premise stays grade B (Krasnikov-2003 scope caveat, Slice 4). The mode picture does not change the trade-off; the *class* change (shell corridor, positive certified floors, classical κ-squeeze) does. See [`NOGO_CONFRONTATION.md`](NOGO_CONFRONTATION.md) §4.2.
 
 ---
 
@@ -165,6 +168,10 @@ This catalog covers all papers referenced in the project seed documents, organiz
 > A more careful analysis shows that the situation is actually much grimmer than advertised — all physically reasonable warp drives will violate the null energy condition, and so also automatically violate the WEC, and both the strong and dominant energy conditions. Even in modified gravity, physically reasonable warp drives will still violate the purely geometrical null convergence condition and the timelike convergence condition.
 
 **Relevance:** **The paper the boundary-mode approach must survive.** They show NEC violation is generic to warp drives, not just Alcubierre's specific form. The boundary-mode approach must either: (a) respect their no-go (subluminal, NEC-violating but with Casimir-sourced violation), (b) identify which assumption it challenges, or (c) fail. Their argument applies to all timelike observers, not just co-moving Eulerian ones — a stronger constraint than earlier work.
+
+- **Local copy:** `papers/2105.03079v2.pdf`
+
+**Confronted Session 57 (Task 4.1, gates 1–5):** algebraic spine verified exact through our machinery (Eq 4.8 sign slip vs their own 4.7 recorded); the Alcubierre–Lobo identity $G_{zz}=3G_{nn}$ **upgraded to an exact class identity** (any z-directed flow, incl. time-dependent); the §7.4 NEC restoration argument instantiated end-to-end on the canonical profile (obligation violated on both wall crossings). Our S36 identities are their §7.1–7.3; our FH/Lentz/Natário adjudications are their Appendix C/D made quantitative; **their Appendix B names the shell class (lapse ≠ 1 / curved slices) as the open flank — which is exactly where Path 2A's certified corridor lives.** No assumption challenged. [`NOGO_CONFRONTATION.md`](NOGO_CONFRONTATION.md) §4.1.
 
 ---
 
@@ -199,15 +206,20 @@ This catalog covers all papers referenced in the project seed documents, organiz
 
 **Relevance:** Causality violations from warp drives. The subluminal restriction adopted by this project may avoid these issues.
 
+**Confronted Session 57 (Task 4.3, gates 11–12; mechanism carried by Everett–Roman 1997, in-repo):** the answer is **yes** — one warp structure generates no CTC (single-tube return at $t_E = D\delta > 0$ verified), the closed loop needs two oppositely-oriented *superluminal* structures (the tachyonic-antitelephone pattern, bookkeeping verified), and the subluminal discipline keeps every certified configuration outside that domain. The S17 FH CTC sea is a different (static tipped-cone) mechanism, consistent in direction. [`NOGO_CONFRONTATION.md`](NOGO_CONFRONTATION.md) §4.3.
+
 ---
 
-### Hiscock 1997 — Horizon problems
+### Hiscock 1997 — "Quantum effects in the Alcubierre warp drive spacetime"
 
 - **Journal:** Class. Quant. Grav. 14, L183 (1997)
 - **Authors:** William A. Hiscock
-- **arXiv:** Not available on arXiv
+- **arXiv:** [gr-qc/9707024](https://arxiv.org/abs/gr-qc/9707024) *(the earlier "not on arXiv" note here was wrong — corrected Session 57)*
+- **Local copy:** `papers/hiscock1997_quantum_alcubierre_9707024.pdf`
 
 **Relevance:** Horizon formation in superluminal Alcubierre spacetimes. Again, subluminal restriction may sidestep this.
+
+**Confronted Session 57 (Task 4.4, gates 9–10):** the full 2D chain verified exact (static form, $R_{2D} = -A''$, anomaly+conservation RSET, profile-independent near-horizon divergence, $T_H = v_0 f'(r_0)/2\pi$); subluminal gating is an identity ($A \ge 1 - v_0^2 > 0$) — **the subluminal slice is Hiscock-safe**, and the divergence is gated on the superluminal transition (deferred 2E.1 leg; FLB 2009 = fence crack #1 is the modern form). S56 sharpening: for the Natário zero-expansion drive the first stationary-limit surface appears **off-axis at $v^* \approx 0.18$** — invisible to any axis reduction; open 2E.3 question. [`NOGO_CONFRONTATION.md`](NOGO_CONFRONTATION.md) §4.4.
 
 ---
 
