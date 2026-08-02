@@ -114,6 +114,27 @@ Contents:
   finite strictly-negative surface density (~1.06 A^2 units) -- an
   admissible Israel-type layer that is EC-violating at every scale
   (a third independent EC failure of the Lentz class).
+  `test_natario2002_reproduction.py`: the Session-56 battery behind
+  Task 3.8 (10/10) -- Natario 2002 (gr-qc/0110086) reproduced EXACTLY:
+  the 2-form-curl construction and all six K_ij components symbolic for
+  arbitrary f; the energy density via three independent routes incl.
+  the full 4D Einstein tensor with time-dependent v(t) at 40-digit
+  precision (no v-dot in rho -- instantaneous law); Prop 1.3 and
+  Theorem 1.7 mechanics; plus the sharpenings (WEC violated at 100% of
+  wall points incl. the axis; Hawking-Ellis Type IV dominance; the
+  off-axis ergo-band sup||X||/v = 5.53 => v* ~ 0.18; Rodal Table-2
+  anchors confirmed).
+  `test_nogo_confrontation.py`: the Session-57 battery behind Phase 4
+  (12/12) -- the four canonical no-go works instrument-verified: SSV
+  2021's algebraic spine (Eqs 4.3-4.5/4.7/4.12/4.13; their Eq 4.8 sign
+  slip recorded) + the Alcubierre-Lobo NEC identity G_zz = 3 G_nn
+  certified as an exact CLASS identity (any z-directed flow, incl.
+  time-dependent) + the Eulerian passage ODE (NEC obligation violated
+  on BOTH wall crossings, symmetric); Pfenning-Ford 1997's classical
+  chain exact (Eqs 5/8/16/26/28; magnitudes OoM); Everett-Roman 1997
+  algebra + two-tube CTC bookkeeping; Hiscock 1997's full 2D chain
+  exact + the subluminal gating identity and the axis-blindness
+  measurement (equator 5.53 vs axis 1.000).
 - **Adversarial kill-test batteries** — `test_profile_kill.py`,
   `test_radial_opt_xcheck.py`, `test_radial_opt_convergence.py`,
   `test_prongA_forensic.py`: resolution-convergence, cross-representation
