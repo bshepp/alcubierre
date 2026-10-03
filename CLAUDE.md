@@ -58,3 +58,32 @@ The **documentation graph** is intentionally cross-linked, not hierarchical: REA
 - **Link, don't duplicate.** Don't create new top-level summary docs to "document changes." Update the existing NAVIGATOR.md tables and the relevant `_NOTES.md`; append to SESSION_LOG.md / TRUST_AUDIT.md.
 - **Don't add** test frameworks, CI, linters, or pre-commit hooks (none exist by design), and don't add dependencies casually — new deps must be pinned in `requirements.txt` and justified.
 - **Don't curate by deletion**: a bounded *negative* survey is a real deliverable here, and the exhaustive verification battery is the point — don't economize rigor to save effort.
+
+## Website bucket is public — pending OAC lockdown (noted 2026-10-02)
+
+The project site is `webpage/` deployed by `webpage/deploy.ps1` (`-Bucket alcubierre.briansheppard.com -DistributionId E3FPT8574LNHQL -Invalidate`).
+
+`alcubierre.briansheppard.com` is served by CloudFront `E3FPT8574LNHQL` (`alcubierre.briansheppard.com`) through the **S3 website endpoint**
+(`alcubierre.briansheppard.com.s3-website-us-east-1.amazonaws.com`). That origin type only works while the bucket has
+Block Public Access **off** and a public-read bucket policy, so anyone can also fetch objects straight from S3,
+bypassing CloudFront. As of 2026-10-02 this is one of three buckets in the account still public
+(`alcubierre.briansheppard.com`, `nbody-briansheppard-com`, `storm-water-simple-frontend`); every other site
+bucket is private behind an Origin Access Control. Account-level Block Public Access is waiting on these three.
+
+**To lock it down** (about 10 minutes; a brief blip on cache misses is acceptable, nothing else changes):
+
+1. Create an Origin Access Control: `aws cloudfront create-origin-access-control --origin-access-control-config Name=alcubierre.briansheppard.com-oac,SigningProtocol=sigv4,SigningBehavior=always,OriginAccessControlOriginType=s3`
+2. Update distribution `E3FPT8574LNHQL` (`get-distribution-config` → edit → `update-distribution --if-match <ETag>`):
+   origin `DomainName` → `alcubierre.briansheppard.com.s3.us-east-1.amazonaws.com`; remove `CustomOriginConfig`; add
+   `S3OriginConfig: {"OriginAccessIdentity": ""}` and `OriginAccessControlId: <oac id>`; set `DefaultRootObject: index.html`;
+   add custom error responses for **403 and 404 → `/index.html`, 200** (S3 REST answers 403 for missing keys).
+3. Replace the bucket policy with a single statement: `Allow s3:GetObject` to `Principal: {"Service": "cloudfront.amazonaws.com"}`
+   on `arn:aws:s3:::alcubierre.briansheppard.com/*` with `Condition StringEquals AWS:SourceArn = arn:aws:cloudfront::290318879194:distribution/E3FPT8574LNHQL`.
+   Do not write a policy that still contains the `Principal: "*"` statement — the Claude Code auto-mode classifier blocks that as a weakening, and it is unnecessary if step 2 runs first.
+4. `aws s3api put-public-access-block --bucket alcubierre.briansheppard.com --public-access-block-configuration BlockPublicAcls=true,IgnorePublicAcls=true,BlockPublicPolicy=true,RestrictPublicBuckets=true`
+   then `aws s3api delete-bucket-website --bucket alcubierre.briansheppard.com`.
+5. `aws cloudfront wait distribution-deployed --id E3FPT8574LNHQL`, then verify `https://alcubierre.briansheppard.com/`, a static asset, and a bad path (should return `index.html` with 200)
+   and confirm `https://s3.us-east-1.amazonaws.com/alcubierre.briansheppard.com/index.html` now returns **403**.
+6. `webpage/s3-policy.json` is a sample IAM policy for the deploy user, not the bucket policy — it does not need to change.
+
+Reference implementation: `F:\dark-forest-labs-projects\ubomw-site` — commit `cb6bf21` ("move S3 behind CloudFront OAC") and `scripts/deploy_s3.sh` there. Migrated 2026-10-02 with the exact steps below.
