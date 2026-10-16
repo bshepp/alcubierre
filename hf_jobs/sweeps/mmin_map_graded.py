@@ -117,7 +117,7 @@ def make_min_ec_graded(d: float, q: float, taper: str):
     """EC oracle for one (d, q, taper) -- injectable into find_mmin."""
 
     def min_ec_graded(R1: float, R2: float, M_nominal: float, v: float,
-                      res=RES_FULL):
+                      res=RES_FULL, exact: bool = False):
         n_r, n_th, na, nt = res
         r, Apos, B, F, M_adm, hmin = graded_shell_profiles(
             R1, R2, d, q, taper, M_nominal, v)
@@ -131,6 +131,7 @@ def make_min_ec_graded(d: float, q: float, taper: str):
         out = evaluate_axisym_ec(
             rs, Apos[sub], B[sub], F[sub], v=v, theta=theta,
             in_shell_mask_1d=mask, num_angular=na, num_temporal=nt,
+            exact=exact,
         )
         return out["min"], out["min_by_cond"], M_adm, hmin
 

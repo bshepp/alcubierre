@@ -55,6 +55,7 @@ smoothing convention, not a bug -- kappa comparisons across Delta inherit it.
 from __future__ import annotations
 
 import time
+from functools import partial
 
 import numpy as np
 
@@ -110,11 +111,14 @@ def shell_profiles(R1: float, R2: float, M_nominal: float, v: float):
     return r, Apos, B, F, M_adm, horizon_min
 
 
-def min_ec(R1: float, R2: float, M_nominal: float, v: float, res=RES_FULL):
+def min_ec(R1: float, R2: float, M_nominal: float, v: float, res=RES_FULL,
+           exact: bool = False):
     """min(EC) over the in-shell mesh at one (geometry, mass, resolution).
 
     Returns ``(min_ec, min_by_cond, M_adm, horizon_min)``. ``min_ec`` is NaN
     when the configuration is horizon-invalid (metric not evaluable).
+    ``exact=True`` (Session 58) uses the observer-robust EC minimiser instead
+    of the sampled WarpFactory field; ``res`` then controls the mesh only.
     """
     n_r, n_th, na, nt = res
     r, Apos, B, F, M_adm, hmin = shell_profiles(R1, R2, M_nominal, v)
@@ -125,7 +129,7 @@ def min_ec(R1: float, R2: float, M_nominal: float, v: float, res=RES_FULL):
     out = evaluate_axisym_ec(
         r[sub], Apos[sub], B[sub], F[sub], v=v, theta=theta,
         in_shell_mask_1d=(r[sub] >= R1) & (r[sub] <= R2),
-        num_angular=na, num_temporal=nt,
+        num_angular=na, num_temporal=nt, exact=exact,
     )
     return out["min"], out["min_by_cond"], M_adm, hmin
 
@@ -376,13 +380,14 @@ def build_grid(config: dict) -> list[dict]:
     dfracs = [float(x) for x in axes["dfrac"]["values"]]
     vs = [float(x) for x in axes["v"]["values"]]
     rel_tol = float(config.get("rel_tol", 0.005))
+    exact = bool(config.get("exact", False))     # Session 58: observer-robust EC minimiser
     grid = []
     for R2 in r2s:
         for dfrac in dfracs:
             for v in vs:
                 grid.append({
                     "R1": R2 * (1.0 - dfrac), "R2": R2, "dfrac": dfrac,
-                    "v": v, "rel_tol": rel_tol,
+                    "v": v, "rel_tol": rel_tol, "exact": exact,
                 })
     return grid
 
@@ -390,11 +395,14 @@ def build_grid(config: dict) -> list[dict]:
 def evaluate(point: dict) -> dict:
     """One grid cell -> M_min record (exceptions become an error column)."""
     try:
+        exact = bool(point.get("exact", False))
         rec = find_mmin(
             float(point["R1"]), float(point["R2"]), float(point["v"]),
             rel_tol=float(point.get("rel_tol", 0.005)),
+            min_ec_fn=(partial(min_ec, exact=True) if exact else None),
         )
         rec["dfrac"] = float(point.get("dfrac", np.nan))
+        rec["exact"] = exact
         rec["error"] = ""
         return rec
     except Exception as exc:  # sweep must not die on one bad cell

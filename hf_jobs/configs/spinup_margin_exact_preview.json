@@ -1,0 +1,25 @@
+{
+  "_comment": "SESSION 58 EXACT RE-CERTIFICATION of the spin-up preview: identical grid to spinup_margin_preview.json but the EC verdict uses the observer-robust minimiser (warp_factory_py/solvers/ec_exact.py) instead of WarpFactory's sampled observer field. Expected: floors shift up by ~0.1-0.3 % (S58 probe: sampled margins carry a ~0.13 %-of-scale optimistic bias), no verdict flips. Preview-first discipline applies. | ORIGINAL: Preview for the Session-49 spin-up margin surface (Task 2E.1). Canonical vessel only, 2 v x {0, +/-1e-4} vd = 6 points. Decision gate: (a) vd=0 points match the static evaluator (the battery re-checks exactly); (b) inflate/deflate sign asymmetry visible (margin(+vd) < margin(0) < margin(-vd)); (c) runtime acceptable. Scout-tier numbers from the Session-49 probe: margin moves ~-2.2% at vd=1e-3 on the canonical vessel.",
+  "configs": [
+    {
+      "name": "canonical",
+      "kind": "single",
+      "R1": 10.0,
+      "R2": 20.0,
+      "M": 4.49e+27,
+      "v_build": 0.02
+    }
+  ],
+  "v": {
+    "values": [
+      0.01,
+      0.02
+    ]
+  },
+  "vd_mag": {
+    "values": [
+      0.0001
+    ]
+  },
+  "exact": true
+}

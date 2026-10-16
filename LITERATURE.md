@@ -4,7 +4,7 @@
 
 This catalog covers all papers referenced in the project seed documents, organized by role. Each entry includes the abstract, publication data, and relevance to the boundary-mode program.
 
-**Last updated:** 2026-04-17 (Session 10 — Fell-Heisenberg evaluation complete; pipeline regression A-grade, qualitative claim verified, ~1% residual full-WEC violation now the most interesting open lead)
+**Last updated:** 2026-10-16 (Session 58 — §12 added: six 2024–2026 externals surfaced by the closeout audit, each mapped to the reopening trigger it touches)
 
 ---
 
@@ -452,4 +452,64 @@ Catalogued for completeness; none directly bear on the codimension scaling, but 
 | `papers/mishima2017_cyl_gw_weber_wheeler_bonnor_1704.03251v4.pdf` | Mishima & Tomizawa 2017 � variations on cylindrical Weber-Wheeler-Bonnor GW packets |
 | `papers/vesely2021_cyl_radial_magnetic_2104.01557v1.pdf` | Vesel� & �ofka 2021 � cylindrical electrovacuum with radial magnetic fields |
 | `papers/lyndenbell2017_komar_cylindrical_1712.06980v1.pdf` | Lynden-Bell & Bic�k 2017 � Komar fluxes and cylindrical metrics |
+
+---
+
+## 12. 2024–2026 Externals Surfaced by the Closeout Audit (added Session 58)
+
+The 2026-10-15 closeout audit (SESSION_LOG Session 58) found that none of the papers below was catalogued, although each touches a recorded reopening trigger. Entries give the claim, the trigger it touches, and the project's disposition (or the adjudication task that owns it). Grades follow TRUST_AUDIT: external claims are **B** until reproduced in-pipeline.
+
+### Le 2026a — "Observer-robust energy condition verification for warp drive spacetimes"
+
+- **arXiv:** [2602.18023](https://arxiv.org/abs/2602.18023) (v1 2026-02-20; v6 2026-09-24) · **Author:** An T. Le · **Code:** `warpax` (MIT, [github.com/anindex/warpax](https://github.com/anindex/warpax), PyPI)
+- **Local copy:** `papers/le2026a_observer_robust_ec_2602.18023v6.pdf`, source `papers/arXiv-2602.18023v6.tar.gz`
+
+**Headline claim.** Theorem 1 (S-lemma): at a point, NEC ⟺ $M(\sigma)=\hat T+\sigma\eta\succeq0$ for some real $\sigma$; WEC ⟺ the same with $\sigma\ge0$; SEC ⟺ WEC for the trace-reversed tensor; DEC needs two tests. These linear-matrix-inequality (LMI) tests decide the pointwise energy conditions **for every Hawking–Ellis type** and for **all observers**, with no rapidity cutoff. Single-frame (Eulerian) checks and finite observer samples are shown to under-report violations: for Rodal's drive the Eulerian reading misses ≈73% of sampled wall WEC violations; Type-IV wall fractions are 75–100% (Alcubierre), 56–99% (Natário), 7–93% (Van Den Broeck). Section 3.6 / Table 9 applies the diagnostics to the **regularized Fuchs shell at canonical parameters** ($v_s=0.02$, $R_c=15$ m, 10–90% width 4.42 m): 100% Type I, 0% Type IV on the sampled wall band ($0.1\le f\le0.9$), sampled Type-I slack $R_c^2\min(\rho+p_i)=+0.021$ — i.e. **EC-clean where sampled, with "no global enclosure"**. The Garattini–Zatrimaylov row is negative with 100% Eulerian WEC miss (consistent with our Session-46 local-violation finding).
+
+**Trigger touched.** The project's certified oracle ([`warp_factory_py/solvers/axisymmetric_ec.py`](warp_factory_py/solvers/axisymmetric_ec.py)) certifies the *Einstein tensor* exactly but forms the EC *verdict* with WarpFactory's sampled vector field ([`energy_conditions.py`](warp_factory_py/solvers/energy_conditions.py): 100×10 directions at the accept tier). That is exactly the sampling gap this paper targets. Session-58 probe: the sampled margin carries a near-constant optimistic bias ≈0.13% of the $\rho c^2$ scale at the canonical cell; the S32 single-shell floor moves +0.1% (inside its 0.5% tolerance) under an exact minimiser. **Disposition: methodological upgrade executed in Session 58** (exact trust-region EC minimiser added to the oracle; floors re-certified; `warpax` used as an independent cross-check) — see SESSION_LOG Session 58 and TRUST_AUDIT. The paper's Fuchs row is a two-sided external anchor for our canonical-cell verdict (B, consistent).
+
+### Le 2026b — "Radiative steering of warp shells"
+
+- **arXiv:** [2606.22531](https://arxiv.org/abs/2606.22531) (v1 2026-06-21; v4 2026-09-13) · **Author:** An T. Le
+- **Local copy:** `papers/le2026b_radiative_steering_warp_shells_2606.22531v4.pdf`, source `papers/arXiv-2606.22531v4.tar.gz`
+
+**Headline claim.** Exact timelike Israel junctions between a compact **flat cavity** and a **Kinnersley photon-rocket exterior**: the shell carries strict surface DEC, steers **subluminally** under non-negative outgoing radiation, and successive burns joined at static spheres obey the exact mass law $m_j = m_0\exp(-3\sum_\ell d_\ell)$ with $d_\ell$ the hyperbolic (rapidity-space) distance of each velocity change (Theorem "Exact steering by successive burns"); smooth static-to-static burns with $\gamma\ge3$ attain the dipole bound; a self-similar accelerating junction exists but needs anisotropic stress; an elastic recoil-control model and efficiency limits from angular concentration / inward emission are derived. Cites Fuchs et al. 2024 as "the constant-velocity shell of [5]". Open per the paper: self-gravitating settling after a turn; stability (frozen-surface modes grow under compression).
+
+**Trigger touched.** ROADMAP 2E.1 criterion (a) (external inflate-then-coast / manoeuvre construction with explicit EC bookkeeping) and Phase-5 Task 5.6 (acceleration). **Reading before adjudication:** the interior is a flat cavity with **no shift / no frame dragging** — the paper itself says flatness "does not carry those observers with its accelerating boundary". It is the project's **Mechanism B (mass/photon ejection)** of the three-mechanism catalog ([`MATTER_SHELL_PATH.md`](MATTER_SHELL_PATH.md) Appendix A) made exact with surface-DEC bookkeeping, not a new warp mechanism; the $e^{-3L}$ law is the photon-rocket Tsiolkovsky relation. **Owned by Session-58 adjudication** (`LE2026_EVALUATION.md`).
+
+### Le 2026c — "Relativistic elastic shells: material support and cavity geometry"
+
+- **arXiv:** [2605.25417](https://arxiv.org/abs/2605.25417) (v1 2026-05-25; v3 2026-09-17) · **Author:** An T. Le
+- **Local copy:** `papers/le2026c_relativistic_elastic_shells_2605.25417v3.pdf`, source `papers/arXiv-2605.25417v3.tar.gz`
+
+**Headline claim.** Proposition "Isotropic inner-boundary obstruction": a horizon-free static spherical shell with continuous non-negative density and **isotropic** pressure, $m(a)=0$ and no surface layer at the inner face is impossible — TOV gives $p'\le0$, so $p(b)=0$ forces $p\equiv0$. Truncating a positive-pressure fluid at the inner face creates a **massless Israel layer with tangential pressure $a\,p(a^+)/2$ that violates surface DEC**; smoothing the jump instead "produces a transition stress that must be included explicitly". Tangential elastic stress supports static shells with two free faces while satisfying DEC with subluminal sound speeds (exact smooth anisotropic example with $p_r=0$); radial linear stability shown; rotating/even-parity stability open. Explicitly connects to subluminal warp shells (Fuchs et al.) and notes such bodies have non-constant lapse and curved slices — outside the unit-lapse flat-slice no-go class — but "neither propulsion nor a travel-time advantage follows from the cavity".
+
+**Trigger touched.** The Fuchs-class builder ([`warp_factory_py/metrics/warp_shell.py`](warp_factory_py/metrics/warp_shell.py), mirroring WarpFactory) uses isotropic TOV pressure cut to zero inside $R_1$ and then smoothed — precisely the "smoothing" branch of the proposition. **Session-58 mask-extension kill-test:** evaluating the oracle's energy conditions over the whole radial window (not just $[R_1,R_2]$) at the canonical mass, the S32 floor and +5% shows **no violation anywhere** (worst off-mask value $\sim10^{-9}$ of scale, numerical noise); the smoothed transition stress is EC-clean, and the smoothed density's real support is $[6.0, 24.0]$ m at the 10% level (FWHM $[9.7, 20.3]$). So the project's required-stress verdicts are honest, but the paper sharpens the standing caveat: **what supplies that stress is a material question the project never posed** — a Type-I EC-clean required stress is necessary, not sufficient. The $p_r=0$ tangential-support family is a candidate alternative ansatz for the Fuchs class (noted as an optional lead; Phase 3.3+ Step 2's metric-first anisotropic optimizer covered the general anisotropic space negatively, so no large gain is expected).
+
+### Barzegar, Buchert & Vigneron 2026 — "General formalism, classification, and demystification of the current warp-drive spacetimes"
+
+- **arXiv:** [2602.16495](https://arxiv.org/abs/2602.16495) (v1 2026-02-18) · **Authors:** H. Barzegar, T. Buchert, Q. Vigneron
+- **Local copy:** `papers/barzegar2026_warp_classification_demystification_2602.16495v1.pdf`, source `papers/arXiv-2602.16495v1.tar.gz`
+
+**Headline claim.** A covariant 3+1 classification of warp-drive restrictions (flow-orthogonality, unit lapse, flat slices, asymptotic flatness, …) defining the restricted "R-Warp" class, with new theorems: **IV.7** a superluminal R-Warp model cannot be globally hyperbolic; **IV.16/IV.17** asymptotic flatness forces shear-free R-Warp models, and any model whose shift is the gradient of a harmonic function, to be Minkowski (this kills "elliptic" shift constructions à la Lentz); **IV.19** the ADM energy of an R-Warp model vanishes (momentum generally not); **IV.20** DEC + the positive energy theorem force an R-Warp model to be Minkowski; **IV.32/IV.33** WEC statements (Natário 2002 Theorem 1.7 recast; zero-mean-curvature foliations with small Ricci scalar violate WEC). A long catalogue of "Errors" is levelled at Lentz, Bobrick–Martire / Helmerich / Fuchs, Abellán, and Fell–Heisenberg — for Fuchs et al. specifically: the TOV equations are not actually solved (their `err:TOV`; cf. our WarpFactory issue #4, TRUST_AUDIT Session 26), the 3+1 geodesic argument confuses $u^i$ with $u_i$, Eulerian positivity is taken for WEC, and the numerics lack a proper initial-value formulation. Discussion: dropping asymptotic flatness (cosmological context) or global hyperbolicity are the authors' suggested exits.
+
+**Trigger touched.** Phase 4 reopening (a)/(d) and the Slice-5/asymptotic-flatness row. **Owned by Session-58 Task 4.5** (NOGO_CONFRONTATION §4.5): verify the R-Warp theorems through our instruments where computable (IV.17 harmonic-shift ⟹ Minkowski; IV.19 ADM energy; IV.32/33), and state precisely which of their Fuchs "errors" touch the project's required-stress verdicts (none should — the project never claimed a fluid solution, only EC-clean required stress; the material-support gap is the Le 2026c point).
+
+### Buchert & Frackowiak 2026 — "Novel realizations of warp drive spacetimes as solutions of general relativity"
+
+- **arXiv:** [2605.03653](https://arxiv.org/abs/2605.03653) (v1 2026-05-05) · **Journal:** Universe 12, 132 (2026) · **Authors:** T. Buchert, A. Frackowiak
+- **Local copy:** source only, `papers/arXiv-2605.03653v1.tar.gz` (LaTeX-only; the 14 MB vector-figure PDF resists slimming and sits in gitignored `papers/_originals/`)
+
+**Headline claim.** Covariant 3+1 re-reading of Alcubierre; governing equations for the one-component Natário subclass; Synge G-method realizations (a-priori Alcubierre profile vs. a solution fixed along geodesics), the latter showing "an expected generic instability of the warp field"; proposals to admit spatial curvature via a relativistic Lagrangian perturbation scheme and exact Szekeres-II solutions (warp fields ↔ relativistic cosmology); future "physical" warp fields are argued to need pressure-supported matter with lapse gradients tied to pressure gradients and tilted (T-Warp) flows. No energy-condition claim.
+
+**Trigger touched.** Phase-5 Task 5.3 (stability) in its R-Warp form, and the Slice-6/2E.1 "tilted flow" direction. **Disposition:** catalogued at grade B; outside every project slice (unit lapse, flat slices, no matter shell). The instability statement is about the Alcubierre *field* as initial data, not about shell equilibria; no reopening. Watch item for 5.3 if the shell-stability leg is ever opened.
+
+### Huey 2024 — "Membrane models as a means of propulsion in general relativity: super-luminal warp-drive that satisfies the weak energy condition"
+
+- **arXiv:** [2311.07193](https://arxiv.org/abs/2311.07193) (v1 2023-11-13; v3 2024-05-06) · **Journal:** Class. Quantum Grav. 41, 135007 (2024) · **Author:** G. Huey
+- **Local copy:** `papers/huey2024_membrane_warp_wec_2311.07193v3.pdf`, source `papers/arXiv-2311.07193v3.tar.gz`
+
+**Headline claim.** Toy sub- and super-luminal "warp drives" built by stitching bulk spacetimes — exterior Minkowski, an interior static Minkowski, and a Schwarzschild–de-Sitter-like planar "Λ–K" bulk between them — along four **thin membranes with perfect-fluid surface stress**; the Israel jump in extrinsic curvature appears as bulk acceleration of each brane, tuned by the brane equation of state and bulk parameters so that the whole stack accelerates in the exterior; WEC claimed to hold everywhere (with a "Modified-Minkowski" interface layer needed to make one brane's energy density positive). Caveats stated by the author: branes are **non-compact** (infinite planar extent), toy models only, no stability, no quantum effects, no assembly from Minkowski initial data.
+
+**Trigger touched.** Phase 4 reopening (a): "any published claim of a warp drive … satisfying NEC/WEC — route to the adjudication pipeline." Also lands squarely on the project's **codimension-counting law** (Session 16, [`speculation/CODIMENSION_SCALING.md`](speculation/CODIMENSION_SCALING.md)): a planar (k=0) configuration is exactly the corner where the linear-in-$\beta$ obstruction vanishes, so a non-compact slab passing WEC is *expected* there and says nothing about closed bubbles. **Owned by Session-58 adjudication** (`HUEY2024_EVALUATION.md`): reproduce the planar junction, verify the WEC claim on the branes, and state the compactification obstruction.
 

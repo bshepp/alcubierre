@@ -44,6 +44,7 @@ the degenerate-limit gate of the verification harness.
 from __future__ import annotations
 
 import numpy as np
+from functools import partial
 
 from hf_jobs.sweeps.mmin_map import (
     DR_CANON,
@@ -100,7 +101,7 @@ def make_min_ec_nested(R1_in: float, R2_in: float, f_inner: float):
     """
 
     def min_ec_nested(R1: float, R2: float, M_nominal: float, v: float,
-                      res=RES_FULL):
+                      res=RES_FULL, exact: bool = False):
         n_r, n_th, na, nt = res
         r, Apos, B, F, M_adm, hmin = nested_shell_profiles(
             R1, R2, R1_in, R2_in, f_inner, M_nominal, v)
@@ -115,6 +116,7 @@ def make_min_ec_nested(R1_in: float, R2_in: float, f_inner: float):
         out = evaluate_axisym_ec(
             rs, Apos[sub], B[sub], F[sub], v=v, theta=theta,
             in_shell_mask_1d=mask, num_angular=na, num_temporal=nt,
+            exact=exact,
         )
         return out["min"], out["min_by_cond"], M_adm, hmin
 
@@ -143,6 +145,7 @@ def build_grid(config: dict) -> list[dict]:
     zero inner mass; echoed for schema uniformity).
     """
     rel_tol = float(config.get("rel_tol", 0.005))
+    exact = bool(config.get("exact", False))     # Session 58
     fs = [float(x) for x in config["f_inner"]["values"]]
     geoms = [(float(a), float(b))
              for a, b in config["inner_geometries"]["values"]]
@@ -158,13 +161,13 @@ def build_grid(config: dict) -> list[dict]:
             a0, b0 = valid[0]
             grid.append({
                 "R1": R1, "R2": R2, "dfrac": dfrac, "v": v,
-                "a_in": a0, "b_in": b0, "f_inner": 0.0, "rel_tol": rel_tol,
+                "a_in": a0, "b_in": b0, "f_inner": 0.0, "rel_tol": rel_tol, "exact": exact,
             })
         for (a, b) in valid:
             for f in fs:
                 grid.append({
                     "R1": R1, "R2": R2, "dfrac": dfrac, "v": v,
-                    "a_in": a, "b_in": b, "f_inner": f, "rel_tol": rel_tol,
+                    "a_in": a, "b_in": b, "f_inner": f, "rel_tol": rel_tol, "exact": exact,
                 })
     return grid
 
@@ -181,9 +184,13 @@ def evaluate(point: dict) -> dict:
         R1_in = a_in * R2
         R2_in = b_in * R2
         oracle = make_min_ec_nested(R1_in, R2_in, f_inner)
+        exact = bool(point.get("exact", False))
+        if exact:
+            oracle = partial(oracle, exact=True)      # Session 58
         rec = find_mmin(R1, R2, v,
                         rel_tol=float(point.get("rel_tol", 0.005)),
                         min_ec_fn=oracle)
+        rec["exact"] = exact
         rec.update({
             "dfrac": float(point.get("dfrac", np.nan)),
             "a_in": a_in, "b_in": b_in,

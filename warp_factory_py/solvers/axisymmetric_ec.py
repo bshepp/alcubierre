@@ -62,6 +62,7 @@ from scipy.interpolate import InterpolatedUnivariateSpline
 
 from ..utils.constants import EINSTEIN_PREFACTOR
 from .energy_conditions import evaluate_energy_conditions
+from .ec_exact import evaluate_energy_conditions_exact
 from .frame import eulerian_transformation, to_eulerian
 
 
@@ -190,6 +191,7 @@ def evaluate_axisym_ec(
     in_shell_mask_1d: np.ndarray | None = None,
     num_angular: int = 100,
     num_temporal: int = 10,
+    exact: bool = False,
 ):
     """Energy conditions on an exact-symbolic (r, theta) mesh.
 
@@ -206,6 +208,10 @@ def evaluate_axisym_ec(
         only over r in the shell (x theta), matching the Cartesian
         in-shell-mask convention.
     num_angular, num_temporal : passed to the shared EC evaluator.
+    exact : if True (Session 58), replace the sampled observer field by the
+        exact observer-robust minima of :mod:`ec_exact` (same conventions;
+        always <= the sampled values). Default False preserves all pre-S58
+        numbers byte-for-byte.
 
     Returns dict with per-(r,theta) EC arrays ``null/weak/dominant/strong``
     plus scalar ``min`` (worst of the four over the in-shell mesh).
@@ -251,9 +257,15 @@ def evaluate_axisym_ec(
 
     M = eulerian_transformation(g_cov, wf_compat=False)
     T_eul = to_eulerian(T_cov, M)
-    ec = evaluate_energy_conditions(
-        T_eul, num_angular=num_angular, num_temporal=num_temporal
-    )
+    if exact:
+        # Session 58: observer-robust minima (ec_exact); the sampled field is
+        # an upper bound on these. Default stays the sampled WarpFactory
+        # convention so every pre-S58 battery regresses byte-identically.
+        ec = evaluate_energy_conditions_exact(T_eul)
+    else:
+        ec = evaluate_energy_conditions(
+            T_eul, num_angular=num_angular, num_temporal=num_temporal
+        )
 
     if in_shell_mask_1d is not None:
         m2 = np.broadcast_to(
@@ -275,6 +287,8 @@ def evaluate_axisym_ec(
         "dominant": ec["dominant"], "strong": ec["strong"],
         "min_by_cond": summary, "min": float(overall),
         "g": g_cov, "T_eul": T_eul,
+        "exact": bool(exact),
+        "type_I": ec.get("type_I"), "dominant_future": ec.get("dominant_future"),
     }
 
 
@@ -381,6 +395,7 @@ def evaluate_axisym_ec_timedep(
     in_shell_mask_1d: np.ndarray | None = None,
     num_angular: int = 100,
     num_temporal: int = 10,
+    exact: bool = False,
 ):
     """Energy conditions for one spin-up snapshot (v, vd = dv/d(ct)).
 
@@ -432,9 +447,15 @@ def evaluate_axisym_ec_timedep(
 
     M = eulerian_transformation(g_cov, wf_compat=False)
     T_eul = to_eulerian(T_cov, M)
-    ec = evaluate_energy_conditions(
-        T_eul, num_angular=num_angular, num_temporal=num_temporal
-    )
+    if exact:
+        # Session 58: observer-robust minima (ec_exact); the sampled field is
+        # an upper bound on these. Default stays the sampled WarpFactory
+        # convention so every pre-S58 battery regresses byte-identically.
+        ec = evaluate_energy_conditions_exact(T_eul)
+    else:
+        ec = evaluate_energy_conditions(
+            T_eul, num_angular=num_angular, num_temporal=num_temporal
+        )
 
     if in_shell_mask_1d is not None:
         m2 = np.broadcast_to(
@@ -454,4 +475,7 @@ def evaluate_axisym_ec_timedep(
         "null": ec["null"], "weak": ec["weak"],
         "dominant": ec["dominant"], "strong": ec["strong"],
         "min_by_cond": summary, "min": float(overall),
+        "exact": bool(exact),
+        "type_I": ec.get("type_I"), "dominant_future": ec.get("dominant_future"),
+        "T_eul": T_eul,
     }

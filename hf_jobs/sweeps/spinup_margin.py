@@ -79,7 +79,7 @@ def _profiles_for(cfg: dict, M: float, v_build: float):
 
 
 def snapshot_min_ec(cfg: dict, M: float, v: float, vd: float,
-                    res=RES_FULL):
+                    res=RES_FULL, exact: bool = False):
     """One spin-up snapshot -> (min_ec, min_by_cond, horizon_min).
 
     NOTE the profile build uses the config's v_build only through the
@@ -99,6 +99,7 @@ def snapshot_min_ec(cfg: dict, M: float, v: float, vd: float,
     out = evaluate_axisym_ec_timedep(
         rs, Apos[sub], B[sub], F[sub], v=v, vd=vd, theta=theta,
         in_shell_mask_1d=mask, num_angular=na, num_temporal=nt,
+        exact=exact,
     )
     return out["min"], out["min_by_cond"], hmin
 
@@ -130,11 +131,12 @@ def build_grid(config: dict) -> list[dict]:
     vs = [float(x) for x in config["v"]["values"]]
     mags = [float(x) for x in config["vd_mag"]["values"]]
     vds = [0.0] + [s * m for m in mags for s in (+1.0, -1.0)]
+    exact = bool(config.get("exact", False))     # Session 58: observer-robust EC minimiser
     grid: list[dict] = []
     for cfg in config["configs"]:
         for v in vs:
             for vd in vds:
-                grid.append({"cfg": cfg, "v": v, "vd": vd})
+                grid.append({"cfg": cfg, "v": v, "vd": vd, "exact": exact})
     return grid
 
 
@@ -144,7 +146,8 @@ def evaluate(point: dict) -> dict:
     cfg = point["cfg"]
     try:
         mn, by, hmin = snapshot_min_ec(
-            cfg, float(cfg["M"]), float(point["v"]), float(point["vd"]))
+            cfg, float(cfg["M"]), float(point["v"]), float(point["vd"]),
+            exact=bool(point.get("exact", False)))   # Session 58
         return {
             "name": cfg["name"], "kind": cfg.get("kind", "single"),
             "R1": cfg["R1"], "R2": cfg["R2"], "M": cfg["M"],

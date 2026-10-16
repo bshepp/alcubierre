@@ -135,6 +135,34 @@ Contents:
   algebra + two-tube CTC bookkeeping; Hiscock 1997's full 2D chain
   exact + the subluminal gating identity and the axis-blindness
   measurement (equator 5.53 vs axis 1.000).
+  `test_ec_exact_minimiser.py` (Session 58): the battery behind the
+  observer-robust EC minimiser `warp_factory_py/solvers/ec_exact.py`
+  (7/7 in `full` mode) -- exact <= dense <= sampled on random tensors,
+  Type-I closed forms to 1e-12, boosted-frame sign invariance, trust-region
+  hard case to 1e-15, canonical-cell upper-bound property at every in-shell
+  point for both sampling tiers (mean sampled-exact bias 0.19 % / 0.13 % of
+  the rho c^2 scale at 100x10 / 160x16), sign flip across the S32 floor,
+  and an independent-pipeline cross-check against Le 2026a's `warpax` LMI
+  margins (350/350 sign agreement, 100 % Type-I agreement) via
+  `warpax_xcheck_worker.py` run in a scratch venv (`WARPAX_PYTHON`; SKIP if
+  unset). `floor` mode re-bisects the canonical single-shell floor with the
+  exact oracle (2.568e27 -> 2.5754e27 nominal, +0.29 %).
+  `test_le2026_steering_shell.py` (Session 58, 5/5): Le 2026b reproduced --
+  Kinnersley rocket Einstein tensor exact (null dust, 4 pi n^2 = -m_dot -
+  3 m a q), static flat-interior shell stress + the 24/25 compactness DEC
+  bound exact, dipole-penalised rocket law e^{-3L} (efficiency 1/3), the
+  mass-cost lemma on a constructed causal-exhaust path, and the fuel
+  fraction for the project's shells to reach 0.02c (4.8-5.4 %, vs 2 % ideal).
+  `test_barzegar_rwarp.py` (Session 58, 3/3; Task 4.5): Barzegar-Buchert-
+  Vigneron 2026 R-Warp theorems through our instruments -- harmonic-shift
+  identity 16 pi rho_E = -|Hess phi|^2, flat-slice ADM energy/momentum
+  (Alcubierre zero; 1/r tail finite), Hamiltonian constraint on a curved
+  conformally-flat slice with shift via a full 4D Einstein build.
+  `test_huey2024_brane.py` (Session 58, 3/3): Huey 2024 structural facts --
+  the planar Lambda-K bulk is an exact Lambda-vacuum solution
+  (G^m_n = -(kappa rho_L/2) delta), the planar-brane extrinsic-curvature
+  formula, and the brane perfect-fluid EC decomposition (WEC <=> rho >= 0,
+  rho + p >= 0; DEC <=> rho >= |p|).
 - **Adversarial kill-test batteries** — `test_profile_kill.py`,
   `test_radial_opt_xcheck.py`, `test_radial_opt_convergence.py`,
   `test_prongA_forensic.py`: resolution-convergence, cross-representation
