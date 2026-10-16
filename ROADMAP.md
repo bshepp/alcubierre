@@ -359,7 +359,9 @@ Net: delete NAVIGATOR's "Recent-session changelog", "Open leads (ranked)", and "
 ## Outstanding admin (rolled forward Sessions 20/21/22; Session 58 additions)
 
 - [ ] **Website bucket lockdown** (noted 2026-10-02 in CLAUDE.md; still public as of 2026-10-16 — Block Public Access off on all four flags, direct S3 fetch returns 200). Recipe in CLAUDE.md; a brief cache-miss blip is acceptable. Owner action or explicit go.
-- [ ] **Zenodo v0.3.0** — Sessions 56–58 are unarchived (v0.2.0 covers through Session 55). Tag `v0.3.0` after the Session-58 commit; the GitHub Release triggers the webhook.
+- [~] **Zenodo v0.3.0** — tagged and released 2026-10-16 (<https://github.com/bshepp/alcubierre/releases/tag/v0.3.0>; CITATION.cff 0.3.0); the webhook mints the version DOI — **record it in README's citation line and CITATION.cff when it appears** (concept DOI 10.5281/zenodo.19689587 already resolves to the latest).
+- [ ] **Webpage deploy** — `webpage/index.html` and `webpage/roadmap.html` carry Session-58 sentences in git but are **not deployed** (deploy = `webpage/deploy.ps1 -Bucket alcubierre.briansheppard.com -DistributionId E3FPT8574LNHQL -Invalidate`; needs the owner's go).
+- [ ] **jaga** — froze (no ping) 2026-10-16 ~01:08 under a 60-worker dispatch; needs a physical power cycle; on return pull `~/alcubierre/sweeps/mmin_map_20261016T010307.parquet` for a cross-determinism check against `sweeps/mmin_map_exact_full_concat.parquet` (machines cookbook usage-log / TIPS have the incident).
 
 - [x] ~~Publish GitHub Release at <https://github.com/bshepp/alcubierre/releases/new> for tag `v0.1.0` (commit `cba795f`) to trigger the Zenodo webhook and mint a DOI for [`CITATION.cff`](CITATION.cff).~~ **DONE / SUPERSEDED:** DOIs are minted — concept DOI [10.5281/zenodo.19689587](https://doi.org/10.5281/zenodo.19689587) and version DOI 10.5281/zenodo.21333096 (v0.2.0); badge + citation identifiers recorded in README / `CITATION.cff` (commit `9c9e111`). Checked off in the 2026-07-29 doc-sync.
 
