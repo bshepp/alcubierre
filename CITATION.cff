@@ -11,8 +11,8 @@ abstract: >-
   rendering the results. All claims are reported with explicit slice-scope
   qualifiers; see NAVIGATOR.md and TRUST_AUDIT.md in the archive.
 type: dataset
-version: 0.2.0
-date-released: 2026-07-13
+version: 0.3.0
+date-released: 2026-10-16
 doi: 10.5281/zenodo.21333096
 identifiers:
   - type: doi

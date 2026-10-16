@@ -2,7 +2,7 @@
 
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.19689587.svg)](https://doi.org/10.5281/zenodo.19689587)
 
-**Citable archive:** every tagged release is archived on Zenodo. Cite the concept DOI [10.5281/zenodo.19689587](https://doi.org/10.5281/zenodo.19689587) (resolves to the latest version), or a version DOI for a frozen snapshot ([v0.2.0](https://doi.org/10.5281/zenodo.21333096) · [v0.1.0](https://doi.org/10.5281/zenodo.19689588)). Citation metadata: [`CITATION.cff`](CITATION.cff).
+**Citable archive:** every tagged release is archived on Zenodo. Cite the concept DOI [10.5281/zenodo.19689587](https://doi.org/10.5281/zenodo.19689587) (resolves to the latest version), or a version DOI for a frozen snapshot (v0.3.0 — Sessions 56–58, tagged 2026-10-16, version DOI minted by the Zenodo webhook on release · [v0.2.0](https://doi.org/10.5281/zenodo.21333096) · [v0.1.0](https://doi.org/10.5281/zenodo.19689588)). Citation metadata: [`CITATION.cff`](CITATION.cff).
 
 ## Project Overview
 

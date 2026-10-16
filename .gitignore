@@ -24,6 +24,16 @@ sweeps/*.config.json
 # the certified minimal-mass map behind the Session-32 kappa surface.
 # Negation-tracked per the Session-30 data-artifact policy.
 !sweeps/mmin_map_full_concat.parquet
+# Session-58 observer-robust re-certification of the certified maps (exact EC
+# minimiser): the 18-cell single-shell map, the 100-point nested map and the
+# 456-snapshot spin-up surface, each with its config. Compared against the
+# sampled-oracle predecessors by verification/test_exact_recertification.py.
+!sweeps/mmin_map_exact_full_concat.parquet
+!sweeps/mmin_map_exact_full_concat.config.json
+!sweeps/mmin_map_nested_exact_full_concat.parquet
+!sweeps/mmin_map_nested_exact_full_concat.config.json
+!sweeps/spinup_margin_exact_full_concat.parquet
+!sweeps/spinup_margin_exact_full_concat.config.json
 # Session-36 corrected Slice-1 record (frame-projection fix): the 2496-row
 # full-config concat and the 140-row corrected preview (the figure source).
 !sweeps/shift_families_full_concat.parquet

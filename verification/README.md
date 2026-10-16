@@ -163,6 +163,18 @@ Contents:
   (G^m_n = -(kappa rho_L/2) delta), the planar-brane extrinsic-curvature
   formula, and the brane perfect-fluid EC decomposition (WEC <=> rho >= 0,
   rho + p >= 0; DEC <=> rho >= |p|).
+  `test_tangential_support_shell.py` (Session 58 side quest): Le 2026c's
+  p_r = 0 tangential-support class vs the isotropic-TOV Fuchs ansatz on the
+  exact oracle (`compare` + `floor` modes) -- the p_r = 0 floor is +5.3 %
+  above the isotropic floor (SEC-binding); isotropic TOV is the better
+  support class for the warp band.
+  `test_exact_recertification.py` (Session 58, 19/19): compares each
+  `*_exact_full_concat.parquet` with its sampled-oracle predecessor -- zero
+  verdict flips, thresholds shift up by 0..0.34 % (single-shell) / up to
+  1.25 % (two-body; bias grows with f_inner), kappa unchanged within spread,
+  null cells confirmed, nested f=0 baselines equal the exact single floors,
+  spin-up surface exactly even in vd, corridor clean below v_target, caps
+  identical except the sampled-floor shells at v_target.
 - **Adversarial kill-test batteries** — `test_profile_kill.py`,
   `test_radial_opt_xcheck.py`, `test_radial_opt_convergence.py`,
   `test_prongA_forensic.py`: resolution-convergence, cross-representation

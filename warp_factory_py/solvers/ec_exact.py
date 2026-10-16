@@ -142,8 +142,20 @@ def evaluate_energy_conditions_exact(T_eul: np.ndarray) -> dict[str, np.ndarray]
     """
     T = np.asarray(T_eul, dtype=np.float64)
     shp = T.shape[2:]
-    Tp = np.moveaxis(T.reshape(4, 4, -1), -1, 0)     # (P,4,4)
-    P = Tp.shape[0]
+    Tp_raw = np.moveaxis(T.reshape(4, 4, -1), -1, 0)  # (P,4,4)
+    P = Tp_raw.shape[0]
+    # Robustness (Session 58, found on the 18-cell exact map): a single
+    # non-finite or wildly scaled tensor (near-horizon scout masses overflow
+    # the metric functions) makes the batched eigensolves raise
+    # LinAlgError, where the sampled path merely propagated NaN. Normalise
+    # each point by its max |component| (every minimiser below is
+    # homogeneous of degree 1 in T; the DEC scalar is a sqrt of degree 2 and
+    # is rescaled accordingly) and zero-out non-finite points, restoring NaN
+    # in the outputs so they read as "fail" downstream exactly as before.
+    finite = np.isfinite(Tp_raw).all(axis=(1, 2))
+    scale = np.abs(np.where(finite[:, None, None], Tp_raw, 0.0)).reshape(P, -1).max(axis=1)
+    scale = np.where((scale > 0) & finite, scale, 1.0)
+    Tp = np.where(finite[:, None, None], Tp_raw, 0.0) / scale[:, None, None]
     T00 = Tp[:, 0, 0]
     b = Tp[:, 0, 1:]
     A = Tp[:, 1:, 1:]
@@ -176,6 +188,15 @@ def evaluate_energy_conditions_exact(T_eul: np.ndarray) -> dict[str, np.ndarray]
     real = np.all(np.abs(w.imag) <= 1e-7 * wscale[:, None], axis=1)
     vn = np.einsum("pai,ab,pbi->pi", v.real, ETA, v.real)
     type_I = real & ((vn < 0).sum(axis=1) == 1)
+
+    # undo the per-point normalisation; NaN where the input was non-finite
+    nan = np.where(finite, 0.0, np.nan)
+    null = null * scale + nan
+    weak = weak * scale + nan
+    strong = strong * scale + nan
+    dominant = dominant * scale + nan          # sqrt(degree-2) -> degree 1
+    dominant_future = dominant_future * scale + nan
+    type_I = type_I & finite
 
     def back(x):
         return x.reshape(shp)

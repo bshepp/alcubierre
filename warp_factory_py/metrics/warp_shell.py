@@ -885,8 +885,17 @@ def metric_profile_warp_shell(
     do_warp: bool = False,
     grid_scale: tuple[float, float, float, float] = (1.0, 1.0, 1.0, 1.0),
     r_sample_res: int = 100_000,
+    pressure_mode: str = "tov",
 ) -> tuple[Metric, dict]:
     """Single warp shell with caller-supplied radial profiles (Fuchs Sec. 6).
+
+    ``pressure_mode`` (Session 58): ``"tov"`` (default, unchanged) integrates the
+    isotropic TOV pressure inward from P(R2)=0 and feeds it to the lapse solver;
+    ``"zero_radial"`` sets the radial pressure identically to zero before the
+    lapse solve -- Le 2026c's tangential-support class (a shell held up by
+    tangential stress alone has two genuinely free faces; the required
+    tangential stress is whatever the Einstein tensor then demands and is
+    judged by the EC oracle like everything else).
 
     Parameters
     ----------
@@ -935,7 +944,12 @@ def metric_profile_warp_shell(
     #    reusing the per-shell solver with a single shell.
     M_unsm = _cumtrapz(rsample, 4.0 * np.pi * rho * rsample**2)
     M_total = float(M_unsm[-1])
-    P = _tov_pressure_nested(rsample, rho, M_unsm, [(R1, R2, M_total)])
+    if pressure_mode == "tov":
+        P = _tov_pressure_nested(rsample, rho, M_unsm, [(R1, R2, M_total)])
+    elif pressure_mode == "zero_radial":
+        P = np.zeros_like(rsample)
+    else:
+        raise ValueError(f"pressure_mode must be 'tov' or 'zero_radial', got {pressure_mode!r}")
 
     # 3. Smooth rho and P with the same windows as the constant-density builder.
     rho_window = max(1, int(round(1.79 * smooth_factor)))
