@@ -13,11 +13,14 @@ abstract: >-
 type: dataset
 version: 0.3.0
 date-released: 2026-10-16
-doi: 10.5281/zenodo.21333096
+doi: 10.5281/zenodo.23414760
 identifiers:
   - type: doi
     value: 10.5281/zenodo.19689587
     description: "Concept DOI (all versions; resolves to the latest)"
+  - type: doi
+    value: 10.5281/zenodo.23414760
+    description: "Version DOI for v0.3.0"
   - type: doi
     value: 10.5281/zenodo.21333096
     description: "Version DOI for v0.2.0"
